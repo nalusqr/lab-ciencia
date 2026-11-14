@@ -81,8 +81,8 @@
 (()=>{
 const pt=document.getElementById('pt');
 const MODES={
-  cat:{t:'Família química',d:'Elementos da mesma família têm o mesmo número de elétrons na última camada e por isso reagem de forma parecida.'},
-  fase:{t:'Estado físico a 25 °C',d:'Só 2 elementos são líquidos em temperatura ambiente: bromo e mercúrio. Gálio (fusão 29,8 °C) e césio (28,4 °C) derretem na mão.'},
+  cat:{t:'Família química',d:'As cores mostram tipos de elemento. Nos grupos 1, 2 e 13 a 17, elementos da mesma coluna têm o mesmo número de elétrons na camada de valência, por isso reagem de forma parecida (o hélio, com 2, é a exceção dos gases nobres).'},
+  fase:{t:'Estado físico a 25 °C',d:'Só 2 elementos são líquidos em temperatura ambiente: bromo e mercúrio. Gálio (fusão 29,8 °C) derrete na palma da mão. O césio (28,4 °C) também derreteria, mas nunca se toca nele: reage de forma explosiva com a água, até com o suor da pele.'},
   en:{t:'Eletronegatividade (Pauling)',d:'Força com que o átomo puxa elétrons numa ligação. Cresce para a direita e para cima; o flúor é o máximo (3,98). Gases nobres leves não têm valor.'},
   dens:{t:'Densidade (escala logarítmica)',d:'Do hidrogênio (0,00009 g/cm³) ao ósmio (22,59 g/cm³), o mais denso já medido. Itálico = previsto.'},
   mp:{t:'Ponto de fusão (K)',d:'Carbono e tungstênio estão entre os mais altos; o hélio não solidifica à pressão normal.'},
@@ -137,7 +137,7 @@ function render(){
   const M=MODES[mode];document.getElementById('lt').innerHTML=`<em>●</em>${M.t.toUpperCase()}`;document.getElementById('ld').textContent=M.d;
   const lg=document.getElementById('legend');
   const sw=(o)=>'<div class="legend">'+o.map(([n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')+'</div>';
-  if(mode==='cat')lg.innerHTML=sw(Object.values(CATS).map(x=>[x.n,x.c]));
+  if(mode==='cat')lg.innerHTML=sw(Object.entries(CATS).map(([k,x])=>[k==='semimetal'?'Semimetal (ou metaloide): classificação intermediária que nem todos os livros usam':x.n,x.c]));
   else if(mode==='bloco')lg.innerHTML=sw(Object.entries(BLOCO).map(([k,c])=>['bloco '+k,c]));
   else if(mode==='fase')lg.innerHTML=sw(Object.entries(FASEC).map(([k,c])=>[FASE[k],c]));
   else if(mode==='orig')lg.innerHTML=sw(Object.entries(ORIGC).map(([k,c])=>[ORIGEM_CURTA[k],c]));

@@ -26,27 +26,27 @@ def add(id,nome,formula,atoms,bonds,**kw):
     M.append(dict(id=id,nome=nome,f=formula,atoms=at,bonds=bonds,mm=round(mm,3),**kw))
 # diatomics
 add('hidrogenio','Hidrogênio','H₂',[['H',0,0,0],['H',0.7414,0,0]],[[0,1,1]],geo='Linear',ang=None,dip=0,est='gás',
-    lig=['H–H 0,741 Å'],vib=[['estiramento',4161,'dia']],fato='A molécula mais leve que existe. É o combustível das estrelas, que fundem hidrogênio em hélio.',grupo='Elementos')
+    lig=['H–H 0,741 Å'],vib=[['estiramento',4161,'dia']],fato='A molécula mais leve que existe. O elemento hidrogênio é o combustível das estrelas: no núcleo delas, núcleos de hidrogênio (prótons) se fundem em hélio.',grupo='Substâncias simples')
 add('nitrogenio','Nitrogênio','N₂',[['N',0,0,0],['N',1.0977,0,0]],[[0,1,3]],geo='Linear',ang=None,dip=0,est='gás',
-    lig=['N≡N 1,098 Å (tripla)'],vib=[['estiramento',2331,'dia']],fato='78% do ar que respiramos. A ligação tripla é uma das mais fortes da química (945 kJ/mol), por isso o N₂ quase não reage.',grupo='Elementos')
+    lig=['N≡N 1,098 Å (tripla)'],vib=[['estiramento',2331,'dia']],fato='78% do ar que respiramos. A ligação tripla é uma das mais fortes da química (945 kJ/mol), por isso o N₂ quase não reage.',grupo='Substâncias simples')
 add('oxigenio','Oxigênio','O₂',[['O',0,0,0],['O',1.2075,0,0]],[[0,1,2]],geo='Linear',ang=None,dip=0,est='gás',
-    lig=['O=O 1,208 Å (dupla)'],vib=[['estiramento',1556,'dia']],fato='21% do ar. Tem 2 elétrons desemparelhados (é paramagnético): oxigênio líquido gruda num ímã.',grupo='Elementos')
+    lig=['O=O 1,208 Å (dupla)'],vib=[['estiramento',1556,'dia']],fato='21% do ar. Tem 2 elétrons desemparelhados (é paramagnético): oxigênio líquido gruda num ímã. O desenho com ligação dupla (modelo de Lewis) não mostra esses elétrons desemparelhados; quem explica é a teoria dos orbitais moleculares.',grupo='Substâncias simples')
 add('ozonio','Ozônio','O₃',[['O',0,0.0,0],['O',1.278*math.sin(math.radians(58.4)),-1.278*math.cos(math.radians(58.4)),0],['O',-1.278*math.sin(math.radians(58.4)),-1.278*math.cos(math.radians(58.4)),0]],[[0,1,1.5],[0,2,1.5]],
-    geo='Angular',ang='116,8°',dip=0.53,est='gás',lig=['O–O 1,278 Å (×2, ressonância)'],vib=[],fato='Na estratosfera, a camada de ozônio absorve a maior parte da radiação ultravioleta do Sol. As duas ligações são iguais, meio caminho entre simples e dupla.',grupo='Elementos',lp=[[0,[0,1,0]]])
+    geo='Angular',ang='116,8°',dip=0.53,est='gás',lig=['O–O 1,278 Å (×2, ressonância)'],vib=[],fato='Na estratosfera, a camada de ozônio absorve quase toda a radiação UV-C e a maior parte da UV-B do Sol, as mais perigosas para o DNA. A UV-A passa quase toda, e por isso o protetor solar continua necessário. As duas ligações são iguais, meio caminho entre simples e dupla. O₂ e O₃ são alótropos do oxigênio.',grupo='Substâncias simples',lp=[[0,[0,1,0]]])
 add('cloridrico','Cloreto de hidrogênio','HCl',[['H',0,0,0],['Cl',1.2746,0,0]],[[0,1,1]],geo='Linear',ang=None,dip=1.08,est='gás',
     lig=['H–Cl 1,275 Å'],vib=[['estiramento',2886,'dia']],fato='Dissolvido em água forma o ácido clorídrico, presente no suco gástrico do estômago.',grupo='Inorgânicas')
 # water
 a=math.radians(104.52/2);d=0.9572
 add('agua','Água','H₂O',[['O',0,0,0],['H',d*math.sin(a),-d*math.cos(a),0],['H',-d*math.sin(a),-d*math.cos(a),0]],[[0,1,1],[0,2,1]],
     geo='Angular',ang='104,5°',dip=1.85,est='líquido',lig=['O–H 0,957 Å (×2)'],vib=[['estiramento simétrico',3657,'h2o_s'],['dobramento',1595,'h2o_b'],['estiramento assimétrico',3756,'h2o_a']],
-    fato='O ângulo é 104,5° e não 109,5° porque os 2 pares de elétrons livres do oxigênio empurram as ligações. É essa polaridade que faz a água dissolver tanta coisa e formar pontes de hidrogênio.',grupo='Inorgânicas',lp=[[0,[0,0.55,0.83]],[0,[0,0.55,-0.83]]])
+    fato='O ângulo é 104,5° e não 109,5° porque os 2 pares de elétrons livres do oxigênio empurram as ligações. É essa polaridade que faz a água dissolver tanta coisa e formar ligações de hidrogênio.',grupo='Inorgânicas',lp=[[0,[0,0.55,0.83]],[0,[0,0.55,-0.83]]])
 add('co2','Dióxido de carbono','CO₂',[['C',0,0,0],['O',1.160,0,0],['O',-1.160,0,0]],[[0,1,2],[0,2,2]],geo='Linear',ang='180°',dip=0,est='gás',
     lig=['C=O 1,160 Å (×2)'],vib=[['estiramento simétrico',1333,'co2_s'],['dobramento',667,'co2_b'],['estiramento assimétrico',2349,'co2_a']],
-    fato='Cada ligação C=O é polar, mas como a molécula é reta os dois efeitos se cancelam: o CO₂ é apolar. As vibrações de dobramento (667 cm⁻¹) absorvem infravermelho, e é isso que faz dele um gás de efeito estufa.',grupo='Inorgânicas')
+    fato='Cada ligação C=O é polar, mas como a molécula é reta os dois efeitos se cancelam: o CO₂ é apolar. Quando a molécula se dobra (667 cm⁻¹) ou estica de forma assimétrica (2349 cm⁻¹), aparece um dipolo momentâneo, e é isso que permite absorver infravermelho. O estiramento simétrico não cria dipolo e não absorve. A absorção do dobramento, na faixa em que a Terra emite calor, é o que faz do CO₂ um gás de efeito estufa.',grupo='Inorgânicas')
 # ammonia
 d=1.012;th=math.radians(106.67);h=d*math.sqrt((1+2*math.cos(th))/3);r=math.sqrt(d*d-h*h)
 add('amonia','Amônia','NH₃',[['N',0,0,0]]+[['H',r*math.cos(k*2*math.pi/3),-h,r*math.sin(k*2*math.pi/3)] for k in range(3)],[[0,1,1],[0,2,1],[0,3,1]],
-    geo='Pirâmide trigonal',ang='106,7°',dip=1.47,est='gás',lig=['N–H 1,012 Å (×3)'],vib=[],fato='O par de elétrons livre do nitrogênio fica no topo da pirâmide. A amônia é a base de quase todos os fertilizantes nitrogenados do mundo.',grupo='Inorgânicas',lp=[[0,[0,1,0]]])
+    geo='Piramidal (pirâmide trigonal)',ang='106,7°',dip=1.47,est='gás',lig=['N–H 1,012 Å (×3)'],vib=[],fato='O par de elétrons livre do nitrogênio fica no topo da pirâmide. A amônia é a base de quase todos os fertilizantes nitrogenados do mundo.',grupo='Inorgânicas',lp=[[0,[0,1,0]]])
 add('nacl','Cloreto de sódio (cristal)','NaCl',[['Na' if (i+j+k)%2==0 else 'Cl',i*2.82,j*2.82,k*2.82] for i in range(3) for j in range(3) for k in range(3)],
     [[a,b,'i'] for a in range(27) for b in range(a+1,27) if abs(sum((x-y)**2 for x,y in zip([a//9,a//3%3,a%3],[b//9,b//3%3,b%3]))-1)<1e-9],
     geo='Cúbica (sal-gema)',ang='90°',dip=0,est='sólido',lig=['Na⁺···Cl⁻ 2,82 Å','aresta da célula 5,64 Å'],vib=[],
@@ -76,7 +76,7 @@ P=zmat([['C'],['C',0,1.512],['O',1,1.431,0,107.8],['H',2,0.971,1,108.5,0,180],
 sy=['C','C','O','H','H','H','H','H','H']
 add('etanol','Etanol','C₂H₅OH',[[s]+list(p) for s,p in zip(sy,P)],[[0,1,1],[1,2,1],[2,3,1],[0,4,1],[0,5,1],[0,6,1],[1,7,1],[1,8,1]],
     geo='Tetraédrica em cada C',ang='C–C–O ≈ 108°',dip=1.69,est='líquido',lig=['C–C 1,512 Å','C–O 1,431 Å','O–H 0,971 Å'],vib=[],
-    fato='O grupo –OH faz pontes de hidrogênio com a água, por isso álcool e água se misturam em qualquer proporção.',grupo='Orgânicas',aprox=True,lp=[[2,[-0.3,0.4,0.85]],[2,[-0.3,0.4,-0.85]]])
+    fato='O grupo –OH faz ligações de hidrogênio com a água, por isso álcool e água se misturam em qualquer proporção. No Brasil, o etanol da cana é usado como combustível puro ou misturado à gasolina.',grupo='Orgânicas',aprox=True,lp=[[2,[-0.3,0.4,0.85]],[2,[-0.3,0.4,-0.85]]])
 # diamond cell
 a=3.567;base=[(0,0,0),(0,.5,.5),(.5,0,.5),(.5,.5,0)];pts=set()
 for bx in base:
@@ -91,7 +91,7 @@ bd=[[i,j,1] for i in range(len(at)) for j in range(i+1,len(at)) if abs(math.dist
 # drop atoms with no bonds
 used={x for b in bd for x in b[:2]};keep=[i for i in range(len(at)) if i in used];idx={o:n for n,o in enumerate(keep)}
 add('diamante','Diamante (célula unitária)','C (cristal)',[at[i] for i in keep],[[idx[b[0]],idx[b[1]],1] for b in bd],geo='Rede tetraédrica',ang='109,5°',dip=0,est='sólido',
-    lig=['C–C 1,545 Å','aresta da célula 3,567 Å'],vib=[],fato='Cada carbono se liga a outros 4 em tetraedro, formando uma rede 3D contínua: é o material natural mais duro. Mesmo elemento do grafite, só que arrumado de outro jeito.',grupo='Elementos')
+    lig=['C–C 1,545 Å','aresta da célula 3,567 Å'],vib=[],fato='Cada carbono se liga a outros 4 em tetraedro, formando uma rede 3D contínua: é o material natural mais duro. Diamante e grafite são alótropos: substâncias simples diferentes formadas pelo mesmo elemento, o carbono.',grupo='Substâncias simples')
 for m in M:
     if m['id']=='nacl':m['mm']=58.44;m['mmu']='por NaCl'
     if m['id']=='diamante':m['mm']=12.011;m['mmu']='por átomo de C'

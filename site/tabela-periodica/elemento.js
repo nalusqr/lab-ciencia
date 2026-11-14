@@ -3,7 +3,8 @@
 const Z=+document.body.dataset.z, e=ELS[Z-1], cat=CATS[e.c], C=cat.c;
 const prev=ELS[Z-2], next=ELS[Z];
 const SHELL='KLMNOPQ';
-const A=e.est?Math.round(parseFloat(e.m)):parseInt(e.m), N=A-Z;
+// A = número de massa: isótopo natural mais abundante (amax, tabela explícita em dados.js) ou, sem composição natural, o de vida mais longa.
+const A=e.est?e.amax:parseInt(e.m), N=A-Z;
 const sup=n=>String(n).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('');
 const cfgStr=list=>list.map(([o,n])=>`${o}${sup(n)}`).join(' ');
 document.title=`${e.n} (${e.s}) · Z ${Z}`;
@@ -38,6 +39,12 @@ const css=`
 .note{border-left:3px solid var(--line);line-height:1.55;font-size:11px;color:var(--txt)}`;
 document.head.insertAdjacentHTML('beforeend',`<style>${css}</style>`);
 
+const RADIO_EXTRA={
+  U:' O urânio natural é 99,3% U-238 e 0,7% U-235. O U-235 é o isótopo físsil: para usinas nucleares, o urânio é “enriquecido” até ~3–5% de U-235.',
+  Th:' O tório natural é praticamente só Th-232, com meia-vida de ~14 bilhões de anos.',
+  Bi:' O bismuto-209 tem meia-vida de ~2×10¹⁹ anos, mais de um bilhão de vezes a idade do Universo: na prática, ele se comporta como estável.',
+  Pa:' O Pa-231 (meia-vida de ~33 mil anos) existe na natureza só em traços, porque se forma o tempo todo pelo decaimento do urânio-235.'
+};
 const where=e.g?`Grupo ${e.g} · Período ${e.p}`:`Série ${e.c==='lantanideo'?'dos lantanídeos':'dos actinídeos'} · Período ${e.p}`;
 const massTxt=e.est?`${br(e.m)} u`:`[${e.m}]`;
 const enTxt=e.en==='-'?'— (sem valor)':br(e.en);
@@ -73,7 +80,7 @@ document.body.innerHTML=`<div class="wrap">
 
  <div class="box">
    <h2><em>◆</em>MODELO PADRÃO · DO QUE ${e.n.toUpperCase()} É FEITO</h2>
-   <div class="cap">Contagem real para ${e.est?`o isótopo mais comum (≈ ${e.s}-${A})`:`${e.s}-${A}`}: cada próton tem 2 quarks up e 1 down; cada nêutron, 1 up e 2 down.</div>
+   <div class="cap">Contagem real para ${e.est?`o isótopo mais comum (${e.s}-${A})`:`${e.s}-${A}`}: cada próton tem 2 quarks up e 1 down; cada nêutron, 1 up e 2 down.</div>
    <div class="counts">
      <div><span class="k">quarks up</span><b>${2*Z+N}</b><span class="cap">2×${Z} + ${N}</span></div>
      <div><span class="k">quarks down</span><b>${Z+2*N}</b><span class="cap">${Z} + 2×${N}</span></div>
@@ -91,7 +98,7 @@ document.body.innerHTML=`<div class="wrap">
 
  <div class="box">
    <h2><em>II</em>CONFIGURAÇÃO ELETRÔNICA${e.prev?' <span class="pred">prevista</span>':''}</h2>
-   <div class="cap">Forma curta: o colchete resume o gás nobre anterior. Os elétrons ocupam os subníveis na ordem de energia (regra de Madelung)${['Cr','Cu','Nb','Mo','Ru','Rh','Pd','Ag','La','Ce','Gd','Pt','Au','Ac','Th','Pa','U','Np','Cm','Lr'].includes(e.s)?' — <b style="color:var(--amber)">este elemento é uma exceção real à regra</b>, porque subníveis cheios ou meio cheios deixam o átomo mais estável':''}.</div>
+   <div class="cap">Forma curta: o colchete resume o gás nobre anterior. Os elétrons ocupam os subníveis na ordem de energia (regra de Madelung, o “diagrama de Pauling” dos livros)${['Cr','Cu','Mo','Ag','Au','Pd','Gd','Cm'].includes(e.s)?' — <b style="color:var(--amber)">este elemento é uma exceção real à regra</b>, porque subníveis cheios ou meio cheios deixam o átomo mais estável':['Nb','Ru','Rh','La','Ce','Pt','Ac','Th','Pa','U','Np','Lr'].includes(e.s)?' — <b style="color:var(--amber)">este elemento é uma exceção real à regra</b>: as energias dos subníveis são tão próximas que a ordem de preenchimento muda. A configuração mostrada é a medida em laboratório':''}.</div>
    <div class="cfg">${e.core?`[${e.core}] `:''}${cfgStr(e.val)}</div>
    <div class="cfg small">completa: ${cfgStr(e.cfg)}</div>
  </div>
@@ -112,14 +119,15 @@ document.body.innerHTML=`<div class="wrap">
      <div>Ponto de fusão</div><div>${fmtK(e.mp)}</div>
      <div>Ponto de ebulição</div><div>${fmtK(e.bp)}</div>
      <div>Estado a 25 °C</div><div>${FASE[e.ph]}</div>
-   </div>
+   </div>${e.nota?`
+   <div class="cap" style="margin-top:6px"><b style="color:var(--amber)">Obs.:</b> ${e.nota}.</div>`:''}
   </div>
   <div class="box">
    <h2><em>V</em>IDENTIDADE ATÔMICA</h2>
    <div class="cap">o que define este elemento</div>
    <div class="kv">
      <div>Número atômico (Z)</div><div>${Z} prótons</div>
-     <div>Nêutrons</div><div>${N} ${e.est?'(isótopo mais comum ≈)':`(${e.s}-${A})`}</div>
+     <div>Nêutrons</div><div>${N} ${e.est?`(${e.s}-${A}, o isótopo mais comum)`:`(${e.s}-${A})`}</div>
      <div>Eletronegatividade</div><div>${enTxt}</div>
      <div>Posição</div><div>${where}</div>
      <div>Origem</div><div style="max-width:190px">${ORIGEM[e.o]}</div>
@@ -128,8 +136,8 @@ document.body.innerHTML=`<div class="wrap">
  </div>
 
  <div class="box note">${e.est
-   ?`<b>Massa ${br(e.m)} u</b> é a média ponderada dos isótopos naturais de ${e.n.toLowerCase()}, por isso não é um número inteiro. Os nêutrons mostrados são uma aproximação (massa arredondada − Z).`
-   :`${e.n} não tem isótopo estável. <b>[${e.m}]</b> é o número de massa do isótopo de vida mais longa, usado aqui para contar os nêutrons.`}
+   ?`<b>Massa ${br(e.m)} u</b> é a média ponderada dos isótopos naturais de ${e.n.toLowerCase()}, por isso não é um número inteiro. Os nêutrons mostrados são os do isótopo mais abundante, <b>${e.s}-${A}</b> (${A} − ${Z} = ${N}).${Math.round(parseFloat(e.m))!==A?` Atenção: arredondar a massa atômica daria ${Math.round(parseFloat(e.m))}, que não é o isótopo mais comum. Massa atômica (média) e número de massa (de um isótopo) são coisas diferentes.`:''}${e.radio?(e.o==='primordial'?` ${e.n} não tem isótopo estável: todos os seus núcleos são radioativos, mas alguns duram tanto (bilhões de anos) que ainda existem na natureza desde a formação da Terra.`:` ${e.n} não tem isótopo estável: todos os seus núcleos são radioativos.`)+(RADIO_EXTRA[e.s]||''):''}`
+   :`${e.n} não tem isótopo estável: todos os seus núcleos são radioativos. <b>[${e.m}]</b> é o número de massa do isótopo de vida mais longa, usado aqui para contar os nêutrons.`}
    O desenho em órbitas é o modelo de Bohr (1913): ótimo para contar camadas, mas na física quântica o elétron fica numa “nuvem” de probabilidade (orbital), não numa trilha. O núcleo real é cerca de 100 000 vezes menor que o átomo.</div>
 
  <div class="foot">Dados: Wikipedia, "List of chemical elements" (IUPAC) · configuração calculada pela regra de Madelung com as exceções experimentais conhecidas.<br><a href="../index.html">voltar à tabela periódica</a> · <a href="../../index.html">LAB</a></div>
@@ -336,22 +344,22 @@ function drawElectron(dt){
 // ---- info per level ----
 const INFO={
  atomo:{t:()=>mode?'NUVEM ELETRÔNICA':'ÓRBITAS 3D',scale:'~10⁻¹⁰ m',
-   bl:`<span style="color:#ff6b6b">●</span> ${Z} próton${Z>1?'s':''}<br><span style="color:#8aa4d6">●</span> ${N} nêutron${N!==1?'s':''} ${e.est?'(≈ média)':`(${e.s}-${A})`}`,
+   bl:`<span style="color:#ff6b6b">●</span> ${Z} próton${Z>1?'s':''}<br><span style="color:#8aa4d6">●</span> ${N} nêutron${N!==1?'s':''} (${e.s}-${A})`,
    br:`<span style="color:${C}">●</span> elétrons<br>camada de valência: ${e.sh[NS-1]} e⁻`,
    note:()=>mode?`<b>Nuvem eletrônica.</b> Cada ponto é uma posição possível de um elétron, sorteada pela distribuição de probabilidade do átomo de hidrogênio (orbital com l = n−1). O tracejado marca o raio mais provável, n² vezes o raio de Bohr. Representação qualitativa para átomos com muitos elétrons.`
-     :`<b>Órbitas 3D.</b> Cada camada gira num plano diferente com o número real de elétrons de ${e.n.toLowerCase()}. As internas giram mais rápido, porque estão mais presas ao núcleo. <b>Toque no núcleo</b> para dar zoom, ou <b>num elétron</b> para ver um lépton por dentro. Também dá para usar a roda do mouse ou o gesto de pinça.`},
+     :`<b>Órbitas 3D.</b> Cada camada gira num plano diferente com o número real de elétrons de ${e.n.toLowerCase()}. No modelo de Bohr (1913), as camadas internas giram mais rápido porque estão mais presas ao núcleo. Hoje sabemos que o elétron não segue uma trilha: veja a NUVEM ELETRÔNICA. <b>Toque no núcleo</b> para dar zoom, ou <b>num elétron</b> para ver um lépton por dentro. Também dá para usar a roda do mouse ou o gesto de pinça.`},
  nucleo:{t:()=>'NÚCLEO',scale:'~10⁻¹⁴ m',
    bl:`<span style="color:#ff6b6b">●</span> ${Z} prótons · <span style="color:#8aa4d6">●</span> ${N} nêutrons${Z%2||N%2?'<br><span style="color:#ffd166">◯</span> spin sem par':'<br>todos os spins em pares ↑↓'}`,
    br:`<span style="color:#ffd166">- -</span> troca de píons (π)<br>força nuclear residual`,
-   note:()=>`<b>Núcleo de ${e.n.toLowerCase()}${e.est?'':` (${e.s}-${A})`}.</b> Raio ≈ 1,2 fm × A^⅓ = <b>${fmt((1.2*Math.cbrt(A)).toFixed(1))} fm</b> (1 fm = 10⁻¹⁵ m), cerca de 100 000 vezes menor que o átomo inteiro. Prótons se repelem pela carga, mas a <b>força forte</b> os segura: entre núcleons ela atua pela troca de píons (linhas amarelas), um efeito residual dos glúons de dentro deles. As setas são os <b>spins</b>: prótons e nêutrons tendem a formar pares de spins opostos (↑↓); ${Z%2||N%2?'o anel amarelo marca quem ficou sem par.':'aqui todos ficam pareados (Z e N pares), e o spin total do núcleo no estado fundamental é 0.'} Disposição ilustrativa.`},
+   note:()=>`<b>Núcleo de ${e.n.toLowerCase()} (${e.s}-${A}).</b> Raio ≈ 1,2 fm × A^⅓ = <b>${fmt((1.2*Math.cbrt(A)).toFixed(1))} fm</b> (1 fm = 10⁻¹⁵ m), cerca de 100 000 vezes menor que o átomo inteiro. Prótons se repelem pela carga, mas a <b>força forte</b> os segura: entre núcleons ela atua pela troca de píons (linhas amarelas), um efeito residual dos glúons de dentro deles. As setas são os <b>spins</b>: prótons e nêutrons tendem a formar pares de spins opostos (↑↓); ${Z%2||N%2?'o anel amarelo marca quem ficou sem par.':'aqui todos ficam pareados (Z e N pares), e o spin total do núcleo no estado fundamental é 0.'} Disposição ilustrativa.`},
  proton:{t:()=>'PRÓTON',scale:'~10⁻¹⁵ m',
    bl:`<span style="color:#ff4d5f">●</span><span style="color:#40d678">●</span><span style="color:#5096ff">●</span> carga de cor<br>quarks de valência: u u d`,
    br:`<span style="color:#fff">~~</span> glúons (g)<br>q q̄ = pares virtuais`,
-   note:()=>`<b>Próton = 2 quarks up + 1 down</b>, presos por <b>glúons</b>, os bósons da força forte. Cada quark tem uma "carga de cor" (vermelho, verde ou azul) que muda quando troca glúons, mas o próton inteiro fica sempre "branco". Raio de carga: <b>0,84 fm</b>. Massa: <b>938,27 MeV/c²</b>, mas os 3 quarks somam só ~9 MeV (2,2 + 2,2 + 4,7): <b>~99% da massa vem da energia dos glúons</b>, não dos quarks. Spin ½: o desenho ↑↑↓ é o modelo simples; medições mostram que os quarks carregam só ~30% do spin, o resto vem de glúons e do movimento orbital.`},
+   note:()=>`<b>Próton = 2 quarks up + 1 down</b>, presos por <b>glúons</b>, os bósons da força forte. Cada quark tem uma "carga de cor" (vermelho, verde ou azul) que muda quando troca glúons, mas o próton inteiro fica sempre "branco". Raio de carga: <b>0,84 fm</b>. Massa: <b>938,27 MeV/c²</b>, mas os 3 quarks somam só ~9 MeV (2,2 + 2,2 + 4,7): <b>~99% da massa vem da energia da interação forte</b> (o movimento dos quarks e o campo de glúons), e não da massa dos próprios quarks. Spin ½: o desenho ↑↑↓ é o modelo simples; medições mostram que os quarks carregam só ~30% do spin, o resto vem de glúons e do movimento orbital.`},
  neutron:{t:()=>'NÊUTRON',scale:'~10⁻¹⁵ m',
    bl:`<span style="color:#ff4d5f">●</span><span style="color:#40d678">●</span><span style="color:#5096ff">●</span> carga de cor<br>quarks de valência: u d d`,
    br:`<span style="color:#fff">~~</span> glúons (g)<br>q q̄ = pares virtuais`,
-   note:()=>`<b>Nêutron = 1 quark up + 2 down</b>: carga +⅔ −⅓ −⅓ = 0. Massa <b>939,57 MeV/c²</b>, um pouco maior que a do próton. Fora do núcleo ele é instável e vive em média <b>~14,7 minutos</b> (878 s): um quark d vira u emitindo um <b>bóson W⁻</b>, e o resultado é n → p + e⁻ + ν̄ₑ (decaimento beta, força fraca). Dentro de um núcleo estável, como ${e.est?'o de '+e.n.toLowerCase():'o de muitos elementos'}, ele não decai.`},
+   note:()=>`<b>Nêutron = 1 quark up + 2 down</b>: carga +⅔ −⅓ −⅓ = 0. Massa <b>939,57 MeV/c²</b>, um pouco maior que a do próton. Fora do núcleo ele é instável e vive em média <b>~14,6 minutos</b> (878 s; meia-vida de ~10 minutos): um quark d vira u emitindo um <b>bóson W⁻</b>, e o resultado é n → p + e⁻ + ν̄ₑ (decaimento beta, força fraca). Dentro de um núcleo estável, como ${e.est&&!e.radio?'o de '+e.n.toLowerCase():'o de muitos elementos'}, ele não decai.`},
  eletron:{t:()=>'ELÉTRON',scale:'< 10⁻¹⁸ m',
    bl:`<span style="color:#9cc4ff">●</span> elétron e⁻ (lépton)<br><span style="color:#ffe678">~</span> fótons virtuais γ`,
    br:`<span style="color:#ff8ca0">●</span>e⁺ <span style="color:#78b4ff">●</span>e⁻ pares virtuais<br>↗ spin ½`,

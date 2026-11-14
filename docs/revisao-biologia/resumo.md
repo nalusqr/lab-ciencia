@@ -38,6 +38,18 @@ Logo depois desses dez vêm:
 - **tabela:** as exceções de configuração explicadas por "cheio ou meio cheio" mesmo quando não se aplica;
 - **ozônio:** filtra UV-C e UV-B, mas não a UV-A.
 
+## Módulo 06 · Morfofisiologia celular
+
+Revisado em 14/11/2026. Detalhes em `morfofisiologia.md`; textos da caixa "No ENEM" para os 23 tópicos em `morfofisiologia-enem.md`. Os números não entram no placar acima.
+
+- **Placar:** 5 erros, 7 simplificações que enganam e 5 valores a conferir. É um módulo de nível alto: a composição das membranas, os números da bomba e do poro nuclear e as temperaturas de transição estão certos.
+- **As 3 correções mais urgentes:**
+  1. **Osmose:** a célula vegetal usa os limites da hemácia e mostra "plasmólise" já em 1% de NaCl. Ela precisa de limites próprios, e o texto deve dizer que a tonicidade é relativa (E1).
+  2. **Endossimbiose:** `2 membranas: a sua + a da vesícula`. A bactéria ancestral é gram-negativa e já tinha duas membranas; a versão da vesícula deve ser citada só como explicação clássica (E2).
+  3. **Hospedeira:** o texto diz que era uma arqueia, mas o desenho mostra uma célula com núcleo fazendo fagocitose. É preciso avisar que a animação é o modelo clássico e que a ordem dos acontecimentos é debatida (E3).
+- **Contradições com o Célula:** a membrana externa da *E. coli* (o Célula está certo); "complexo golgiense" × "complexo de Golgi" e "eucariota" × "eucarionte" (unificar no site); antibióticos e mitocôndria (aplicar a S4 do `celula.md`).
+- **Lacunas que continuam abertas:** organelas em função (o caminho da secreção) e divisão celular (item 7 da lista abaixo).
+
 ## Correções que valem para todos os módulos
 
 1. **"pontes de hidrogênio" → "ligações de hidrogênio"** em todo o site: DNA, Moléculas e Biomoléculas (tags e legendas). É o termo da IUPAC e dos livros atuais.

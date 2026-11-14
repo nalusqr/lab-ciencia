@@ -77,7 +77,7 @@ h2 em{font-style:normal;color:var(--amber);margin-right:6px}
     <div>
       <div class="k" style="color:var(--amber)">PROGRAMA HBB · GENE DA β-GLOBINA</div>
       <h1>DUPLA HÉLICE · FORMA B</h1>
-      <div class="sub">Homo sapiens · cromossomo 11p15.4 · NM_000518 · éxon 1, nt 1–60</div>
+      <div class="sub">Homo sapiens · cromossomo 11p15.4 · NM_000518 · éxon 1, região codificante c.1–60</div>
     </div>
     <div class="tm"><span class="k">VOLTAS</span><b id="turns">0.00</b><span class="k" id="pbread">0 pb lidos</span></div>
   </div>
@@ -111,13 +111,13 @@ h2 em{font-style:normal;color:var(--amber);margin-right:6px}
   <div class="grid">
     <div class="box full">
       <h2><em>I</em>SEQUÊNCIA · TRANSCRIÇÃO</h2>
-      <div class="cap">A fita molde é lida pela RNA polimerase; o mRNA sai igual à fita codificante, com U no lugar de T</div>
+      <div class="cap">No núcleo, a RNA polimerase lê a fita molde (3'→5') e monta o RNA de 5' para 3'. O RNA tem a mesma sequência da fita codificante, com U no lugar de T. O gene HBB tem 3 éxons e 2 íntrons; os íntrons são cortados (splicing) antes de o mRNA ir para o citoplasma. O trecho mostrado fica todo no éxon 1.</div>
       <div class="seq" id="seq"></div>
     </div>
 
     <div class="box full">
       <h2><em>II</em>TRADUÇÃO · CÓDIGO GENÉTICO PADRÃO</h2>
-      <div class="cap">Cada 3 bases = 1 aminoácido. A Met inicial é removida na proteína madura, por isso a numeração começa no 0.
+      <div class="cap">Cada códon (3 bases do mRNA) corresponde a 1 aminoácido ou a um sinal de parada. A Met inicial é removida na proteína madura, por isso a numeração começa no 0.
         <span style="color:#9fe870">hidrofóbico</span> · <span style="color:#7fd3ff">polar</span> · <span style="color:#ff8a8a">ácido</span> · <span style="color:#c5a3ff">básico</span></div>
       <div class="aa" id="aa"></div>
     </div>
@@ -128,11 +128,11 @@ h2 em{font-style:normal;color:var(--amber);margin-right:6px}
       <div class="bars" id="bars"></div>
       <div class="kv" style="margin-top:10px">
         <div>Conteúdo GC</div><div id="gc">—</div>
-        <div>Pontes de hidrogênio</div><div id="hb">—</div>
+        <div>Ligações de hidrogênio</div><div id="hb">—</div>
         <div>Tm estimada*</div><div id="tmv">—</div>
         <div>Massa (dupla fita)</div><div id="mw">—</div>
       </div>
-      <div class="cap" style="margin-top:8px;margin-bottom:0">*Tm = 64,9 + 41·(GC − 16,4)/N — fórmula básica, Na⁺ 50 mM. A·T faz 2 pontes, G·C faz 3, por isso mais GC = DNA mais estável.</div>
+      <div class="cap" style="margin-top:8px;margin-bottom:0">*Tm = 64,9 + 41·(GC − 16,4)/N — fórmula básica, Na⁺ 50 mM. A·T faz 2 ligações de hidrogênio e G·C faz 3. Mais GC deixa o DNA mais estável: em parte por essas ligações, mas principalmente porque os pares G·C se empilham com mais força.</div>
     </div>
 
     <div class="box">
@@ -149,13 +149,13 @@ h2 em{font-style:normal;color:var(--amber);margin-right:6px}
         <div>Sulco maior / menor</div><div>≈ 22 Å / 12 Å</div>
         <div>Fitas</div><div>antiparalelas</div>
       </div>
-      <div class="cap" style="margin-top:8px;margin-bottom:0">1 Å (ångström) = 0,1 nanômetro. O sulco menor existe porque os dois açúcares de cada par ficam do mesmo lado (~125° entre eles), e não opostos.</div>
+      <div class="cap" style="margin-top:8px;margin-bottom:0">1 Å (ångström) = 0,1 nanômetro. O sulco menor existe porque os dois açúcares de cada par ficam do mesmo lado (~125° entre eles), e não opostos. Sulcos medidos ao longo do eixo da hélice; a abertura real, descontando os átomos, é de ~12 Å e ~6 Å.</div>
     </div>
   </div>
 
   <div class="foot">
     UM GENE REAL. A FÍSICA REAL. A ANIMAÇÃO É SÓ O JEITO DE VER.<br>
-    Fontes: sequência NCBI RefSeq NM_000518 (HBB) · geometria B-DNA: Arnott &amp; Hukins (1972); Dickerson-Drew, PDB 1BNA · mutação HbS: c.20A&gt;T, p.Glu6Val (Ingram, 1957)
+    Fontes: sequência NCBI RefSeq NM_000518 (HBB) · geometria B-DNA: Arnott &amp; Hukins (1972); Dickerson-Drew, PDB 1BNA · mutação HbS: c.20A&gt;T (p.Glu7Val na nomenclatura HGVS; tradicionalmente chamada Glu6Val, sem contar a Met inicial) (Ingram, 1957)
   </div>
 </div>
 
@@ -320,7 +320,7 @@ function composition(){
 function note(){
   const el=$('mutNote');
   if(!mutant){el.className='box note';el.innerHTML=`<b>Hemoglobina normal (HbA).</b> O códon 7 do gene é <b style="color:var(--G)">GAG</b>, que vira <b>Glu6</b> (glutamato), um aminoácido com carga negativa que fica na superfície da proteína, voltado para a água. Toque em <b>FALCIFORME</b> para trocar uma única base.`;}
-  else{el.className='box note bad';el.innerHTML=`<b style="color:var(--red)">Anemia falciforme (HbS) · c.20A&gt;T.</b> Uma só letra muda: <b>GAG → GTG</b>. O A vira T (e o par A·T vira T·A, ainda com 2 pontes de hidrogênio). Na proteína, <b>Glu6 → Val6</b>: entra uma valina hidrofóbica na superfície. Sem oxigênio, ela gruda numa "bolsa" de outra hemoglobina, as moléculas formam fibras longas e a hemácia se deforma em foice. Os outros 59 pares continuam iguais.`;}
+  else{el.className='box note bad';el.innerHTML=`<b style="color:var(--red)">Anemia falciforme (HbS) · c.20A&gt;T.</b> Uma só letra muda: <b>GAG → GTG</b>. O A vira T (e o par A·T vira T·A, ainda com 2 ligações de hidrogênio). Na proteína, <b>Glu6 → Val6</b>: entra uma valina hidrofóbica na superfície. Quando a hemoglobina solta o oxigênio (nos capilares dos tecidos), essa valina gruda numa "bolsa" hidrofóbica de outra hemoglobina, as moléculas formam fibras longas e a hemácia se deforma em foice. Os outros 59 pares continuam iguais.<br><br>Cada pessoa tem duas cópias do gene HBB, uma de cada pai. Quem herda o alelo HbS dos dois (SS) tem a anemia falciforme. Quem herda só um (AS) tem o traço falciforme e quase nunca tem sintomas. Na África, onde a malária é comum, o traço protege contra a forma grave da malária, e por isso o alelo ficou frequente. No Brasil, a doença é detectada no teste do pezinho.`;}
 }
 function setMut(m){mutant=m;seq=SEQ0.split('');if(m)seq[MUT]='T';$('bMut').classList.toggle('on',m);$('bNorm').classList.toggle('on',!m);
   if(m){const target=MUT;s=target+Math.floor(s/N)*N;} // jump to the mutation

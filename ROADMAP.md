@@ -38,7 +38,7 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 - [ ] Ícones dos módulos e dos tipos de célula, num só desenho.
 - [ ] Biblioteca de materiais 3D (membrana, organela, vidro) e efeitos.
 
-### 4. Revisão de Biologia dos módulos 01 a 05 (professor) · a começar
+### 4. Revisão de Biologia dos módulos 01 a 05 (professor) · feita; correções aplicadas em 01 a 04
 - [ ] Erros científicos, simplificações que enganam, vocabulário.
 - [ ] Ligação com as habilidades e os temas mais cobrados no ENEM.
 
@@ -51,6 +51,19 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 ### 6. Estilo "Campo escuro" escolhido pela Nalu (2026-11-14)
 - [x] Guia em `docs/GUIA-DE-ESTILO.md`.
 - [ ] Aplicar na Célula; depois em `site/base.css` e nos módulos 01 a 04.
+
+### 7. Pendências da revisão (decidir depois)
+- Fusão do arsênio sob pressão: 28 ou ~36 atm (falta fonte); carbono sem número.
+- Nomes em português de Ts e Ds (lista oficial da SBQ).
+- "Semimetal" como categoria nas fichas da tabela.
+- Unificar classes e cores dos aminoácidos entre DNA e Biomoléculas (Tyr).
+- Glossário/dicas para pb, Tm, kDa, Å, D, cm⁻¹, RefSeq, B-DNA (padrão com o diretor de arte).
+- Sugestões de conteúdo: bloco "Para ir além" no Modelo Padrão, °C nos mapas, modo "No corpo humano", glicose e H₂O₂, carboidratos, enzimas, ATP.
+- Os geradores em `scripts/` têm caminhos fixos `/home/claude/...`: torná-los relativos.
+
+## Vocabulário do site (decisão do PM)
+- "eucarionte" e "procarionte" (não "eucariota"/"procariota").
+- "complexo de Golgi"; na primeira menção de cada módulo, "complexo de Golgi (complexo golgiense)".
 
 ## Escalar para a Nalu quando
 - Duas frentes precisam do mesmo arquivo e não há acordo.

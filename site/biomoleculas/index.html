@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  <div class="foot">Estruturas montadas átomo por átomo com comprimentos e ângulos de ligação padrão (geometria idealizada, não cristalográfica). Aminoácidos na forma L e com as cargas de pH 7. Hélice e folha construídas com os ângulos φ/ψ clássicos (Pauling, 1951); as pontes de hidrogênio e as distâncias mostradas são calculadas a partir dessas coordenadas.<br>
+  <div class="foot">Estruturas montadas átomo por átomo com comprimentos e ângulos de ligação padrão (geometria idealizada, não cristalográfica). Aminoácidos na forma L e com as cargas de pH 7. Hélice e folha construídas com os ângulos φ/ψ clássicos (Pauling, 1951); as ligações de hidrogênio e as distâncias mostradas são calculadas a partir dessas coordenadas.<br>
   Conformações de lipídios escolhidas por busca para evitar choques entre átomos. Bicamada: esquema simplificado. Massas molares calculadas com as massas atômicas da IUPAC.</div>
 </div>
 <script src="../tabela-periodica/dados.js"></script>
@@ -138,10 +138,10 @@ function load(id){
   document.getElementById('fato').innerHTML=`<b>${mol.nome}.</b> ${mol.fato}`;
   document.getElementById('apx').textContent=mol.schem?'modelo esquemático':'geometria idealizada · valores calculados';
   document.getElementById('kv').innerHTML=[
-    ...(mol.schem?[]:[['Fórmula',mol.f+netS],['Massa molar',`${br(mol.mm.toFixed(2))} g/mol${netS?' (íon, pH 7)':''}`]]),['Átomos',mol.atoms.length],...mol.kv
+    ...(mol.schem?[]:[[mol.cls?'Fórmula (em pH 7)':'Fórmula',mol.f+netS],['Massa molar',`${br(mol.mm.toFixed(2))} g/mol${netS?' (íon, pH 7)':''}`]]),['Átomos',mol.atoms.length],...mol.kv
   ].map(([k,v])=>`<div>${k}</div><div>${v}</div>`).join('');
   document.getElementById('atoms').innerHTML=Object.entries(counts).map(([s,n])=>`<a href="../tabela-periodica/elementos/${EL[s].slug}.html"><i style="background:${rgba(CPK[s],1)}"></i><b>${s}</b> ${EL[s].n} ×${n}</a>`).join('');
-  const t=[];if(mol.cls)t.push(mol.geo);if(mol.hb)t.push(`${mol.hb.length} pontes de hidrogênio`);if(mol.lp)t.push(`${mol.lp.length} par${mol.lp.length>1?'es':''} livre${mol.lp.length>1?'s':''} que define${mol.lp.length>1?'m':''} a geometria`);
+  const t=[];if(mol.cls)t.push(mol.geo);if(mol.hb)t.push(`${mol.hb.length} ligações de hidrogênio`);if(mol.lp)t.push(`${mol.lp.length} par${mol.lp.length>1?'es':''} livre${mol.lp.length>1?'s':''} que define${mol.lp.length>1?'m':''} a geometria`);
   const bo=new Set(mol.bonds.map(b=>b[2]));if(bo.has(2))t.push('ligação dupla');if(bo.has(3))t.push('ligação tripla');if(bo.has(1.5))t.push('ligações deslocalizadas');if(bo.has('i'))t.push('ligação iônica');
   document.getElementById('tags').innerHTML=t.map(x=>`<span class="tag">${x}</span>`).join('');
   document.getElementById('vibs').innerHTML=(mol.vib||[]).length?mol.vib.map((v,i)=>`<button data-v="${i}">〰 ${v[0]} · ${v[1]} cm⁻¹</button>`).join(''):'';

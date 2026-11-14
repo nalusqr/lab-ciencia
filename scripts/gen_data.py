@@ -29,6 +29,19 @@ def config(z):
     return occ
 L='spdf'
 def key(o): return (int(o[0]),L.index(o[1]))
+# Número de massa do isótopo natural mais abundante (IUPAC/CIAAW, abundâncias isotópicas).
+# Tabela explícita: arredondar a massa atômica NÃO dá o isótopo mais comum (Cu 63,55 -> 64, mas o cobre é Cu-63 e Cu-65).
+# Só para elementos com massa atômica padrão (composição natural conhecida); Bi, Th, Pa e U entram aqui, mas são radioativos (RADIO).
+AMAX={1:1,2:4,3:7,4:9,5:11,6:12,7:14,8:16,9:19,10:20,11:23,12:24,13:27,14:28,15:31,16:32,17:35,18:40,19:39,20:40,
+ 21:45,22:48,23:51,24:52,25:55,26:56,27:59,28:58,29:63,30:64,31:69,32:74,33:75,34:80,35:79,36:84,37:85,38:88,39:89,40:90,
+ 41:93,42:98,44:102,45:103,46:106,47:107,48:114,49:115,50:120,51:121,52:130,53:127,54:132,55:133,56:138,57:139,58:140,59:141,60:142,
+ 62:152,63:153,64:158,65:159,66:164,67:165,68:166,69:169,70:174,71:175,72:180,73:181,74:184,75:187,76:192,77:193,78:195,79:197,80:202,
+ 81:205,82:208,83:209,90:232,91:231,92:238}
+# Têm massa atômica padrão (ocorrem na natureza), mas nenhum isótopo estável.
+RADIO_NAT={83,90,91,92}
+# Notas sobre as propriedades físicas a 1 atm.
+NOTA={6:'a 1 atm o grafite não funde: sublima (passa direto de sólido a gás) por volta de 3900 K; só funde sob pressão alta',
+ 33:'a 1 atm o arsênio não funde: sublima a 887 K; os 1090 K de fusão só valem sob pressão (dezenas de atm)'}
 rows=[l.strip().split('|') for l in open('/home/claude/data/wiki.txt')]
 els=[]
 for r in rows:
@@ -43,6 +56,10 @@ for r in rows:
     els.append(dict(z=z,s=sym,n=names[z-1],slug=slug,g=None if grp=='f' else int(grp),p=per,b=blk,
       m=m.strip('[]'),est=stable,d=r[6],mp=r[7],bp=r[8],en=r[9],o=r[10],ph=r[11],c=cat(z),
       cfg=[[o,occ[o]] for o in sub],sh=shells,prev=z>=104))
+    e=els[-1]
+    if stable: e['amax']=AMAX[z]
+    e['radio']=(not stable) or z in RADIO_NAT
+    if z in NOTA: e['nota']=NOTA[z]
 # noble gas core short form
 NG=[2,10,18,36,54,86]
 for e in els:

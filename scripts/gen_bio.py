@@ -104,7 +104,7 @@ AA=[ # code, 3, 1, name, class, essential, fact
 ('ILE','Ile','I','Isoleucina','apolar',True,'Tem dois carbonos quirais (Cα e Cβ). Mesma fórmula da leucina, outro arranjo.'),
 ('MET','Met','M','Metionina','apolar',True,'Contém enxofre. Seu códon AUG é o sinal de início: quase toda proteína começa sendo traduzida com uma metionina.'),
 ('PRO','Pro','P','Prolina','apolar',False,'A cadeia lateral se fecha de volta no nitrogênio, formando um anel rígido. Por isso quebra α-hélices e cria dobras.'),
-('PHE','Phe','F','Fenilalanina','aromático',True,'Tem um anel benzênico. Na fenilcetonúria o corpo não consegue processá-la, por isso o teste do pezinho a procura.'),
+('PHE','Phe','F','Fenilalanina','aromático',True,'Tem um anel benzênico. Na fenilcetonúria, falta a enzima que transforma fenilalanina em tirosina. A fenilalanina se acumula e prejudica o cérebro. O teste do pezinho detecta a doença logo após o nascimento, e uma dieta pobre em fenilalanina evita o dano. É por isso que refrigerantes diet avisam: "contém fenilalanina".'),
 ('TRP','Trp','W','Triptofano','aromático',True,'O maior aminoácido, com o anel duplo indol. É precursor da serotonina e da melatonina.'),
 ('TYR','Tyr','Y','Tirosina','aromático',False,'Fenilalanina com um –OH. Precursora da dopamina, da adrenalina e dos hormônios da tireoide.'),
 ('SER','Ser','S','Serina','polar',False,'O –OH da serina é onde muitas enzimas grudam fosfato para ligar e desligar proteínas (fosforilação).'),
@@ -112,8 +112,8 @@ AA=[ # code, 3, 1, name, class, essential, fact
 ('CYS','Cys','C','Cisteína','polar',False,'O –SH de duas cisteínas pode se unir numa ponte dissulfeto (S–S), que "costura" proteínas como a insulina e a queratina do cabelo.'),
 ('ASN','Asn','N','Asparagina','polar',False,'Amida polar. Foi o primeiro aminoácido descoberto, isolado do aspargo em 1806.'),
 ('GLN','Gln','Q','Glutamina','polar',False,'O aminoácido livre mais abundante no sangue. Transporta nitrogênio pelo corpo.'),
-('ASP','Asp','D','Aspartato','ácido',False,'Em pH 7 perde o H do ácido e fica com carga −1. Também é neurotransmissor.'),
-('GLU','Glu','E','Glutamato','ácido',False,'Carga −1 em pH 7. Principal neurotransmissor excitatório do cérebro e responsável pelo sabor umami.'),
+('ASP','Asp','D','Aspartato (ácido aspártico)','ácido',False,'Em pH 7 perde o H do ácido e fica com carga −1. Também é neurotransmissor.'),
+('GLU','Glu','E','Glutamato (ácido glutâmico)','ácido',False,'Carga −1 em pH 7. Principal neurotransmissor excitatório do cérebro e responsável pelo sabor umami.'),
 ('LYS','Lys','K','Lisina','básico',True,'O –NH₃⁺ da ponta dá carga +1. Nas histonas, ajuda a enrolar o DNA (que é negativo).'),
 ('ARG','Arg','R','Arginina','básico',False,'O grupo guanidínio tem carga +1 dividida entre 3 nitrogênios. O corpo produz óxido nítrico a partir dela.'),
 ('HIS','His','H','Histidina','básico',True,'O anel imidazol ganha ou perde H⁺ perto de pH 7, por isso é peça-chave em sítios ativos de enzimas e na hemoglobina.'),
@@ -123,6 +123,8 @@ BASES='TCAG';AAS='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGG
 COD={}
 for i,a in enumerate(AAS):COD.setdefault(a,[]).append((BASES[i//16]+BASES[i//4%4]+BASES[i%4]).replace('T','U'))
 CLS={'apolar':'Apolar (hidrofóbico)','aromático':'Aromático','polar':'Polar sem carga','ácido':'Ácido (carga −1)','básico':'Básico (carga +1)'}
+CLS_AA={'HIS':'Básico (carga 0 ou +1; pKa ≈ 6)'}  # His: cadeia lateral com pKa ≈ 6, em pH 7 a maioria está neutra (o modelo 3D é neutro)
+DIETA_AA={'ARG':'Não essencial (condicional em crianças)','TYR':'Não essencial (condicional: feita a partir da fenilalanina)'}
 bestp=None
 for c1 in range(-45,46,1):
     for c2 in range(-50,51,1):
@@ -152,9 +154,9 @@ for code,t3,t1,nome,cl,ess,fato in AA:
     # sanity: closure distances
     for x,y in [('CD','N'),('CZ','CE2'),('NE1','CE2'),('CZ3','CH2'),('CE1','NE2')]:
         if x in b.n and y in b.n:print(code,x,y,round(float(np.linalg.norm(b.P[b.i(x)]-b.P[b.i(y)])),2))
-    tag='essencial' if ess else 'não essencial'
-    MOLS.append(b.out(id=t3.lower(),nome=nome,grupo='Aminoácidos',sub=f'{t3} · {t1}',geo=CLS[cl],
-        kv=[['Código',f'{t3} · {t1}'],['Classe',CLS[cl]],['Na dieta humana',tag.capitalize()],['Códons (mRNA)',' '.join(COD[t1])],['Carbono quiral',{'GLY':'nenhum','THR':'Cα e Cβ','ILE':'Cα e Cβ'}.get(code,'Cα (forma L)')]],
+    tag=DIETA_AA.get(code,('essencial' if ess else 'não essencial').capitalize());ccl=CLS_AA.get(code,CLS[cl])
+    MOLS.append(b.out(id=t3.lower(),nome=nome,grupo='Aminoácidos',sub=f'{t3} · {t1}',geo=ccl,
+        kv=[['Código',f'{t3} · {t1}'],['Classe',ccl],['Na dieta humana',tag],['Códons (mRNA)',' '.join(COD[t1])],['Carbono quiral',{'GLY':'nenhum','THR':'Cα e Cβ','ILE':'Cα e Cβ'}.get(code,'Cα (forma L)')]],
         fato=fato,cls=cl,orient=False))
 # ---------------- LIPIDS ----------------
 def chain(b,start,prev,prevprev,n,prefix,dbl={},first_dih=180,skew=120,k0=2):
@@ -196,7 +198,7 @@ LIP.append(b.out(id='oleico',nome='Ácido oleico',grupo='Lipídios',sub='C18:1 c
 b=fatty_acid(18,{9:'trans'});b.addH()
 LIP.append(b.out(id='elaidico',nome='Ácido elaídico (gordura trans)',grupo='Lipídios',sub='C18:1 trans-9',geo='Quase reta (dupla trans)',
   kv=[['Tipo','Ácido graxo insaturado trans'],['Notação','C18:1 trans-Δ9'],['Ligações duplas','1, no carbono 9 (trans)'],['Onde aparece','gordura vegetal parcialmente hidrogenada']],
-  fato='Mesma fórmula do ácido oleico (C₁₈H₃₄O₂), mas a dupla é trans: a cadeia fica quase reta como a de uma gordura saturada. É por isso que a gordura trans se comporta como saturada no corpo, e foi restringida em vários países.'))
+  fato='Mesma fórmula do ácido oleico (C₁₈H₃₄O₂), mas a dupla é trans: a cadeia fica quase reta como a de uma gordura saturada. Por isso ela se empilha como uma gordura saturada e é sólida à temperatura ambiente. No corpo, é ainda mais prejudicial: aumenta o colesterol "ruim" (LDL) e diminui o "bom" (HDL). No Brasil, a Anvisa proibiu os óleos parcialmente hidrogenados, a principal fonte de gordura trans, a partir de 2023.'))
 # triglyceride & phospholipid via search for a compact "tuning fork"
 def tri(params):
     b=B();g1,g2,g3,e1,e2,e3=params
@@ -252,7 +254,7 @@ print('popc',best)
 b=popc(best[1]);b.addH()
 LIP.append(b.out(id='fosfolipidio',nome='Fosfolipídio (POPC)',grupo='Lipídios',sub='fosfatidilcolina',geo='Cabeça polar + 2 caudas apolares',
   kv=[['Tipo','Glicerofosfolipídio'],['Cabeça','fosfato (−) + colina (+)'],['Caudas','palmítica (16:0) + oleica (18:1 cis)'],['Onde aparece','membranas de todas as células']],
-  fato='Uma ponta ama água (cabeça com fosfato e colina, carregada) e a outra foge dela (duas caudas de hidrocarboneto). Na água, essas moléculas se organizam sozinhas em camadas duplas: é assim que nasce a membrana das células. Use o modo POLARIDADE para ver.'))
+  fato='Uma ponta é hidrofílica (atrai a água): a cabeça, com um fosfato (−) e uma colina (+), é polar, mas tem carga total zero. A outra ponta é hidrofóbica (repele a água): duas caudas de hidrocarboneto. Na água, essas moléculas se organizam sozinhas em camadas duplas (bicamadas). É essa propriedade que faz a membrana das células ser estável. Na célula, os fosfolipídios novos são feitos no retículo endoplasmático liso e somados às membranas que já existem. Use o modo POLARIDADE para ver.'))
 # bilayer schematic (heavy atoms only, idealised)
 b=B();random.seed(7)
 for leaf,sgn in ((0,1),(1,-1)):
@@ -316,8 +318,8 @@ for r in range(n-4):
     if hN:hb.append([hN[0],o,round(dist,2)])
 print('helix O..N',[x[2] for x in hb])
 d=b.out(id='helice',nome='α-hélice',grupo='Proteínas',sub='polialanina, 13 resíduos',geo='Hélice destra',orient=True,
-  kv=[['Ângulos φ / ψ','−57° / −47°'],['Resíduos por volta','3,6'],['Subida por resíduo','1,5 Å (passo 5,4 Å)'],['Pontes de H','C=O do resíduo i → N–H do i+4']],
-  fato='Proposta por Linus Pauling em 1951, antes de qualquer proteína ter sua estrutura vista. Cada C=O faz ponte de hidrogênio com o N–H quatro resíduos à frente (linhas amarelas), travando a espiral. É o elemento mais comum nas proteínas, inclusive nas 8 hélices de cada cadeia da hemoglobina.')
+  kv=[['Ângulos φ / ψ','−57° / −47°'],['Resíduos por volta','3,6'],['Subida por resíduo','1,5 Å (passo 5,4 Å)'],['Ligações de H','C=O do resíduo i → N–H do i+4']],
+  fato='Proposta por Linus Pauling em 1951, antes de qualquer proteína ter sua estrutura vista. Cada C=O faz ligação de hidrogênio com o N–H quatro resíduos à frente (linhas amarelas), travando a espiral. É o elemento mais comum nas proteínas, inclusive nas hélices da hemoglobina (8 na cadeia β, 7 na cadeia α).')
 d['ca']=[[b.i(f'r{r}CA') for r in range(n)]];d['hb']=hb;d['ss']='helix';PROT.append(d)
 # antiparallel beta sheet: two strands, placement searched for best H-bonding
 m=6;s1=peptide('A'*m,[-139]*m,[135]*m);s1.addH();P1=np.array(s1.P)
@@ -361,8 +363,8 @@ for (Ni,H) in Nh:
             dd=float(np.linalg.norm(P[Ni+a_]-P[o+b2]))
             if 2.7<dd<3.25:hb.append([H[0]+a_,o+b2,round(dd,2)])
 d=b.out(id='folha',nome='Folha β antiparalela',grupo='Proteínas',sub='2 fitas de 6 resíduos',geo='Fitas lado a lado, sentidos opostos',orient=True,
-  kv=[['Ângulos φ / ψ','≈ −139° / +135°'],['Distância entre fitas','~4,8 Å'],['Pontes de H','entre fitas vizinhas'],['Exemplo','fibroína da seda (rica em folhas β)']],
-  fato='As fitas ficam esticadas e lado a lado; as pontes de hidrogênio ligam o C=O de uma fita ao N–H da outra (linhas amarelas). Na representação em fita, cada uma vira uma seta que aponta do início (N) para o fim (C) da cadeia: aqui as setas apontam em sentidos opostos.')
+  kv=[['Ângulos φ / ψ','≈ −139° / +135°'],['Distância entre fitas','~4,8 Å'],['Ligações de H','entre fitas vizinhas'],['Exemplo','fibroína da seda (rica em folhas β)']],
+  fato='As fitas ficam esticadas e lado a lado; as ligações de hidrogênio unem o C=O de uma fita ao N–H da outra (linhas amarelas). Na representação em fita, cada uma vira uma seta que aponta do início (N) para o fim (C) da cadeia: aqui as setas apontam em sentidos opostos.')
 d['ca']=[[b.i(f's1r{r}CA') for r in range(m)],[b.i(f's2r{r}CA') for r in range(m)]];d['hb']=hb;d['ss']='sheet';PROT.append(d)
 ALL=MOLS+LIP+PROT
 for x in ALL:print(x['id'],len(x['atoms']),x['f'],x['mm'])
