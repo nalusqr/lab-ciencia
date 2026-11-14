@@ -16,6 +16,8 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 
 ## Regras de trabalho
 
+- Todos os agentes também são programadores fullstack sênior (decisão da Nalu, 2026-11-14). Quem ficar livre ajuda outra frente, pegando do PM uma tarefa com arquivos próprios, sem editar o arquivo que outro agente está editando.
+
 - Aurelius e Prometeu não editam o mesmo arquivo. Na Célula, o Aurelius fica com `head.html`, `data.js` e `src/a_` a `src/d_`; o Prometeu, com `entry.js`, `src/e_modelos.js`, o bundle e `testes/`. Para ligar uma coisa na outra, combinam pelo PM.
 
 - Cada pessoa da equipe só edita os arquivos da sua coluna "Onde escreve". Mudança em arquivo de outro dono vira pedido ao PM.
