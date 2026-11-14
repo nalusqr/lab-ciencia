@@ -7,11 +7,11 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 
 | Papel | O que faz | Onde escreve |
 |---|---|---|
-| Líder de equipe / PM | Planeja, distribui, revisa, integra, publica as prévias, sobe para o GitHub, chama a Nalu só em bloqueio ou conflito grave | `ROADMAP.md` |
-| Engenheiro fullstack | Implementa módulos, 3D (three.js / React Three Fiber), testes com capturas | `site/<módulo>/` |
-| Diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
-| Artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
-| Professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
+| **Atlas**, líder de equipe / PM | Planeja, distribui, revisa, integra, publica as prévias, sobe para o GitHub, chama a Nalu só em bloqueio ou conflito grave | `ROADMAP.md` |
+| **Aurelius**, engenheiro sênior fullstack | Implementa módulos, 3D (three.js / React Three Fiber), testes com capturas | `site/<módulo>/` |
+| **Apolo**, diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
+| **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
+| **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 
 ## Regras de trabalho
 
