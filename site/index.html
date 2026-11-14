@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAB · Ciência em movimento</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
+.hero{padding:26px 14px 18px;border-left:3px solid var(--amber)}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:34px;line-height:1.05;color:#fff;letter-spacing:.02em;margin:6px 0 8px}
+.hero h1 span{color:var(--amber)}
+.hero p{color:var(--dim);font-size:11.5px;line-height:1.6;max-width:520px}
+.runbar{display:flex;gap:6px;margin:10px 0}
+.rb{flex:1;border:1px solid var(--line);border-radius:6px;padding:7px 8px;background:var(--panel)}
+.rb b{display:block;font-size:16px;color:#fff;margin-top:2px}
+.cards{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:760px){.cards{grid-template-columns:1fr 1fr}}
+.card{display:block;text-decoration:none;color:var(--txt);border:1px solid var(--line);border-radius:10px;background:rgba(11,16,32,.85);overflow:hidden;transition:border-color .2s, box-shadow .2s}
+.card:hover,.card:active{border-color:var(--amber);box-shadow:0 0 22px rgba(255,179,71,.15)}
+.card canvas{display:block;width:100%;height:190px;background:radial-gradient(90% 90% at 50% 50%,#132048,#0a0f20)}
+.card .body{padding:10px 12px 12px}
+.card h3{font-family:'Space Grotesk',sans-serif;font-size:18px;color:#fff;margin:4px 0}
+.card p{font-size:10.5px;color:var(--dim);line-height:1.55}
+.card .go{margin-top:8px;font-size:10px;letter-spacing:.14em;color:var(--amber)}
+.card.soon{opacity:.55;pointer-events:none}
+.card.soon .ph{height:110px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:10px;letter-spacing:.2em;border-bottom:1px dashed var(--line)}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="wrap">
+  <div class="box hero">
+    <div class="k" style="color:var(--amber)">LAB · SÉRIE VISUAL DE CIÊNCIA</div>
+    <h1>Ciência <span>em movimento.</span></h1>
+    <p>Visualizações animadas feitas só com dados reais: sequências genéticas verdadeiras, geometria medida em laboratório e as propriedades oficiais dos elementos.</p>
+  </div>
+
+  <div class="runbar">
+    <div class="rb"><div class="k">Módulos</div><b>5</b></div>
+    <div class="rb"><div class="k">Elementos</div><b>118</b></div>
+    <div class="rb"><div class="k">Estruturas 3D</div><b>44</b></div>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="dna/index.html">
+      <canvas id="cDNA"></canvas>
+      <div class="body">
+        <div class="k">MÓDULO 01 · BIOLOGIA MOLECULAR</div>
+        <h3>Dupla hélice do DNA</h3>
+        <p>O gene da hemoglobina humana (HBB) em 3D, a forma B do DNA medida em ångströms, a tradução códon por códon e a mutação da anemia falciforme.</p>
+        <div class="go">ABRIR →</div>
+      </div>
+    </a>
+    <a class="card" href="tabela-periodica/index.html">
+      <canvas id="cPT"></canvas>
+      <div class="body">
+        <div class="k">MÓDULO 02 · QUÍMICA · PASTA COM 118 FICHAS</div>
+        <h3>Tabela periódica</h3>
+        <p>Os 118 elementos com mapas de calor (eletronegatividade, densidade, fusão, estado físico) e uma ficha para cada um: átomo animado, camadas, configuração eletrônica e diagrama de orbitais.</p>
+        <div class="go">ABRIR →</div>
+      </div>
+    </a>
+    <a class="card" href="moleculas/index.html">
+      <canvas id="cMOL"></canvas>
+      <div class="body">
+        <div class="k">MÓDULO 03 · QUÍMICA ESTRUTURAL</div>
+        <h3>Moléculas em 3D</h3>
+        <p>Água, CO₂, amônia, benzeno, sal, diamante e mais, com ângulos e ligações medidos. Três modos de visualização, polaridade com dipolo e as vibrações reais das moléculas.</p>
+        <div class="go">ABRIR →</div>
+      </div>
+    </a>
+    <a class="card" href="biomoleculas/index.html">
+      <canvas id="cBIO"></canvas>
+      <div class="body">
+        <div class="k">MÓDULO 04 · BIOQUÍMICA</div>
+        <h3>Moléculas da vida</h3>
+        <p>Os 20 aminoácidos, gorduras saturadas, cis e trans, fosfolipídios e a membrana, a ligação peptídica, a α-hélice e a folha β com pontes de hidrogênio, e a sequência real da hemoglobina.</p>
+        <div class="go">ABRIR →</div>
+      </div>
+    </a>
+    <a class="card" href="celula/index.html">
+      <canvas id="cCEL"></canvas>
+      <div class="body">
+        <div class="k">MÓDULO 05 · BIOLOGIA CELULAR</div>
+        <h3>A célula por dentro</h3>
+        <p>Células animal e vegetal vivas, com zoom em 12 organelas: mitocôndria com ATP sintase girando, cloroplasto, núcleo com poros, ribossomo traduzindo a β-globina, membrana, cinesina andando nos microtúbulos.</p>
+        <div class="go">ABRIR →</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="foot">Fontes nos rodapés de cada módulo · NCBI RefSeq · PDB · IUPAC</div>
+</div>
+<script src="tabela-periodica/dados.js"></script>
+<script src="tabela-periodica/comum.js"></script>
+<script>
+(()=>{
+function setup(c){const d=Math.min(2,devicePixelRatio||1),r=c.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,w:r.width,h:r.height}}
+let bg,dn,pt,ml,bi,ce;function rs(){bg=setup(document.getElementById('bg'));dn=setup(document.getElementById('cDNA'));pt=setup(document.getElementById('cPT'));ml=setup(document.getElementById('cMOL'));bi=setup(document.getElementById('cBIO'));ce=setup(document.getElementById('cCEL'))}
+addEventListener('resize',rs);rs();
+const dots=[...Array(60)].map(()=>({x:Math.random(),y:Math.random(),v:0.00005+Math.random()*0.0002,r:Math.random()*1.4+0.3}));
+const COL=['#39e58c','#ff4f6d','#ffc53d','#3fa9ff'];
+const seq='ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCC';const ci={A:0,T:1,G:2,C:3},cp={A:'T',T:'A',G:'C',C:'G'};
+function frame(t){
+  // background particles
+  {const{x,w,h}=bg;x.clearRect(0,0,w,h);for(const d of dots){d.y-=d.v*16;if(d.y<0)d.y=1;x.fillStyle='rgba(150,170,230,.35)';x.beginPath();x.arc(d.x*w,d.y*h,d.r,0,7);x.fill()}}
+  // horizontal helix preview
+  {const{x,w,h}=dn;x.clearRect(0,0,w,h);const n=30,sp=w/(n+1),A=h*0.28,cy=h/2,ph=t/900;
+    const pts=[];for(let i=0;i<n;i++){const a=i*0.6+ph;const b=seq[i%seq.length];pts.push({X:sp*(i+1),y1:cy+A*Math.sin(a),y2:cy+A*Math.sin(a+2.2),z1:Math.cos(a),z2:Math.cos(a+2.2),b})}
+    for(const p of pts){x.lineWidth=3;x.globalAlpha=.85;const my=(p.y1+p.y2)/2;x.strokeStyle=COL[ci[p.b]];x.beginPath();x.moveTo(p.X,p.y1);x.lineTo(p.X,my);x.stroke();x.strokeStyle=COL[ci[cp[p.b]]];x.beginPath();x.moveTo(p.X,my);x.lineTo(p.X,p.y2);x.stroke()}
+    for(const [k,col] of [['1','255,179,71'],['2','232,241,255']]){for(let i=0;i<n;i++){const p=pts[i],z=p['z'+k];x.globalAlpha=.45+.55*(z+1)/2;x.fillStyle=`rgb(${col})`;x.shadowColor=`rgb(${col})`;x.shadowBlur=8;x.beginPath();x.arc(p.X,p['y'+k],2.2+1.6*(z+1)/2,0,7);x.fill()}}
+    x.shadowBlur=0;x.globalAlpha=1}
+  // periodic table preview with a scanning wave
+  {const{x,w,h}=pt;x.clearRect(0,0,w,h);const cw=Math.min((w-24)/18,(h-24)/9.6),ox=(w-cw*18)/2,oy=(h-cw*9.6)/2;const wave=(t/80)%140-10;
+    for(const e of ELS){const p=pos(e);const rr=p.r>8?p.r-0.4:p.r;const X=ox+(p.c-1)*cw,Y=oy+(rr-1)*cw;const near=Math.max(0,1-Math.abs(e.z-wave)/6);
+      x.fillStyle=CATS[e.c].c;x.globalAlpha=.25+.75*near;x.fillRect(X+1,Y+1,cw-2,cw-2);
+      if(near>.5&&cw>12){x.globalAlpha=1;x.fillStyle='#000';x.font=`700 ${cw*.45}px Space Grotesk, sans-serif`;x.textAlign='center';x.fillText(e.s,X+cw/2,Y+cw*.68)}}
+    x.globalAlpha=1;x.textAlign='left'}
+  // water molecule preview
+  {const{x,w,h}=ml;x.clearRect(0,0,w,h);const a=t/1400,s=Math.min(w,h)*0.32,ang=0.9121;
+    const P=[[0,0,0,[255,60,60],0.5],[Math.sin(ang),-Math.cos(ang),0,[240,244,250],0.32],[-Math.sin(ang),-Math.cos(ang),0,[240,244,250],0.32]].map(p=>{const X=p[0]*Math.cos(a)+p[2]*Math.sin(a),Z=-p[0]*Math.sin(a)+p[2]*Math.cos(a);return{X:w/2+X*s,Y:h/2+20-p[1]*s*1.0-s*0.35,z:Z,c:p[3],r:p[4]*s}});
+    x.lineWidth=s*0.12;x.lineCap='round';x.strokeStyle='#666e7a';for(const i of [1,2]){x.beginPath();x.moveTo(P[0].X,P[0].Y);x.lineTo(P[i].X,P[i].Y);x.stroke()}
+    for(const p of [...P].sort((a,b)=>a.z-b.z)){const g=x.createRadialGradient(p.X-p.r*.38,p.Y-p.r*.38,p.r*.06,p.X,p.Y,p.r);g.addColorStop(0,'#fff');g.addColorStop(.35,`rgb(${p.c})`);g.addColorStop(1,`rgb(${p.c.map(v=>v*.25|0)})`);x.fillStyle=g;x.beginPath();x.arc(p.X,p.Y,p.r,0,7);x.fill()}
+    x.fillStyle='rgba(170,190,235,.7)';x.font='10px JetBrains Mono, monospace';x.textAlign='center';x.fillText('H₂O · 104,5°',w/2,h-14);x.textAlign='left'}
+  // alpha-helix ribbon preview
+  {const{x,w,h}=bi;x.clearRect(0,0,w,h);const a=t/1600,n=120,R=h*0.18,L=w*0.7;let prev=null;
+    const pts=[...Array(n)].map((_,i)=>{const u=i/(n-1),th=u*3.6*6.283+a*3;const X=w/2-L/2+u*L,y=h/2+R*Math.sin(th),z=Math.cos(th);return{X,y,z,u}});
+    const segs=[];for(let i=0;i<n-1;i++)segs.push([pts[i],pts[i+1]]);segs.sort((p,q)=>(p[0].z+p[1].z)-(q[0].z+q[1].z));
+    for(const [p,q] of segs){const hue=240-240*p.u;x.lineCap='round';x.strokeStyle=`hsla(${hue},70%,22%,1)`;x.lineWidth=11+p.z*3;x.beginPath();x.moveTo(p.X,p.y);x.lineTo(q.X,q.y);x.stroke();
+      x.strokeStyle=`hsla(${hue},85%,${50+p.z*10}%,1)`;x.lineWidth=8+p.z*3;x.beginPath();x.moveTo(p.X,p.y);x.lineTo(q.X,q.y);x.stroke()}
+    x.fillStyle='rgba(170,190,235,.7)';x.font='10px JetBrains Mono, monospace';x.textAlign='center';x.fillText('α-hélice · 3,6 resíduos por volta',w/2,h-14);x.textAlign='left'}
+  // cell preview
+  {const{x,w,h}=ce;x.clearRect(0,0,w,h);const cx=w/2,cy=h/2,R=Math.min(w,h)*0.4;x.save();x.globalCompositeOperation='lighter';
+    const gl=(fn,c,lw)=>{x.strokeStyle=c.replace('A','.15');x.lineWidth=lw*4;fn();x.stroke();x.strokeStyle=c.replace('A','.9');x.lineWidth=lw;fn();x.stroke()};
+    gl(()=>{x.beginPath();for(let i=0;i<=80;i++){const a=i/80*6.283,r=R*(1+0.03*Math.sin(a*3+t/700));i?x.lineTo(cx+Math.cos(a)*r*1.25,cy+Math.sin(a)*r):x.moveTo(cx+Math.cos(a)*r*1.25,cy+Math.sin(a)*r)}x.closePath()},'rgba(177,151,252,A)',1.5);
+    const g=x.createRadialGradient(cx-R*0.25,cy,0,cx-R*0.25,cy,R*0.38);g.addColorStop(0,'rgba(77,171,247,.5)');g.addColorStop(1,'rgba(77,171,247,0)');x.fillStyle=g;x.beginPath();x.arc(cx-R*0.25,cy,R*0.38,0,6.283);x.fill();
+    gl(()=>{x.beginPath();x.arc(cx-R*0.25,cy,R*0.34,0,6.283)},'rgba(77,171,247,A)',1.3);
+    for(let i=0;i<6;i++){const a=i*1.1+t/4000,px=cx+R*0.55*Math.cos(a)*1.1+R*0.15,py=cy+R*0.6*Math.sin(a);x.save();x.translate(px,py);x.rotate(a*2);gl(()=>{x.beginPath();x.ellipse(0,0,R*0.12,R*0.045,0,0,6.283)},'rgba(255,92,138,A)',1.1);x.restore()}
+    for(let k=0;k<4;k++)gl(()=>{x.beginPath();x.arc(cx+R*0.55,cy-R*0.35+k*5,R*0.18,0.6*3.14,0.9*3.14)},'rgba(255,212,59,A)',1.2);
+    x.restore();x.fillStyle='rgba(170,190,235,.7)';x.font='10px JetBrains Mono, monospace';x.textAlign='center';x.fillText('célula animal · ~20 µm',w/2,h-14);x.textAlign='left'}
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Célula · LAB</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+.tabs{display:flex;gap:4px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
+.tabs a{flex:1;text-align:center;text-decoration:none;font-size:10px;letter-spacing:.1em;padding:9px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--dim);white-space:nowrap}
+.tabs a.on{color:var(--amber);border-color:var(--amber)}
+.btns{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
+.btns button{flex:1 0 auto;font:inherit;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--dim);cursor:pointer;white-space:nowrap}
+.btns button.on{color:var(--amber);border-color:var(--amber)}
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:8px}
+.chips button{flex:none;font:inherit;font-size:10.5px;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--panel);color:var(--txt);cursor:pointer}
+.chips button i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+.chips button.on{border-color:var(--amber);box-shadow:0 0 12px rgba(255,179,71,.2)}
+#view{position:relative;height:min(66vh,600px);min-height:400px;padding:0;overflow:hidden;background:radial-gradient(70% 60% at 50% 50%,#0b1226,#03050c)}
+#view canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+.hud{position:absolute;pointer-events:none;font-size:9px;letter-spacing:.06em;line-height:1.5;color:var(--dim)}
+.hud b{color:var(--txt)}.tl{top:10px;left:12px}.tr{top:10px;right:12px;text-align:right}.bl{bottom:10px;left:12px}.br{bottom:10px;right:12px;text-align:right}
+.big{font-family:'Space Grotesk',sans-serif;font-size:19px;color:#fff}
+.note{border-left:3px solid var(--amber);line-height:1.6;font-size:11.5px}
+.note b{color:#fff}
+.grid2{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.grid2 .box{margin:0;min-width:0}
+.links a{display:inline-block;margin:4px 6px 0 0;padding:6px 9px;border:1px solid var(--line);border-radius:5px;text-decoration:none;font-size:10.5px;color:var(--amber)}
+.legend{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:10px}.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tabs"><a href="../index.html">LAB</a><a href="../dna/index.html">DNA</a><a href="../tabela-periodica/index.html">TABELA</a><a href="../moleculas/index.html">MOLÉCULAS</a><a href="../biomoleculas/index.html">BIO</a><a class="on" href="index.html">CÉLULA</a></div>
+
+  <div class="box head">
+    <div>
+      <div class="k" style="color:var(--amber)">MÓDULO 05 · BIOLOGIA CELULAR</div>
+      <h1>A CÉLULA POR DENTRO</h1>
+      <div class="sub">Toque numa organela para dar zoom. Cores inspiradas em microscopia de fluorescência.</div>
+    </div>
+  </div>
+
+  <div class="btns" id="types"><button data-t="animal" class="on">🐾 CÉLULA ANIMAL</button><button data-t="vegetal">🌿 CÉLULA VEGETAL</button></div>
+  <div class="chips" id="chips"></div>
+
+  <div class="box" id="view">
+    <canvas id="cv"></canvas>
+    <div class="hud tl"><span class="big" id="hT">—</span><br><b id="hS">—</b></div>
+    <div class="hud tr"><span class="dot"></span><b id="hM">AO VIVO</b><br><span id="hZ">toque para dar zoom</span></div>
+    <div class="hud bl" id="hBL"></div>
+    <div class="hud br" id="hBR"></div>
+  </div>
+
+  <div class="box note" id="desc"></div>
+
+  <div class="grid2">
+    <div class="box">
+      <h2><em>I</em>FICHA</h2>
+      <div class="cap">valores típicos (variam entre tipos de célula)</div>
+      <div class="kv" id="kv"></div>
+    </div>
+    <div class="box">
+      <h2><em>II</em>CONEXÕES NO LAB</h2>
+      <div class="cap">esta estrutura aparece em outros módulos</div>
+      <div class="links" id="links"></div>
+      <div class="cap" style="margin-top:12px">Legenda de cores (como em imagens de fluorescência)</div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+
+  <div class="foot">Valores típicos de livros-texto de biologia celular (ex.: Alberts, <i>Molecular Biology of the Cell</i>). Desenho esquemático: formas simplificadas, proporções aproximadas e indicadas pela barra de escala. As animações mostram processos reais em câmera lenta.</div>
+</div>
+<script>
+(()=>{
+// ================= DATA =================
+const ORG={
+ celula_animal:{t:'Célula animal',s:'eucarionte · sem parede',c:'#9cc4ff',bar:[10,'µm'],
+  d:`<b>Uma célula animal típica tem de 10 a 30 µm</b> (milésimos de milímetro). Por dentro ela é cheia de compartimentos envolvidos por membrana, as organelas, cada um com uma tarefa. O DNA fica guardado no núcleo; a energia vem das mitocôndrias; as proteínas são feitas nos ribossomos e despachadas pelo retículo e pelo Golgi. Tudo isso se move: as vesículas viajam por "trilhos" de microtúbulos puxadas por proteínas motoras.`,
+  kv:[['Tamanho','10–30 µm'],['Corpo humano','~30 trilhões de células'],['Parede celular','não tem'],['Exclusivas','centríolos, lisossomos']],links:[]},
+ celula_vegetal:{t:'Célula vegetal',s:'eucarionte · com parede',c:'#8ce99a',bar:[20,'µm'],
+  d:`<b>Células vegetais costumam ser maiores (10–100 µm)</b> e têm três coisas que a animal não tem: <b>parede celular</b> de celulose, <b>cloroplastos</b> que fazem fotossíntese e um <b>vacúolo central</b> enorme, que empurra o resto da célula contra a parede. Também têm mitocôndrias: as plantas respiram o tempo todo, de dia e de noite.`,
+  kv:[['Tamanho','10–100 µm'],['Parede','celulose'],['Vacúolo central','até ~90% do volume'],['Exclusivas','cloroplastos, parede, vacúolo central']],links:[]},
+ nucleo:{t:'Núcleo',s:'centro de controle',c:'#4dabf7',bar:[1,'µm'],
+  d:`<b>Onde fica o DNA.</b> Nas células humanas são 46 cromossomos; esticado, o DNA de uma única célula mediria cerca de <b>2 metros</b>, enrolado dentro de um núcleo de ~6 µm. Um envelope de <b>duas membranas</b> separa o núcleo do citoplasma, atravessado por milhares de <b>poros nucleares</b> (complexos de ~120 nm com simetria de 8 lados). Por eles saem as moléculas de mRNA (pontos amarelos) que levarão as receitas aos ribossomos. O <b>nucléolo</b> é a fábrica de ribossomos.`,
+  kv:[['Diâmetro','~5–10 µm'],['Membranas','2 (envelope nuclear)'],['Poros','milhares, ~120 nm cada'],['DNA humano','46 cromossomos, ~2 m esticado']],links:[['DNA dupla hélice','../dna/index.html']]},
+ mitocondria:{t:'Mitocôndria',s:'usina de energia',c:'#ff5c8a',bar:[200,'nm'],
+  d:`<b>Transforma a energia dos alimentos em ATP</b>, a "moeda" de energia da célula. A membrana interna é toda dobrada em <b>cristas</b>, o que aumenta a área. Nela, a cadeia respiratória bombeia prótons (H⁺) para fora, e eles voltam passando pela <b>ATP sintase</b>, um motor molecular que <b>gira</b> e produz ~3 ATP por volta. Uma glicose rende cerca de 30–32 ATP. A mitocôndria tem <b>DNA próprio</b> (16 569 pares de bases e 37 genes em humanos), herdado só da mãe, uma pista de que ela já foi uma bactéria livre (teoria da endossimbiose).`,
+  kv:[['Tamanho','0,5–1 µm de largura, 1–10 µm de comprimento'],['Por célula','centenas a milhares'],['Membranas','2 (externa e interna com cristas)'],['DNA próprio','16 569 pb · 37 genes']],links:[['Membrana (bicamada)','../biomoleculas/index.html#bicamada']]},
+ cloroplasto:{t:'Cloroplasto',s:'fotossíntese',c:'#51cf66',bar:[1,'µm'],veg:true,
+  d:`<b>Captura a luz do Sol e fabrica açúcar.</b> Dentro dele há pilhas de discos chamadas <b>grana</b>, feitas de <b>tilacoides</b>, onde fica a clorofila. A clorofila absorve luz azul e vermelha e reflete a verde, por isso as folhas são verdes. A reação geral é 6 CO₂ + 6 H₂O + luz → C₆H₁₂O₆ + 6 O₂, e o <b>oxigênio liberado vem da quebra da água</b> (bolhas). Assim como a mitocôndria, tem DNA próprio e descende de uma bactéria (cianobactéria).`,
+  kv:[['Tamanho','5–10 µm de comprimento'],['Por célula','dezenas (células de folha)'],['Membranas','2 + sistema de tilacoides'],['DNA próprio','sim (~120–160 mil pb)']],links:[['CO₂ em 3D','../moleculas/index.html#co2'],['Água em 3D','../moleculas/index.html#agua']]},
+ re:{t:'Retículo endoplasmático',s:'rugoso + liso',c:'#69db7c',bar:[200,'nm'],
+  d:`<b>Uma rede de membranas ligada ao envelope do núcleo.</b> O <b>RE rugoso</b> é coberto de ribossomos (pontos) que fabricam proteínas e as injetam para dentro do retículo, onde elas se dobram. É a rota das proteínas que vão ser exportadas ou ficar em membranas, como a insulina e os anticorpos. O <b>RE liso</b> não tem ribossomos: produz lipídios, desintoxica substâncias (é abundante no fígado) e, no músculo, guarda o cálcio que dispara a contração.`,
+  kv:[['Formato','sacos achatados (rugoso) e túbulos (liso)'],['Ligado a','envelope nuclear'],['RE rugoso','proteínas de exportação e de membrana'],['RE liso','lipídios, desintoxicação, cálcio']],links:[['Proteínas (α-hélice)','../biomoleculas/index.html#helice'],['Fosfolipídio','../biomoleculas/index.html#fosfolipidio']]},
+ golgi:{t:'Complexo de Golgi',s:'correio da célula',c:'#ffd43b',bar:[200,'nm'],
+  d:`<b>Recebe, modifica, embala e despacha.</b> É uma pilha de 4 a 8 sacos achatados (cisternas). As vesículas que chegam do retículo entram pela face <b>cis</b>; as proteínas atravessam a pilha ganhando "etiquetas" de açúcares (glicosilação) e saem pela face <b>trans</b> em novas vesículas, endereçadas para a membrana, para os lisossomos ou para fora da célula. Descrito por Camillo Golgi em 1898.`,
+  kv:[['Cisternas','4–8 por pilha'],['Entrada','face cis (vinda do RE)'],['Saída','face trans (vesículas)'],['Função','processar e endereçar proteínas']],links:[]},
+ lisossomo:{t:'Lisossomo',s:'reciclagem',c:'#22d3ee',bar:[100,'nm'],anim:true,
+  d:`<b>O "estômago" da célula.</b> É uma bolsa com dezenas de enzimas digestivas (~60 tipos) que quebram proteínas, lipídios, açúcares, organelas velhas e até bactérias capturadas. Bombas de prótons na membrana mantêm o interior <b>ácido, com pH 4,5–5</b>, que é o pH em que essas enzimas funcionam; se uma vazar para o citoplasma (pH ~7,2), quase não age, uma proteção embutida. Descoberto por Christian de Duve (Nobel de 1974).`,
+  kv:[['Tamanho','0,1–1,2 µm'],['pH interno','4,5–5 (citoplasma ~7,2)'],['Enzimas','~60 tipos de hidrolases'],['Em plantas','o vacúolo faz esse papel']],links:[]},
+ ribossomo:{t:'Ribossomo',s:'fábrica de proteínas',c:'#ffa94d',bar:[10,'nm'],
+  d:`<b>Lê o mRNA e monta a proteína</b>, um aminoácido por códon. São duas subunidades (60S + 40S = 80S em eucariotos), feitas de RNA e proteínas, com ~25–30 nm. Os tRNAs (formas em L) trazem os aminoácidos certos encaixando o anticódon no códon. A peça que une os aminoácidos é feita de RNA, não de proteína: o ribossomo é uma <b>ribozima</b>. Aqui ele está traduzindo o começo da <b>β-globina</b>, a mesma sequência do módulo DNA. Em células humanas, ~5 aminoácidos por segundo (animação mais lenta).`,
+  kv:[['Tamanho','~25–30 nm'],['Subunidades','60S + 40S = 80S'],['Por célula','milhões'],['Velocidade','~5 aminoácidos/s (humanos)']],links:[['O gene (DNA)','../dna/index.html'],['Ligação peptídica','../biomoleculas/index.html#peptidica'],['Aminoácidos','../biomoleculas/index.html#val']]},
+ membrana:{t:'Membrana plasmática',s:'mosaico fluido',c:'#b197fc',bar:[5,'nm'],
+  d:`<b>A fronteira da célula.</b> Uma bicamada de fosfolipídios, com as caudas apolares para dentro, salpicada de proteínas e, em células animais, de colesterol. É fluida: lipídios e proteínas deslizam de lado (modelo do mosaico fluido, Singer e Nicolson, 1972). Canais e transportadores deixam passar íons e moléculas específicas (bolinhas atravessando), e cadeias de açúcar do lado de fora funcionam como "crachá" de identificação.`,
+  kv:[['Espessura','~5–10 nm (com proteínas)'],['Base','bicamada de fosfolipídios'],['Componentes','lipídios, proteínas, colesterol, açúcares'],['Propriedade','permeabilidade seletiva']],links:[['Bicamada lipídica','../biomoleculas/index.html#bicamada'],['Fosfolipídio (POPC)','../biomoleculas/index.html#fosfolipidio']]},
+ citoesqueleto:{t:'Citoesqueleto',s:'trilhos e motores',c:'#e8f1ff',bar:[25,'nm'],
+  d:`<b>O esqueleto e a malha de transporte da célula.</b> Três tipos de fios: <b>microtúbulos</b> (25 nm, tubos de tubulina com 13 protofilamentos), <b>filamentos de actina</b> (7 nm, dupla hélice) e <b>filamentos intermediários</b> (10 nm, cordas resistentes). Sobre os microtúbulos a <b>cinesina</b> "anda" literalmente, um pé depois do outro, dando passos de <b>8 nm</b> e gastando 1 ATP por passo, carregando vesículas.`,
+  kv:[['Microtúbulos','25 nm · tubulina'],['Actina','7 nm · dupla hélice'],['Intermediários','10 nm'],['Cinesina','passos de 8 nm, 1 ATP cada']],links:[]},
+ centriolo:{t:'Centríolos',s:'organizam os microtúbulos',c:'#ffa8a8',bar:[100,'nm'],
+  d:`<b>Dois cilindros perpendiculares</b> que formam o centrossomo, de onde os microtúbulos irradiam. Cada centríolo tem <b>9 trincas de microtúbulos</b> em anel (vista em corte). Na divisão celular, os centrossomos ajudam a montar o fuso que separa os cromossomos. Plantas com flores não têm centríolos e organizam seus microtúbulos de outro jeito.`,
+  kv:[['Tamanho','~0,25 µm × 0,5 µm'],['Estrutura','9 trincas de microtúbulos'],['Arranjo','par perpendicular'],['Presente em','células animais']],links:[]},
+ peroxissomo:{t:'Peroxissomo',s:'desintoxicação',c:'#fcc419',bar:[100,'nm'],
+  d:`<b>Pequena bolsa que lida com reações que geram peróxido de hidrogênio (H₂O₂)</b>, tóxico. A enzima <b>catalase</b>, muitas vezes formando um "cristal" no centro, quebra o H₂O₂: 2 H₂O₂ → 2 H₂O + O₂ (bolhas). Também quebra ácidos graxos muito longos. É a mesma reação que faz a água oxigenada borbulhar num machucado.`,
+  kv:[['Tamanho','0,1–1 µm'],['Enzima-chave','catalase'],['Reação','2 H₂O₂ → 2 H₂O + O₂'],['Membranas','1']],links:[['Água em 3D','../moleculas/index.html#agua'],['O₂ em 3D','../moleculas/index.html#oxigenio']]},
+ vacuolo:{t:'Vacúolo e parede',s:'turgor e sustentação',c:'#74c0fc',bar:[5,'µm'],veg:true,
+  d:`<b>O vacúolo central</b> é uma bolsa de água, sais e pigmentos envolvida pela membrana chamada <b>tonoplasto</b>; pode ocupar até ~90% do volume da célula. Quando está cheio, empurra a célula contra a <b>parede de celulose</b> (setas): é a <b>pressão de turgor</b>, que deixa a planta firme. Quando falta água, o vacúolo murcha e a planta também. Pontes chamadas <b>plasmodesmos</b> atravessam a parede e ligam células vizinhas.`,
+  kv:[['Vacúolo','até ~90% do volume'],['Membrana','tonoplasto'],['Parede','microfibrilas de celulose'],['Ligações','plasmodesmos']],links:[['Água em 3D','../moleculas/index.html#agua']]}
+};
+const ORDER_A=['nucleo','mitocondria','re','golgi','ribossomo','lisossomo','peroxissomo','centriolo','citoesqueleto','membrana'];
+const ORDER_V=['nucleo','cloroplasto','vacuolo','mitocondria','re','golgi','ribossomo','peroxissomo','citoesqueleto','membrana'];
+
+// ================= STATE =================
+let ctype='animal',view='celula',prevView=null,trans=1,zoomPt=[0,0],simT=0,t0=0,paused=false;
+const cv=document.getElementById('cv'),mctx=cv.getContext('2d');let W,H,DPR,ctx;
+const bufA=document.createElement('canvas'),bufB=document.createElement('canvas');
+function rs(){DPR=Math.min(2,devicePixelRatio||1);const r=cv.getBoundingClientRect();W=r.width;H=r.height;for(const c of [cv,bufA,bufB]){c.width=W*DPR;c.height=H*DPR;c.getContext('2d').setTransform(DPR,0,0,DPR,0,0)}}
+addEventListener('resize',rs);rs();
+let seed=7;const rnd=()=>((seed=(seed*16807)%2147483647)/2147483647);
+const TAU=Math.PI*2;
+const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`};
+
+// glow stroke: wide faint + thin bright, additive
+function glow(pathFn,col,w=1.5,a=1){ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.strokeStyle=hexA(col,0.12*a);ctx.lineWidth=w*5;pathFn();ctx.stroke();ctx.strokeStyle=hexA(col,0.3*a);ctx.lineWidth=w*2.2;pathFn();ctx.stroke();ctx.strokeStyle=hexA(col,0.95*a);ctx.lineWidth=w;pathFn();ctx.stroke();ctx.restore()}
+function fillGlow(pathFn,col,a=.18){ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle=hexA(col,a);pathFn();ctx.fill();ctx.restore()}
+function blob(x,y,r,col,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,hexA(col,a));g.addColorStop(1,hexA(col,0));ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.restore()}
+function txt(t,x,y,c='rgba(220,230,250,.9)',al='left',sz=9.5,wt=''){ctx.font=`${wt} ${sz}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
+function callout(x,y,lx,ly,t,c='#e8f1ff'){ctx.font='600 9.5px JetBrains Mono, monospace';const tw=ctx.measureText(t).width;lx=Math.max(24,Math.min(W-24,lx));ly=Math.max(64,Math.min(H-60,ly));
+  let right=lx>x;if(right&&lx+17+tw>W-6)right=false;if(!right&&lx-17-tw<6)right=true;
+  ctx.strokeStyle='rgba(200,215,255,.45)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(lx,ly);ctx.lineTo(lx+(right?14:-14),ly);ctx.stroke();ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,2.2,0,TAU);ctx.fill();
+  const tx=right?lx+17:lx-17;ctx.fillStyle='rgba(3,5,12,.7)';ctx.fillRect(right?tx-2:tx-tw-2,ly-8,tw+4,13);txt(t,tx,ly+3,c,right?'left':'right',9.5,'600')}
+function hudFrame(){ctx.strokeStyle='rgba(200,215,255,.22)';ctx.lineWidth=1;const bk=14;for(const [x,y,sx,sy] of [[8,8,1,1],[W-8,8,-1,1],[8,H-8,1,-1],[W-8,H-8,-1,-1]]){ctx.beginPath();ctx.moveTo(x,y+sy*bk);ctx.lineTo(x,y);ctx.lineTo(x+sx*bk,y);ctx.stroke()}}
+function scaleBar(px,label){const x=W/2-px/2,y=H-44;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+px,y);ctx.moveTo(x,y-4);ctx.lineTo(x,y+4);ctx.moveTo(x+px,y-4);ctx.lineTo(x+px,y+4);ctx.stroke();txt(label,W/2,y-7,'#fff','center',9.5,'600')}
+const N1=(a,b=0)=>Math.sin(a*1.7+b)*0.5+Math.sin(a*3.1+b*1.3)*0.3+Math.sin(a*5.3+b*2.1)*0.2;
+
+// ================= CELL LAYOUT =================
+let L=null;
+function layout(){seed=ctype==='animal'?11:23;const o={items:[],mito:[],lyso:[],perox:[],chloro:[],vesicles:[],ribo:[],mt:[]};
+  if(ctype==='animal'){o.nuc={x:-0.18,y:0.0,r:0.3};o.golgi={x:0.36,y:-0.28,a:-0.5};o.cent={x:0.18,y:0.3};
+    for(let i=0;i<14;i++){let x,y;do{x=rnd()*1.7-0.85;y=rnd()*1.4-0.7}while(Math.hypot(x+0.18,y)<0.48||x*x+(y/0.85)**2>0.72||Math.hypot(x-0.36,y+0.28)<0.2);o.mito.push({x,y,a:rnd()*TAU,l:0.1+rnd()*0.08,ph:rnd()*TAU})}
+    for(let i=0;i<7;i++){let x,y;do{x=rnd()*1.6-0.8;y=rnd()*1.3-0.65}while(Math.hypot(x+0.18,y)<0.5||x*x+(y/0.85)**2>0.7);o.lyso.push({x,y,r:0.025+rnd()*0.02})}
+    for(let i=0;i<5;i++){let x,y;do{x=rnd()*1.6-0.8;y=rnd()*1.3-0.65}while(Math.hypot(x+0.18,y)<0.5||x*x+(y/0.85)**2>0.7);o.perox.push({x,y,r:0.02+rnd()*0.01})}
+    for(let i=0;i<26;i++){const a=i/26*TAU+rnd()*0.2;o.mt.push({a,bend:(rnd()-.5)*0.6})}
+  }else{o.nuc={x:-0.55,y:-0.42,r:0.2};o.golgi={x:0.55,y:0.5,a:0.4};o.vac={x:0.06,y:0.06,rx:0.6,ry:0.48};
+    for(let i=0;i<16;i++){const a=i/16*TAU+rnd()*0.15;const x=Math.cos(a)*0.78,y=Math.sin(a)*0.66;if(Math.hypot(x+0.55,y+0.42)<0.3||Math.hypot(x-0.55,y-0.5)<0.2)continue;o.chloro.push({x,y,a:a+Math.PI/2,ph:rnd()*TAU})}
+    for(let i=0;i<6;i++){const a=rnd()*TAU;o.mito.push({x:Math.cos(a)*0.72,y:Math.sin(a)*0.6,a:rnd()*TAU,l:0.06+rnd()*0.03,ph:rnd()*TAU})}
+    for(let i=0;i<4;i++){const a=rnd()*TAU;o.perox.push({x:Math.cos(a)*0.7,y:Math.sin(a)*0.56,r:0.016})}
+  }
+  for(let i=0;i<260;i++){o.ribo.push({x:rnd()*2-1,y:rnd()*2-1,ph:rnd()*TAU})}
+  for(let i=0;i<9;i++)o.vesicles.push({t:rnd(),sp:0.05+rnd()*0.05,k:i%3,lane:rnd()});
+  L=o}
+// cell-space → screen
+let CR,CX,CY;
+const S=(x,y)=>[CX+x*CR,CY+y*CR];
+function memPath(scale=1,ph=0){ctx.beginPath();for(let i=0;i<=120;i++){const a=i/120*TAU;const r=(1+0.025*N1(a*2,simT*0.6+ph))*scale;const [x,y]=S(Math.cos(a)*r,Math.sin(a)*r*0.86);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath()}
+function rectPath(inset){const w=0.94-inset,h=0.8-inset,rr=0.12;const [x0,y0]=S(-w,-h),[x1,y1]=S(w,h);const r=rr*CR;ctx.beginPath();ctx.moveTo(x0+r,y0);ctx.arcTo(x1,y0,x1,y1,r);ctx.arcTo(x1,y1,x0,y1,r);ctx.arcTo(x0,y1,x0,y0,r);ctx.arcTo(x0,y0,x1,y0,r);ctx.closePath()}
+const hits=[];
+function addHit(k,x,y,r){hits.push({k,x,y,r})}
+
+function drawCell(){
+  ctx.clearRect(0,0,W,H);CX=W/2;CY=H/2+6;CR=Math.min(W*0.47,H*0.5);hits.length=0;
+  if(!L)layout();
+  const animal=ctype==='animal';
+  // cytoplasm haze
+  blob(CX,CY,CR*1.1,animal?'#3b5bdb':'#2f9e44',0.08);
+  if(animal){memPath();ctx.save();ctx.clip();}else{rectPath(0.04);ctx.save();ctx.clip()}
+  // free ribosomes
+  for(const r of L.ribo){const [x,y]=S(r.x+0.004*Math.sin(simT+r.ph),r.y+0.004*Math.cos(simT*1.3+r.ph));ctx.fillStyle='rgba(255,169,77,.55)';ctx.fillRect(x,y,1.4,1.4)}
+  // microtubules from centrosome (animal) — dim white
+  if(animal){const [cx,cy]=S(L.cent.x,L.cent.y);for(const m of L.mt){glow(()=>{ctx.beginPath();ctx.moveTo(cx,cy);const ex=cx+Math.cos(m.a)*CR*1.2,ey=cy+Math.sin(m.a)*CR*1.05;ctx.quadraticCurveTo((cx+ex)/2+Math.cos(m.a+1.57)*m.bend*CR*0.3,(cy+ey)/2+Math.sin(m.a+1.57)*m.bend*CR*0.3,ex,ey)},'#e8f1ff',0.5,0.35)}
+    addHit('citoesqueleto',CX+CR*0.62,CY+CR*0.5,CR*0.12)}
+  // ER: sheets around nucleus (rough) + tubules (smooth)
+  {const n=L.nuc;for(let k=0;k<4;k++){const rr=n.r+0.06+k*0.055;for(let s=0;s<3;s++){const a0=(animal?0.5:-0.3)+s*2.0+k*0.3,a1=a0+1.3;
+      glow(()=>{ctx.beginPath();for(let i=0;i<=30;i++){const a=a0+(a1-a0)*i/30;const r=rr+0.012*Math.sin(a*9+simT+k);const [x,y]=S(n.x+Math.cos(a)*r,n.y+Math.sin(a)*r);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}},'#69db7c',1.1,0.8);
+      for(let i=0;i<14;i++){const a=a0+(a1-a0)*i/13;const [x,y]=S(n.x+Math.cos(a)*(rr+0.014),n.y+Math.sin(a)*(rr+0.014));ctx.fillStyle='rgba(255,169,77,.9)';ctx.beginPath();ctx.arc(x,y,1.3,0,TAU);ctx.fill()}}}
+    const [ex,ey]=S(n.x+Math.cos(animal?0.9:0.2)*(n.r+0.14),n.y+Math.sin(animal?0.9:0.2)*(n.r+0.14));addHit('re',ex,ey,CR*0.1);
+    // smooth ER squiggles
+    const sx=animal?-0.3:-0.15,sy=animal?0.52:-0.62;for(let k=0;k<5;k++)glow(()=>{ctx.beginPath();for(let i=0;i<=24;i++){const u=i/24;const [x,y]=S(sx+u*0.32+k*0.03,sy+0.03*Math.sin(u*12+k*2+simT*0.8)+k*0.025);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}},'#8ce99a',0.8,0.6)}
+  // vacuole (plant)
+  if(!animal){const v=L.vac;const [vx,vy]=S(v.x,v.y);ctx.save();ctx.beginPath();ctx.ellipse(vx,vy,v.rx*CR*(1+0.01*Math.sin(simT)),v.ry*CR,0,0,TAU);const g=ctx.createRadialGradient(vx,vy,0,vx,vy,v.rx*CR);g.addColorStop(0,'rgba(116,192,252,.10)');g.addColorStop(1,'rgba(116,192,252,.22)');ctx.fillStyle=g;ctx.fill();ctx.restore();
+    glow(()=>{ctx.beginPath();ctx.ellipse(vx,vy,v.rx*CR*(1+0.01*Math.sin(simT)),v.ry*CR,0,0,TAU)},'#74c0fc',1.3,0.9);addHit('vacuolo',vx,vy,v.ry*CR*0.8)}
+  // nucleus
+  {const n=L.nuc;const [nx,ny]=S(n.x,n.y),r=n.r*CR;blob(nx,ny,r*1.1,'#1c7ed6',0.35);
+    // chromatin texture
+    ctx.save();ctx.beginPath();ctx.arc(nx,ny,r*0.95,0,TAU);ctx.clip();seed=99;for(let i=0;i<70;i++){const a=rnd()*TAU,d=Math.sqrt(rnd())*r*0.9;const x=nx+Math.cos(a)*d,y=ny+Math.sin(a)*d;glow(()=>{ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x+(rnd()-.5)*r*.3,y+(rnd()-.5)*r*.3,x+(rnd()-.5)*r*.3,y+(rnd()-.5)*r*.3,x+(rnd()-.5)*r*.25,y+(rnd()-.5)*r*.25)},'#4dabf7',0.6,0.35)}ctx.restore();
+    blob(nx+r*-0.15,ny+r*-0.1,r*0.32,'#a5d8ff',0.55);
+    for(const k of [0,1])glow(()=>{ctx.beginPath();ctx.arc(nx,ny,r+k*3,0,TAU)},'#4dabf7',1.2,0.9);
+    for(let i=0;i<14;i++){const a=i/14*TAU+0.2;ctx.fillStyle='#03050c';ctx.beginPath();ctx.arc(nx+Math.cos(a)*(r+1.5),ny+Math.sin(a)*(r+1.5),2.4,0,TAU);ctx.fill()}
+    addHit('nucleo',nx,ny,r*0.85)}
+  // golgi
+  {const g=L.golgi,[gx,gy]=S(g.x,g.y),sc=CR*(animal?1:0.7);const cols=['#ffe066','#ffd43b','#fcc419','#fab005','#f59f00'];
+    for(let k=0;k<5;k++){glow(()=>{ctx.beginPath();const off=(k-2)*0.028*sc;for(let i=0;i<=20;i++){const u=i/20-0.5;const x=u*0.24*sc*(1-Math.abs(k-2)*0.08),y=off+u*u*0.22*sc;const rx=gx+x*Math.cos(g.a)-y*Math.sin(g.a),ry=gy+x*Math.sin(g.a)+y*Math.cos(g.a);i?ctx.lineTo(rx,ry):ctx.moveTo(rx,ry)}},cols[k],1.6,0.9)}
+    addHit('golgi',gx,gy,0.13*sc)}
+  // vesicles: ER → Golgi → membrane (secretory pathway)
+  {const n=L.nuc,g=L.golgi;const [gx,gy]=S(g.x,g.y);const [ex,ey]=S(n.x+Math.cos(-0.4)*(n.r+0.2),n.y+Math.sin(-0.4)*(n.r+0.2));
+    for(const v of L.vesicles){if(!paused)v.t=(v.t+v.sp*0.016)%1;const t=v.t;let x,y,col;
+      if(t<0.4){const u=t/0.4;x=ex+(gx-ex)*u;y=ey+(gy-ey)*u+Math.sin(u*Math.PI)*-20;col='#69db7c'}else{const u=(t-0.4)/0.6;const a=-0.9+v.lane*1.6;const tx=CX+Math.cos(a)*CR*0.95,ty=CY+Math.sin(a)*CR*0.82;x=gx+(tx-gx)*u;y=gy+(ty-gy)*u;col='#ffd43b'}
+      blob(x,y,7,col,0.6);ctx.strokeStyle=hexA(col,.9);ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,3,0,TAU);ctx.stroke()}}
+  // chloroplasts (plant)
+  for(const c of L.chloro){const [x,y]=S(c.x+0.01*Math.sin(simT*0.4+c.ph),c.y+0.01*Math.cos(simT*0.4+c.ph)),a=c.a,lx=0.11*CR,ly=0.055*CR;
+    ctx.save();ctx.translate(x,y);ctx.rotate(a);fillGlow(()=>{ctx.beginPath();ctx.ellipse(0,0,lx,ly,0,0,TAU)},'#2b8a3e',0.35);
+    glow(()=>{ctx.beginPath();ctx.ellipse(0,0,lx,ly,0,0,TAU)},'#51cf66',1.2,0.9);for(let k=-2;k<=2;k++){ctx.fillStyle='rgba(140,233,154,.85)';for(let j=0;j<4;j++)ctx.fillRect(k*lx*0.35-3,-5+j*3,6,1.6)}ctx.restore();addHit('cloroplasto',x,y,lx)}
+  // mitochondria
+  for(const m of L.mito){const [x,y]=S(m.x+0.008*Math.sin(simT*0.5+m.ph),m.y+0.008*Math.cos(simT*0.6+m.ph)),l=m.l*CR,w=0.032*CR*(animal?1:0.8);
+    ctx.save();ctx.translate(x,y);ctx.rotate(m.a+0.1*Math.sin(simT*0.3+m.ph));
+    const cap=()=>{ctx.beginPath();ctx.moveTo(-l/2,-w);ctx.lineTo(l/2,-w);ctx.arc(l/2,0,w,-Math.PI/2,Math.PI/2);ctx.lineTo(-l/2,w);ctx.arc(-l/2,0,w,Math.PI/2,Math.PI*1.5);ctx.closePath()};
+    fillGlow(cap,'#c2255c',0.3);glow(cap,'#ff5c8a',1.2,0.95);for(let k=0;k<6;k++){const xx=-l/2+l*(k+0.5)/6;glow(()=>{ctx.beginPath();ctx.moveTo(xx,(k%2?-1:1)*w*0.9);ctx.lineTo(xx,(k%2?1:-1)*w*0.15)},'#ff8fab',0.8,0.7)}ctx.restore();addHit('mitocondria',x,y,Math.max(l*0.6,14))}
+  // lysosomes
+  for(const s of L.lyso){const [x,y]=S(s.x,s.y),r=s.r*CR;blob(x,y,r*1.8,'#22d3ee',0.4);glow(()=>{ctx.beginPath();ctx.arc(x,y,r,0,TAU)},'#22d3ee',1,0.9);for(let k=0;k<4;k++){ctx.fillStyle='rgba(165,243,252,.9)';ctx.beginPath();ctx.arc(x+Math.cos(simT*2+k*1.6)*r*0.5,y+Math.sin(simT*2+k*1.6)*r*0.5,1.1,0,TAU);ctx.fill()}addHit('lisossomo',x,y,Math.max(r*1.5,12))}
+  // peroxisomes
+  for(const s of L.perox){const [x,y]=S(s.x,s.y),r=s.r*CR;glow(()=>{ctx.beginPath();ctx.arc(x,y,r,0,TAU)},'#fcc419',1,0.85);ctx.fillStyle='rgba(252,196,25,.8)';ctx.fillRect(x-r*0.35,y-r*0.35,r*0.7,r*0.7);addHit('peroxissomo',x,y,Math.max(r*1.5,11))}
+  // centrosome
+  if(animal){const [x,y]=S(L.cent.x,L.cent.y);blob(x,y,14,'#ffa8a8',0.45);ctx.save();ctx.translate(x,y);ctx.rotate(simT*0.1);glow(()=>{ctx.beginPath();ctx.rect(-6,-2.5,12,5)},'#ffa8a8',1,1);glow(()=>{ctx.beginPath();ctx.rect(-2.5,4,5,12)},'#ffa8a8',1,1);ctx.restore();addHit('centriolo',x,y,16)}
+  ctx.restore();
+  // membrane / wall
+  if(animal){glow(()=>memPath(),'#b197fc',1.6,1);glow(()=>memPath(1.012,1),'#b197fc',0.8,0.5);addHit('membrana',CX+CR*0.98,CY-CR*0.1,18)}
+  else{glow(()=>rectPath(0),'#a9e34b',3,0.55);glow(()=>rectPath(0.04),'#b197fc',1.2,0.9);
+    for(let i=0;i<8;i++){const t=i/8;const [x,y]=S(-0.94+t*1.88,-0.8);ctx.fillStyle='#03050c';ctx.fillRect(x-1.5,y-3,3,6)}
+    addHit('membrana',CX+CR*0.9,CY+CR*0.1,18)}
+  // ribosome hit (cluster near RER)
+  {const n=L.nuc;const [x,y]=S(n.x+Math.cos(animal?2.6:2.2)*(n.r+0.1),n.y+Math.sin(animal?2.6:2.2)*(n.r+0.1));addHit('ribossomo',x,y,12)}
+  // labels (few, for orientation)
+  const lab=(k,dx,dy)=>{const h=hits.find(q=>q.k===k);if(!h)return;callout(h.x,h.y,h.x+dx,h.y+dy,ORG[k].t,ORG[k].c)};
+  if(animal){lab('nucleo',-CR*0.35,-CR*0.48);lab('golgi',CR*0.2,-CR*0.3);lab('centriolo',CR*0.35,CR*0.3);const m=hits.find(q=>q.k==='mitocondria');if(m)callout(m.x,m.y,m.x+(m.x<CX?-40:40),m.y+30,'Mitocôndria','#ff5c8a');lab('re',CR*0.25,CR*0.35)}
+  else{lab('nucleo',CR*0.2,-CR*0.12);lab('vacuolo',CR*0.15,CR*0.32);const c=hits.find(q=>q.k==='cloroplasto');if(c)callout(c.x,c.y,c.x+(c.x<CX?30:-30),c.y+(c.y<CY?30:-30),'Cloroplasto','#51cf66')}
+  hudFrame();const um=(ctype==='animal'?20:50)/2;scaleBar(CR*(10/um),`10 µm`);
+}
+
+// ================= ORGANELLE DETAILS =================
+let D={};
+function frameDetail(){ctx.clearRect(0,0,W,H);CX=W/2;CY=H/2+4;hudFrame();
+  ctx.strokeStyle='rgba(120,160,255,.08)';const R0=Math.min(W,H)*0.47;ctx.beginPath();ctx.arc(CX,CY,R0,0,TAU);ctx.stroke();ctx.strokeStyle='rgba(255,179,71,.3)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(CX,CY,R0,simT*0.5,simT*0.5+0.8);ctx.stroke();ctx.lineWidth=1}
+const DRAW={
+ nucleo(){const r=Math.min(W,H)*0.33;const nx=CX,ny=CY;blob(nx,ny,r*1.05,'#1c7ed6',0.35);
+  ctx.save();ctx.beginPath();ctx.arc(nx,ny,r*0.93,0,TAU);ctx.clip();seed=5;for(let i=0;i<120;i++){const a=rnd()*TAU,d=Math.sqrt(rnd())*r*0.9,x=nx+Math.cos(a)*d,y=ny+Math.sin(a)*d,p=rnd()*TAU;
+    glow(()=>{ctx.beginPath();ctx.moveTo(x,y);for(let k=1;k<=6;k++)ctx.lineTo(x+Math.sin(k*1.3+p+simT*0.2)*k*3,y+Math.cos(k*1.7+p)*k*3)},'#4dabf7',0.7,0.45)}ctx.restore();
+  blob(nx-r*0.2,ny-r*0.15,r*0.3,'#a5d8ff',0.7);
+  const pores=16;for(const k of [0,1])glow(()=>{for(let i=0;i<pores;i++){const a0=i/pores*TAU+0.12,a1=(i+1)/pores*TAU-0.12;ctx.moveTo(nx+Math.cos(a0)*(r+k*7),ny+Math.sin(a0)*(r+k*7));ctx.arc(nx,ny,r+k*7,a0,a1)}},'#74c0fc',1.6,1);
+  for(let i=0;i<pores;i++){const a=i/pores*TAU;const px=nx+Math.cos(a)*(r+3.5),py=ny+Math.sin(a)*(r+3.5);ctx.save();ctx.translate(px,py);ctx.rotate(a);for(let k=0;k<8;k++){const b=k/8*TAU;ctx.fillStyle='rgba(255,212,59,.9)';ctx.beginPath();ctx.arc(Math.cos(b)*2.2,Math.sin(b)*5,1,0,TAU);ctx.fill()}ctx.restore()}
+  // mRNA leaving through pores
+  if(!D.m)D.m=[...Array(10)].map((_,i)=>({p:i%pores,t:Math.random()}));for(const q of D.m){if(!paused)q.t+=0.004;if(q.t>1){q.t=0;q.p=Math.floor(Math.random()*pores)}const a=q.p/pores*TAU;const d=r*0.6+q.t*r*0.75;const x=nx+Math.cos(a)*d,y=ny+Math.sin(a)*d;
+    glow(()=>{ctx.beginPath();ctx.moveTo(x,y);for(let k=1;k<6;k++)ctx.lineTo(x-Math.cos(a)*k*3+Math.sin(k+simT*4)*2,y-Math.sin(a)*k*3+Math.cos(k+simT*4)*2)},'#ffd43b',1,0.9)}
+  callout(nx-r*0.2,ny-r*0.15,nx-r*0.9,ny-r*1.15,'Nucléolo','#a5d8ff');callout(nx+r*0.3,ny+r*0.4,nx+r*0.7,ny+r*1.15,'Cromatina (DNA)','#4dabf7');
+  const a=2/16*TAU;callout(nx+Math.cos(a)*(r+3),ny+Math.sin(a)*(r+3),nx+r*1.05,ny+r*0.2,'Poro nuclear','#ffd43b');callout(nx-r,ny+r*0.1,nx-r*1.02,ny+r*0.75,'Envelope duplo','#74c0fc');
+  const m=D.m[0];callout(nx+Math.cos(m.p/16*TAU)*(r*0.6+m.t*r*0.75),ny+Math.sin(m.p/16*TAU)*(r*0.6+m.t*r*0.75),nx+r*0.75,ny-r*1.15,'mRNA saindo','#ffd43b');
+  scaleBar(r*2/6,'1 µm')},
+ mitocondria(){const l=Math.min(W*0.86,H*1.1),w=Math.min(H*0.28,l*0.2);const x0=CX-l/2,y0=CY;
+  const cap=(ww,ll)=>{ctx.beginPath();ctx.moveTo(CX-ll/2+ww,CY-ww);ctx.lineTo(CX+ll/2-ww,CY-ww);ctx.arc(CX+ll/2-ww,CY,ww,-Math.PI/2,Math.PI/2);ctx.lineTo(CX-ll/2+ww,CY+ww);ctx.arc(CX-ll/2+ww,CY,ww,Math.PI/2,Math.PI*1.5);ctx.closePath()};
+  fillGlow(()=>cap(w*0.88,l-w*0.24),'#a61e4d',0.35);glow(()=>cap(w,l),'#ff5c8a',1.6,1);
+  // inner membrane with cristae
+  const n=8;const crista=[];glow(()=>{ctx.beginPath();const wi=w*0.86,li=l-w*0.28;ctx.moveTo(CX-li/2+wi,CY-wi);for(let k=0;k<n;k++){const cx=CX-li/2+wi+(li-2*wi)*(k+0.5)/n;const top=k%2===0;if(top){ctx.lineTo(cx-6,CY-wi);ctx.lineTo(cx-6,CY+wi*0.35);ctx.arc(cx,CY+wi*0.35,6,Math.PI,0,true);ctx.lineTo(cx+6,CY-wi);crista.push([cx,CY+wi*0.35,1])}}
+    ctx.lineTo(CX+li/2-wi,CY-wi);ctx.arc(CX+li/2-wi,CY,wi,-Math.PI/2,Math.PI/2);
+    for(let k=n-1;k>=0;k--){const cx=CX-li/2+wi+(li-2*wi)*(k+0.5)/n;if(k%2===1){ctx.lineTo(cx+6,CY+wi);ctx.lineTo(cx+6,CY-wi*0.35);ctx.arc(cx,CY-wi*0.35,6,0,Math.PI,true);ctx.lineTo(cx-6,CY+wi);crista.push([cx,CY-wi*0.35,-1])}}
+    ctx.lineTo(CX-li/2+wi,CY+wi);ctx.arc(CX-li/2+wi,CY,wi,Math.PI/2,Math.PI*1.5)},'#ff8fab',1.2,1);
+  // mtDNA circles
+  for(const [dx,dy] of [[-0.3,0.1],[0.25,-0.15]])glow(()=>{ctx.beginPath();ctx.arc(CX+dx*l,CY+dy*w*2,6,0,TAU)},'#4dabf7',1,0.9);
+  // ATP synthase rotors on cristae + protons
+  if(!D.p)D.p=[...Array(16)].map(()=>({c:Math.floor(Math.random()*n),t:Math.random()}));
+  for(const [cx,cy,s] of crista){for(const yy of [-1,1]){const x=cx+yy*7,y=cy+s*-w*0.3;ctx.save();ctx.translate(x+yy*5,y);ctx.rotate(simT*6);for(let k=0;k<3;k++){ctx.fillStyle='rgba(255,212,59,.95)';ctx.beginPath();ctx.arc(Math.cos(k*2.09)*3,Math.sin(k*2.09)*3,2,0,TAU);ctx.fill()}ctx.restore()}}
+  for(const p of D.p){if(!paused)p.t+=0.01;if(p.t>1){p.t=0;p.c=Math.floor(Math.random()*crista.length)}const [cx,cy,s]=crista[p.c%crista.length];const x=cx+12,y=cy+s*(-w*0.3)+(p.t-0.5)*30*s;txt('H⁺',x,y,'rgba(255,255,255,.75)','left',8)}
+  if(!D.atp)D.atp=[];if(!paused&&Math.random()<0.06){const [cx,cy,s]=crista[Math.floor(Math.random()*crista.length)];D.atp.push({x:cx+10,y:cy+s*-w*0.3,t:0})}
+  for(let i=D.atp.length-1;i>=0;i--){const a=D.atp[i];if(!paused)a.t+=0.012;if(a.t>1){D.atp.splice(i,1);continue}txt('ATP',a.x+a.t*14,a.y-a.t*16,`rgba(255,212,59,${1-a.t})`,'left',9,'700')}
+  callout(CX-l/2+w*0.1,CY-w*0.6,CX-l/2+10,CY-w*1.35,'Membrana externa','#ff5c8a');const c0=crista[0];callout(c0[0],c0[1]-10,c0[0]-10,CY+w*1.35,'Cristas (membrana interna)','#ff8fab');
+  callout(CX-0.3*l,CY+0.2*w,CX-0.2*l,CY+w*1.6,'DNA mitocondrial','#4dabf7');const c1=crista[2]||c0;callout(c1[0]+12,c1[1]+c1[2]*-w*0.3,CX+l*0.3,CY-w*1.35,'ATP sintase (gira)','#ffd43b');callout(CX+l*0.18,CY+w*0.05,CX+l*0.32,CY+w*1.35,'Matriz','#ffc9d6');
+  scaleBar(l/1.5*0.2,'200 nm')},
+ cloroplasto(){const lx=Math.min(W*0.42,H*0.6),ly=lx*0.5;blob(CX,CY,lx*1.1,'#2b8a3e',0.3);
+  for(const k of [0,1])glow(()=>{ctx.beginPath();ctx.ellipse(CX,CY,lx+k*6,ly+k*6,0,0,TAU)},'#51cf66',1.4,1);
+  const grana=[[-0.55,0.05],[-0.2,-0.25],[0.15,0.2],[0.5,-0.1],[-0.05,0.35]];
+  grana.forEach(([gx,gy],i)=>{const x=CX+gx*lx,y=CY+gy*ly*1.3;for(let k=0;k<7;k++){ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle='rgba(81,207,102,.55)';ctx.beginPath();ctx.ellipse(x,y-12+k*4,14,2.2,0,0,TAU);ctx.fill();ctx.restore()}
+    if(i<grana.length-1){const [hx,hy]=grana[i+1];glow(()=>{ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(CX+hx*lx,CY+hy*ly*1.3)},'#8ce99a',0.8,0.6)}});
+  blob(CX+0.35*lx,CY+0.45*ly,10,'#f8f9fa',0.4);glow(()=>{ctx.beginPath();ctx.arc(CX-0.35*lx,CY-0.5*ly,5,0,TAU)},'#4dabf7',1,0.9);
+  if(!D.ph)D.ph=[];if(!paused&&Math.random()<0.05)D.ph.push({x:CX+(Math.random()-.5)*lx*1.4,t:0});
+  for(let i=D.ph.length-1;i>=0;i--){const p=D.ph[i];if(!paused)p.t+=0.02;if(p.t>1){D.ph.splice(i,1);continue}const y=CY-ly*2.2+p.t*ly*1.6;glow(()=>{ctx.beginPath();for(let k=0;k<20;k++){const yy=y+k*2;ctx.lineTo(p.x+Math.sin(k*0.9+simT*8)*3,yy)}},'#ffe066',1,1-p.t*0.5)}
+  if(!D.o2)D.o2=[];if(!paused&&Math.random()<0.04){const g=grana[Math.floor(Math.random()*grana.length)];D.o2.push({x:CX+g[0]*lx,y:CY+g[1]*ly*1.3,t:0})}
+  for(let i=D.o2.length-1;i>=0;i--){const o=D.o2[i];if(!paused)o.t+=0.008;if(o.t>1){D.o2.splice(i,1);continue}const y=o.y-o.t*ly*1.8;ctx.strokeStyle=`rgba(200,230,255,${1-o.t})`;ctx.beginPath();ctx.arc(o.x+Math.sin(o.t*10)*4,y,4,0,TAU);ctx.stroke();txt('O₂',o.x+8,y+3,`rgba(200,230,255,${1-o.t})`,'left',8)}
+  callout(CX-0.55*lx,CY+0.05*ly*1.3,CX-lx*0.9,CY+ly*1.5,'Granum (pilha de tilacoides)','#8ce99a');callout(CX+0.3*lx,CY-0.45*ly,CX+lx*0.6,CY-ly*1.5,'Estroma','#b2f2bb');callout(CX+lx,CY,CX+lx*0.95,CY+ly*1.2,'Envelope duplo','#51cf66');
+  callout(CX+0.35*lx,CY+0.45*ly,CX+lx*0.2,CY+ly*1.8,'Grão de amido','#f8f9fa');callout(CX-0.35*lx,CY-0.5*ly,CX-lx*0.75,CY-ly*1.6,'DNA do cloroplasto','#4dabf7');txt('luz',CX-lx*0.7,CY-ly*2.1,'#ffe066','left',10,'700');
+  scaleBar(lx*2/6,'1 µm')},
+ re(){const w=Math.min(W*0.8,H*0.9);const x0=CX-w/2;
+  for(let k=0;k<5;k++){const y=CY-70+k*30;glow(()=>{ctx.beginPath();ctx.moveTo(x0,y);for(let i=0;i<=40;i++){const x=x0+w*0.62*i/40;ctx.lineTo(x,y+Math.sin(i*0.5+k+simT)*2)}for(let i=40;i>=0;i--){const x=x0+w*0.62*i/40;ctx.lineTo(x,y+10+Math.sin(i*0.5+k+simT)*2)}ctx.closePath()},'#69db7c',1.2,1);
+    fillGlow(()=>{ctx.beginPath();ctx.rect(x0,y+1,w*0.62,8)},'#2b8a3e',0.15);
+    for(let i=0;i<16;i++){const x=x0+8+i*(w*0.6/16);for(const s of [-1,1]){const yy=s<0?y-4:y+14;ctx.fillStyle='rgba(255,169,77,.95)';ctx.beginPath();ctx.arc(x,yy,3,0,TAU);ctx.fill();
+      if(i%4===(k%4)&&s<0){glow(()=>{ctx.beginPath();ctx.moveTo(x,yy);for(let q=1;q<6;q++)ctx.lineTo(x+Math.sin(q+simT*3)*2,yy+q*2)},'#ffd43b',0.7,0.8)}}}}
+  for(let k=0;k<6;k++)glow(()=>{ctx.beginPath();for(let i=0;i<=30;i++){const u=i/30;const x=x0+w*0.66+u*w*0.34,y=CY-60+k*24+Math.sin(u*9+k*2+simT)*12;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}},'#8ce99a',2.2,0.7);
+  callout(x0+w*0.3,CY-74,x0+w*0.2,CY-120,'RE rugoso (com ribossomos)','#69db7c');callout(x0+w*0.85,CY+20,x0+w*0.8,CY+110,'RE liso (túbulos)','#8ce99a');callout(x0+8+4*(w*0.6/16),CY-74,x0+w*0.48,CY-140,'Ribossomo','#ffa94d');callout(x0+w*0.4,CY+55,x0+w*0.3,CY+120,'Lúmen (interior)','#2b8a3e');
+  callout(x0+8+(w*0.6/16)*1,CY-44+1,x0-4+w*0.1,CY+140,'Proteína nascente','#ffd43b');
+  scaleBar(w*0.62/4,'200 nm')},
+ golgi(){const s=Math.min(W,H)*0.5;const cols=['#69db7c','#a9e34b','#ffe066','#ffd43b','#ffa94d','#ff922b'];
+  for(let k=0;k<6;k++){const y=CY-75+k*28;glow(()=>{ctx.beginPath();for(let i=0;i<=30;i++){const u=i/30-0.5;const x=CX+u*s*1.3*(1-k*0.04),yy=y+u*u*s*0.5;i?ctx.lineTo(x,yy):ctx.moveTo(x,yy)}for(let i=30;i>=0;i--){const u=i/30-0.5;const x=CX+u*s*1.3*(1-k*0.04),yy=y+12+u*u*s*0.5;ctx.lineTo(x,yy)}ctx.closePath()},cols[k],1.4,1)}
+  if(!D.v)D.v=[...Array(12)].map((_,i)=>({t:Math.random(),side:i%2,x:(Math.random()-.5)*s*1.1}));
+  for(const v of D.v){if(!paused)v.t+=0.004;if(v.t>1){v.t=0;v.x=(Math.random()-.5)*s*1.1}const x=CX+v.x;let y,col;if(v.side===0){y=CY-170+v.t*85;col='#69db7c'}else{y=CY+90+v.t*90;col='#ff922b'}
+    blob(x,y,8,col,0.5);ctx.strokeStyle=hexA(col,.95);ctx.beginPath();ctx.arc(x,y,4,0,TAU);ctx.stroke()}
+  txt('face CIS · chega do RE ↓',CX,CY-120,'#69db7c','center',10,'700');txt('face TRANS · vesículas saem ↓',CX,CY+120,'#ff922b','center',10,'700');
+  callout(CX+s*0.55,CY-20,CX+s*0.8,CY+40,'Cisternas','#ffe066');scaleBar(s*1.3/5,'200 nm')},
+ lisossomo(){const r=Math.min(W,H)*0.3;blob(CX,CY,r*1.1,'#0c8599',0.4);glow(()=>{ctx.beginPath();ctx.arc(CX,CY,r,0,TAU)},'#22d3ee',2,1);
+  for(let i=0;i<10;i++){const a=i/10*TAU+simT*0.05;const x=CX+Math.cos(a)*r,y=CY+Math.sin(a)*r;ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.fillStyle='rgba(165,243,252,.9)';ctx.fillRect(-4,-6,8,12);ctx.restore();
+    const t=(simT*0.6+i*0.37)%1;txt('H⁺',x-Math.cos(a)*t*r*0.5,y-Math.sin(a)*t*r*0.5,`rgba(255,255,255,${1-t})`,'center',8)}
+  if(!D.e)D.e=[...Array(9)].map(()=>({a:Math.random()*TAU,d:Math.random()*0.6,ph:Math.random()*6}));
+  for(const e of D.e){const x=CX+Math.cos(e.a+simT*0.3)*e.d*r,y=CY+Math.sin(e.a+simT*0.3)*e.d*r;const mo=0.3+0.3*Math.abs(Math.sin(simT*4+e.ph));ctx.fillStyle='rgba(34,211,238,.95)';ctx.beginPath();ctx.moveTo(x,y);ctx.arc(x,y,7,mo,TAU-mo);ctx.closePath();ctx.fill()}
+  seed=3;for(let i=0;i<14;i++){const a=rnd()*TAU,d=rnd()*0.6*r;ctx.fillStyle=`rgba(255,146,43,${0.4+0.4*Math.sin(simT+i)})`;ctx.fillRect(CX+Math.cos(a)*d,CY+Math.sin(a)*d,3,3)}
+  txt('pH 4,5–5',CX,CY+5,'#fff','center',15,'700');txt('citoplasma: pH ~7,2',CX+r*1.05,CY-r*1.05,'rgba(200,215,255,.7)','left',9);
+  callout(CX+r*0.7,CY-r*0.72,CX+r*0.95,CY-r*0.5,'Bomba de prótons','#a5f3fc');callout(CX-r*0.3,CY+r*0.35,CX-r*1.1,CY+r*1.05,'Enzimas digestivas','#22d3ee');callout(CX+r*0.2,CY+r*0.3,CX+r*0.9,CY+r*1.05,'Material sendo digerido','#ff922b');
+  scaleBar(r*2/5,'100 nm')},
+ ribossomo(){const s=Math.min(W,H)*0.3;const MRNA='AUGGUGCAUCUGACUCCUGAGGAGAAGUCUGCCGUUACUGCCCUGUGGGGCAAGGUGAAC';const AA='MVHLTPEEKSAVTALWGKVN';const AA3={M:'Met',V:'Val',H:'His',L:'Leu',T:'Thr',P:'Pro',E:'Glu',K:'Lys',S:'Ser',A:'Ala',W:'Trp',G:'Gly',N:'Asn'};
+  const step=1.4,ph=(simT/step),idx=Math.floor(ph)%AA.length,fr=ph%1;
+  // mRNA
+  const cw=26,y0=CY+s*0.28;ctx.font='700 11px JetBrains Mono, monospace';
+  for(let c=-6;c<8;c++){const ci=idx+c;if(ci<0||ci>=20)continue;const x=CX+(c-fr*(fr>0.7?1:0)*0)*cw*3+(-(fr>0.7?(fr-0.7)/0.3:0))*cw*3;
+    const cod=MRNA.substr(ci*3,3);for(let k=0;k<3;k++){const b=cod[k];txt(b,x+k*cw-cw,y0+16,{A:'#39e58c',U:'#c77dff',G:'#ffc53d',C:'#3fa9ff'}[b],'center',11,'700')}}
+  glow(()=>{ctx.beginPath();ctx.moveTo(0,y0+4);ctx.lineTo(W,y0+4)},'#c77dff',1.2,0.8);
+  // subunits
+  ctx.save();ctx.globalCompositeOperation='lighter';let g=ctx.createRadialGradient(CX,CY-s*0.15,0,CX,CY-s*0.15,s*0.75);g.addColorStop(0,'rgba(255,169,77,.45)');g.addColorStop(1,'rgba(255,169,77,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(CX,CY-s*0.12,s*0.75,s*0.42,0,0,TAU);ctx.fill();
+  g=ctx.createRadialGradient(CX,CY+s*0.38,0,CX,CY+s*0.38,s*0.6);g.addColorStop(0,'rgba(255,212,59,.4)');g.addColorStop(1,'rgba(255,212,59,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(CX,CY+s*0.4,s*0.6,s*0.2,0,0,TAU);ctx.fill();ctx.restore();
+  glow(()=>{ctx.beginPath();ctx.ellipse(CX,CY-s*0.12,s*0.75,s*0.42,0,0,TAU)},'#ffa94d',1.5,0.9);glow(()=>{ctx.beginPath();ctx.ellipse(CX,CY+s*0.4,s*0.6,s*0.2,0,0,TAU)},'#ffd43b',1.5,0.9);
+  txt('60S',CX-s*0.6,CY-s*0.35,'#ffa94d','left',10,'700');txt('40S',CX-s*0.55,CY+s*0.55,'#ffd43b','left',10,'700');
+  // tRNAs in A and P sites
+  const tr=(x,y,aa,al)=>{ctx.globalAlpha=al;glow(()=>{ctx.beginPath();ctx.moveTo(x-10,y);ctx.lineTo(x-10,y-s*0.35);ctx.lineTo(x+14,y-s*0.35)},'#ff6b9a',2.2,1);blob(x+14,y-s*0.35,10,'#ffffff',0.5);txt(aa,x+14,y-s*0.35+4,'#fff','center',9,'700');ctx.globalAlpha=1};
+  const enter=Math.min(1,fr/0.5);tr(CX-cw*0.5,y0-2,AA3[AA[idx]],1);if(idx+1<20)tr(CX+cw*2.5+(1-enter)*80,y0-2-(1-enter)*60,AA3[AA[idx+1]],enter);
+  // polypeptide chain exiting
+  const chain=AA.slice(0,idx+1).split('').reverse();chain.forEach((a,i)=>{const t=i*0.55;const x=CX+4+Math.sin(t+simT*0.5)*18-i*6,y=CY-s*0.6-i*12;blob(x,y,9,'#9fe870',0.35);ctx.strokeStyle='rgba(159,232,112,.9)';ctx.beginPath();ctx.arc(x,y,5,0,TAU);ctx.stroke();txt(a,x,y+3,'#fff','center',8,'700')});
+  txt(`traduzindo β-globina · aminoácido ${idx+1}: ${AA3[AA[idx]]}`,CX,74,'rgba(200,215,255,.8)','center',9.5);
+  callout(CX+cw*2.5+14,y0-2-s*0.35,CX+s*0.9,CY-s*0.75,'tRNA trazendo aminoácido','#ff6b9a');callout(CX+s*0.6,y0+4,CX+s*0.75,y0+46,'mRNA (códons)','#c77dff');callout(CX-10,CY-s*0.75,CX-s*0.7,CY-s*1.05,'Proteína nascendo','#9fe870');
+  scaleBar(s*1.5/2.75,'10 nm')},
+ membrana(){const y=CY,hw=W*0.55;const n=Math.floor(W/11);const t=simT;
+  // outside glycocalyx
+  txt('FORA DA CÉLULA',14,CY-H*0.33,'rgba(200,215,255,.6)','left',9,'700');txt('CITOPLASMA',14,CY+H*0.36,'rgba(200,215,255,.6)','left',9,'700');
+  const yy=x=>y+Math.sin(x*0.02+t*0.8)*4;
+  const prot=[0.22,0.5,0.78].map(f=>f*W);
+  for(let i=0;i<n;i++){const x=i*11+5+Math.sin(t*0.7+i)*1.2;if(prot.some(p=>Math.abs(p-x)<22))continue;const yc=yy(x);const chol=i%7===3;
+    for(const s of [-1,1]){const hy=yc+s*26;ctx.fillStyle=chol&&s<0?'rgba(255,212,59,.95)':'rgba(177,151,252,.95)';ctx.beginPath();ctx.arc(x,hy,4.2,0,TAU);ctx.fill();
+      for(const dx of [-1.6,1.6])glow(()=>{ctx.beginPath();ctx.moveTo(x+dx,hy-s*4);for(let k=1;k<=5;k++)ctx.lineTo(x+dx+Math.sin(k*1.4+t*2+i)*1.2,hy-s*(4+k*4))},'#63e6be',0.6,0.55)}}
+  prot.forEach((px,i)=>{const yc=yy(px);ctx.save();ctx.globalCompositeOperation='lighter';const g=ctx.createRadialGradient(px,yc,0,px,yc,30);g.addColorStop(0,'rgba(255,135,135,.55)');g.addColorStop(1,'rgba(255,135,135,.05)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(px,yc,20,40,0,0,TAU);ctx.fill();ctx.restore();
+    glow(()=>{ctx.beginPath();ctx.ellipse(px,yc,20,40,0,0,TAU)},'#ff8787',1.4,1);
+    if(i===1){glow(()=>{ctx.beginPath();ctx.moveTo(px-4,yc-40);ctx.lineTo(px-4,yc+40);ctx.moveTo(px+4,yc-40);ctx.lineTo(px+4,yc+40)},'#ffffff',0.6,0.4);const q=(t*0.4)%1;blob(px,yc-60+q*120,7,'#74c0fc',0.9);txt('Na⁺',px+10,yc-60+q*120,'#74c0fc','left',8)}
+    if(i!==1){let gx=px,gy=yc-40;glow(()=>{ctx.beginPath();ctx.moveTo(gx,gy);for(let k=1;k<6;k++)ctx.lineTo(gx+Math.sin(k*1.7+i)*8,gy-k*9)},'#ffd43b',1.2,0.9);for(let k=1;k<6;k++){ctx.fillStyle='rgba(255,212,59,.9)';ctx.beginPath();ctx.arc(gx+Math.sin(k*1.7+i)*8,gy-k*9,3,0,TAU);ctx.fill()}}});
+  callout(prot[1],yy(prot[1]),prot[1]+60,CY-H*0.3,'Canal iônico','#ff8787');callout(prot[0],yy(prot[0])-80,prot[0]-20,CY-H*0.36,'Glicoproteína (açúcares)','#ffd43b');
+  const cx=(()=>{for(let i=0;i<n;i++){if(i%7===3){const x=i*11+5;if(!prot.some(p=>Math.abs(p-x)<22)&&x>W*0.55&&x<W*0.72)return x}}return W*0.6})();callout(cx,yy(cx)-26,cx+30,CY+H*0.28,'Colesterol','#ffd43b');
+  callout(W*0.93,yy(W*0.93)-26,W*0.85,CY-H*0.2,'Cabeça polar','#b197fc');callout(W*0.9,yy(W*0.9),W*0.8,CY+H*0.2,'Caudas apolares','#63e6be');
+  scaleBar(52*5/5.2,'5 nm')},
+ citoesqueleto(){const y1=CY-H*0.18,y2=CY+H*0.08,y3=CY+H*0.27;
+  // microtubule: 25 nm tube with tubulin dimers
+  const tw=46;for(let i=0;i<Math.ceil(W/9);i++){for(let r=0;r<6;r++){const x=i*9+(r%2)*4.5,y=y1-tw/2+r*(tw/5);ctx.fillStyle=(i+r)%2?'rgba(232,241,255,.75)':'rgba(116,192,252,.75)';ctx.beginPath();ctx.arc(x,y,3.6,0,TAU);ctx.fill()}}
+  glow(()=>{ctx.beginPath();ctx.moveTo(0,y1-tw/2-5);ctx.lineTo(W,y1-tw/2-5);ctx.moveTo(0,y1+tw/2+5);ctx.lineTo(W,y1+tw/2+5)},'#e8f1ff',0.6,0.4);
+  // kinesin walking (8 nm steps) with cargo
+  const stepPx=16,sp=0.9;const t=simT*sp,k=Math.floor(t),f=t%1;const base=((k*stepPx)%(W+120))-60;const lead=(k%2);
+  const footA=base+(lead?stepPx:0)+(lead?0:f*stepPx*2),footB=base+(lead?f*stepPx*2:stepPx);
+  const hy=y1-tw/2-6;const fa=Math.min(footA,footB),fb=Math.max(footA,footB);const lift=Math.sin(f*Math.PI)*8;
+  const top=[(fa+fb)/2,hy-46];
+  glow(()=>{ctx.beginPath();ctx.moveTo(fa,hy-(lead?0:lift));ctx.lineTo(top[0],top[1]+20);ctx.lineTo(fb,hy-(lead?lift:0))},'#ff922b',2,1);
+  blob(fa,hy-(lead?0:lift),8,'#ff922b',0.9);blob(fb,hy-(lead?lift:0),8,'#ff922b',0.9);glow(()=>{ctx.beginPath();ctx.moveTo(top[0],top[1]+20);ctx.lineTo(top[0],top[1]-6)},'#ff922b',1.6,1);
+  blob(top[0],top[1]-28,26,'#ffd43b',0.4);glow(()=>{ctx.beginPath();ctx.arc(top[0],top[1]-28,20,0,TAU)},'#ffd43b',1.4,1);txt('vesícula',top[0],top[1]-25,'#fff','center',8);
+  if(f<0.15)txt('+1 ATP',fb+10,hy-16,'rgba(255,212,59,.9)','left',8.5,'700');
+  // actin double helix (7 nm)
+  for(let i=0;i<Math.ceil(W/7);i++){const x=i*7;for(const s of [0,Math.PI]){const yy=y2+Math.sin(x*0.06+s+simT*0.2)*6;ctx.fillStyle=`rgba(255,107,107,${0.55+0.35*Math.cos(x*0.06+s)})`;ctx.beginPath();ctx.arc(x,yy,3.6,0,TAU);ctx.fill()}}
+  // intermediate filament rope (10 nm)
+  for(let s=0;s<4;s++)glow(()=>{ctx.beginPath();for(let i=0;i<=80;i++){const x=i/80*W;ctx.lineTo(x,y3+Math.sin(x*0.05+s*1.57)*5)}},'#9fe870',1.2,0.75);
+  txt('MICROTÚBULO · 25 nm · tubulina α/β',12,y1+tw/2+20,'#e8f1ff','left',9.5,'700');txt('ACTINA · 7 nm · dupla hélice',12,y2+22,'#ff8787','left',9.5,'700');txt('FILAMENTO INTERMEDIÁRIO · 10 nm',12,y3+20,'#9fe870','left',9.5,'700');
+  callout(fb,hy-8,Math.min(W-90,fb+60),hy-80,'Cinesina (passos de 8 nm)','#ff922b');scaleBar(tw,'25 nm')},
+ centriolo(){const r=Math.min(W,H)*0.2;const cx=CX-r*0.9,cy=CY;
+  for(let i=0;i<9;i++){const a=i/9*TAU+simT*0.15;for(let k=0;k<3;k++){const rr=r*(0.78+k*0.0)+0;const x=cx+Math.cos(a)*r*0.8+Math.cos(a+1.2)*k*r*0.16,y=cy+Math.sin(a)*r*0.8+Math.sin(a+1.2)*k*r*0.16;blob(x,y,r*0.12,'#ffa8a8',0.5);glow(()=>{ctx.beginPath();ctx.arc(x,y,r*0.075,0,TAU)},'#ffa8a8',1.2,1)}}
+  txt('corte transversal',cx,cy+r*1.35,'rgba(200,215,255,.75)','center',9.5,'700');txt('9 × 3',cx,cy+4,'#fff','center',14,'700');
+  const sx=CX+r*1.1,sy=CY;ctx.save();ctx.translate(sx,sy);for(const [ang,len] of [[0,r*1.6],[Math.PI/2,r*1.6]]){ctx.save();ctx.rotate(ang+0.3*Math.sin(simT*0.2));for(let k=-4;k<=4;k++)glow(()=>{ctx.beginPath();ctx.moveTo(-len/2,k*r*0.06);ctx.lineTo(len/2,k*r*0.06)},'#ffa8a8',0.8,0.6);ctx.restore()}ctx.restore();
+  txt('par perpendicular',sx,sy+r*1.35,'rgba(200,215,255,.75)','center',9.5,'700');callout(cx+Math.cos(simT*0.15)*r*0.8,cy+Math.sin(simT*0.15)*r*0.8,cx-r*0.2,cy-r*1.6,'Trinca de microtúbulos','#ffa8a8');scaleBar(r*2/2.5,'100 nm')},
+ peroxissomo(){const r=Math.min(W,H)*0.28;blob(CX,CY,r*1.1,'#e67700',0.35);glow(()=>{ctx.beginPath();ctx.arc(CX,CY,r,0,TAU)},'#fcc419',2,1);
+  ctx.save();ctx.translate(CX,CY);ctx.rotate(0.3);for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){ctx.fillStyle='rgba(252,196,25,.85)';ctx.fillRect(i*8-2,j*8-2,4,4)}ctx.restore();
+  if(!D.b)D.b=[];if(!paused&&Math.random()<0.07){const a=Math.random()*TAU;D.b.push({a,t:0})}
+  for(let i=D.b.length-1;i>=0;i--){const b=D.b[i];if(!paused)b.t+=0.012;if(b.t>1){D.b.splice(i,1);continue}const d=r*(0.95-b.t*0.6);const x=CX+Math.cos(b.a)*d,y=CY+Math.sin(b.a)*d;
+    if(b.t<0.5)txt('H₂O₂',x,y,`rgba(255,255,255,${1-b.t})`,'center',8.5,'700');else{ctx.strokeStyle=`rgba(200,230,255,${(1-b.t)*2})`;ctx.beginPath();ctx.arc(x,y-((b.t-.5)*40),4,0,TAU);ctx.stroke();txt('O₂',x+7,y-((b.t-.5)*40)+3,`rgba(200,230,255,${(1-b.t)*2})`,'left',8)}}
+  txt('2 H₂O₂ → 2 H₂O + O₂',CX,CY+r*1.3,'#fcc419','center',12,'700');callout(CX+12,CY-12,CX+r*0.95,CY-r*1.1,'Núcleo cristalino (catalase)','#fcc419');scaleBar(r*2/5,'100 nm')},
+ vacuolo(){const w=Math.min(W*0.42,H*0.42),h=w*0.8;const p=1+0.02*Math.sin(simT*1.2);
+  glow(()=>{ctx.beginPath();ctx.rect(CX-w-18,CY-h-18,(w+18)*2,(h+18)*2)},'#a9e34b',4,0.5);
+  ctx.save();ctx.beginPath();ctx.rect(CX-w-18,CY-h-18,(w+18)*2,(h+18)*2);ctx.clip();for(let i=-20;i<20;i++){ctx.strokeStyle='rgba(169,227,75,.12)';ctx.beginPath();ctx.moveTo(CX-w-30+i*14,CY-h-30);ctx.lineTo(CX-w-30+i*14+60,CY+h+30);ctx.stroke()}ctx.restore();
+  glow(()=>{ctx.beginPath();ctx.rect(CX-w-6,CY-h-6,(w+6)*2,(h+6)*2)},'#b197fc',1.2,0.9);
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle='rgba(116,192,252,.16)';ctx.beginPath();ctx.ellipse(CX,CY,w*0.88*p,h*0.85*p,0,0,TAU);ctx.fill();ctx.restore();glow(()=>{ctx.beginPath();ctx.ellipse(CX,CY,w*0.88*p,h*0.85*p,0,0,TAU)},'#74c0fc',1.6,1);
+  for(let i=0;i<12;i++){const a=i/12*TAU;const x=CX+Math.cos(a)*w*0.6,y=CY+Math.sin(a)*h*0.58;const L=14+6*Math.sin(simT*1.2);ctx.strokeStyle='rgba(255,255,255,.7)';ctx.fillStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*L,y+Math.sin(a)*L);ctx.stroke()}
+  for(let i=0;i<4;i++){const y=CY-h*0.6+i*h*0.4;ctx.fillStyle='#03050c';ctx.fillRect(CX+w+2,y-3,22,6);glow(()=>{ctx.beginPath();ctx.moveTo(CX+w,y);ctx.lineTo(CX+w+26,y)},'#b197fc',0.8,0.8)}
+  txt('H₂O',CX-w*0.3,CY-h*0.1,'rgba(165,216,255,.8)','center',11,'700');txt('pressão de turgor',CX,CY+h*0.15,'#fff','center',10,'700');
+  callout(CX-w*0.88,CY,CX-w*0.6,CY-h*1.35,'Tonoplasto','#74c0fc');callout(CX-w-18,CY+h*0.5,CX-w*0.6,CY+h*1.35,'Parede de celulose','#a9e34b');callout(CX+w+14,CY-h*0.2,CX+w*0.6,CY-h*1.35,'Plasmodesmos','#b197fc');scaleBar(w*2/4,'5 µm')}
+};
+
+// ================= UI + LOOP =================
+const chipsEl=document.getElementById('chips');
+function renderChips(){const ord=ctype==='animal'?ORDER_A:ORDER_V;chipsEl.innerHTML=`<button data-k="celula">◎ CÉLULA</button>`+ord.map(k=>`<button data-k="${k}"><i style="background:${ORG[k].c}"></i>${ORG[k].t}</button>`).join('');mark()}
+function mark(){[...chipsEl.children].forEach(b=>b.classList.toggle('on',b.dataset.k===view));const on=chipsEl.querySelector('.on');if(on)on.scrollIntoView({inline:'center',block:'nearest'})}
+function info(){const k=view==='celula'?'celula_'+ctype:view;const o=ORG[k];document.getElementById('hT').textContent=o.t;document.getElementById('hS').textContent=o.s.toUpperCase();
+  document.getElementById('hZ').textContent=view==='celula'?'toque numa organela':'toque para voltar';document.getElementById('desc').innerHTML=o.d;
+  document.getElementById('kv').innerHTML=o.kv.map(([a,b])=>`<div>${a}</div><div>${b}</div>`).join('');
+  document.getElementById('links').innerHTML=(o.links.length?o.links:[['Tabela periódica','../tabela-periodica/index.html']]).map(([t,h])=>`<a href="${h}">${t} →</a>`).join('');
+  const ord=ctype==='animal'?ORDER_A:ORDER_V;document.getElementById('legend').innerHTML=ord.map(k=>`<span><i style="background:${ORG[k].c}"></i>${ORG[k].t}</span>`).join('');
+  document.getElementById('hBL').innerHTML=view==='celula'?`${ctype==='animal'?'animal':'vegetal'} · ~${ctype==='animal'?20:50} µm`:`escala: <b>${o.bar[0]} ${o.bar[1]}</b>`;
+  document.getElementById('hBR').innerHTML=view==='celula'?'esquema em escala aproximada':(o.veg?'só em vegetais':'')}
+function go(k,pt){if(k===view)return;prevView=view;view=k;trans=0;zoomPt=pt||[W/2,H/2];D={};mark();info();try{history.replaceState(null,'','#'+(k==='celula'?ctype:k))}catch(e){}}
+chipsEl.onclick=ev=>{const b=ev.target.closest('button');if(b)go(b.dataset.k)};
+document.getElementById('types').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;ctype=b.dataset.t;L=null;[...ev.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));
+  if(view!=='celula'&&((ctype==='animal'&&!ORDER_A.includes(view))||(ctype==='vegetal'&&!ORDER_V.includes(view))))view='celula';renderChips();info();try{history.replaceState(null,'','#'+(view==='celula'?ctype:view))}catch(e){}};
+cv.addEventListener('click',ev=>{const r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;
+  if(view==='celula'){let best=null,bd=1e9;for(const h of hits){const d=Math.hypot(h.x-x,h.y-y)-h.r;if(d<bd){bd=d;best=h}}if(best&&bd<14)go(best.k,[best.x,best.y])}else go('celula')});
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function render(v,buf){ctx=buf.getContext('2d');if(v==='celula')drawCell();else{frameDetail();DRAW[v]()}}
+function frame(now){const dt=Math.min(.05,(now-(t0||now))/1000);t0=now;if(!paused)simT+=dt;mctx.clearRect(0,0,W,H);
+  if(trans<1){trans=Math.min(1,trans+dt/1.0);const k=ease(trans);const inward=prevView==='celula';render(prevView,bufB);render(view,bufA);
+    const zx=zoomPt[0],zy=zoomPt[1];const dr=(buf,s,a,px,py)=>{mctx.save();mctx.globalAlpha=a;mctx.translate(px,py);mctx.scale(s,s);mctx.translate(-px,-py);mctx.drawImage(buf,0,0,W,H);mctx.restore()};
+    if(inward){dr(bufB,1+k*9,1-k,zx,zy);dr(bufA,0.1+0.9*k,k,W/2,H/2)}else{dr(bufB,1-k*0.9,1-k,W/2,H/2);dr(bufA,4-3*k,k,W/2,H/2)}
+    mctx.fillStyle=`rgba(255,255,255,${0.1*Math.sin(k*Math.PI)})`;mctx.fillRect(0,0,W,H)}
+  else{render(view,bufA);mctx.drawImage(bufA,0,0,W,H)}
+  requestAnimationFrame(frame)}
+// initial state from hash
+{const h=location.hash.slice(1);if(h==='vegetal'||ORG[h]&&ORG[h].veg){ctype='vegetal';document.querySelectorAll('#types button').forEach(b=>b.classList.toggle('on',b.dataset.t==='vegetal'))}if(ORG[h]&&!h.startsWith('celula'))view=h}
+renderChips();info();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

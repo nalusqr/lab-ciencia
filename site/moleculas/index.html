@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moléculas · LAB</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+.tabs{display:flex;gap:4px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
+.tabs a{flex:1;text-align:center;text-decoration:none;font-size:10px;letter-spacing:.1em;padding:9px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--dim);white-space:nowrap}
+.tabs a.on{color:var(--amber);border-color:var(--amber)}
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:6px}
+.chips .gh{flex:none;align-self:center;font-size:8.5px;letter-spacing:.14em;color:var(--dim);padding:0 4px 0 6px}
+.chips a{flex:none;text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--panel);color:var(--txt);font-size:11px}
+.chips a b{font-family:'Space Grotesk',sans-serif;font-size:14px;color:#fff;margin-right:5px}
+.chips a.on{border-color:var(--amber);box-shadow:0 0 12px rgba(255,179,71,.2)}
+#view{position:relative;height:min(62vh,560px);min-height:360px;padding:0;overflow:hidden;background:radial-gradient(55% 50% at 50% 48%,rgba(80,120,255,.13),transparent 70%),radial-gradient(120% 90% at 50% 50%,rgba(8,12,26,.6),rgba(3,5,12,.95)),#080c1a}
+#view canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+.hud{position:absolute;pointer-events:none;font-size:9px;letter-spacing:.06em;line-height:1.5;color:var(--dim)}
+.hud b{color:var(--txt)}.tl{top:10px;left:12px}.tr{top:10px;right:12px;text-align:right}.bl{bottom:10px;left:12px}.br{bottom:10px;right:12px;text-align:right}
+.big{font-family:'Space Grotesk',sans-serif;font-size:26px;color:#fff}
+.btns{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
+.btns button{flex:1 0 auto;font:inherit;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--dim);cursor:pointer}
+.btns button.on{color:var(--amber);border-color:var(--amber)}
+.btns.vib button.on{color:#7fd3ff;border-color:#7fd3ff}
+.grid2{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.grid2 .box{margin:0;min-width:0}
+.atoms{display:flex;flex-wrap:wrap;gap:6px}
+.atoms a{text-decoration:none;display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;padding:6px 9px;background:var(--panel);font-size:11px}
+.atoms i{width:14px;height:14px;border-radius:50%;display:inline-block;box-shadow:inset -3px -3px 5px rgba(0,0,0,.4)}
+.note{border-left:3px solid var(--amber);line-height:1.55;font-size:11.5px}
+.sel{min-height:20px;font-size:11px}
+.sel a{color:var(--amber)}
+.tag{display:inline-block;font-size:9px;padding:2px 6px;border:1px solid var(--line);border-radius:4px;margin:2px 4px 0 0;color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tabs"><a href="../index.html">LAB</a><a href="../dna/index.html">DNA</a><a href="../tabela-periodica/index.html">TABELA</a><a class="on" href="index.html">MOLÉCULAS</a><a href="../biomoleculas/index.html">BIO</a><a href="../celula/index.html">CÉLULA</a></div>
+
+  <div class="box head">
+    <div>
+      <div class="k" style="color:var(--amber)">MÓDULO 03 · QUÍMICA ESTRUTURAL</div>
+      <h1>MOLÉCULAS EM 3D</h1>
+      <div class="sub">Átomos nas posições reais, com comprimentos e ângulos de ligação medidos. Arraste para girar.</div>
+    </div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="box" id="view">
+    <canvas id="cv"></canvas>
+    <div class="hud tl"><span class="big" id="hf">—</span><br><b id="hn">—</b></div>
+    <div class="hud tr"><span class="dot"></span><b id="hm">BOLA E VARETA</b><br>arraste para girar</div>
+    <div class="hud bl" id="hbl"></div>
+    <div class="hud br" id="hbr"></div>
+  </div>
+
+  <div class="btns" id="modes">
+    <button data-m="0" class="on">⚬ BOLA E VARETA</button>
+    <button data-m="1">● ESPAÇO PREENCHIDO</button>
+    <button data-m="2">± POLARIDADE</button>
+    <button data-t="med">📐 MEDIDAS</button>
+  </div>
+  <div class="btns vib" id="vibs"></div>
+
+  <div class="box sel" id="sel"><span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span></div>
+
+  <div class="box note" id="fato"></div>
+
+  <div class="grid2">
+    <div class="box">
+      <h2><em>I</em>FICHA DA MOLÉCULA</h2>
+      <div class="cap" id="apx">valores experimentais de referência</div>
+      <div class="kv" id="kv"></div>
+    </div>
+    <div class="box">
+      <h2><em>II</em>DO QUE É FEITA</h2>
+      <div class="cap">toque para abrir a ficha do elemento</div>
+      <div class="atoms" id="atoms"></div>
+      <div id="tags" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div class="foot">Geometrias: comprimentos e ângulos de ligação experimentais de referência (NIST CCCBDB / CRC Handbook). Etanol: geometria montada com valores típicos de ligação.<br>
+  Frequências de vibração: valores fundamentais medidos em fase gasosa. Raios de van der Waals: Bondi (1964); raios iônicos: Shannon (1976). Massas molares calculadas com as massas atômicas da IUPAC.</div>
+</div>
+<script src="../tabela-periodica/dados.js"></script>
+<script src="../tabela-periodica/comum.js"></script>
+<script src="dados.js"></script>
+<script>
+(()=>{
+const EL={};ELS.forEach(e=>EL[e.s]=e);
+const CPK={H:[240,244,250],C:[110,118,130],N:[64,110,255],O:[255,60,60],Cl:[60,220,90],Na:[171,92,242]};
+const VDW={H:1.20,C:1.70,N:1.55,O:1.52,Cl:1.75,Na:2.27}; // Bondi
+const ION={Na:1.02,Cl:1.81}; // Shannon ionic radii
+const COV={H:0.31,C:0.76,N:0.71,O:0.66,Cl:1.02,Na:1.66};
+const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+const enOf=s=>num(EL[s].en);
+let mol=null,mode=0,vib=-1,yaw=0.5,pitch=-0.5,vyaw=0.25,simT=0,t0=0,selIdx=-1,charges=[],dipole=null;
+
+// chips
+const groups={};MOLECULAS.forEach(m=>(groups[m.grupo]=groups[m.grupo]||[]).push(m));
+document.getElementById('chips').innerHTML=Object.entries(groups).map(([g,ms])=>`<span class="gh">${g.toUpperCase()}</span>`+ms.map(m=>`<a href="#${m.id}" data-id="${m.id}"><b>${m.f}</b>${m.nome.split(' (')[0]}</a>`).join('')).join('');
+
+function load(id){
+  mol=MOLECULAS.find(m=>m.id===id)||MOLECULAS.find(m=>m.id==='agua');selIdx=-1;vib=-1;yaw=0.45;pitch=-0.5;
+  document.querySelectorAll('#chips a').forEach(a=>a.classList.toggle('on',a.dataset.id===mol.id));
+  const on=document.querySelector('#chips a.on');if(on)on.scrollIntoView({inline:'center',block:'nearest'});
+  // partial charges from electronegativity differences (qualitative), ions fixed
+  charges=mol.atoms.map(()=>0);
+  if(mol.ionic)mol.atoms.forEach((a,i)=>charges[i]=a[0]==='Na'?1:-1);
+  else mol.bonds.forEach(([i,j])=>{const dEN=enOf(mol.atoms[j][0])-enOf(mol.atoms[i][0]);if(Math.abs(dEN)<0.4)return;const d=dEN*0.5;charges[i]+=d;charges[j]-=d}); // ΔEN<0.4: ligação apolar
+  // dipole direction (chemistry convention: points to the negative end)
+  dipole=null;if(mol.dip>0){let v=[0,0,0];mol.atoms.forEach((a,i)=>{for(let k=0;k<3;k++)v[k]+=-charges[i]*a[k+1]});const L=Math.hypot(...v);if(L>1e-6)dipole=v.map(x=>x/L)}
+  document.getElementById('hf').textContent=mol.f;document.getElementById('hn').textContent=mol.nome.toUpperCase();
+  const counts={};mol.atoms.forEach(a=>counts[a[0]]=(counts[a[0]]||0)+1);
+  document.getElementById('hbl').innerHTML=Object.entries(counts).map(([s,n])=>`<span style="color:${rgba(CPK[s],1)}">●</span> ${n} ${EL[s].n}`).join('<br>');
+  document.getElementById('hbr').innerHTML=`${mol.geo}<br>${mol.ang?'ângulo '+mol.ang:''}`;
+  document.getElementById('fato').innerHTML=`<b>${mol.nome}.</b> ${mol.fato}`;
+  document.getElementById('apx').textContent=mol.aprox?'geometria aproximada com valores típicos de ligação':'valores experimentais de referência';
+  document.getElementById('kv').innerHTML=[
+    ['Fórmula',mol.f],['Massa molar',`${br(mol.mm.toFixed(2))} g/mol${mol.mmu?' ('+mol.mmu+')':''}`],['Geometria',mol.geo],['Ângulo de ligação',mol.ang||'—'],
+    ['Ligações',mol.lig.join('<br>')],['Momento de dipolo',mol.ionic?'— (cristal iônico)':mol.dip?`${br(String(mol.dip))} D · polar`:'0 · apolar'],['Estado a 25 °C',mol.est]
+  ].map(([k,v])=>`<div>${k}</div><div>${v}</div>`).join('');
+  document.getElementById('atoms').innerHTML=Object.entries(counts).map(([s,n])=>`<a href="../tabela-periodica/elementos/${EL[s].slug}.html"><i style="background:${rgba(CPK[s],1)}"></i><b>${s}</b> ${EL[s].n} ×${n}</a>`).join('');
+  const t=[];if(mol.lp)t.push(`${mol.lp.length} par${mol.lp.length>1?'es':''} livre${mol.lp.length>1?'s':''} que define${mol.lp.length>1?'m':''} a geometria`);
+  const bo=new Set(mol.bonds.map(b=>b[2]));if(bo.has(2))t.push('ligação dupla');if(bo.has(3))t.push('ligação tripla');if(bo.has(1.5))t.push('ligações deslocalizadas');if(bo.has('i'))t.push('ligação iônica');
+  document.getElementById('tags').innerHTML=t.map(x=>`<span class="tag">${x}</span>`).join('');
+  document.getElementById('vibs').innerHTML=mol.vib.length?mol.vib.map((v,i)=>`<button data-v="${i}">〰 ${v[0]} · ${v[1]} cm⁻¹</button>`).join(''):'';
+  document.getElementById('sel').innerHTML='<span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span>';
+  setVibNote();
+}
+function setVibNote(){if(vib<0||!mol.vib[vib])return;const v=mol.vib[vib];const hz=v[1]*2.998e10;const e=Math.floor(Math.log10(hz));
+  document.getElementById('sel').innerHTML=`<b style="color:#7fd3ff">Vibração: ${v[0]}</b> · ν = ${v[1]} cm⁻¹ ≈ ${br((hz/10**e).toFixed(1))}×10${String(e).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('')} vezes por segundo. A animação está ~10¹⁴ vezes mais lenta. Os deslocamentos estão exagerados para dar para ver.`}
+document.getElementById('modes').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.t){showMeas=!showMeas;b.classList.toggle('on',showMeas);return}mode=+b.dataset.m;[...ev.currentTarget.querySelectorAll('[data-m]')].forEach(x=>x.classList.toggle('on',x===b));
+  document.getElementById('hm').textContent=['BOLA E VARETA','ESPAÇO PREENCHIDO','POLARIDADE'][mode]};
+document.getElementById('vibs').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const v=+b.dataset.v;vib=vib===v?-1:v;[...ev.currentTarget.children].forEach(x=>x.classList.toggle('on',+x.dataset.v===vib));
+  if(vib<0)document.getElementById('sel').innerHTML='<span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span>';else setVibNote()};
+addEventListener('hashchange',()=>load(location.hash.slice(1)));
+load(location.hash.slice(1)||'agua');
+
+// normal-mode displacements (centre of mass kept fixed, mass-weighted)
+function disp(){
+  const z=mol.atoms.map(()=>[0,0,0]);if(vib<0)return z;const kind=mol.vib[vib][2],A=mol.atoms,m=s=>parseFloat(EL[s].m);
+  const sub=(a,b)=>[a[1]-b[1],a[2]-b[2],a[3]-b[3]],nrm=v=>{const L=Math.hypot(...v);return v.map(x=>x/L)};
+  if(kind==='dia'){const u=nrm(sub(A[1],A[0])),m0=m(A[0][0]),m1=m(A[1][0]),T=m0+m1;z[0]=u.map(x=>-x*m1/T);z[1]=u.map(x=>x*m0/T);return z}
+  if(kind.startsWith('h2o')){const u1=nrm(sub(A[1],A[0])),u2=nrm(sub(A[2],A[0])),r=m('H')/m('O');let d1,d2;
+    if(kind==='h2o_s'){d1=u1;d2=u2}else if(kind==='h2o_a'){d1=u1;d2=u2.map(x=>-x)}else{const dot=u1[0]*u2[0]+u1[1]*u2[1]+u1[2]*u2[2];d1=nrm(u2.map((x,k)=>x-dot*u1[k]));d2=nrm(u1.map((x,k)=>x-dot*u2[k]))}
+    z[1]=d1;z[2]=d2;z[0]=d1.map((x,k)=>-r*(x+d2[k]));return z}
+  if(kind.startsWith('co2')){const r=m('O')/m('C');if(kind==='co2_s'){z[1]=[1,0,0];z[2]=[-1,0,0]}else if(kind==='co2_a'){z[1]=[1,0,0];z[2]=[1,0,0];z[0]=[-2*r,0,0]}else{z[1]=[0,1,0];z[2]=[0,1,0];z[0]=[0,-2*r,0]}return z}
+  return z}
+
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');let W,H,CX,CY,SCL;const FOV=9;
+function rs(){const d=Math.min(2,devicePixelRatio||1),r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0)}
+addEventListener('resize',rs);rs();
+function rot(x,y,z){const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);let X=x*cy+z*sy,Zz=-x*sy+z*cy;let Y=y*cp-Zz*sp;Zz=y*sp+Zz*cp;return[X,Y,Zz]}
+function proj(x,y,z){const [X,Y,Zz]=rot(x,y,z);const f=FOV/(FOV-Zz);return{X:CX+X*SCL*f,Y:CY-Y*SCL*f,z:Zz,f}}
+const BG=[8,12,26];
+const mix=(c,d,t)=>c.map((v,k)=>Math.round(v+(d[k]-v)*t));
+// lit sphere: key light upper-left, cyan rim light lower-right, specular highlight
+function sphere(x,y,r,c,fog,alpha=1){
+  const base=mix(c,BG,fog),dark=mix(base,[0,0,0],0.68),lite=mix(base,[255,255,255],0.3);
+  let g=ctx.createRadialGradient(x-r*.35,y-r*.38,r*.08,x+r*.08,y+r*.1,r*1.02);
+  g.addColorStop(0,rgba(lite,alpha));g.addColorStop(.45,rgba(base,alpha));g.addColorStop(.85,rgba(dark,alpha));g.addColorStop(1,rgba(mix(dark,[0,0,0],.4),alpha));
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+  // rim light
+  g=ctx.createRadialGradient(x-r*.3,y-r*.3,r*.85,x,y,r*1.01);g.addColorStop(0,'rgba(120,200,255,0)');g.addColorStop(.9,'rgba(120,200,255,0)');g.addColorStop(1,`rgba(140,210,255,${0.22*alpha*(1-fog)})`);
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+  // specular
+  if(r>4){ctx.fillStyle=`rgba(255,255,255,${0.75*alpha*(1-fog)})`;ctx.beginPath();ctx.ellipse(x-r*.38,y-r*.42,r*.2,r*.12,-0.6,0,7);ctx.fill()}
+}
+// shaded cylinder between screen points
+function cylinder(a,b,ra,rb,c,fog){const dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+  const base=mix(c,BG,fog),dark=mix(base,[0,0,0],0.75),lite=mix(base,[255,255,255],0.4);
+  const g=ctx.createLinearGradient(a.X+nx*ra,a.Y+ny*ra,a.X-nx*ra,a.Y-ny*ra);
+  g.addColorStop(0,rgba(mix(dark,[0,0,0],.3),1));g.addColorStop(.3,rgba(lite,1));g.addColorStop(.55,rgba(base,1));g.addColorStop(1,rgba(dark,1));
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(a.X+nx*ra,a.Y+ny*ra);ctx.lineTo(b.X+nx*rb,b.Y+ny*rb);ctx.lineTo(b.X-nx*rb,b.Y-ny*rb);ctx.lineTo(a.X-nx*ra,a.Y-ny*ra);ctx.closePath();ctx.fill()}
+function haze(x,y,r,c,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,rgba(c,a));g.addColorStop(1,rgba(c,0));ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill()}
+function txt(t,x,y,c,al='left',sz=9.5,wt=''){ctx.font=`${wt} ${sz}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
+// background motes
+const motes=[...Array(70)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.2,v:Math.random()*.02+.005}));
+let lastP=[];let showMeas=false;
+const sub3=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+function frame(now){const dt=Math.min(.05,(now-(t0||now))/1000);t0=now;simT+=dt;if(!drag)yaw+=vyaw*dt;
+  ctx.clearRect(0,0,W,H);CX=W/2;CY=H/2+2;
+  const ION_=mol.ionic;
+  const ext=Math.max(...mol.atoms.map(a=>Math.hypot(a[1],a[2],a[3])+(ION_?ION[a[0]]:mode===1?VDW[a[0]]:0.6)));SCL=Math.min(W,H)*0.43/Math.max(1.2,ext);
+  // motes + HUD frame
+  for(const m of motes){m.y-=m.v*dt;if(m.y<0)m.y=1;ctx.fillStyle='rgba(150,170,230,.25)';ctx.beginPath();ctx.arc(m.x*W,m.y*H,m.r,0,7);ctx.fill()}
+  const R0=Math.min(W,H)*0.46;
+  ctx.strokeStyle='rgba(120,160,255,.08)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(CX,CY,R0,0,7);ctx.stroke();
+  ctx.strokeStyle='rgba(255,179,71,.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(CX,CY,R0,simT*0.6,simT*0.6+0.9);ctx.stroke();
+  ctx.strokeStyle='rgba(120,200,255,.25)';ctx.beginPath();ctx.arc(CX,CY,R0*0.93,-simT*0.4,-simT*0.4+0.5);ctx.stroke();
+  for(let k=0;k<72;k++){const a=k/72*6.283,l=k%6?3:7;ctx.strokeStyle='rgba(120,160,255,.15)';ctx.beginPath();ctx.moveTo(CX+Math.cos(a)*R0,CY+Math.sin(a)*R0);ctx.lineTo(CX+Math.cos(a)*(R0+l),CY+Math.sin(a)*(R0+l));ctx.stroke()}
+  const bk=14;ctx.strokeStyle='rgba(200,215,255,.25)';ctx.lineWidth=1;for(const [x,y,sx,sy] of [[8,8,1,1],[W-8,8,-1,1],[8,H-8,1,-1],[W-8,H-8,-1,-1]]){ctx.beginPath();ctx.moveTo(x,y+sy*bk);ctx.lineTo(x,y);ctx.lineTo(x+sx*bk,y);ctx.stroke()}
+  // geometry with vibration
+  const D=disp(),amp=0.16*Math.sin(simT*5);
+  const pos=mol.atoms.map((a,i)=>[a[1]+D[i][0]*amp,a[2]+D[i][1]*amp,a[3]+D[i][2]*amp]);
+  const P=pos.map((p,i)=>{const q=proj(...p);q.s=mol.atoms[i][0];q.i=i;q.fog=Math.max(0,Math.min(.32,(ext-q.z)/(2*ext)*0.32));return q});lastP=P;
+  // floor shadow
+  {const ys=pos.map(p=>rot(...p)[1]);const minY=Math.min(...ys)-0.9;const sh=proj(0,0,0);const yS=CY-minY*SCL;
+    const g=ctx.createRadialGradient(CX,yS,0,CX,yS,ext*SCL*0.9);g.addColorStop(0,'rgba(0,0,0,.45)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.save();ctx.translate(CX,yS);ctx.scale(1,0.22);ctx.translate(-CX,-yS);ctx.fillStyle=g;ctx.beginPath();ctx.arc(CX,yS,ext*SCL*0.9,0,7);ctx.fill();ctx.restore()}
+  const rAtom=s=>ION_?ION[s]*(mode===1?1:0.45):mode===1?VDW[s]:Math.max(0.24,COV[s]*0.55);
+  const colOf=i=>{if(mode!==2)return CPK[mol.atoms[i][0]];const q=Math.max(-1,Math.min(1,charges[i]*1.6));return q<0?[255,Math.round(80+150*(1+q)),Math.round(80+150*(1+q))]:[Math.round(80+150*(1-q)),Math.round(140+100*(1-q)),255]};
+  // electrostatic-potential-like surface in polarity mode
+  if(mode===2){ctx.save();ctx.globalCompositeOperation='lighter';for(const p of [...P].sort((a,b)=>a.z-b.z)){const q=charges[p.i];const c=Math.abs(q)<0.05?[60,220,140]:q<0?[255,60,80]:[70,130,255];
+      haze(p.X,p.Y,(ION_?ION[p.s]:VDW[p.s])*1.15*SCL*p.f,c,0.16+Math.min(.25,Math.abs(q)*0.6))}ctx.restore()}
+  // halo glow (atom colour) behind everything
+  if(mode!==2){ctx.save();ctx.globalCompositeOperation='lighter';for(const p of P)haze(p.X,p.Y,rAtom(p.s)*SCL*p.f*2.6,CPK[p.s],0.07);ctx.restore()}
+  const prims=[];
+  if(mode!==1)for(const [i,j,o] of mol.bonds){const a=P[i],b=P[j];
+    prims.push({z:Math.min(a.z,b.z)-0.01,d(){
+      if(o==='i'){ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(200,215,255,.3)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.X,a.Y);ctx.lineTo(b.X,b.Y);ctx.stroke();ctx.setLineDash([]);return}
+      const n=o===1.5?1:o,dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+      const rr=(n>1?0.075:0.11)*SCL,gap=rr*a.f*2.3;
+      for(let k=0;k<n;k++){const off=(k-(n-1)/2)*gap;const A={X:a.X+nx*off,Y:a.Y+ny*off},B={X:b.X+nx*off,Y:b.Y+ny*off},M={X:(A.X+B.X)/2,Y:(A.Y+B.Y)/2};
+        cylinder(A,M,rr*a.f,rr*(a.f+b.f)/2,colOf(i),a.fog);cylinder(M,B,rr*(a.f+b.f)/2,rr*b.f,colOf(j),b.fog)}
+      if(o===1.5){ctx.setLineDash([4,3]);ctx.strokeStyle='rgba(255,209,102,.85)';ctx.lineWidth=1.6;const cx=P.slice(0,6).reduce((s,p)=>s+p.X,0)/6,cy=P.slice(0,6).reduce((s,p)=>s+p.Y,0)/6;
+        if(mol.id==='benzeno'){ctx.beginPath();ctx.moveTo(a.X+(cx-a.X)*0.25,a.Y+(cy-a.Y)*0.25);ctx.lineTo(b.X+(cx-b.X)*0.25,b.Y+(cy-b.Y)*0.25);ctx.stroke()}
+        else{ctx.beginPath();ctx.moveTo(a.X+nx*gap*1.2,a.Y+ny*gap*1.2);ctx.lineTo(b.X+nx*gap*1.2,b.Y+ny*gap*1.2);ctx.stroke()}ctx.setLineDash([])}}})}
+  // lone pairs: translucent lobes with 2 electrons
+  if(mol.lp&&mode!==1)for(const [ai,dir] of mol.lp){const a=pos[ai];const L=Math.hypot(...dir);const u=dir.map(x=>x/L);
+    const tip=proj(a[0]+u[0]*0.85,a[1]+u[1]*0.85,a[2]+u[2]*0.85),mid=proj(a[0]+u[0]*0.5,a[1]+u[1]*0.5,a[2]+u[2]*0.5),base=P[ai];
+    prims.push({z:mid.z,d(){const dx=tip.X-base.X,dy=tip.Y-base.Y,ang=Math.atan2(dy,dx),len=Math.hypot(dx,dy);
+      ctx.save();ctx.translate(mid.X,mid.Y);ctx.rotate(ang);const ry=0.26*SCL*mid.f,rx=Math.max(ry*0.9,len*0.55);
+      const g=ctx.createRadialGradient(0,0,0,0,0,rx);g.addColorStop(0,'rgba(255,209,102,.38)');g.addColorStop(.7,'rgba(255,209,102,.14)');g.addColorStop(1,'rgba(255,209,102,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,7);ctx.fill();ctx.strokeStyle='rgba(255,209,102,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(0,0,rx*0.8,ry*0.8,0,0,7);ctx.stroke();
+      ctx.fillStyle='#ffe6a0';for(const s of [-1,1]){ctx.beginPath();ctx.arc(rx*0.15,s*ry*0.32,2,0,7);ctx.fill()}ctx.restore()}})}
+  for(const p of P){prims.push({z:p.z,d(){const r=rAtom(p.s)*SCL*p.f,c=colOf(p.i);
+    sphere(p.X,p.Y,r,c,p.fog,mode===1?0.96:1);
+    if(p.i===selIdx){ctx.strokeStyle='#ffb347';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.arc(p.X,p.Y,r+5,simT,simT+6.283);ctx.stroke();ctx.setLineDash([])}
+    if(mode!==1&&r>8&&mol.atoms.length<20){ctx.font=`700 ${Math.round(Math.max(9,r*0.72))}px Space Grotesk, sans-serif`;ctx.textAlign='center';ctx.fillStyle=p.s==='H'?'rgba(25,35,55,.8)':'rgba(255,255,255,.92)';ctx.fillText(p.s,p.X,p.Y+r*0.26);ctx.textAlign='left'}
+    if(mode===2&&!ION_&&Math.abs(charges[p.i])>0.05)txt(charges[p.i]<0?'δ−':'δ+',p.X+r*0.85,p.Y-r*0.85,'#fff','left',11,'600');
+    if(mode===2&&ION_&&p.z>0)txt(charges[p.i]>0?'+':'−',p.X,p.Y+4,'#fff','center',11,'700');}})}
+  prims.sort((a,b)=>a.z-b.z);for(const p of prims)p.d();
+  // vibration displacement arrows
+  if(vib>=0){const D0=disp();P.forEach((p,i)=>{const d=D0[i];if(Math.hypot(...d)<1e-3)return;const a=mol.atoms[i];const q=proj(a[1]+d[0]*0.55,a[2]+d[1]*0.55,a[3]+d[2]*0.55),q2=proj(a[1]-d[0]*0.55,a[2]-d[1]*0.55,a[3]-d[2]*0.55);
+    ctx.strokeStyle='rgba(127,211,255,.7)';ctx.lineWidth=1.4;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(q2.X,q2.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();ctx.setLineDash([]);
+    const ux=q.X-q2.X,uy=q.Y-q2.Y,L=Math.hypot(ux,uy)||1;for(const [e,s] of [[q,1],[q2,-1]]){ctx.fillStyle='rgba(127,211,255,.8)';ctx.beginPath();ctx.moveTo(e.X,e.Y);ctx.lineTo(e.X-s*ux/L*7-uy/L*4,e.Y-s*uy/L*7+ux/L*4);ctx.lineTo(e.X-s*ux/L*7+uy/L*4,e.Y-s*uy/L*7-ux/L*4);ctx.fill()}})}
+  // measurements: bond lengths + angles computed from the coordinates
+  if(showMeas&&!ION_){ctx.save();
+    const seen=new Set();let nb=0;
+    for(const [i,j,o] of mol.bonds){const key=[mol.atoms[i][0],mol.atoms[j][0],o].sort().join('');if(seen.has(key))continue;seen.add(key);if(nb++>7)break;
+      const d=Math.hypot(...sub3(pos[i],pos[j]));const a=P[i],b=P[j];const mx=(a.X+b.X)/2,my=(a.Y+b.Y)/2,dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;const lx=mx+nx*22,ly=my+ny*22;
+      ctx.strokeStyle='rgba(127,211,255,.6)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(lx,ly);ctx.stroke();
+      const t=`${br(d.toFixed(3))} Å`;ctx.font='10px JetBrains Mono, monospace';const tw=ctx.measureText(t).width;ctx.fillStyle='rgba(8,12,26,.85)';ctx.fillRect(lx-tw/2-4,ly-9,tw+8,14);ctx.strokeStyle='rgba(127,211,255,.6)';ctx.strokeRect(lx-tw/2-4,ly-9,tw+8,14);txt(t,lx,ly+2,'#bfe6ff','center',10)}
+    // angles: at most 3 centres
+    const nbrs=mol.atoms.map(()=>[]);mol.bonds.forEach(([i,j])=>{nbrs[i].push(j);nbrs[j].push(i)});let na=0;
+    for(let c=0;c<mol.atoms.length&&na<3;c++){if(nbrs[c].length<2)continue;const [i,j]=nbrs[c];const u=sub3(pos[i],pos[c]),v=sub3(pos[j],pos[c]);
+      const ang=Math.acos((u[0]*v[0]+u[1]*v[1]+u[2]*v[2])/(Math.hypot(...u)*Math.hypot(...v)))*180/Math.PI;
+      const pc=P[c],a1=Math.atan2(P[i].Y-pc.Y,P[i].X-pc.X),a2=Math.atan2(P[j].Y-pc.Y,P[j].X-pc.X);let da=a2-a1;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
+      const rr=rAtom(mol.atoms[c][0])*SCL*pc.f+16;ctx.strokeStyle='rgba(255,209,102,.9)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(pc.X,pc.Y,rr,a1,a1+da,da<0);ctx.stroke();
+      const am=a1+da/2;txt(`${br(ang.toFixed(1))}°`,pc.X+Math.cos(am)*(rr+14),pc.Y+Math.sin(am)*(rr+14)+3,'#ffd166','center',10.5,'600');na++}
+    ctx.restore()}
+  // dipole
+  if(mode===2){if(dipole){const L=Math.max(1.2,ext*0.9);const a=proj(...dipole.map(x=>-x*L*0.7)),b=proj(...dipole.map(x=>x*L*0.7));
+      ctx.save();ctx.shadowColor='#ffd166';ctx.shadowBlur=10;ctx.strokeStyle='#ffd166';ctx.fillStyle='#ffd166';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(a.X,a.Y);ctx.lineTo(b.X,b.Y);ctx.stroke();
+      const dx=b.X-a.X,dy=b.Y-a.Y,Ln=Math.hypot(dx,dy)||1,ux=dx/Ln,uy=dy/Ln;ctx.beginPath();ctx.moveTo(b.X,b.Y);ctx.lineTo(b.X-ux*12-uy*6,b.Y-uy*12+ux*6);ctx.lineTo(b.X-ux*12+uy*6,b.Y-uy*12-ux*6);ctx.fill();
+      const cx=a.X+ux*14,cy=a.Y+uy*14;ctx.beginPath();ctx.moveTo(cx-uy*7,cy+ux*7);ctx.lineTo(cx+uy*7,cy-ux*7);ctx.stroke();ctx.restore();
+      txt(`μ = ${br(String(mol.dip))} D`,b.X+8,b.Y,'#ffd166','left',10.5,'600')}
+    txt(ION_?'+ = Na⁺ (cátion) · − = Cl⁻ (ânion)':dipole?'superfície: vermelho = δ− · azul = δ+':'cargas se cancelam: molécula apolar',CX,92,'rgba(170,190,235,.75)','center',9)}
+  // axis gizmo
+  {const gx=W-34,gy=H-74;for(const [v,c,l] of [[[1,0,0],'#ff6b6b','x'],[[0,1,0],'#69db7c','y'],[[0,0,1],'#4dabf7','z']]){const [X,Y]=rot(...v);ctx.strokeStyle=c;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx+X*16,gy-Y*16);ctx.stroke();txt(l,gx+X*21-3,gy-Y*21+3,c,'left',8.5)}}
+  // live readout
+  txt(`θ ${String(Math.round(((yaw*180/Math.PI)%360+360)%360)).padStart(3,'0')}° · φ ${Math.round(pitch*180/Math.PI)}° · ${mol.atoms.length} átomos`,12,72,'rgba(140,160,210,.6)','left',8.5);
+  requestAnimationFrame(frame)}
+
+// input
+let drag=null;
+cv.addEventListener('pointerdown',ev=>{drag={x:ev.clientX,y:ev.clientY,m:0};cv.setPointerCapture(ev.pointerId)});
+cv.addEventListener('pointermove',ev=>{if(!drag)return;const dx=ev.clientX-drag.x,dy=ev.clientY-drag.y;drag.x=ev.clientX;drag.y=ev.clientY;drag.m+=Math.abs(dx)+Math.abs(dy);yaw+=dx*0.01;pitch=Math.max(-1.4,Math.min(1.4,pitch+dy*0.01));vyaw=dx*0.002});
+cv.addEventListener('pointerup',ev=>{if(drag&&drag.m<8){const r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;let best=-1,bd=1e9;
+    for(const p of lastP){const d=Math.hypot(p.X-x,p.Y-y)-p.z*2;if(Math.hypot(p.X-x,p.Y-y)<26&&d<bd){bd=d;best=p.i}}
+    if(best>=0){selIdx=best;const s=mol.atoms[best][0],e=EL[s];const q=charges[best];
+      document.getElementById('sel').innerHTML=`<b style="color:${rgba(CPK[s],1)}">●</b> <b>${e.n} (${s})</b> · Z ${e.z} · eletronegatividade ${br(String(num(e.en)))}${mol.ionic?` · íon ${q>0?'Na⁺':'Cl⁻'}`:Math.abs(q)>0.05?` · carga parcial ${q<0?'δ−':'δ+'}`:''} · <a href="../tabela-periodica/elementos/${e.slug}.html">abrir ficha →</a>`}}
+  drag=null;if(Math.abs(vyaw)<0.05)vyaw=0.25*Math.sign(vyaw||1)});
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

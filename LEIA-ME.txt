@@ -1,0 +1,22 @@
+LAB · Ciência em movimento
+==========================
+
+COMO ABRIR
+Abra a pasta "site" e dê dois cliques em index.html. Funciona direto no navegador,
+sem instalar nada (só as fontes vêm da internet).
+
+ESTRUTURA
+site/index.html              página inicial
+site/base.css                estilo comum
+site/dna/                    módulo DNA (gene HBB)
+site/tabela-periodica/       tabela + dados.js + 118 fichas em elementos/
+site/moleculas/              15 moléculas em 3D (dados.js)
+site/biomoleculas/           aminoácidos, lipídios, proteínas (dados.js)
+site/celula/                 célula animal/vegetal e organelas
+
+scripts/                     geradores em Python (precisam de numpy)
+  gen_data.py   -> tabela-periodica/dados.js (lê wiki.txt)
+  gen_mol.py    -> moleculas/dados.js
+  gen_bio.py    -> biomoleculas/dados.js
+  Os caminhos dentro dos scripts apontam para /home/claude/...;
+  ajuste para a pasta do seu computador antes de rodar.
