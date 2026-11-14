@@ -2,32 +2,34 @@
 const CUT=()=>[new THREE.Plane(V3(0,-1,0),0.02)];
 function lab(s,t,p){s.labels.push([t,p.isVector3?p:V3(...p)])}
 const DETB={
-nucleo(){SEED=61;const s=scene({dist:7.4,upu:6/3.6,cam:V3(0,.5,1)}),G=s.g;const r=1.75;nucleus(G,'nucleo',V3(0,0,0),r);
+nucleo(){SEED=61;const s=scene({dist:8.4,upu:6/3.6,cam:V3(0,.5,1)}),G=s.g;const r=1.75;nucleus(G,'nucleo',V3(0,0,0),r);
   erSheets(G,V3(0,0,0),r+.22,2,TAU*.42,Math.PI*.62,5);
   lab(s,'envelope duplo',[1.45,.75,.75]);lab(s,'poro nuclear',[.4,1.62,-.4]);lab(s,'nucléolo',[.3,-.1,.3]);lab(s,'cromatina (DNA + proteínas)',[-.55,.45,.5]);lab(s,'retículo ligado ao núcleo',[-1.75,-.55,.95]);return s},
 
 mitocondria(){SEED=62;const s=scene({dist:7,upu:2/5,cam:V3(0,.95,1)}),G=s.g;const P=CUT(),L=2.6;
   const o=bumpy(capG(1,L,64),.025,2,1);o.rotateZ(Math.PI/2);G.add(mesh(o,M('mitocondria',C('mitocondria'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'mitocondria'));
-  const i=capG(.86,L,64);i.rotateZ(Math.PI/2);G.add(mesh(i,M('mitocondria','#e8590c',{clippingPlanes:P,side:THREE.DoubleSide,roughness:.5}),'mitocondria'));
+  const i=capG(.86,L,64);i.rotateZ(Math.PI/2);G.add(mesh(i,M('mitocondria','#B8402A',{clippingPlanes:P,side:THREE.DoubleSide,roughness:.5}),'mitocondria'));
   const cm=M('mitocondria','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.45});const atp=[];
   for(let k=0;k<9;k++){const x=-1.75+k*.44,sg=k%2?1:-1;const g=new THREE.BoxGeometry(.07,1.7,1.05,2,40,28);const p=g.attributes.position;const cr=Math.min(.78,Math.sqrt(Math.max(0,.86**2-Math.max(0,Math.abs(x)-1.3)**2))-.08);for(let j=0;j<p.count;j++){let y=p.getY(j),z=p.getZ(j);const zw=z+sg*.32,rr2=Math.hypot(y,zw);if(rr2>cr){y*=cr/rr2;z=zw*cr/rr2-sg*.32;p.setY(j,y);p.setZ(j,z)}p.setX(j,p.getX(j)+Math.sin(y*4+k)*.06+Math.sin(z*5)*.05)}
-    const cg=bumpy(g,.01,6,k,'#ff922b',.25);const m=mesh(cg,cm,'mitocondria',[x,0,sg*.32]);G.add(m);
+    const cg=bumpy(g,.01,6,k,'#FF8A5C',.3);const m=mesh(cg,cm,'mitocondria',[x,0,sg*.32]);G.add(m);
     for(let j=0;j<26;j++){const y=rr(-.8,0),z=sg*.32+rr(-.5,.5);if(Math.hypot(y,z)<.8)atp.push({p:V3(x+(rnd()<.5?-.05:.05),y,z)})}}
   G.add(inst(sphG(.028,8),M('mitocondria','#ffe066',{roughness:.3,clippingPlanes:P}),'mitocondria',atp));
   G.add(inst(sphG(.03,8),M('mitocondria','#ffd8a8',{roughness:.5,clippingPlanes:P}),'mitocondria',Array.from({length:160},()=>({p:V3(rr(-2,2),rr(-.75,-.05),rr(-.7,.7))})).filter(t=>Math.hypot(t.p.y,t.p.z)<.78)));
   [V3(-.9,-.35,.55),V3(1.1,-.4,-.5)].forEach(p=>G.add(mesh(new THREE.TorusGeometry(.12,.012,6,30),M('mitocondria','#74c0fc'),'mitocondria',p,[Math.PI/2,0,0])));
-  lab(s,'membrana externa',[-2.2,.15,-.95]);lab(s,'membrana interna',[2.3,.05,.55]);lab(s,'cristas (dobras)',[-.35,.05,.45]);lab(s,'matriz',[.68,-.35,.1]);lab(s,'ATP sintase',[1.36,.05,-.32]);lab(s,'DNA próprio',[-.9,-.25,.55]);return s},
+  lab(s,'membrana externa',[-2.2,.15,-.95]);lab(s,'membrana interna',[2.3,.05,.55]);lab(s,'cristas (dobras)',[-.35,.05,.45]);lab(s,'matriz',[.68,-.35,.1]);lab(s,'ATP sintase',[1.36,.05,-.32]);lab(s,'DNA próprio',[-.9,-.25,.55]);if(typeof MODELOS!=='undefined')MODELOS.trocar(s,'mitocondria',{tamanho:4.6,
+    rotulos:[['matriz','Matriz mitocondrial'],['cristas','Cristas'],['membrana_externa','Membrana externa'],['membrana_interna','Membrana interna'],['atp_sintase','ATP sintase'],
+      ['cadeia_transportadora','Cadeia transportadora'],['espaco_intermembranas','Espaço intermembranas'],['dna_mitocondrial','DNA mitocondrial'],['ribossomos','Ribossomos']],ancoras:{matriz:[-1.25,-.3,.35]}});return s},
 
 cloroplasto(){SEED=63;const s=scene({dist:7.6,upu:5/5,cam:V3(0,1.05,1)}),G=s.g;const P=CUT();
   G.add(mesh(bumpy(ellG(2.5,.95,1.45,90),.02,2,1),M('cloroplasto',C('cloroplasto'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'cloroplasto'));
   G.add(mesh(ellG(2.38,.86,1.35,90),FILM('cloroplasto','#b2f2bb',.35,{clippingPlanes:P}),'cloroplasto'));
-  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2b8a3e',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.35,clearcoat:.8,clippingPlanes:P});const disks=[],stacks=[];
+  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2A9450',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.35,clearcoat:.8,clippingPlanes:P});const disks=[],stacks=[];
   const pl=placer();scatter(10,.36,()=>V3(rr(-1.8,1.8),0,rr(-.9,.9)),pl,800).forEach(c=>{if((c.x/2.1)**2+(c.z/1.15)**2>1)return;stacks.push(c);const n=6+Math.floor(rnd()*5);for(let j=0;j<n;j++)disks.push({p:V3(c.x,-.6+j*.085,c.z)})});
   G.add(inst(tg,tm,'cloroplasto',disks));
   const lm=M('cloroplasto','#37b24d',{roughness:.4,clippingPlanes:P,transparent:true,opacity:.85});for(let i=0;i<stacks.length-1;i++){const a=stacks[i],b=stacks[i+1];const d=b.clone().sub(a);const o=mesh(new THREE.BoxGeometry(d.length(),.025,.12),lm,'cloroplasto',a.clone().lerp(b,.5).setY(-.35+(i%3)*.12));o.rotation.y=-Math.atan2(d.z,d.x);G.add(o)}
   G.add(mesh(bumpy(ellG(.35,.18,.25,32),.02,5,1,'#f8f9fa',.1),M('cloroplasto','#fff',{vc:true,roughness:.6,clippingPlanes:P}),'cloroplasto',[1.6,-.35,.6]));
   G.add(inst(sphG(.05,12),M('cloroplasto','#ffe066',{roughness:.2,clippingPlanes:P}),'cloroplasto',Array.from({length:14},()=>({p:V3(rr(-2,2),rr(-.6,-.1),rr(-1,1))})).filter(t=>(t.p.x/2.2)**2+(t.p.z/1.2)**2<1)));
-  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: onde a luz vira energia',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);return s},
+  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: luz → ATP',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);return s},
 
 re(){SEED=64;const s=scene({dist:9,upu:2/5,cam:V3(0,.75,1)}),G=s.g;const rib=[];
   for(let k=0;k<4;k++){const g=new THREE.BoxGeometry(3.6,.12,2.8,90,1,70);const p=g.attributes.position;const y0=-.95+k*.62;
@@ -35,11 +37,11 @@ re(){SEED=64;const s=scene({dist:9,upu:2/5,cam:V3(0,.75,1)}),G=s.g;const rib=[];
     const o=mesh(bumpy(g,.008,5,k,C('re'),.25),M('re','#fff',{vc:true,roughness:.35,clearcoat:.9}),'re',[-.9,y0,0]);G.add(o);
     for(let j=0;j<260;j++){const x=rr(-1.75,1.75),z=rr(-1.35,1.35),sg=rnd()<.5?1:-1;rib.push({p:V3(x-.9,y0+Math.sin(x*1.8+k)*.12+Math.sin(z*2.2+k*.7)*.1+sg*.1,z)})}}
   G.add(inst(sphG(.045,10),M('ribossomo',C('ribossomo'),{roughness:.5}),'ribossomo',rib));
-  const sm=M('re','#8ce99a',{roughness:.3,clearcoat:1});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
+  const sm=M('re','#8FB0FF',{roughness:.3,clearcoat:1});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
   const ves=noPick(mesh(sphG(.12,20),FILM(null,'#d3f9d8',.6,{depthWrite:true})));G.add(ves);s.tick=t=>{const u=(t*.25)%1;ves.position.set(2.2+u*1.2,.2+u*1.1,.2);ves.scale.setScalar(Math.min(1,u*5))};
   lab(s,'RE rugoso (cheio de ribossomos)',[-1.9,.95,.6]);lab(s,'ribossomo',[-.3,.45,-.9]);lab(s,'RE liso (tubos, faz lipídios)',[2.0,-.75,.6]);lab(s,'vesícula saindo',[3,1,.2]);return s},
 
-golgi(){SEED=65;const s=scene({dist:7.6,upu:1/5,cam:V3(0,.55,1)}),G=s.g;const c0=new THREE.Color('#fab005'),c1=new THREE.Color('#ff6b35');
+golgi(){SEED=65;const s=scene({dist:7.6,upu:1/5,cam:V3(0,.55,1)}),G=s.g;const c0=new THREE.Color('#F7C13B'),c1=new THREE.Color('#E58A2E');
   for(let i=0;i<6;i++){const a=1.75-i*.1;const g=superG(a,.075,1.05-i*.04,.7,64);const p=g.attributes.position;for(let j=0;j<p.count;j++){const x=p.getX(j);p.setY(j,p.getY(j)+x*x*.13)}
     const col='#'+c0.clone().lerp(c1,i/5).getHexString();G.add(mesh(bumpy(g,.012,4,i,col,.2),M('golgi','#fff',{vc:true,roughness:.3,clearcoat:1}),'golgi',[0,-.75+i*.28,0]));
     for(const sg of[-1,1])G.add(mesh(sphG(.11,20),M('golgi',col,{roughness:.25}),'golgi',[sg*(a+.05),-.75+i*.28+a*a*.13,rr(-.4,.4)]))}

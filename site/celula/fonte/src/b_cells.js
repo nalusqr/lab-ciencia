@@ -13,9 +13,9 @@ function nucleus(G,k,pos,r,col=C('nucleo')){const cut=.8,face=Math.PI/2;
   G.add(mesh(env,M(k,'#fff',{vc:true,side:THREE.DoubleSide,roughness:.5,clearcoat:.3}),k,pos));
   const pores=[];for(let i=0;i<70;i++){const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();let ph=Math.atan2(d.z,-d.x);if(ph<0)ph+=TAU;if(Math.abs(ph-face)<cut+.08)continue;
     pores.push({p:pos.clone().addScaledVector(d,r*1.01),q:new THREE.Quaternion().setFromUnitVectors(V3(0,0,1),d),s:r/.78})}
-  G.add(inst(new THREE.TorusGeometry(.03,.011,6,14),M(k,'#d0bfff',{roughness:.3}),k,pores));
-  G.add(mesh(bumpy(sphG(r*.38,40),r*.05,6,2,'#5f3dc4',.4),M(k,'#fff',{vc:true,roughness:.6}),k,pos.clone().add(V3(r*.15,-r*.08,r*.05))));
-  const inn=ellIn(r*.88,r*.88,r*.88,pos);for(let i=0;i<5;i++){const w=walk(40,r*.12,p=>inn(p),pos.clone().add(V3(rr(-.4,.4)*r,rr(-.4,.4)*r,rr(-.4,.4)*r)));if(w.length>4)G.add(mesh(tubeG(w,r*.022,140,5),M(k,'#c5b3ff',{roughness:.6}),k))}
+  G.add(inst(new THREE.TorusGeometry(.03,.011,6,14),M(k,'#E2D6FF',{roughness:.45}),k,pores));
+  G.add(mesh(bumpy(sphG(r*.38,40),r*.05,6,2,'#6A45D8',.4),M(k,'#fff',{vc:true,roughness:.6}),k,pos.clone().add(V3(r*.15,-r*.08,r*.05))));
+  const inn=ellIn(r*.88,r*.88,r*.88,pos);for(let i=0;i<5;i++){const w=walk(40,r*.12,p=>inn(p),pos.clone().add(V3(rr(-.4,.4)*r,rr(-.4,.4)*r,rr(-.4,.4)*r)));if(w.length>4)G.add(mesh(tubeG(w,r*.022,140,5),M(k,'#C9B6FF',{roughness:.62}),k))}
   return pos.clone().add(V3(0,r*.95,0))}
 function mito(G,p,len,r,rot){const g=bumpy(capG(r,len,24),r*.12,9,rr(0,9),C('mitocondria'),.35);const o=mesh(g,M('mitocondria','#fff',{vc:true,roughness:.38}),'mitocondria',p,rot);G.add(o);return o}
 function erSheets(G,ctr,r0,n,arc,ph,h=4){const pts=[];for(let i=0;i<n;i++){const R=r0+i*.13;const tg=bumpy(new THREE.TorusGeometry(R,.04,10,110,arc),.025,4,i,C('re'),.25);
@@ -70,6 +70,10 @@ vegetal(){SEED=5;const s=scene({dist:8.2,upu:50/5.6,cam:V3(0,.62,1)}),G=s.g;cons
   const pe=scatter(3,.14,gen,pl,800).filter(p=>okP(p,.12));const pm=M('peroxissomo',C('peroxissomo'),{roughness:.3});pe.forEach(p=>G.add(mesh(sphG(.08,24),pm,'peroxissomo',p)));if(pe[0])s.anch.peroxissomo=up(pe[0],.12);
   const rib=ribos(G,'ribossomo',300,rndIn(A,B,Cc),p=>okP(p,.06)&&p.distanceTo(nP)>nr+.04);s.anch.ribossomo=up(rib[3].p,.06);
   s.anch.membrana=V3(A*.86,B*.86,Cc*.55);
+  // citoesqueleto: microtúbulos corticais logo abaixo da membrana (plantas também têm citoesqueleto)
+  const cyto=M('citoesqueleto',C('citoesqueleto'),{transparent:true,opacity:.6,roughness:.4});const ctr=[];
+  for(let i=0;i<12;i++){const a0=rr(0,TAU),y=rr(-.75,.75);const pts=[];for(let j=0;j<=6;j++){const a=a0+j*.2;pts.push(V3(Math.cos(a)*A*.86,y+Math.sin(j*.9+i)*.05,Math.sin(a)*Cc*.86))}G.add(mesh(tubeG(pts,.012,40,5),cyto,'citoesqueleto'));ctr.push(pts[3])}
+  s.anch.citoesqueleto=ctr.reduce((a,b)=>b.z>a.z?b:a).clone().add(V3(0,.06,0));
   // ciclose: cloroplastos circulam devagar em volta do vacúolo
   const chs=G.children.filter(o=>o.userData.k==='cloroplasto').map(o=>({o,p:o.position.clone(),a:rnd()*TAU}));
   s.tick=(t)=>{for(const c of chs){c.o.position.set(c.p.x+Math.sin(t*.4+c.a)*.025,c.p.y+Math.cos(t*.5+c.a)*.02,c.p.z)}};return s},
@@ -92,18 +96,18 @@ bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const
   s.anch.pili=V3(.4,-R-.3,.1).applyAxisAngle(V3(1,0,0),-.9);
   G.position.x=-1.45;s.tick=(t)=>{fl.rotation.x=t*4};return s},
 
-neuronio(){SEED=21;const s=scene({dist:11.6,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
-  const soma=bumpy(ellG(.72,.55,.62,80),.07,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
-  s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.3);
+neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
+  const soma=bumpy(ellG(.95,.72,.82,80),.08,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
+  s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.4);
   const dm=M('dendrito','#fff',{vc:true,roughness:.4});
   function branch(p,d,len,r,dep){const pts=[p.clone()];let q=p.clone(),dd=d.clone();for(let i=0;i<4;i++){dd.add(V3(rr(-.35,.35),rr(-.25,.25),rr(-.35,.35))).normalize();q=q.clone().addScaledVector(dd,len/4);pts.push(q)}
     const g=bumpy(tubeG(pts,r,40,8,t=>1-t*.45),r*.25,6,rr(0,9),C('dendrito'),.3);G.add(mesh(g,dm,'dendrito'));
     if(dep>0)for(const sgn of[-1,1])branch(q,dd.clone().applyAxisAngle(V3(0,1,0),sgn*rr(.35,.7)).add(V3(0,rr(-.3,.3),0)).normalize(),len*.65,r*.55,dep-1);
     else for(let i=0;i<5;i++){const sp=pts[2+(i%2)];G.add(noPick(mesh(sphG(.018,6),dm,null,sp.clone().add(V3(rr(-.06,.06),rr(-.06,.06),rr(-.06,.06))))))}return pts}
-  const dirs=[[-1,.15,.5],[-1,-.1,-.6],[-.4,.5,1],[-.3,-.4,-1],[-.2,.3,-1.1],[-.9,.6,0]];dirs.forEach((d,i)=>{const dd=V3(...d).normalize();const pts=branch(sP.clone().addScaledVector(dd,.5),dd,1.3,.09,2);if(i===0)s.anch.dendrito=up(pts[2],.18)});
-  const ax=[sP.clone().add(V3(.62,0,0)),V3(-1.2,.05,.1),V3(0,-.05,-.1),V3(1.3,.08,.05),V3(2.6,0,-.15),V3(3.6,.05,0)];const axc=new THREE.CatmullRomCurve3(ax);
-  G.add(mesh(bumpy(tubeG(ax,.06,160,10,t=>t<.06?1.9-t*15:1),.006,8,1,C('axonio'),.2),M('axonio','#fff',{vc:true,roughness:.35}),'axonio'));s.anch.axonio=axc.getPointAt(.08).add(V3(0,.2,0));
-  const mm=M('mielina','#fff',{vc:true,roughness:.3,clearcoat:1,sheen:1});const sheaths=[];for(let i=0;i<7;i++){const t=.16+i*.11;const p=axc.getPointAt(t),tg=axc.getTangentAt(t);const o=mesh(bumpy(capG(.14,.38,24),.01,8,i,C('mielina'),.12),mm,'mielina',p);o.quaternion.copy(qY(tg));G.add(o);sheaths.push(t)}
+  const dirs=[[-1,.15,.5],[-1,-.1,-.6],[-.4,.5,1],[-.3,-.4,-1],[-.2,.3,-1.1],[-.9,.6,0]];dirs.forEach((d,i)=>{const dd=V3(...d).normalize();const pts=branch(sP.clone().addScaledVector(dd,.68),dd,1.3,.12,2);if(i===0)s.anch.dendrito=up(pts[2],.18)});
+  const ax=[sP.clone().add(V3(.85,0,0)),V3(-1.2,.05,.1),V3(0,-.05,-.1),V3(1.3,.08,.05),V3(2.6,0,-.15),V3(3.6,.05,0)];const axc=new THREE.CatmullRomCurve3(ax);
+  G.add(mesh(bumpy(tubeG(ax,.08,160,10,t=>t<.06?1.9-t*15:1),.006,8,1,C('axonio'),.2),M('axonio','#fff',{vc:true,roughness:.35}),'axonio'));s.anch.axonio=axc.getPointAt(.08).add(V3(0,.2,0));
+  const mm=M('mielina','#fff',{vc:true,roughness:.3,clearcoat:1,sheen:1});const sheaths=[];for(let i=0;i<7;i++){const t=.16+i*.11;const p=axc.getPointAt(t),tg=axc.getTangentAt(t);const o=mesh(bumpy(capG(.18,.38,24),.01,8,i,C('mielina'),.12),mm,'mielina',p);o.quaternion.copy(qY(tg));G.add(o);sheaths.push(t)}
   s.anch.mielina=axc.getPointAt(.38).add(V3(0,.25,0));
   const sm=M('sinapse',C('sinapse'),{roughness:.3});const tip=ax[ax.length-1];for(let i=0;i<5;i++){const d=V3(1,rr(-.8,.8),rr(-1,1)).normalize();const e=tip.clone().addScaledVector(d,rr(.45,.7));
     G.add(mesh(tubeG([tip,tip.clone().lerp(e,.5).add(V3(0,rr(-.1,.1),0)),e],.025,20,6),M('axonio',C('axonio')),'axonio'));const b=mesh(bumpy(sphG(.1,24),.01,9,i),sm,'sinapse',e);G.add(b);if(i===0)s.anch.sinapse=up(e,.16)}
@@ -112,7 +116,7 @@ neuronio(){SEED=21;const s=scene({dist:11.6,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;c
   // potencial de ação saltando de nó em nó
   const sp=noPick(mesh(sphG(.09,16),new THREE.MeshBasicMaterial({color:'#fff3bf',transparent:true,opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false})));const halo=noPick(mesh(sphG(.22,16),RIM('#ffe066',1.6,1.2)));G.add(sp,halo);
   s.tick=(t)=>{const u=(t*.22)%1;const k=sheaths.findIndex(x=>x>u);const tt=u<.16?u:(k<0?u:sheaths[Math.max(0,k-1)]+.11*Math.pow((u-sheaths[Math.max(0,k-1)])/.11,4));const p=axc.getPointAt(Math.min(1,tt));sp.position.copy(p);halo.position.copy(p)};
-  G.position.x=.75;return s},
+  G.position.x=1.25;return s},
 
 esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(0,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
   const head=bumpy(ellG(.62,.2,.4,72),.012,3,1);head.translate(hP.x,hP.y,hP.z);shell(G,head,null,'#74c0fc','#d0ebff',{thickness:.5,attenuationDistance:1.2});
@@ -132,7 +136,7 @@ levedura(){SEED=31;const s=scene({dist:8,upu:10/4.6,cam:V3(0,.62,1)}),G=s.g;cons
   s.anch.parede_lev=mP.clone().add(V3(-.7,1.15,.35));s.anch.broto=bP.clone().add(V3(.1,.75,0));
   const vP=V3(-.75,-.1,-.25);const vg=bumpy(sphG(.62,64),.03,2.5,4);G.add(mesh(vg,FILM('vacuolo_lev',C('vacuolo_lev'),.32,{roughness:.05}),'vacuolo_lev',vP));const vr=noPick(mesh(vg,RIM('#66d9e8',1.2,2)));vr.position.copy(vP);G.add(vr);
   G.add(inst(sphG(.03,10),M('vacuolo_lev','#c5f6fa',{roughness:.2}),'vacuolo_lev',Array.from({length:14},()=>({p:vP.clone().add(V3(rr(-.4,.4),rr(-.35,.35),rr(-.4,.4)))}))));s.anch.vacuolo_lev=vP.clone().add(V3(0,.7,0));
-  s.anch.nucleo=nucleus(G,'nucleo',V3(.25,.12,.35),.4);
+  s.anch.nucleo_lev=nucleus(G,'nucleo_lev',V3(.25,.12,.35),.4,C('nucleo_lev'));
   const IN=ellIn(1.3,1.1,1.15,mP);for(let i=0;i<5;i++){const w=walk(8,.12,p=>IN(p)&&p.distanceTo(vP)>.7&&p.distanceTo(V3(.25,.12,.35))>.5,V3(rr(-1,.6),rr(-.6,.6),rr(-.8,.8)));if(w.length>3)G.add(mesh(tubeG(w,.045,40,8),M('mitocondria',C('mitocondria'),{roughness:.4}),'mitocondria'));if(i===0&&w[2])s.anch.mitocondria=up(w[2],.12)}
   const lip=M(null,'#ffe066',{roughness:.15,clearcoat:1});for(let i=0;i<6;i++){const p=V3(rr(-1.4,.6),rr(-.8,.8),rr(-.9,.9)).add(mP);if(IN(p,.1)&&p.distanceTo(vP)>.7)G.add(noPick(mesh(sphG(rr(.06,.1),20),lip,null,p)))}
   ribos(G,'ribossomo',180,rndIn(1.5,1.3,1.3,mP),p=>IN(p,.05)&&p.distanceTo(vP)>.65);

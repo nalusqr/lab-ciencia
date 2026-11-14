@@ -1,6 +1,8 @@
 // ================= 3D: utilidades (geometria procedural, materiais) =================
 const {React,ReactDOMClient,THREE,FIBER,DREI,RoomEnvironment,mergeVertices,html}=window.R3F;
-const {Canvas,useFrame,useThree}=FIBER;const {OrbitControls,Html}=DREI;
+const {Canvas,useFrame,useThree}=FIBER;
+const MAT=window.LAB_MATERIALS?window.LAB_MATERIALS(THREE):null;   // biblioteca de materiais da equipe (site/assets/materials.js)
+const {OrbitControls,Html}=DREI;
 const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
 const TAU=Math.PI*2;
 let SEED=1;const rnd=()=>((SEED=(SEED*16807)%2147483647)/2147483647);const rr=(a,b)=>a+(b-a)*rnd();
@@ -16,7 +18,7 @@ function weld(g){g.deleteAttribute('uv');g.deleteAttribute('normal');g=mergeVert
 function bumpy(g,amp=.05,freq=2,seed=0,col=null,cvar=.25,oct=4){g=weld(g);const p=g.attributes.position,n=g.attributes.normal;const c=col?new Float32Array(p.count*3):null;const base=col?new THREE.Color(col):null;
   for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i);const d=fbm(x*freq+seed,y*freq-seed*.7,z*freq+seed*1.3,oct);
     p.setXYZ(i,x+n.getX(i)*d*amp,y+n.getY(i)*d*amp,z+n.getZ(i)*d*amp);
-    if(c){const m=1+cvar*fbm(x*freq*2.7-seed,y*freq*2.7,z*freq*2.7+seed,3)*1.6;c[i*3]=base.r*m;c[i*3+1]=base.g*m;c[i*3+2]=base.b*m}}
+    if(c){const m=(1+cvar*fbm(x*freq*2.7-seed,y*freq*2.7,z*freq*2.7+seed,3)*1.6)*(1+Math.max(-.5,Math.min(.5,d))*.7);c[i*3]=base.r*m;c[i*3+1]=base.g*m;c[i*3+2]=base.b*m}}
   if(c)g.setAttribute('color',new THREE.BufferAttribute(c,3));g.computeVertexNormals();return g}
 const sphG=(r,s=48)=>new THREE.SphereGeometry(r,s,Math.round(s*.75));
 function ellG(rx,ry,rz,s=64){const g=sphG(1,s);g.scale(rx,ry,rz);return g}
@@ -35,9 +37,9 @@ function walk(n,step,inside,start=V3(0,0,0)){const a=[start.clone()];let d=V3(rr
 // ---------- materiais ----------
 const MATS=[];// registro do cenário atual: materiais com userData.k
 function M(k,col,o={}){const vc=!!o.vc;delete o.vc;const c=new THREE.Color(col);
-  const m=new THREE.MeshPhysicalMaterial(Object.assign({color:vc?0xffffff:c,vertexColors:vc,roughness:.42,metalness:0,clearcoat:.55,clearcoatRoughness:.35,
-    sheen:.6,sheenRoughness:.45,sheenColor:c.clone().lerp(new THREE.Color('#ffffff'),.45),emissive:c.clone(),emissiveIntensity:0},o));
-  m.userData.k=k;m.userData.e0=m.emissiveIntensity;MATS.push(m);return m}
+  const m=new THREE.MeshPhysicalMaterial(Object.assign({color:vc?0xffffff:c,vertexColors:vc,roughness:.58,metalness:0,clearcoat:.12,clearcoatRoughness:.5,
+    sheen:.3,sheenRoughness:.6,sheenColor:c.clone().lerp(new THREE.Color('#ffffff'),.2),specularIntensity:.65,emissive:vc?new THREE.Color('#ffffff'):c.clone(),emissiveIntensity:0},o));
+  m.userData.k=k;m.userData.e0=m.emissiveIntensity;if(!m.transparent||m.opacity>.5)m.userData.c0=m.color.clone();MATS.push(m);return m}
 // vidro biológico (membranas que deixam ver o interior)
 function GLASS(k,tint,o={}){const t=new THREE.Color(tint);const keep={};for(const x of['roughness','opacity','clearcoat'])if(o[x]!==undefined)keep[x]=o[x];
   return M(k,t.clone().lerp(new THREE.Color('#ffffff'),.25),Object.assign({transparent:true,opacity:.2,depthWrite:false,roughness:.32,clearcoat:.7,clearcoatRoughness:.3,sheen:0,envMapIntensity:.7,specularIntensity:.8},keep))}

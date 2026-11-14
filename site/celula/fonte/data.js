@@ -1,67 +1,63 @@
 // ================= DATA =================
 const ORG={
- celula_animal:{t:'Célula animal',s:'eucarionte · sem parede',c:'#9cc4ff',bar:[10,'µm'],
-  d:`<b>Uma célula animal típica tem de 10 a 30 µm</b> (milésimos de milímetro). Por dentro ela é cheia de compartimentos envolvidos por membrana, as organelas, cada um com uma tarefa. O DNA fica guardado no núcleo; a energia vem das mitocôndrias; as proteínas são feitas nos ribossomos e despachadas pelo retículo e pelo Golgi. Tudo isso se move: as vesículas viajam por "trilhos" de microtúbulos puxadas por proteínas motoras.`,
-  kv:[['Tamanho','10–30 µm'],['Corpo humano','~30 trilhões de células'],['Parede celular','não tem'],['Exclusivas','centríolos, lisossomos']],links:[]},
- celula_vegetal:{t:'Célula vegetal',s:'eucarionte · com parede',c:'#8ce99a',bar:[20,'µm'],
+ celula_animal:{t:'Célula animal',s:'Eucarionte, sem parede celular',c:'#9cc4ff',bar:[10,'µm'],
+  d:`<b>Uma célula animal típica tem de 10 a 30 µm</b> (milésimos de milímetro). Ela é <b>eucarionte</b>: tem núcleo e é cheia de compartimentos envolvidos por membrana, as organelas, cada um com uma tarefa. O DNA fica guardado no núcleo; a maior parte do ATP vem das mitocôndrias (a glicólise acontece no citoplasma); as proteínas são feitas nos ribossomos e despachadas pelo retículo e pelo <b>complexo de Golgi (complexo golgiense)</b>. Tudo isso se move: as vesículas viajam por "trilhos" de microtúbulos puxadas por proteínas motoras. Todas as células do corpo têm o mesmo DNA; o que muda é quais genes estão ligados.`,
+  kv:[['Tamanho','10–30 µm'],['Corpo humano','~30 trilhões de células'],['Parede celular','não tem'],['Típicas da animal','centríolos (ausentes nas plantas com flores) e lisossomos']],links:[]},
+ celula_vegetal:{t:'Célula vegetal',s:'Eucarionte, com parede celular',c:'#8ce99a',bar:[20,'µm'],
   d:`<b>Células vegetais costumam ser maiores (10–100 µm)</b> e têm três coisas que a animal não tem: <b>parede celular</b> de celulose, <b>cloroplastos</b> que fazem fotossíntese e um <b>vacúolo central</b> enorme, que empurra o resto da célula contra a parede. Também têm mitocôndrias: as plantas respiram o tempo todo, de dia e de noite.`,
-  kv:[['Tamanho','10–100 µm'],['Parede','celulose'],['Vacúolo central','até ~90% do volume'],['Exclusivas','cloroplastos, parede, vacúolo central']],links:[]},
+  kv:[['Tamanho','10–100 µm'],['Parede','celulose'],['Vacúolo central','até ~90% do volume'],['Que a animal não tem','cloroplastos, parede de celulose, vacúolo central']],links:[]},
  nucleo:{t:'Núcleo',s:'centro de controle',c:'#4dabf7',bar:[1,'µm'],
-  d:`<b>Onde fica o DNA.</b> Nas células humanas são 46 cromossomos; esticado, o DNA de uma única célula mediria cerca de <b>2 metros</b>, enrolado dentro de um núcleo de ~6 µm. Um envelope de <b>duas membranas</b> separa o núcleo do citoplasma, atravessado por milhares de <b>poros nucleares</b> (complexos de ~120 nm com simetria de 8 lados). Por eles saem as moléculas de mRNA (pontos amarelos) que levarão as receitas aos ribossomos. O <b>nucléolo</b> é a fábrica de ribossomos.`,
-  kv:[['Diâmetro','~5–10 µm'],['Membranas','2 (envelope nuclear)'],['Poros','milhares, ~120 nm cada'],['DNA humano','46 cromossomos, ~2 m esticado']],links:[['DNA dupla hélice','../dna/index.html']]},
- mitocondria:{t:'Mitocôndria',s:'usina de energia',c:'#ff5c8a',bar:[200,'nm'],
-  d:`<b>Transforma a energia dos alimentos em ATP</b>, a "moeda" de energia da célula. A membrana interna é toda dobrada em <b>cristas</b>, o que aumenta a área. Nela, a cadeia respiratória bombeia prótons (H⁺) para fora, e eles voltam passando pela <b>ATP sintase</b>, um motor molecular que <b>gira</b> e produz ~3 ATP por volta. Uma glicose rende cerca de 30–32 ATP. A mitocôndria tem <b>DNA próprio</b> (16 569 pares de bases e 37 genes em humanos), herdado só da mãe, uma pista de que ela já foi uma bactéria livre (teoria da endossimbiose).`,
+  d:`<b>Onde fica o DNA.</b> Numa célula humana são 46 cromossomos; esticado, esse DNA mediria cerca de <b>2 metros</b>, enrolado dentro de um núcleo de ~6 µm. Um envelope de <b>duas membranas</b> separa o núcleo do citoplasma, atravessado por milhares de <b>poros nucleares</b> (complexos de ~120 nm com simetria de 8 lados). Por eles saem as moléculas de mRNA (pontos amarelos) que levarão as receitas aos ribossomos. O <b>nucléolo</b> é a fábrica de ribossomos.`,
+  kv:[['Diâmetro','~5–10 µm'],['Membranas','2 (envelope nuclear)'],['Poros','milhares, ~120 nm cada'],['Numa célula humana','46 cromossomos, ~2 m esticado']],links:[['DNA dupla hélice','../dna/index.html']]},
+ mitocondria:{t:'Mitocôndria',s:'transforma energia (não a cria)',c:'#ff5c8a',bar:[200,'nm'],
+  d:`<b>Transforma a energia dos alimentos em ATP</b>, a "moeda" de energia da célula. A membrana interna é toda dobrada em <b>cristas</b>, o que aumenta a área. Nela, a cadeia respiratória bombeia prótons (H⁺) da matriz para o espaço entre as duas membranas (espaço intermembranas), e eles voltam para a matriz passando pela <b>ATP sintase</b>, um motor molecular que <b>gira</b> e produz ~3 ATP por volta. Uma glicose rende cerca de 30–32 ATP. Livros mais antigos falam em 36 ou 38 ATP; medidas mais recentes da ATP sintase e do transporte pela membrana deram o valor menor. A mitocôndria tem <b>DNA próprio</b> (16 569 pares de bases e 37 genes em humanos), herdado só da mãe, uma pista de que ela já foi uma bactéria livre (teoria da endossimbiose).`,
   kv:[['Tamanho','0,5–1 µm de largura, 1–10 µm de comprimento'],['Por célula','centenas a milhares'],['Membranas','2 (externa e interna com cristas)'],['DNA próprio','16 569 pb · 37 genes']],links:[['Membrana (bicamada)','../biomoleculas/index.html#bicamada']]},
  cloroplasto:{t:'Cloroplasto',s:'fotossíntese',c:'#51cf66',bar:[1,'µm'],veg:true,
-  d:`<b>Captura a luz do Sol e fabrica açúcar.</b> Dentro dele há pilhas de discos chamadas <b>grana</b>, feitas de <b>tilacoides</b>, onde fica a clorofila. A clorofila absorve luz azul e vermelha e reflete a verde, por isso as folhas são verdes. A reação geral é 6 CO₂ + 6 H₂O + luz → C₆H₁₂O₆ + 6 O₂, e o <b>oxigênio liberado vem da quebra da água</b> (bolhas). Assim como a mitocôndria, tem DNA próprio e descende de uma bactéria (cianobactéria).`,
+  d:`<b>Captura a luz do Sol e fabrica açúcar.</b> Dentro dele há pilhas de discos, cada uma chamada <b>granum</b> (plural: grana), feitas de <b>tilacoides</b>, onde fica a clorofila. A clorofila absorve luz azul e vermelha e reflete a verde, por isso as folhas são verdes. A reação geral é 6 CO₂ + 6 H₂O + luz → C₆H₁₂O₆ + 6 O₂, e o <b>oxigênio liberado vem da quebra da água</b> (bolhas). Isso acontece nos tilacoides (fase clara). No estroma, o ciclo de Calvin usa o ATP e o CO₂ para fazer o açúcar (fase escura, que também acontece com luz). Assim como a mitocôndria, tem DNA próprio e descende de uma bactéria (cianobactéria).`,
   kv:[['Tamanho','5–10 µm de comprimento'],['Por célula','dezenas (células de folha)'],['Membranas','2 + sistema de tilacoides'],['DNA próprio','sim (~120–160 mil pb)']],links:[['CO₂ em 3D','../moleculas/index.html#co2'],['Água em 3D','../moleculas/index.html#agua']]},
  re:{t:'Retículo endoplasmático',s:'rugoso + liso',c:'#69db7c',bar:[200,'nm'],
   d:`<b>Uma rede de membranas ligada ao envelope do núcleo.</b> O <b>RE rugoso</b> é coberto de ribossomos (pontos) que fabricam proteínas e as injetam para dentro do retículo, onde elas se dobram. É a rota das proteínas que vão ser exportadas ou ficar em membranas, como a insulina e os anticorpos. O <b>RE liso</b> não tem ribossomos: produz lipídios, desintoxica substâncias (é abundante no fígado) e, no músculo, guarda o cálcio que dispara a contração.`,
   kv:[['Formato','sacos achatados (rugoso) e túbulos (liso)'],['Ligado a','envelope nuclear'],['RE rugoso','proteínas de exportação e de membrana'],['RE liso','lipídios, desintoxicação, cálcio']],links:[['Proteínas (α-hélice)','../biomoleculas/index.html#helice'],['Fosfolipídio','../biomoleculas/index.html#fosfolipidio']]},
  golgi:{t:'Complexo de Golgi',s:'correio da célula',c:'#ffd43b',bar:[200,'nm'],
-  d:`<b>Recebe, modifica, embala e despacha.</b> É uma pilha de 4 a 8 sacos achatados (cisternas). As vesículas que chegam do retículo entram pela face <b>cis</b>; as proteínas atravessam a pilha ganhando "etiquetas" de açúcares (glicosilação) e saem pela face <b>trans</b> em novas vesículas, endereçadas para a membrana, para os lisossomos ou para fora da célula. Descrito por Camillo Golgi em 1898.`,
+  d:`<b>Recebe, modifica, embala e despacha.</b> O complexo de Golgi (complexo golgiense) é uma pilha de 4 a 8 sacos achatados (cisternas). As vesículas que chegam do retículo entram pela face <b>cis</b>; as proteínas atravessam a pilha e têm suas "etiquetas" de açúcares (colocadas no retículo) modificadas e completadas e saem pela face <b>trans</b> em novas vesículas, endereçadas para a membrana, para os lisossomos ou para fora da célula. Descrito por Camillo Golgi em 1898.`,
   kv:[['Cisternas','4–8 por pilha'],['Entrada','face cis (vinda do RE)'],['Saída','face trans (vesículas)'],['Função','processar e endereçar proteínas']],links:[]},
  lisossomo:{t:'Lisossomo',s:'reciclagem',c:'#22d3ee',bar:[100,'nm'],anim:true,
-  d:`<b>O "estômago" da célula.</b> É uma bolsa com dezenas de enzimas digestivas (~60 tipos) que quebram proteínas, lipídios, açúcares, organelas velhas e até bactérias capturadas. Bombas de prótons na membrana mantêm o interior <b>ácido, com pH 4,5–5</b>, que é o pH em que essas enzimas funcionam; se uma vazar para o citoplasma (pH ~7,2), quase não age, uma proteção embutida. Descoberto por Christian de Duve (Nobel de 1974).`,
+  d:`<b>O centro de reciclagem da célula.</b> É uma bolsa com dezenas de enzimas digestivas (~60 tipos) que quebram proteínas, lipídios, açúcares, organelas velhas e até bactérias capturadas. Bombas de prótons na membrana mantêm o interior <b>ácido, com pH 4,5–5</b>, que é o pH em que essas enzimas funcionam; se uma vazar para o citoplasma (pH ~7,2), quase não age, uma proteção embutida. Descoberto por Christian de Duve (Nobel de 1974).`,
   kv:[['Tamanho','0,1–1,2 µm'],['pH interno','4,5–5 (citoplasma ~7,2)'],['Enzimas','~60 tipos de hidrolases'],['Em plantas','o vacúolo faz esse papel']],links:[]},
  ribossomo:{t:'Ribossomo',s:'fábrica de proteínas',c:'#ffa94d',bar:[10,'nm'],
   d:`<b>Lê o mRNA e monta a proteína</b>, um aminoácido por códon. São duas subunidades (60S + 40S = 80S em eucariotos), feitas de RNA e proteínas, com ~25–30 nm. Os tRNAs (formas em L) trazem os aminoácidos certos encaixando o anticódon no códon. A peça que une os aminoácidos é feita de RNA, não de proteína: o ribossomo é uma <b>ribozima</b>. Aqui ele está traduzindo o começo da <b>β-globina</b>, a mesma sequência do módulo DNA. Em células humanas, ~5 aminoácidos por segundo (animação mais lenta).`,
   kv:[['Tamanho','~25–30 nm'],['Subunidades','60S + 40S = 80S'],['Por célula','milhões'],['Velocidade','~5 aminoácidos/s (humanos)']],links:[['O gene (DNA)','../dna/index.html'],['Ligação peptídica','../biomoleculas/index.html#peptidica'],['Aminoácidos','../biomoleculas/index.html#val']]},
  membrana:{t:'Membrana plasmática',s:'mosaico fluido',c:'#b197fc',bar:[5,'nm'],
-  d:`<b>A fronteira da célula.</b> Uma bicamada de fosfolipídios, com as caudas apolares para dentro, salpicada de proteínas e, em células animais, de colesterol. É fluida: lipídios e proteínas deslizam de lado (modelo do mosaico fluido, Singer e Nicolson, 1972). Canais e transportadores deixam passar íons e moléculas específicas (bolinhas atravessando), e cadeias de açúcar do lado de fora funcionam como "crachá" de identificação.`,
+  d:`<b>A fronteira da célula.</b> Uma bicamada de fosfolipídios, com as caudas apolares para dentro, salpicada de proteínas e, em células animais, de colesterol. É fluida: lipídios e proteínas deslizam de lado (modelo do mosaico fluido, Singer e Nicolson, 1972). Canais e transportadores deixam passar íons e moléculas específicas (bolinhas atravessando), e cadeias de açúcar do lado de fora, o <b>glicocálix</b>, funcionam como "crachá" de identificação.`,
   kv:[['Espessura','~5–10 nm (com proteínas)'],['Base','bicamada de fosfolipídios'],['Componentes','lipídios, proteínas, colesterol, açúcares'],['Propriedade','permeabilidade seletiva']],links:[['Bicamada lipídica','../biomoleculas/index.html#bicamada'],['Fosfolipídio (POPC)','../biomoleculas/index.html#fosfolipidio']]},
  citoesqueleto:{t:'Citoesqueleto',s:'trilhos e motores',c:'#e8f1ff',bar:[25,'nm'],
   d:`<b>O esqueleto e a malha de transporte da célula.</b> Três tipos de fios: <b>microtúbulos</b> (25 nm, tubos de tubulina com 13 protofilamentos), <b>filamentos de actina</b> (7 nm, dupla hélice) e <b>filamentos intermediários</b> (10 nm, cordas resistentes). Sobre os microtúbulos a <b>cinesina</b> "anda" literalmente, um pé depois do outro, dando passos de <b>8 nm</b> e gastando 1 ATP por passo, carregando vesículas.`,
   kv:[['Microtúbulos','25 nm · tubulina'],['Actina','7 nm · dupla hélice'],['Intermediários','10 nm'],['Cinesina','passos de 8 nm, 1 ATP cada']],links:[]},
  centriolo:{t:'Centríolos',s:'organizam os microtúbulos',c:'#ffa8a8',bar:[100,'nm'],
   d:`<b>Dois cilindros perpendiculares</b> que formam o centrossomo, de onde os microtúbulos irradiam. Cada centríolo tem <b>9 trincas de microtúbulos</b> em anel (vista em corte). Na divisão celular, os centrossomos ajudam a montar o fuso que separa os cromossomos. Plantas com flores não têm centríolos e organizam seus microtúbulos de outro jeito.`,
-  kv:[['Tamanho','~0,25 µm × 0,5 µm'],['Estrutura','9 trincas de microtúbulos'],['Arranjo','par perpendicular'],['Presente em','células animais']],links:[]},
+  kv:[['Tamanho','~0,25 µm × 0,5 µm'],['Estrutura','9 trincas de microtúbulos'],['Arranjo','par perpendicular'],['Presente em','animais, algas, musgos e samambaias (não nas plantas com flores)']],links:[]},
  peroxissomo:{t:'Peroxissomo',s:'desintoxicação',c:'#fcc419',bar:[100,'nm'],
-  d:`<b>Pequena bolsa que lida com reações que geram peróxido de hidrogênio (H₂O₂)</b>, tóxico. A enzima <b>catalase</b>, muitas vezes formando um "cristal" no centro, quebra o H₂O₂: 2 H₂O₂ → 2 H₂O + O₂ (bolhas). Também quebra ácidos graxos muito longos. É a mesma reação que faz a água oxigenada borbulhar num machucado.`,
+  d:`<b>Pequena bolsa que lida com reações que geram peróxido de hidrogênio (H₂O₂)</b>, tóxico. A enzima <b>catalase</b> quebra o H₂O₂: 2 H₂O₂ → 2 H₂O + O₂ (bolhas). Em muitos animais, como o rato, outra enzima, a urato oxidase, forma um "cristal" no centro; os humanos perderam essa enzima, e por isso o ácido úrico pode se acumular e causar gota. Também quebra ácidos graxos muito longos. É a mesma reação que faz a água oxigenada borbulhar num machucado.`,
   kv:[['Tamanho','0,1–1 µm'],['Enzima-chave','catalase'],['Reação','2 H₂O₂ → 2 H₂O + O₂'],['Membranas','1']],links:[['Água em 3D','../moleculas/index.html#agua'],['O₂ em 3D','../moleculas/index.html#oxigenio']]},
  vacuolo:{t:'Vacúolo e parede',s:'turgor e sustentação',c:'#74c0fc',bar:[5,'µm'],veg:true,
-  d:`<b>O vacúolo central</b> é uma bolsa de água, sais e pigmentos envolvida pela membrana chamada <b>tonoplasto</b>; pode ocupar até ~90% do volume da célula. Quando está cheio, empurra a célula contra a <b>parede de celulose</b> (setas): é a <b>pressão de turgor</b>, que deixa a planta firme. Quando falta água, o vacúolo murcha e a planta também. Pontes chamadas <b>plasmodesmos</b> atravessam a parede e ligam células vizinhas.`,
+  d:`<b>O vacúolo central</b> é uma bolsa de água, sais e pigmentos envolvida pela membrana chamada <b>tonoplasto</b>; pode ocupar até ~90% do volume da célula. Quando está cheio, empurra a célula contra a <b>parede de celulose</b> (setas): é a <b>pressão de turgor</b>, que deixa a planta firme. Quando falta água, o vacúolo murcha e a planta também murcha. Em água muito salgada, a célula perde água por <b>osmose</b> e a membrana se descola da parede (<b>plasmólise</b>). Pontes chamadas <b>plasmodesmos</b> atravessam a parede e ligam células vizinhas.`,
   kv:[['Vacúolo','até ~90% do volume'],['Membrana','tonoplasto'],['Parede','microfibrilas de celulose'],['Ligações','plasmodesmos']],links:[['Água em 3D','../moleculas/index.html#agua']]}
 };
 
 
-// ---- novas cores (ilustração) ----
-Object.assign(ORG.nucleo,{c:'#9775fa'});Object.assign(ORG.re,{c:'#4c6ef5'});Object.assign(ORG.mitocondria,{c:'#ff6b35'});
-Object.assign(ORG.golgi,{c:'#fab005'});Object.assign(ORG.ribossomo,{c:'#e03131'});Object.assign(ORG.peroxissomo,{c:'#f783ac'});
-Object.assign(ORG.membrana,{c:'#f06595'});Object.assign(ORG.vacuolo,{c:'#15aabf'});Object.assign(ORG.lisossomo,{c:'#3bc9db'});
 // ---- novas células e estruturas ----
 Object.assign(ORG,{
- celula_bacteria:{t:'Célula bacteriana',s:'procarionte · sem núcleo',c:'#94d82d',bar:[1,'µm'],
+ celula_bacteria:{t:'Célula bacteriana',s:'Procarionte, sem núcleo',c:'#94d82d',bar:[1,'µm'],
   d:`<b>Uma bactéria como a <i>Escherichia coli</i> tem cerca de 2 µm de comprimento</b>, umas 10 vezes menor que uma célula animal. Ela é <b>procarionte</b>: não tem núcleo nem organelas com membrana. O DNA fica solto no citoplasma, numa região chamada <b>nucleoide</b>. Em boas condições, uma <i>E. coli</i> se divide em duas a cada ~20 minutos (fissão binária).`,
   kv:[['Tamanho','~2 µm × 0,5–1 µm'],['Núcleo','não tem (nucleoide)'],['Ribossomos','70S'],['Divisão','fissão binária, ~20 min']],links:[['O DNA','../dna/index.html']]},
  nucleoide:{t:'Nucleoide',s:'o DNA sem núcleo',c:'#4dabf7',bar:[1,'µm'],
   d:`<b>O cromossomo da bactéria fica solto no citoplasma</b>, sem membrana em volta. É uma única molécula de DNA <b>circular</b>; na <i>E. coli</i> tem cerca de <b>4,6 milhões de pares de bases</b> e uns 4 300 genes. Esticado, mediria ~1,5 mm, quase mil vezes o tamanho da própria célula, por isso fica todo dobrado e superenrolado.`,
   kv:[['Forma','circular'],['Tamanho (E. coli)','~4,6 milhões de pb'],['Genes','~4 300'],['Membrana','nenhuma']],links:[['DNA dupla hélice','../dna/index.html']]},
  plasmidio:{t:'Plasmídeo',s:'DNA extra',c:'#ffd43b',bar:[1,'µm'],
-  d:`<b>Pequenos anéis de DNA separados do cromossomo.</b> Têm de alguns mil a centenas de milhares de pares de bases e se copiam sozinhos. Muitos carregam <b>genes de resistência a antibióticos</b> e podem passar de uma bactéria para outra (conjugação), por isso a resistência se espalha rápido. Na biotecnologia, plasmídeos são usados para colocar genes novos em bactérias, como o gene da insulina humana.`,
+  d:`<b>Pequenos anéis de DNA separados do cromossomo.</b> Têm de alguns mil a centenas de milhares de pares de bases e se replicam independentemente do cromossomo (usando as enzimas da bactéria). Muitos carregam <b>genes de resistência a antibióticos</b> e podem passar de uma bactéria para outra (conjugação), por isso a resistência se espalha rápido. Na biotecnologia, plasmídeos são usados para colocar genes novos em bactérias, como o gene da insulina humana.`,
   kv:[['Forma','DNA circular pequeno'],['Tamanho','~1 mil a centenas de mil pb'],['Cópias','1 a centenas por célula'],['Uso','biotecnologia (ex.: insulina)']],links:[]},
  ribo70:{t:'Ribossomos 70S',s:'fábrica de proteínas',c:'#e03131',bar:[10,'nm'],
-  d:`<b>Os ribossomos bacterianos são menores que os nossos:</b> 70S (subunidades 50S + 30S), contra 80S nos eucariontes. Uma <i>E. coli</i> tem dezenas de milhares deles. Essa diferença é o alvo de vários antibióticos, como estreptomicina e tetraciclina, que travam o ribossomo da bactéria sem afetar o humano.`,
+  d:`<b>Os ribossomos bacterianos são menores que os nossos:</b> 70S (subunidades 50S + 30S), contra 80S nos eucariontes. Uma <i>E. coli</i> tem dezenas de milhares deles. Essa diferença é o alvo de vários antibióticos, como estreptomicina e tetraciclina, que travam o ribossomo da bactéria e quase não afetam os nossos. Os ribossomos das nossas mitocôndrias, parecidos com os bacterianos, às vezes são atingidos, mais uma pista da origem bacteriana da mitocôndria.`,
   kv:[['Tipo','70S (50S + 30S)'],['Por célula','~20 a 70 mil'],['Alvo de','vários antibióticos'],['Nos humanos','80S (60S + 40S)']],links:[['Aminoácidos','../biomoleculas/index.html#val']]},
  parede_bac:{t:'Parede e membrana',s:'envoltório bacteriano',c:'#94d82d',bar:[20,'nm'],
   d:`<b>A bactéria tem uma membrana plasmática coberta por uma parede de peptidoglicano</b>, uma malha de açúcares ligados por pequenas pontes de aminoácidos que segura a pressão interna. Em bactérias Gram-negativas, como a <i>E. coli</i>, há ainda uma <b>membrana externa</b> por fora. A penicilina funciona impedindo a bactéria de montar essa parede.`,
@@ -73,7 +69,7 @@ Object.assign(ORG,{
   d:`<b>Fiozinhos curtos e finos na superfície.</b> As fímbrias prendem a bactéria em superfícies e tecidos (é assim que bactérias grudam no trato urinário). O <b>pilus sexual</b>, mais longo, liga duas bactérias para passar um plasmídeo de uma para a outra, a <b>conjugação</b>.`,
   kv:[['Espessura','~3–10 nm'],['Função','adesão'],['Pilus sexual','conjugação'],['Quantidade','até centenas']],links:[]},
  celula_neuronio:{t:'Neurônio',s:'célula nervosa',c:'#fcc419',bar:[20,'µm'],
-  d:`<b>A célula que conduz sinais elétricos.</b> Os <b>dendritos</b> recebem sinais, o <b>corpo celular</b> soma tudo e, se o estímulo passar de um limite, dispara um <b>potencial de ação</b> que corre pelo <b>axônio</b> até as <b>sinapses</b>. O cérebro humano tem cerca de <b>86 bilhões</b> de neurônios. Os pulsos (pontos brilhantes) andam pelo axônio pulando de um nodo a outro.`,
+  d:`<b>A célula que conduz sinais elétricos.</b> Os <b>dendritos</b> recebem sinais, o <b>corpo celular</b> soma tudo e, se o estímulo passar de um limite, dispara um <b>potencial de ação</b> que corre pelo <b>axônio</b> até as <b>sinapses</b>. O cérebro humano tem cerca de <b>86 bilhões</b> de neurônios, número medido pelo grupo de Suzana Herculano-Houzel, na UFRJ. Os pulsos (pontos brilhantes) andam pelo axônio pulando de um nodo a outro.`,
   kv:[['Corpo celular','~4–100 µm'],['Axônio','até ~1 m (medula ao pé)'],['Cérebro humano','~86 bilhões'],['Velocidade','até ~120 m/s']],links:[]},
  dendrito:{t:'Dendritos',s:'antenas de entrada',c:'#ffd43b',bar:[20,'µm'],
   d:`<b>Ramificações que recebem sinais de outros neurônios.</b> Um único neurônio pode receber milhares de sinapses nos dendritos, muitas delas em pequenas saliências chamadas <b>espinhas dendríticas</b>, que mudam de forma quando aprendemos algo.`,
@@ -85,10 +81,10 @@ Object.assign(ORG,{
   d:`<b>Camadas de membrana enroladas no axônio</b>, feitas por outras células (células de Schwann nos nervos, oligodendrócitos no cérebro). A mielina isola o axônio, e o sinal salta de um <b>nodo de Ranvier</b> (os intervalos) para o próximo: a <b>condução saltatória</b>, até ~100 vezes mais rápida. Doenças como a esclerose múltipla destroem a mielina.`,
   kv:[['Feita por','Schwann / oligodendrócitos'],['Composição','~70–80% lipídios'],['Nodos de Ranvier','~1 µm, a cada ~1 mm'],['Condução','saltatória']],links:[['Bicamada lipídica','../biomoleculas/index.html#bicamada']]},
  sinapse:{t:'Sinapse',s:'ponto de contato',c:'#ff8787',bar:[1,'µm'],
-  d:`<b>Onde um neurônio passa o sinal para o próximo.</b> Quando o potencial de ação chega ao terminal, vesículas cheias de <b>neurotransmissores</b> (como glutamato, dopamina ou serotonina) se fundem com a membrana e soltam seu conteúdo numa fenda de só <b>~20 nm</b>. As moléculas atravessam e abrem canais na célula seguinte.`,
+  d:`<b>Na sinapse química, a mais comum, o neurônio passa o sinal para o próximo.</b> Quando o potencial de ação chega ao terminal, vesículas cheias de <b>neurotransmissores</b> (como glutamato, dopamina ou serotonina) se fundem com a membrana e soltam seu conteúdo numa fenda de só <b>~20 nm</b>. As moléculas atravessam e abrem canais na célula seguinte.`,
   kv:[['Fenda sináptica','~20 nm'],['Mensageiros','neurotransmissores'],['Tempo','~1 ms'],['No cérebro','~100 trilhões']],links:[]},
  celula_esperma:{t:'Espermatozoide',s:'gameta masculino',c:'#74c0fc',bar:[10,'µm'],
-  d:`<b>A célula humana mais especializada para nadar.</b> Mede cerca de <b>55 µm</b>, quase tudo cauda. A cabeça leva só o DNA, bem compactado, e a cauda bate em ondas usando energia das mitocôndrias da peça intermediária. Carrega <b>23 cromossomos</b>, metade do normal; o óvulo traz a outra metade.`,
+  d:`<b>A célula humana mais especializada para nadar.</b> Mede cerca de <b>55 µm</b>, quase tudo cauda. A cabeça leva o núcleo, com o DNA bem compactado, e o acrossomo, e a cauda bate em ondas usando energia das mitocôndrias da peça intermediária. Carrega <b>23 cromossomos</b>, metade do normal; o óvulo traz a outra metade.`,
   kv:[['Comprimento','~55 µm'],['Cabeça','~5 × 3 µm'],['Cromossomos','23 (haploide)'],['Velocidade','~50 µm/s']],links:[['O DNA','../dna/index.html']]},
  acrossomo:{t:'Acrossomo',s:'kit de entrada',c:'#da77f2',bar:[1,'µm'],
   d:`<b>Uma "capa" na ponta da cabeça cheia de enzimas.</b> Quando o espermatozoide encosta no óvulo, o acrossomo libera enzimas (como a acrosina) que digerem a camada protetora do óvulo, a <b>zona pelúcida</b>, abrindo caminho. Ele é derivado do complexo de Golgi.`,
@@ -103,7 +99,7 @@ Object.assign(ORG,{
   d:`<b>Um flagelo eucarionte, diferente do bacteriano:</b> não gira, ele <b>ondula</b>. Por dentro tem o <b>axonema</b>, com 9 pares de microtúbulos em volta de 2 centrais (arranjo "9+2"). Motores de <b>dineína</b> fazem os pares deslizarem uns sobre os outros, e isso dobra a cauda.`,
   kv:[['Comprimento','~45–50 µm'],['Estrutura','axonema 9+2'],['Motor','dineína'],['Movimento','ondulação']],links:[]},
  celula_levedura:{t:'Levedura',s:'fungo unicelular',c:'#e6c07b',bar:[2,'µm'],
-  d:`<b><i>Saccharomyces cerevisiae</i>, o fermento de pão e de cerveja.</b> É um <b>eucarionte</b> como nós: tem núcleo, mitocôndrias e vacúolo, num corpo de 5–10 µm. Sem oxigênio, ela <b>fermenta</b> o açúcar: C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂. O gás (bolhas) faz o pão crescer e o álcool vai para a cerveja. Foi o primeiro eucarionte a ter o genoma inteiro lido, em 1996.`,
+  d:`<b><i>Saccharomyces cerevisiae</i>, o fermento de pão e de cerveja.</b> É um <b>eucarionte</b> como nós: tem núcleo, mitocôndrias e vacúolo, num corpo de 5–10 µm. Sem oxigênio (e mesmo com ele, quando há muito açúcar), ela <b>fermenta</b> o açúcar: C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂. Com oxigênio, ela também respira e tira muito mais energia de cada glicose. O gás (bolhas) faz o pão crescer e o álcool vai para a cerveja. Foi o primeiro eucarionte a ter o genoma inteiro lido, em 1996.`,
   kv:[['Tamanho','5–10 µm'],['Reino','fungos'],['Genoma','~12 milhões de pb, 16 cromossomos'],['Fermentação','açúcar → etanol + CO₂']],links:[['CO₂ em 3D','../moleculas/index.html#co2']]},
  broto:{t:'Broto',s:'reprodução',c:'#f2d49b',bar:[2,'µm'],
   d:`<b>A levedura se reproduz por brotamento.</b> Uma bolinha cresce na superfície, recebe uma cópia do núcleo e se solta, deixando na mãe uma <b>cicatriz de brotamento</b> (os anéis). Contando as cicatrizes dá para saber quantas vezes a célula já se dividiu; uma célula-mãe produz em média uns 20 a 30 brotos na vida.`,
@@ -114,8 +110,8 @@ Object.assign(ORG,{
  parede_lev:{t:'Parede celular',s:'glucana e quitina',c:'#e6c07b',bar:[1,'µm'],
   d:`<b>A parede dos fungos não é de celulose.</b> É feita de <b>glucanas</b> e <b>mananas</b> (açúcares) com um pouco de <b>quitina</b>, o mesmo material da carapaça dos insetos. Alguns remédios antifúngicos atacam justamente a montagem dessa parede, que nossas células não têm.`,
   kv:[['Material','glucanas, mananas, quitina'],['Espessura','~100–200 nm'],['Diferença','plantas usam celulose'],['Alvo de','antifúngicos']],links:[]},
- celula_sangue:{t:'Células do sangue',s:'hemácias, leucócitos, plaquetas',c:'#ff6b6b',bar:[5,'µm'],
-  d:`<b>Uma gota de sangue de 1 µL tem uns 5 milhões de hemácias</b>, 4 a 11 mil leucócitos e 150 a 400 mil plaquetas, todos boiando no plasma. As hemácias levam oxigênio, os leucócitos defendem o corpo e as plaquetas fecham machucados. Todos nascem na medula óssea.`,
+ celula_sangue:{t:'Células do sangue',s:'Hemácias, leucócitos e plaquetas',c:'#ff6b6b',bar:[5,'µm'],
+  d:`<b>Um microlitro de sangue (1 µL = 1 mm³, umas 50 vezes menos que uma gota) tem uns 5 milhões de hemácias</b>, 4 a 11 mil leucócitos e 150 a 400 mil plaquetas, todos boiando no plasma. As hemácias levam oxigênio, os leucócitos defendem o corpo e as plaquetas fecham machucados. Todos nascem na medula óssea.`,
   kv:[['Hemácias','~5 milhões/µL'],['Leucócitos','4–11 mil/µL'],['Plaquetas','150–400 mil/µL'],['Origem','medula óssea']],links:[]},
  hemacia:{t:'Hemácia',s:'transporte de O₂',c:'#e03131',bar:[2,'µm'],
   d:`<b>Um disco bicôncavo de ~7,5 µm, sem núcleo.</b> O formato aumenta a área para trocar gases e deixa a célula dobrar para passar em capilares mais finos que ela. Cada hemácia tem uns <b>270 milhões</b> de moléculas de <b>hemoglobina</b>, cada uma com 4 átomos de ferro que prendem O₂. Vive cerca de 120 dias.`,
@@ -126,7 +122,7 @@ Object.assign(ORG,{
  plaqueta:{t:'Plaqueta',s:'coagulação',c:'#ffd8a8',bar:[1,'µm'],
   d:`<b>Fragmentos de célula de só 2–3 µm</b>, soltos de uma célula gigante da medula, o megacariócito. Não têm núcleo. Quando um vaso se rompe, as plaquetas grudam no local, mudam de forma e chamam outras, formando um tampão que depois é reforçado por fios de fibrina: o coágulo.`,
   kv:[['Tamanho','2–3 µm'],['Origem','megacariócito'],['Núcleo','não tem'],['Vida','~7–10 dias']],links:[]},
- celula_fago:{t:'Bacteriófago T4',s:'vírus, não é célula',c:'#ced4da',bar:[50,'nm'],
+ celula_fago:{t:'Bacteriófago T4',s:'Vírus: não é célula',c:'#ced4da',bar:[50,'nm'],
   d:`<b>Um vírus que infecta bactérias</b>, com uns 200 nm, 10 vezes menor que a própria bactéria. Não é célula: não tem citoplasma, ribossomos nem metabolismo. As <b>fibras da cauda</b> reconhecem a bactéria, a cauda se contrai como uma seringa e <b>injeta o DNA</b>; em ~25 minutos a bactéria vira uma fábrica que libera umas 100–200 cópias novas.`,
   kv:[['Tamanho','~200 nm'],['Material genético','DNA, ~169 mil pb'],['Hospedeiro','E. coli'],['Ciclo','~25 min, ~100–200 vírus']],links:[]},
  capsideo:{t:'Capsídeo',s:'cabeça de proteína',c:'#ced4da',bar:[50,'nm'],
@@ -143,3 +139,74 @@ Object.assign(ORG,{
   kv:[['Número','6 longas'],['Comprimento','~150 nm'],['Função','achar o hospedeiro'],['Alvo','moléculas da superfície']],links:[]}
 });
 
+
+// ---- núcleo da levedura (revisão de biologia, E3) ----
+ORG.nucleo_lev={t:'Núcleo',s:'16 cromossomos',c:'#9A6BFF',bar:[1,'µm'],
+  d:`<b>Igual ao nosso no essencial:</b> o DNA fica dentro de um envelope de duas membranas com poros. Mas é bem menor: ~2 µm, com <b>16 cromossomos</b> e uns 12 milhões de pares de bases (cerca de 250 vezes menos DNA que o genoma humano). Na levedura, o envelope nuclear não se desfaz na divisão.`,
+  kv:[['Diâmetro','~2 µm'],['Cromossomos','16'],['Genoma','~12 milhões de pb'],['Membranas','2 (envelope nuclear)']],links:[['DNA dupla hélice','../dna/index.html']]};
+
+// ---- famílias e cores da paleta científica (guia 2.3, tokens --sci-* do base.css) ----
+const FAM={gen:['Informação genética','#9A6BFF'],mem:['Membranas','#F06AAE'],par:['Envoltórios rígidos','#A9C54A'],ene:['Energia','#F25C3B'],
+ fot:['Fotossíntese','#3FBF6A'],sin:['Síntese de proteínas','#4B7BFF'],emp:['Empacotamento','#F7C13B'],rib:['Ribossomos e proteínas','#FFE1A6'],
+ dig:['Digestão e defesa química','#2FCFBF'],agu:['Água e reserva','#2A9FC9'],sus:['Sustentação e movimento','#CFE0FF'],
+ neu:['Neurônio','#F4B860'],san:['Sangue','#D7303B'],vir:['Vírus','#B9C2D3'],cel:['Célula inteira',null]};
+{const F={gen:'nucleo nucleo_lev nucleoide plasmidio nucleo_esp dna_fago',mem:'membrana mielina',par:'parede_bac parede_lev',ene:'mitocondria peca_int',fot:'cloroplasto',
+  sin:'re',emp:'golgi acrossomo',rib:'ribossomo ribo70',dig:'lisossomo peroxissomo',agu:'vacuolo vacuolo_lev',sus:'citoesqueleto centriolo flagelo pili cauda',
+  neu:'dendrito axonio sinapse',san:'hemacia leucocito plaqueta',vir:'capsideo cauda_fago fibras',cel:'broto'};
+ for(const f in F)for(const k of F[f].split(' ')){ORG[k].fam=f;if(FAM[f][1])ORG[k].c=FAM[f][1]}
+ Object.assign(ORG.sinapse,{c:'#FF8F8F'});Object.assign(ORG.axonio,{c:'#F7D08A'});Object.assign(ORG.leucocito,{c:'#B79CFF'});Object.assign(ORG.plaqueta,{c:'#E8C9A0'});
+ Object.assign(ORG.cauda_fago,{c:'#9AA3B5'});Object.assign(ORG.fibras,{c:'#7E889C'});Object.assign(ORG.broto,{c:'#E2B55F',fam:'cel'});
+ Object.assign(ORG.peroxissomo,{c:'#5FE0C8'});Object.assign(ORG.ribo70,{c:'#FFE1A6'});
+ for(const k in ORG)if(k.startsWith('celula_'))ORG[k].fam='cel';}
+
+// ---- ligações com o módulo 06 (Morfofisiologia) ----
+{const M='../morfofisiologia/index.html#';const L={membrana:'membranas/mosaico',nucleo:'nucleo/geral',nucleo_lev:'nucleo/geral',mitocondria:'origem/mito',cloroplasto:'origem/cloro',celula_bacteria:'tipos/proc'};
+ for(const k in L)ORG[k].links.unshift(['Ver em Morfofisiologia',M+L[k]]);}
+
+// ---- caixa "No ENEM" (revisão de biologia, seção 5) ----
+const ENEM={
+ celula_animal:'Cai muito a comparação entre célula animal, vegetal e bacteriana. Cuidado com "exclusivas": centríolos também existem em algas, musgos e samambaias; só faltam nas plantas com flores.',
+ celula_vegetal:'Parede de celulose, cloroplastos e vacúolo central são o trio que a prova pede. Lembre que a planta também tem mitocôndrias e respira de dia e de noite (fluxo de energia, H9).',
+ celula_bacteria:'"Vírus não é célula" e "procarionte não tem núcleo, mas tem DNA, ribossomos e parede" são pegadinhas frequentes. Resistência a antibióticos se liga a seleção natural (H30).',
+ celula_neuronio:'Mostra a diferenciação celular: o neurônio tem o mesmo DNA que as outras células, com genes diferentes ligados. Bainha de mielina e sinapse aparecem em questões de sistema nervoso.',
+ celula_esperma:'Gameta haploide (23 cromossomos) e herança mitocondrial materna: as mitocôndrias do espermatozoide são destruídas após a fecundação (H13).',
+ celula_levedura:'Respiração × fermentação: com oxigênio a levedura tira muito mais ATP de cada glicose; sem oxigênio, faz etanol e CO₂ (pão, cerveja, biocombustível; H11 e H29).',
+ celula_sangue:'Questões com hemograma usam valores por µL (= mm³). Hemácia leva O₂, leucócito defende, plaqueta coagula (H14).',
+ celula_fago:'Vírus não tem metabolismo nem ribossomos: só se reproduz dentro de uma célula. O fago também transfere genes entre bactérias.',
+ nucleo:'Núcleo, cromossomos e divisão celular (H13). Lembre: a célula humana tem 46 cromossomos; os gametas, 23.',
+ nucleo_lev:'A levedura é eucarionte: tem núcleo com envelope, como nós. Isso a separa das bactérias, que são procariontes.',
+ mitocondria:'Respiração celular e teoria endossimbiótica (H16): DNA circular próprio, ribossomos parecidos com os bacterianos e herança materna. Os prótons vão da matriz para o espaço intermembranas.',
+ cloroplasto:'Fotossíntese: fase clara nos tilacoides (quebra da água, libera O₂) e ciclo de Calvin no estroma (fixa CO₂). Também tem DNA próprio (endossimbiose).',
+ re:'Caminho da secreção: ribossomo do RE rugoso → retículo → complexo golgiense → vesícula → fora da célula (ex.: insulina, anticorpos).',
+ golgi:'Aparece no caminho da secreção e na origem do acrossomo do espermatozoide e dos lisossomos.',
+ lisossomo:'Digestão intracelular e autofagia. Em plantas, o vacúolo faz esse papel.',
+ ribossomo:'Tradução (código genético, H13): o ribossomo lê o mRNA de três em três bases (códons). Ribossomo 80S em eucariontes, 70S em bactérias.',
+ membrana:'Modelo do mosaico fluido, permeabilidade seletiva, osmose e transporte ativo. O glicocálix é o "crachá" de reconhecimento.',
+ citoesqueleto:'Forma, movimento e transporte dentro da célula. Plantas também têm citoesqueleto.',
+ centriolo:'Divisão celular (fuso) e base de cílios e flagelos. Pegadinha: não são exclusivos de animais.',
+ peroxissomo:'Catalase quebrando a água oxigenada (2 H₂O₂ → 2 H₂O + O₂) é exemplo clássico de enzima.',
+ vacuolo:'Osmose, turgor e plasmólise: célula vegetal em água salgada perde água e a membrana se descola da parede.',
+ nucleoide:'Procarionte não tem carioteca: o DNA circular fica solto no citoplasma, no nucleoide.',
+ plasmidio:'Resistência a antibióticos se espalha por conjugação (plasmídeos passam pelo pilus). O antibiótico não "induz" a resistência: seleciona as bactérias que já a tinham (H30). Plasmídeos também são usados para produzir insulina (H11).',
+ ribo70:'O ribossomo 70S é alvo de antibióticos; ribossomos parecidos nas mitocôndrias reforçam a endossimbiose (H16).',
+ parede_bac:'A penicilina impede a montagem da parede de peptidoglicano. Nossas células não têm essa parede.',
+ flagelo:'Flagelo bacteriano gira; o flagelo eucarionte (como a cauda do espermatozoide) ondula. Estruturas diferentes para a mesma função.',
+ pili:'O pilus sexual permite a conjugação, que espalha genes de resistência entre bactérias.',
+ dendrito:'Dendritos recebem, axônio conduz, sinapse transmite: a direção do impulso nervoso cai bastante.',
+ axonio:'Potencial de ação: entrada de Na⁺ e saída de K⁺. A bomba de sódio e potássio gasta ATP.',
+ mielina:'Condução saltatória mais rápida; doenças como a esclerose múltipla destroem a mielina.',
+ sinapse:'Neurotransmissores e drogas que agem na sinapse (por exemplo, antidepressivos que mexem na serotonina).',
+ acrossomo:'Derivado do complexo golgiense; libera enzimas que digerem a camada protetora do óvulo na fecundação.',
+ nucleo_esp:'Gameta haploide: 23 cromossomos, com X ou Y definindo o sexo.',
+ peca_int:'Mitocôndrias do espermatozoide não passam para o embrião: herança mitocondrial materna.',
+ cauda:'Flagelo eucarionte com axonema 9+2, movido por dineína e ATP.',
+ broto:'Reprodução assexuada por brotamento: as células-filhas são geneticamente iguais à mãe.',
+ vacuolo_lev:'Autofagia (Nobel de 2016) e a semelhança entre o vacúolo dos fungos e o lisossomo animal.',
+ parede_lev:'Fungos têm parede de quitina e glucanas, não de celulose: uma diferença clássica entre os reinos.',
+ hemacia:'Hemácia madura de mamífero não tem núcleo; anemia e oxigenação aparecem em questões de hemograma (H14).',
+ leucocito:'Fagocitose e defesa inespecífica. Leucócitos altos no hemograma sugerem infecção.',
+ plaqueta:'Coagulação; plaquetas baixas aumentam o risco de sangramento (por exemplo, na dengue).',
+ capsideo:'Vírus: capsídeo de proteína + material genético. Não tem citoplasma nem ribossomos.',
+ dna_fago:'O experimento de Hershey e Chase (1952) usou fagos para mostrar que o material genético é o DNA.',
+ cauda_fago:'O vírus injeta só o material genético; o capsídeo fica do lado de fora da bactéria.',
+ fibras:'A especificidade vírus-hospedeiro depende do encaixe entre proteínas do vírus e receptores da célula.'};

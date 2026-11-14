@@ -4,196 +4,206 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Célula 3D · LAB</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css">
 <style>
-body{font-size:13px}
+/* Célula: estilo Campo escuro (docs/GUIA-DE-ESTILO.md). Tokens em ../base.css */
 .wrap{max-width:1320px}
-.tabs{display:flex;gap:4px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none}
-.tabs a{flex:1;text-align:center;text-decoration:none;font-size:10.5px;letter-spacing:.1em;padding:9px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--dim);white-space:nowrap}
-.tabs a.on{color:var(--amber);border-color:var(--amber)}
-.top{display:flex;align-items:center;gap:12px;padding:4px 2px 12px}
-.top .ic{width:42px;height:42px;border-radius:12px;flex:none;background:radial-gradient(circle at 35% 30%,#b197fc,#5f3dc4 55%,#1a1040);box-shadow:0 4px 14px rgba(0,0,0,.5),inset 0 -3px 8px rgba(0,0,0,.4)}
-.top h1{font-family:'Space Grotesk',sans-serif;font-size:22px;color:#fff;line-height:1.1}
-.top .k{font-size:10px;margin-top:3px}
-.types{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:14px;background:rgba(11,16,32,.7);margin-bottom:10px;overflow-x:auto;scrollbar-width:none;width:max-content;max-width:100%}
-.types button{font:inherit;font-family:'Space Grotesk',sans-serif;font-size:14px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;border:0;background:transparent;color:var(--dim);cursor:pointer;white-space:nowrap}
-.types button:hover{color:var(--txt)}
-.types button.on{background:#1b2340;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.06)}
-.types svg{width:20px;height:20px;flex:none}
-#view{position:relative;height:clamp(460px,76vh,800px);border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,#161b2e,#090b14 75%)}
-@media(max-width:699px){#view{height:calc(100vw + 120px)}}
+.types{margin-bottom:16px}
+.types svg{width:24px;height:24px;flex:none}
+#view{position:relative;height:clamp(460px,72svh,820px);border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%)}
+@media(max-width:699px){#view{height:66svh;min-height:420px}}
 #stage{position:absolute;inset:0}#stage canvas{display:block;touch-action:none}
-#view.fade #stage{animation:fadein .55s ease-out}@keyframes fadein{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:none}}
+#view.fade #stage{animation:fadein .25s ease-out}@keyframes fadein{from{opacity:0}to{opacity:1}}
 .nogl{padding:40px;color:var(--dim);max-width:46ch;line-height:1.6}
+/* pontos clicáveis: 22 px de desenho, 44 px de toque */
 .hs{position:relative;width:0;height:0}
-.hs button{position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.92);box-shadow:0 2px 8px rgba(0,0,0,.6);cursor:pointer;pointer-events:auto;transition:transform .15s}
-.hs button::before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--c)}
-.hs button::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);animation:ping 2.6s ease-out infinite}
-.hs button:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.hs.on button{transform:scale(1.18)}
-.hs span{position:absolute;left:18px;top:-13px;white-space:nowrap;font:600 12px 'Space Grotesk',sans-serif;padding:5px 11px 5px 10px;border-radius:13px;background:rgba(10,13,24,.86);border:1px solid rgba(255,255,255,.14);color:#dfe6f5;pointer-events:none;backdrop-filter:blur(4px)}
-.hs.on span{border-color:rgba(255,179,71,.8);color:#fff}
-@keyframes ping{from{transform:scale(.8);opacity:1}to{transform:scale(2);opacity:0}}
+.hs button{position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;border:0;padding:0;background:transparent;cursor:pointer;pointer-events:auto}
+.hs button::before{content:'';position:absolute;inset:15px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px rgba(255,255,255,.94),0 2px 8px 4px rgba(0,0,0,.55);transition:transform .15s}
+.hs button::after{content:'';position:absolute;inset:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);opacity:0;animation:ping 1.6s ease-out 2}
+.hs button:focus-visible{outline:2px solid var(--focus);outline-offset:-6px}
+.hs.on button::before{transform:scale(1.18)}
+.hs span{position:absolute;left:18px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt);pointer-events:none}
+.hs.on span{border-color:var(--amber)}
+.hs.r span{left:auto;right:18px}
+.hs.hid span{visibility:hidden}
+@keyframes ping{from{transform:scale(.8);opacity:1}to{transform:scale(1.9);opacity:0}}
+/* rótulos das telas de detalhe */
 .dl{position:relative;width:0;height:0;pointer-events:none}
-.dl i{position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.8)}
-.hs.r span{left:auto;right:18px}.dl.r span{left:auto;right:10px;border-left:0;border-right:2px solid var(--amber)}
-.dl span{position:absolute;left:10px;top:-11px;white-space:nowrap;font:600 11px 'JetBrains Mono',monospace;padding:3px 8px;border-radius:6px;background:rgba(8,10,20,.78);border-left:2px solid var(--amber);color:#e8edf7}
-@media(max-width:699px){.dl span{font-size:9.5px;padding:2px 6px}.hs span{font-size:11px}}
+.dl i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(11,15,28,.7)}
+.dl span{position:absolute;left:12px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt)}
+.dl.r span{left:auto;right:12px}
+.dl.hid{visibility:hidden}
 @media(prefers-reduced-motion:reduce){.hs button::after{animation:none}#view.fade #stage{animation:none}}
-.links button.open{font:inherit;font-family:'Space Grotesk',sans-serif;font-size:13px;padding:9px 14px;border-radius:10px;border:1px solid var(--amber);background:rgba(255,179,71,.12);color:var(--amber);cursor:pointer;width:100%;text-align:left}
-.links button.open:hover{background:rgba(255,179,71,.2)}
-.hud{position:absolute;color:var(--dim)}
-.tag{top:16px;left:18px;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;color:#dfe6f5;text-transform:uppercase;pointer-events:none}
-.tag i{width:10px;height:10px;border-radius:50%;box-shadow:0 0 10px currentColor}
-.tag small{color:var(--dim);letter-spacing:.06em;text-transform:none;font-size:10.5px}
-.mag{top:12px;right:12px;width:min(340px,46%);padding:10px 14px 11px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(20,24,40,.72);backdrop-filter:blur(8px);text-align:right;pointer-events:none}
-.mag b{font-family:'Space Grotesk',sans-serif;font-size:16px;color:#fff;font-weight:700}
-.mag .sb em{white-space:nowrap}.mag{width:auto;min-width:min(340px,46%);max-width:60%}
-.mag .sb{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:8px 0 6px;font-size:10.5px;color:#cfd8ea}
-.mag .sb span{display:block;height:3px;border-radius:2px;background:#e8edf7;box-shadow:0 0 6px rgba(255,255,255,.35);flex:none;max-width:60%}
-.mag .n{font-size:10px;line-height:1.5;color:var(--dim)}
-.tool{bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:6px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(20,24,40,.8);backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.45)}
-.tool button{font:inherit;font-family:'Space Grotesk',sans-serif;font-size:13.5px;display:flex;align-items:center;gap:7px;height:38px;min-width:38px;justify-content:center;padding:0 12px;border-radius:11px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);color:#e8edf7;cursor:pointer}
-.tool button:hover{background:rgba(255,255,255,.1)}
-.tool button.on{background:rgba(255,179,71,.16);border-color:rgba(255,179,71,.55);color:var(--amber)}
-.tool button.sq{padding:0;width:38px}
-.tool svg{width:16px;height:16px;flex:none}
-#back{top:60px;left:16px;font:inherit;font-family:'Space Grotesk',sans-serif;font-size:13px;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(20,24,40,.8);color:#e8edf7;cursor:pointer;display:none}
-.below{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:12px}
-@media(min-width:900px){.below{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}}
-.card{border:1px solid var(--line);border-radius:16px;background:rgba(11,16,32,.82);padding:16px}
-.insp .sub{color:var(--dim);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
-.insp h2{font-family:'Space Grotesk',sans-serif;font-size:26px;letter-spacing:0;color:#fff;margin:4px 0 10px;display:flex;align-items:center;gap:10px}
-.insp h2 i{width:12px;height:12px;border-radius:50%;flex:none}
-#desc{font-size:13.5px;line-height:1.7;color:#c9d4ec}
+/* camadas flutuantes sobre o palco (nível 2) */
+.hud{position:absolute}
+.tag{top:16px;left:16px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--txt);pointer-events:none;padding:6px 12px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);max-width:calc(100% - 32px)}
+.tag i{width:10px;height:10px;border-radius:50%;flex:none}
+.tag small{color:var(--dim);font-size:13px;font-weight:400}
+.mag{top:16px;right:16px;width:auto;min-width:min(300px,42%);max-width:60%;padding:12px 16px;border-radius:12px;background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);box-shadow:var(--float-shadow);text-align:right;pointer-events:none}
+.mag b{font-family:var(--f-title);font-size:16px;color:var(--txt);font-weight:600}
+.mag .sb{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:8px 0 4px;font:500 13px/1.4 var(--f-data);color:var(--txt)}
+.mag .sb em{font-style:normal;white-space:nowrap}
+#magBar{display:block;height:3px;border-radius:2px;background:var(--txt);flex:none;max-width:60%}
+.mag .n{font-size:12px;line-height:1.5;color:var(--dim)}
+.tool{bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:12px;background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);box-shadow:var(--float-shadow)}
+.tool button{display:flex;align-items:center;gap:8px;height:44px;min-width:44px;justify-content:center;padding:0 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer;transition:background .15s}
+.tool button:hover{background:var(--panel-2)}
+.tool button.on,.tool button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--panel-2)}
+.tool button.sq{padding:0;width:44px}
+.tool svg{width:20px;height:20px;flex:none}
+#back{top:64px;left:16px;display:none;align-items:center;gap:8px;min-height:44px;padding:8px 14px 8px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer}
+#back:hover{background:var(--panel-2)}
+#back svg{width:20px;height:20px}
+/* painel e lista */
+.below{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:24px}
+@media(min-width:1100px){.below{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:24px}
+@media(max-width:699px){.card{padding:16px}.below{gap:16px;margin-top:16px}}
+.insp h2{font-family:var(--f-title);font-size:24px;font-weight:600;line-height:1.2;color:var(--txt);margin:12px 0 4px}
+.insp .sub{color:var(--dim);font-size:14px;margin-bottom:12px}
+@media(max-width:699px){.insp h2{font-size:21px}}
+#desc{font-size:16px;line-height:1.6;color:#D3DAEA;max-width:68ch}
 #desc b{color:#fff}
-.kv{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:12px;gap:8px 12px}
-.kv>div:nth-child(even){text-align:right}
-.links{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
-.links a{padding:7px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-size:11.5px;color:var(--amber)}
-.links a:hover{border-color:var(--amber)}
-.lbl{color:var(--dim);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin:0 2px 10px}
-.orgs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.orgs button{font:inherit;text-align:left;display:flex;align-items:center;gap:9px;min-width:0;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer}
-.orgs button:hover{border-color:#34436b;background:#101831}
-.orgs button.on{border-color:var(--amber);background:#17182a}
-.orgs button i{flex:none;width:11px;height:11px;border-radius:50%;box-shadow:inset -2px -2px 3px rgba(0,0,0,.35)}
-.orgs button span{min-width:0;font-size:12px;line-height:1.25}
-.orgs button.all{grid-column:1/-1;justify-content:center;color:var(--amber);letter-spacing:.1em;font-size:11px}
-.foot{font-size:10.5px}
-@media(max-width:699px){.mag .sb em{white-space:normal}#back{top:12px;left:12px;padding:7px 10px;font-size:12px}.mag{max-width:calc(100% - 150px)}.hs button{width:18px;height:18px;left:-9px;top:-9px}.hs button::before{inset:5px}.mag .n,.tool .tx{display:none}.mag{width:auto;padding:8px 10px}.tool button{padding:0 10px}.tag{top:auto;bottom:70px}}
+@media(max-width:699px){#desc{font-size:15px}}
+.insp .kv{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}
+.enem{margin-top:16px;padding:16px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-strong);font-size:15px;line-height:1.55;color:#D3DAEA;max-width:68ch}
+.enem .eh{display:flex;align-items:center;gap:8px;font-family:var(--f-title);font-weight:600;font-size:16px;color:var(--txt);margin-bottom:8px}
+.enem svg{width:20px;height:20px}
+.links{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.links .btn.primary{width:100%;justify-content:flex-start}
+.lbl{color:var(--dim);font-size:13px;margin:0 0 12px}
+.orgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.orgs button{text-align:left;display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer;transition:background .15s,border-color .15s}
+.orgs button:hover{border-color:var(--line-strong);background:var(--panel-2)}
+.orgs button.on{border-color:var(--amber);background:var(--panel-2)}
+.orgs button i{flex:none;width:12px;height:12px;border-radius:50%}
+.orgs button span{min-width:0}
+.orgs button.all{grid-column:1/-1;justify-content:center;color:var(--txt)}
+.foot{margin-top:24px}
+@media(max-width:699px){
+  .mag .n,.tool .tx{display:none}
+  .mag{min-width:0;max-width:calc(100% - 80px);padding:8px 12px}.mag b{font-size:14px}.mag .pre,.mag .vw{display:none}.mag .sb{margin:6px 0 0}
+  #back{top:16px;left:12px;padding:6px 10px}#back .tx{display:none}
+  .tag{top:auto;bottom:76px;left:12px;font-size:13px}.tag small{display:none}
+  .tool{bottom:12px}.tool button{padding:0 10px}
+}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="cel-vegetal" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="17" rx="2.5" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/><rect x="10" y="7" width="8" height="10" rx="3" fill="#2A9FC9" fill-opacity=".45" stroke="#2A9FC9" stroke-width="1.25"/><circle cx="6.9" cy="8.6" r="2" fill="#9A6BFF"/><rect x="5" y="14.2" width="4" height="2.4" rx="1.2" fill="#3FBF6A"/></g></symbol><symbol id="cel-animal" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12.2 3.2c4.9 0 8.6 3.4 8.6 8.1 0 5-3.8 9.3-8.9 9.3-4.9 0-8.7-3.6-8.7-8.4 0-5 4-9 9-9z" fill="#F06AAE" fill-opacity=".1" stroke="#F06AAE"/><circle cx="10.6" cy="11.4" r="3.3" fill="#9A6BFF"/><circle cx="11.3" cy="10.7" r="1.1" fill="#6A45D8"/><rect x="14" y="15.3" width="4.6" height="2.3" rx="1.15" transform="rotate(-28 16.3 16.45)" fill="#F25C3B"/><circle cx="16.4" cy="7.6" r="1.1" fill="#2FCFBF"/></g></symbol><symbol id="cel-bacteria" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2.9" y="6.5" width="14.8" height="11" rx="5.5" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/><path d="M6.4 12c.8-1.7 1.7-1.7 2.5 0s1.7 1.7 2.5 0 1.7-1.7 2.5 0" stroke="#9A6BFF" stroke-width="1.5"/><circle cx="7.4" cy="9.3" r=".8" fill="#FFE1A6"/><circle cx="12.6" cy="15" r=".8" fill="#FFE1A6"/><path d="M17.7 12c.6-1.6 1.5-1.6 2.1 0s1.4 1.6 2.1 0" stroke="#CFE0FF" stroke-width="1.25"/></g></symbol><symbol id="cel-neuronio" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 9.3 2.6 7.2M4.2 14.6 2.6 16.8M7 8.4V5.4m0 0-1.4-1.6M7 5.4l1.4-1.6" stroke="#F06AAE" stroke-width="1.5"/><circle cx="7" cy="12" r="3.4" fill="#F06AAE" fill-opacity=".14" stroke="#F06AAE"/><circle cx="7" cy="12" r="1.4" fill="#9A6BFF"/><path d="M10.4 12h9.4m0 0 1.6-1.7m-1.6 1.7 1.6 1.7" stroke="#F06AAE" stroke-width="1.25"/><rect x="11.9" y="10.6" width="3" height="2.8" rx="1.4" fill="#F06AAE"/><rect x="16" y="10.6" width="3" height="2.8" rx="1.4" fill="#F06AAE"/></g></symbol><symbol id="cel-esperma" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><ellipse cx="6.4" cy="12" rx="4.4" ry="3.5" fill="#F06AAE" fill-opacity=".14" stroke="#F06AAE"/><ellipse cx="7" cy="12" rx="2.5" ry="1.9" fill="#9A6BFF"/><path d="M3.3 10a4 4 0 0 0 0 4" stroke="#F7C13B" stroke-width="1.25"/><rect x="10.8" y="10.9" width="3.6" height="2.2" rx="1.1" fill="#F25C3B"/><path d="M14.4 12c1.2 0 1.6-2.6 2.9-2.6s1.6 5.2 2.9 5.2c1 0 1.3-1.3 2-1.9" stroke="#CFE0FF" stroke-width="1.25"/></g></g></symbol><symbol id="cel-levedura" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="10" cy="13.6" rx="7" ry="6.4" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/><circle cx="18" cy="6.5" r="3" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/><circle cx="11.6" cy="14.6" r="2.6" fill="#2A9FC9" fill-opacity=".45" stroke="#2A9FC9" stroke-width="1.25"/><circle cx="7.3" cy="11.6" r="1.6" fill="#9A6BFF"/></g></symbol><symbol id="cel-sangue" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9.2" r="6.1" fill="#D7303B"/><circle cx="9" cy="9.2" r="2.5" fill="#8E1A24"/><circle cx="17.1" cy="16.7" r="4.1" fill="#F06AAE" fill-opacity=".14" stroke="#F06AAE"/><path d="M15.4 17.6c-.3-1.2.5-2.2 1.5-2.1.6-.9 2.1-.7 2.3.5.4 1.1-.6 1.9-1.4 1.6-.6.8-2 .9-2.4 0z" fill="#9A6BFF"/><ellipse cx="5.2" cy="18.8" rx="1.9" ry="1.1" fill="#FFE1A6"/></g></symbol><symbol id="cel-fago" viewBox="0 0 24 24"><g fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 15.3 4.7v3.8L12 10.4 8.7 8.5V4.7z" fill="#B9C2D3" fill-opacity=".14" stroke="#B9C2D3"/><path d="M10.6 6.9c.5-.9 1-.9 1.4 0s.9.9 1.4 0" stroke="#9A6BFF" stroke-width="1.25"/><rect x="10.75" y="10.4" width="2.5" height="6.6" rx=".6" stroke="#B9C2D3" stroke-width="1.5"/><path d="M9 17.6h6M10 17.6 7.4 19.4 6.2 21.4M14 17.6l2.6 1.8 1.2 2M11.1 17.6l-.8 3.8M12.9 17.6l.8 3.8" stroke="#B9C2D3" stroke-width="1.25"/></g></symbol><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol><symbol id="ui-rotulos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="8" rx="4"/><circle cx="7.2" cy="7.5" r="1.4" fill="currentColor" stroke="none"/><path d="M10.6 7.5h6.6M7.2 11.5v5.2"/><circle cx="7.2" cy="19.2" r="1.9" fill="currentColor" stroke="none"/></g></symbol><symbol id="ui-aproximar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.75"/><path d="m15.5 15.5 5 5M10.5 7.8v5.4M7.8 10.5h5.4"/></g></symbol><symbol id="ui-afastar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.75"/><path d="m15.5 15.5 5 5M7.8 10.5h5.4"/></g></symbol><symbol id="ui-reiniciar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12A7.5 7.5 0 1 0 12 4.5"/><path d="M14.8 2 12 4.5l2.8 2.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></g></symbol><symbol id="ui-pausar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></g></symbol><symbol id="ui-continuar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.3v13.4a.9.9 0 0 0 1.4.75l10.2-6.7a.9.9 0 0 0 0-1.5L9.4 4.55A.9.9 0 0 0 8 5.3z"/></g></symbol><symbol id="ui-tour" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="18" r="2.4" fill="currentColor"/><circle cx="10.5" cy="6.5" r="2.4"/><circle cx="19" cy="13.5" r="2.4"/><path d="M6 15.8 9.4 8.8M12.6 7.9l4.6 3.8"/></g></symbol><symbol id="ui-voltar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></g></symbol><symbol id="ui-fechar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></g></symbol><symbol id="ui-informacao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r="1.15" fill="currentColor" stroke="none"/></g></symbol><symbol id="ui-enem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3" width="15" height="18" rx="2"/><path d="m8.3 9.6 2 2 4.4-4.4M8.3 15.5h7.4"/></g></symbol></svg>
 <div class="wrap">
-  <div class="tabs"><a href="../index.html">LAB</a><a href="../dna/index.html">DNA</a><a href="../tabela-periodica/index.html">TABELA</a><a href="../moleculas/index.html">MOLÉCULAS</a><a href="../biomoleculas/index.html">BIO</a><a class="on" href="index.html">CÉLULA</a></div>
+  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a></nav>
 
-  <div class="top">
-    <div class="ic"></div>
-    <div><h1>A célula por dentro</h1><div class="k">MÓDULO 05 · BIOLOGIA CELULAR</div></div>
-  </div>
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-celula"/></svg>
+    <div>
+      <h1>A célula por dentro</h1>
+      <div class="k">Módulo 5 <span class="badge">Biologia celular</span></div>
+    </div>
+  </header>
 
-  <div class="types" id="types"></div>
+  <div class="seg scroll types" id="types" role="tablist" aria-label="Tipo de célula"></div>
 
   <div id="view">
     <div id="stage"></div>
     <div class="hud tag" id="tag"><i id="tagC"></i><span id="tagT">—</span></div>
-    <button class="hud" id="back">← Célula inteira</button>
-    <div class="hud mag" id="mag"><b id="magX">ampliado ×—</b><div class="sb"><span id="magBar"></span><em id="magL" style="font-style:normal">—</em></div><div class="n">ilustração, cores adicionadas<br><span id="magU">Um micrômetro (µm) é um milésimo de milímetro.</span></div></div>
-    <div class="hud tool">
-      <button id="lbls" title="Mostrar nomes"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h6l6 6-6 6-6-6z"/><circle cx="5.2" cy="5.2" r="1.1"/></svg><span class="tx">Rótulos</span></button>
-      <button class="sq" id="zout" title="Afastar"><svg viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10"/></svg></button>
-      <button class="sq" id="zin" title="Aproximar"><svg viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M8 3v10"/></svg></button>
-      <button class="sq" id="reset" title="Reiniciar vista"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 8a4.5 4.5 0 1 0 1.4-3.3"/><path d="M3 2.5v3h3"/></svg></button>
-      <button class="sq" id="pause" title="Pausar animação"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="4" y="3" width="2.6" height="10" rx=".6"/><rect x="9.4" y="3" width="2.6" height="10" rx=".6"/></svg></button>
-      <button id="tour" title="Passeio guiado"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 2.8v10.4L13 8z"/></svg><span class="tx">Tour</span></button>
+    <button class="hud" id="back"><svg aria-hidden="true"><use href="#ui-voltar"/></svg><span class="tx">Voltar à célula inteira</span></button>
+    <div class="hud mag" id="mag"><b id="magX">—</b><div class="sb"><span id="magBar"></span><em id="magL">—</em></div><div class="n">Ilustração com cores adicionadas.<br><span id="magU">1 µm é um milésimo de milímetro.</span></div></div>
+    <div class="hud tool" role="toolbar" aria-label="Controles do 3D">
+      <button id="lbls" title="Mostrar ou esconder os nomes" aria-pressed="true"><svg aria-hidden="true"><use href="#ui-rotulos"/></svg><span class="tx">Nomes</span></button>
+      <button class="sq" id="zout" title="Afastar" aria-label="Afastar"><svg aria-hidden="true"><use href="#ui-afastar"/></svg></button>
+      <button class="sq" id="zin" title="Aproximar" aria-label="Aproximar"><svg aria-hidden="true"><use href="#ui-aproximar"/></svg></button>
+      <button class="sq" id="reset" title="Voltar à vista inicial" aria-label="Voltar à vista inicial"><svg aria-hidden="true"><use href="#ui-reiniciar"/></svg></button>
+      <button class="sq" id="pause" title="Pausar animação" aria-label="Pausar animação"><svg aria-hidden="true"><use href="#ui-pausar"/></svg></button>
+      <button id="tour" title="Começar o passeio guiado"><svg aria-hidden="true"><use href="#ui-tour"/></svg><span class="tx">Passeio</span></button>
     </div>
   </div>
 
   <div class="below">
-    <div class="card insp">
-      <div class="sub" id="iS">—</div>
-      <h2><i id="iC"></i><span id="iT">—</span></h2>
+    <section class="card insp" aria-live="polite">
+      <span class="badge" id="iS"><i id="iC"></i><span id="iF">—</span></span>
+      <h2 id="iT">—</h2>
+      <div class="sub" id="iSub">—</div>
       <div id="desc"></div>
       <div class="kv" id="kv"></div>
+      <div class="enem" id="enem"><div class="eh"><svg aria-hidden="true"><use href="#ui-enem"/></svg>No ENEM</div><div id="enemT"></div></div>
       <div class="links" id="links"></div>
-    </div>
-    <div class="card">
-      <div class="lbl">Partes da célula: toque para localizar</div>
+    </section>
+    <section class="card">
+      <p class="lbl">Partes da célula: toque para localizar</p>
       <div class="orgs" id="orgs"></div>
-    </div>
+    </section>
   </div>
 
-  <div class="foot">Ilustração esquemática com cores adicionadas: organelas não têm essas cores de verdade. Valores típicos de livros-texto de biologia celular (ex.: Alberts, <i>Molecular Biology of the Cell</i>); proporções aproximadas e indicadas pela barra de escala. Modelos 3D feitos à mão com geometria procedural; as animações mostram processos reais em câmera lenta.</div>
+  <p class="foot">Ilustração esquemática com cores adicionadas: organelas não têm essas cores de verdade. Valores típicos de livros-texto de biologia celular (ex.: Alberts, <i>Molecular Biology of the Cell</i>); proporções aproximadas e indicadas pela barra de escala. Modelos 3D feitos pela equipe com geometria procedural; as animações mostram processos reais em câmera lenta.</p>
 </div>
+<script src="../assets/materials.js"></script>
 <script src="vendor/r3f.js"></script>
 <script>
 (()=>{
 // ================= DATA =================
 const ORG={
- celula_animal:{t:'Célula animal',s:'eucarionte · sem parede',c:'#9cc4ff',bar:[10,'µm'],
-  d:`<b>Uma célula animal típica tem de 10 a 30 µm</b> (milésimos de milímetro). Por dentro ela é cheia de compartimentos envolvidos por membrana, as organelas, cada um com uma tarefa. O DNA fica guardado no núcleo; a energia vem das mitocôndrias; as proteínas são feitas nos ribossomos e despachadas pelo retículo e pelo Golgi. Tudo isso se move: as vesículas viajam por "trilhos" de microtúbulos puxadas por proteínas motoras.`,
-  kv:[['Tamanho','10–30 µm'],['Corpo humano','~30 trilhões de células'],['Parede celular','não tem'],['Exclusivas','centríolos, lisossomos']],links:[]},
- celula_vegetal:{t:'Célula vegetal',s:'eucarionte · com parede',c:'#8ce99a',bar:[20,'µm'],
+ celula_animal:{t:'Célula animal',s:'Eucarionte, sem parede celular',c:'#9cc4ff',bar:[10,'µm'],
+  d:`<b>Uma célula animal típica tem de 10 a 30 µm</b> (milésimos de milímetro). Ela é <b>eucarionte</b>: tem núcleo e é cheia de compartimentos envolvidos por membrana, as organelas, cada um com uma tarefa. O DNA fica guardado no núcleo; a maior parte do ATP vem das mitocôndrias (a glicólise acontece no citoplasma); as proteínas são feitas nos ribossomos e despachadas pelo retículo e pelo <b>complexo de Golgi (complexo golgiense)</b>. Tudo isso se move: as vesículas viajam por "trilhos" de microtúbulos puxadas por proteínas motoras. Todas as células do corpo têm o mesmo DNA; o que muda é quais genes estão ligados.`,
+  kv:[['Tamanho','10–30 µm'],['Corpo humano','~30 trilhões de células'],['Parede celular','não tem'],['Típicas da animal','centríolos (ausentes nas plantas com flores) e lisossomos']],links:[]},
+ celula_vegetal:{t:'Célula vegetal',s:'Eucarionte, com parede celular',c:'#8ce99a',bar:[20,'µm'],
   d:`<b>Células vegetais costumam ser maiores (10–100 µm)</b> e têm três coisas que a animal não tem: <b>parede celular</b> de celulose, <b>cloroplastos</b> que fazem fotossíntese e um <b>vacúolo central</b> enorme, que empurra o resto da célula contra a parede. Também têm mitocôndrias: as plantas respiram o tempo todo, de dia e de noite.`,
-  kv:[['Tamanho','10–100 µm'],['Parede','celulose'],['Vacúolo central','até ~90% do volume'],['Exclusivas','cloroplastos, parede, vacúolo central']],links:[]},
+  kv:[['Tamanho','10–100 µm'],['Parede','celulose'],['Vacúolo central','até ~90% do volume'],['Que a animal não tem','cloroplastos, parede de celulose, vacúolo central']],links:[]},
  nucleo:{t:'Núcleo',s:'centro de controle',c:'#4dabf7',bar:[1,'µm'],
-  d:`<b>Onde fica o DNA.</b> Nas células humanas são 46 cromossomos; esticado, o DNA de uma única célula mediria cerca de <b>2 metros</b>, enrolado dentro de um núcleo de ~6 µm. Um envelope de <b>duas membranas</b> separa o núcleo do citoplasma, atravessado por milhares de <b>poros nucleares</b> (complexos de ~120 nm com simetria de 8 lados). Por eles saem as moléculas de mRNA (pontos amarelos) que levarão as receitas aos ribossomos. O <b>nucléolo</b> é a fábrica de ribossomos.`,
-  kv:[['Diâmetro','~5–10 µm'],['Membranas','2 (envelope nuclear)'],['Poros','milhares, ~120 nm cada'],['DNA humano','46 cromossomos, ~2 m esticado']],links:[['DNA dupla hélice','../dna/index.html']]},
- mitocondria:{t:'Mitocôndria',s:'usina de energia',c:'#ff5c8a',bar:[200,'nm'],
-  d:`<b>Transforma a energia dos alimentos em ATP</b>, a "moeda" de energia da célula. A membrana interna é toda dobrada em <b>cristas</b>, o que aumenta a área. Nela, a cadeia respiratória bombeia prótons (H⁺) para fora, e eles voltam passando pela <b>ATP sintase</b>, um motor molecular que <b>gira</b> e produz ~3 ATP por volta. Uma glicose rende cerca de 30–32 ATP. A mitocôndria tem <b>DNA próprio</b> (16 569 pares de bases e 37 genes em humanos), herdado só da mãe, uma pista de que ela já foi uma bactéria livre (teoria da endossimbiose).`,
+  d:`<b>Onde fica o DNA.</b> Numa célula humana são 46 cromossomos; esticado, esse DNA mediria cerca de <b>2 metros</b>, enrolado dentro de um núcleo de ~6 µm. Um envelope de <b>duas membranas</b> separa o núcleo do citoplasma, atravessado por milhares de <b>poros nucleares</b> (complexos de ~120 nm com simetria de 8 lados). Por eles saem as moléculas de mRNA (pontos amarelos) que levarão as receitas aos ribossomos. O <b>nucléolo</b> é a fábrica de ribossomos.`,
+  kv:[['Diâmetro','~5–10 µm'],['Membranas','2 (envelope nuclear)'],['Poros','milhares, ~120 nm cada'],['Numa célula humana','46 cromossomos, ~2 m esticado']],links:[['DNA dupla hélice','../dna/index.html']]},
+ mitocondria:{t:'Mitocôndria',s:'transforma energia (não a cria)',c:'#ff5c8a',bar:[200,'nm'],
+  d:`<b>Transforma a energia dos alimentos em ATP</b>, a "moeda" de energia da célula. A membrana interna é toda dobrada em <b>cristas</b>, o que aumenta a área. Nela, a cadeia respiratória bombeia prótons (H⁺) da matriz para o espaço entre as duas membranas (espaço intermembranas), e eles voltam para a matriz passando pela <b>ATP sintase</b>, um motor molecular que <b>gira</b> e produz ~3 ATP por volta. Uma glicose rende cerca de 30–32 ATP. Livros mais antigos falam em 36 ou 38 ATP; medidas mais recentes da ATP sintase e do transporte pela membrana deram o valor menor. A mitocôndria tem <b>DNA próprio</b> (16 569 pares de bases e 37 genes em humanos), herdado só da mãe, uma pista de que ela já foi uma bactéria livre (teoria da endossimbiose).`,
   kv:[['Tamanho','0,5–1 µm de largura, 1–10 µm de comprimento'],['Por célula','centenas a milhares'],['Membranas','2 (externa e interna com cristas)'],['DNA próprio','16 569 pb · 37 genes']],links:[['Membrana (bicamada)','../biomoleculas/index.html#bicamada']]},
  cloroplasto:{t:'Cloroplasto',s:'fotossíntese',c:'#51cf66',bar:[1,'µm'],veg:true,
-  d:`<b>Captura a luz do Sol e fabrica açúcar.</b> Dentro dele há pilhas de discos chamadas <b>grana</b>, feitas de <b>tilacoides</b>, onde fica a clorofila. A clorofila absorve luz azul e vermelha e reflete a verde, por isso as folhas são verdes. A reação geral é 6 CO₂ + 6 H₂O + luz → C₆H₁₂O₆ + 6 O₂, e o <b>oxigênio liberado vem da quebra da água</b> (bolhas). Assim como a mitocôndria, tem DNA próprio e descende de uma bactéria (cianobactéria).`,
+  d:`<b>Captura a luz do Sol e fabrica açúcar.</b> Dentro dele há pilhas de discos, cada uma chamada <b>granum</b> (plural: grana), feitas de <b>tilacoides</b>, onde fica a clorofila. A clorofila absorve luz azul e vermelha e reflete a verde, por isso as folhas são verdes. A reação geral é 6 CO₂ + 6 H₂O + luz → C₆H₁₂O₆ + 6 O₂, e o <b>oxigênio liberado vem da quebra da água</b> (bolhas). Isso acontece nos tilacoides (fase clara). No estroma, o ciclo de Calvin usa o ATP e o CO₂ para fazer o açúcar (fase escura, que também acontece com luz). Assim como a mitocôndria, tem DNA próprio e descende de uma bactéria (cianobactéria).`,
   kv:[['Tamanho','5–10 µm de comprimento'],['Por célula','dezenas (células de folha)'],['Membranas','2 + sistema de tilacoides'],['DNA próprio','sim (~120–160 mil pb)']],links:[['CO₂ em 3D','../moleculas/index.html#co2'],['Água em 3D','../moleculas/index.html#agua']]},
  re:{t:'Retículo endoplasmático',s:'rugoso + liso',c:'#69db7c',bar:[200,'nm'],
   d:`<b>Uma rede de membranas ligada ao envelope do núcleo.</b> O <b>RE rugoso</b> é coberto de ribossomos (pontos) que fabricam proteínas e as injetam para dentro do retículo, onde elas se dobram. É a rota das proteínas que vão ser exportadas ou ficar em membranas, como a insulina e os anticorpos. O <b>RE liso</b> não tem ribossomos: produz lipídios, desintoxica substâncias (é abundante no fígado) e, no músculo, guarda o cálcio que dispara a contração.`,
   kv:[['Formato','sacos achatados (rugoso) e túbulos (liso)'],['Ligado a','envelope nuclear'],['RE rugoso','proteínas de exportação e de membrana'],['RE liso','lipídios, desintoxicação, cálcio']],links:[['Proteínas (α-hélice)','../biomoleculas/index.html#helice'],['Fosfolipídio','../biomoleculas/index.html#fosfolipidio']]},
  golgi:{t:'Complexo de Golgi',s:'correio da célula',c:'#ffd43b',bar:[200,'nm'],
-  d:`<b>Recebe, modifica, embala e despacha.</b> É uma pilha de 4 a 8 sacos achatados (cisternas). As vesículas que chegam do retículo entram pela face <b>cis</b>; as proteínas atravessam a pilha ganhando "etiquetas" de açúcares (glicosilação) e saem pela face <b>trans</b> em novas vesículas, endereçadas para a membrana, para os lisossomos ou para fora da célula. Descrito por Camillo Golgi em 1898.`,
+  d:`<b>Recebe, modifica, embala e despacha.</b> O complexo de Golgi (complexo golgiense) é uma pilha de 4 a 8 sacos achatados (cisternas). As vesículas que chegam do retículo entram pela face <b>cis</b>; as proteínas atravessam a pilha e têm suas "etiquetas" de açúcares (colocadas no retículo) modificadas e completadas e saem pela face <b>trans</b> em novas vesículas, endereçadas para a membrana, para os lisossomos ou para fora da célula. Descrito por Camillo Golgi em 1898.`,
   kv:[['Cisternas','4–8 por pilha'],['Entrada','face cis (vinda do RE)'],['Saída','face trans (vesículas)'],['Função','processar e endereçar proteínas']],links:[]},
  lisossomo:{t:'Lisossomo',s:'reciclagem',c:'#22d3ee',bar:[100,'nm'],anim:true,
-  d:`<b>O "estômago" da célula.</b> É uma bolsa com dezenas de enzimas digestivas (~60 tipos) que quebram proteínas, lipídios, açúcares, organelas velhas e até bactérias capturadas. Bombas de prótons na membrana mantêm o interior <b>ácido, com pH 4,5–5</b>, que é o pH em que essas enzimas funcionam; se uma vazar para o citoplasma (pH ~7,2), quase não age, uma proteção embutida. Descoberto por Christian de Duve (Nobel de 1974).`,
+  d:`<b>O centro de reciclagem da célula.</b> É uma bolsa com dezenas de enzimas digestivas (~60 tipos) que quebram proteínas, lipídios, açúcares, organelas velhas e até bactérias capturadas. Bombas de prótons na membrana mantêm o interior <b>ácido, com pH 4,5–5</b>, que é o pH em que essas enzimas funcionam; se uma vazar para o citoplasma (pH ~7,2), quase não age, uma proteção embutida. Descoberto por Christian de Duve (Nobel de 1974).`,
   kv:[['Tamanho','0,1–1,2 µm'],['pH interno','4,5–5 (citoplasma ~7,2)'],['Enzimas','~60 tipos de hidrolases'],['Em plantas','o vacúolo faz esse papel']],links:[]},
  ribossomo:{t:'Ribossomo',s:'fábrica de proteínas',c:'#ffa94d',bar:[10,'nm'],
   d:`<b>Lê o mRNA e monta a proteína</b>, um aminoácido por códon. São duas subunidades (60S + 40S = 80S em eucariotos), feitas de RNA e proteínas, com ~25–30 nm. Os tRNAs (formas em L) trazem os aminoácidos certos encaixando o anticódon no códon. A peça que une os aminoácidos é feita de RNA, não de proteína: o ribossomo é uma <b>ribozima</b>. Aqui ele está traduzindo o começo da <b>β-globina</b>, a mesma sequência do módulo DNA. Em células humanas, ~5 aminoácidos por segundo (animação mais lenta).`,
   kv:[['Tamanho','~25–30 nm'],['Subunidades','60S + 40S = 80S'],['Por célula','milhões'],['Velocidade','~5 aminoácidos/s (humanos)']],links:[['O gene (DNA)','../dna/index.html'],['Ligação peptídica','../biomoleculas/index.html#peptidica'],['Aminoácidos','../biomoleculas/index.html#val']]},
  membrana:{t:'Membrana plasmática',s:'mosaico fluido',c:'#b197fc',bar:[5,'nm'],
-  d:`<b>A fronteira da célula.</b> Uma bicamada de fosfolipídios, com as caudas apolares para dentro, salpicada de proteínas e, em células animais, de colesterol. É fluida: lipídios e proteínas deslizam de lado (modelo do mosaico fluido, Singer e Nicolson, 1972). Canais e transportadores deixam passar íons e moléculas específicas (bolinhas atravessando), e cadeias de açúcar do lado de fora funcionam como "crachá" de identificação.`,
+  d:`<b>A fronteira da célula.</b> Uma bicamada de fosfolipídios, com as caudas apolares para dentro, salpicada de proteínas e, em células animais, de colesterol. É fluida: lipídios e proteínas deslizam de lado (modelo do mosaico fluido, Singer e Nicolson, 1972). Canais e transportadores deixam passar íons e moléculas específicas (bolinhas atravessando), e cadeias de açúcar do lado de fora, o <b>glicocálix</b>, funcionam como "crachá" de identificação.`,
   kv:[['Espessura','~5–10 nm (com proteínas)'],['Base','bicamada de fosfolipídios'],['Componentes','lipídios, proteínas, colesterol, açúcares'],['Propriedade','permeabilidade seletiva']],links:[['Bicamada lipídica','../biomoleculas/index.html#bicamada'],['Fosfolipídio (POPC)','../biomoleculas/index.html#fosfolipidio']]},
  citoesqueleto:{t:'Citoesqueleto',s:'trilhos e motores',c:'#e8f1ff',bar:[25,'nm'],
   d:`<b>O esqueleto e a malha de transporte da célula.</b> Três tipos de fios: <b>microtúbulos</b> (25 nm, tubos de tubulina com 13 protofilamentos), <b>filamentos de actina</b> (7 nm, dupla hélice) e <b>filamentos intermediários</b> (10 nm, cordas resistentes). Sobre os microtúbulos a <b>cinesina</b> "anda" literalmente, um pé depois do outro, dando passos de <b>8 nm</b> e gastando 1 ATP por passo, carregando vesículas.`,
   kv:[['Microtúbulos','25 nm · tubulina'],['Actina','7 nm · dupla hélice'],['Intermediários','10 nm'],['Cinesina','passos de 8 nm, 1 ATP cada']],links:[]},
  centriolo:{t:'Centríolos',s:'organizam os microtúbulos',c:'#ffa8a8',bar:[100,'nm'],
   d:`<b>Dois cilindros perpendiculares</b> que formam o centrossomo, de onde os microtúbulos irradiam. Cada centríolo tem <b>9 trincas de microtúbulos</b> em anel (vista em corte). Na divisão celular, os centrossomos ajudam a montar o fuso que separa os cromossomos. Plantas com flores não têm centríolos e organizam seus microtúbulos de outro jeito.`,
-  kv:[['Tamanho','~0,25 µm × 0,5 µm'],['Estrutura','9 trincas de microtúbulos'],['Arranjo','par perpendicular'],['Presente em','células animais']],links:[]},
+  kv:[['Tamanho','~0,25 µm × 0,5 µm'],['Estrutura','9 trincas de microtúbulos'],['Arranjo','par perpendicular'],['Presente em','animais, algas, musgos e samambaias (não nas plantas com flores)']],links:[]},
  peroxissomo:{t:'Peroxissomo',s:'desintoxicação',c:'#fcc419',bar:[100,'nm'],
-  d:`<b>Pequena bolsa que lida com reações que geram peróxido de hidrogênio (H₂O₂)</b>, tóxico. A enzima <b>catalase</b>, muitas vezes formando um "cristal" no centro, quebra o H₂O₂: 2 H₂O₂ → 2 H₂O + O₂ (bolhas). Também quebra ácidos graxos muito longos. É a mesma reação que faz a água oxigenada borbulhar num machucado.`,
+  d:`<b>Pequena bolsa que lida com reações que geram peróxido de hidrogênio (H₂O₂)</b>, tóxico. A enzima <b>catalase</b> quebra o H₂O₂: 2 H₂O₂ → 2 H₂O + O₂ (bolhas). Em muitos animais, como o rato, outra enzima, a urato oxidase, forma um "cristal" no centro; os humanos perderam essa enzima, e por isso o ácido úrico pode se acumular e causar gota. Também quebra ácidos graxos muito longos. É a mesma reação que faz a água oxigenada borbulhar num machucado.`,
   kv:[['Tamanho','0,1–1 µm'],['Enzima-chave','catalase'],['Reação','2 H₂O₂ → 2 H₂O + O₂'],['Membranas','1']],links:[['Água em 3D','../moleculas/index.html#agua'],['O₂ em 3D','../moleculas/index.html#oxigenio']]},
  vacuolo:{t:'Vacúolo e parede',s:'turgor e sustentação',c:'#74c0fc',bar:[5,'µm'],veg:true,
-  d:`<b>O vacúolo central</b> é uma bolsa de água, sais e pigmentos envolvida pela membrana chamada <b>tonoplasto</b>; pode ocupar até ~90% do volume da célula. Quando está cheio, empurra a célula contra a <b>parede de celulose</b> (setas): é a <b>pressão de turgor</b>, que deixa a planta firme. Quando falta água, o vacúolo murcha e a planta também. Pontes chamadas <b>plasmodesmos</b> atravessam a parede e ligam células vizinhas.`,
+  d:`<b>O vacúolo central</b> é uma bolsa de água, sais e pigmentos envolvida pela membrana chamada <b>tonoplasto</b>; pode ocupar até ~90% do volume da célula. Quando está cheio, empurra a célula contra a <b>parede de celulose</b> (setas): é a <b>pressão de turgor</b>, que deixa a planta firme. Quando falta água, o vacúolo murcha e a planta também murcha. Em água muito salgada, a célula perde água por <b>osmose</b> e a membrana se descola da parede (<b>plasmólise</b>). Pontes chamadas <b>plasmodesmos</b> atravessam a parede e ligam células vizinhas.`,
   kv:[['Vacúolo','até ~90% do volume'],['Membrana','tonoplasto'],['Parede','microfibrilas de celulose'],['Ligações','plasmodesmos']],links:[['Água em 3D','../moleculas/index.html#agua']]}
 };
 
 
-// ---- novas cores (ilustração) ----
-Object.assign(ORG.nucleo,{c:'#9775fa'});Object.assign(ORG.re,{c:'#4c6ef5'});Object.assign(ORG.mitocondria,{c:'#ff6b35'});
-Object.assign(ORG.golgi,{c:'#fab005'});Object.assign(ORG.ribossomo,{c:'#e03131'});Object.assign(ORG.peroxissomo,{c:'#f783ac'});
-Object.assign(ORG.membrana,{c:'#f06595'});Object.assign(ORG.vacuolo,{c:'#15aabf'});Object.assign(ORG.lisossomo,{c:'#3bc9db'});
 // ---- novas células e estruturas ----
 Object.assign(ORG,{
- celula_bacteria:{t:'Célula bacteriana',s:'procarionte · sem núcleo',c:'#94d82d',bar:[1,'µm'],
+ celula_bacteria:{t:'Célula bacteriana',s:'Procarionte, sem núcleo',c:'#94d82d',bar:[1,'µm'],
   d:`<b>Uma bactéria como a <i>Escherichia coli</i> tem cerca de 2 µm de comprimento</b>, umas 10 vezes menor que uma célula animal. Ela é <b>procarionte</b>: não tem núcleo nem organelas com membrana. O DNA fica solto no citoplasma, numa região chamada <b>nucleoide</b>. Em boas condições, uma <i>E. coli</i> se divide em duas a cada ~20 minutos (fissão binária).`,
   kv:[['Tamanho','~2 µm × 0,5–1 µm'],['Núcleo','não tem (nucleoide)'],['Ribossomos','70S'],['Divisão','fissão binária, ~20 min']],links:[['O DNA','../dna/index.html']]},
  nucleoide:{t:'Nucleoide',s:'o DNA sem núcleo',c:'#4dabf7',bar:[1,'µm'],
   d:`<b>O cromossomo da bactéria fica solto no citoplasma</b>, sem membrana em volta. É uma única molécula de DNA <b>circular</b>; na <i>E. coli</i> tem cerca de <b>4,6 milhões de pares de bases</b> e uns 4 300 genes. Esticado, mediria ~1,5 mm, quase mil vezes o tamanho da própria célula, por isso fica todo dobrado e superenrolado.`,
   kv:[['Forma','circular'],['Tamanho (E. coli)','~4,6 milhões de pb'],['Genes','~4 300'],['Membrana','nenhuma']],links:[['DNA dupla hélice','../dna/index.html']]},
  plasmidio:{t:'Plasmídeo',s:'DNA extra',c:'#ffd43b',bar:[1,'µm'],
-  d:`<b>Pequenos anéis de DNA separados do cromossomo.</b> Têm de alguns mil a centenas de milhares de pares de bases e se copiam sozinhos. Muitos carregam <b>genes de resistência a antibióticos</b> e podem passar de uma bactéria para outra (conjugação), por isso a resistência se espalha rápido. Na biotecnologia, plasmídeos são usados para colocar genes novos em bactérias, como o gene da insulina humana.`,
+  d:`<b>Pequenos anéis de DNA separados do cromossomo.</b> Têm de alguns mil a centenas de milhares de pares de bases e se replicam independentemente do cromossomo (usando as enzimas da bactéria). Muitos carregam <b>genes de resistência a antibióticos</b> e podem passar de uma bactéria para outra (conjugação), por isso a resistência se espalha rápido. Na biotecnologia, plasmídeos são usados para colocar genes novos em bactérias, como o gene da insulina humana.`,
   kv:[['Forma','DNA circular pequeno'],['Tamanho','~1 mil a centenas de mil pb'],['Cópias','1 a centenas por célula'],['Uso','biotecnologia (ex.: insulina)']],links:[]},
  ribo70:{t:'Ribossomos 70S',s:'fábrica de proteínas',c:'#e03131',bar:[10,'nm'],
-  d:`<b>Os ribossomos bacterianos são menores que os nossos:</b> 70S (subunidades 50S + 30S), contra 80S nos eucariontes. Uma <i>E. coli</i> tem dezenas de milhares deles. Essa diferença é o alvo de vários antibióticos, como estreptomicina e tetraciclina, que travam o ribossomo da bactéria sem afetar o humano.`,
+  d:`<b>Os ribossomos bacterianos são menores que os nossos:</b> 70S (subunidades 50S + 30S), contra 80S nos eucariontes. Uma <i>E. coli</i> tem dezenas de milhares deles. Essa diferença é o alvo de vários antibióticos, como estreptomicina e tetraciclina, que travam o ribossomo da bactéria e quase não afetam os nossos. Os ribossomos das nossas mitocôndrias, parecidos com os bacterianos, às vezes são atingidos, mais uma pista da origem bacteriana da mitocôndria.`,
   kv:[['Tipo','70S (50S + 30S)'],['Por célula','~20 a 70 mil'],['Alvo de','vários antibióticos'],['Nos humanos','80S (60S + 40S)']],links:[['Aminoácidos','../biomoleculas/index.html#val']]},
  parede_bac:{t:'Parede e membrana',s:'envoltório bacteriano',c:'#94d82d',bar:[20,'nm'],
   d:`<b>A bactéria tem uma membrana plasmática coberta por uma parede de peptidoglicano</b>, uma malha de açúcares ligados por pequenas pontes de aminoácidos que segura a pressão interna. Em bactérias Gram-negativas, como a <i>E. coli</i>, há ainda uma <b>membrana externa</b> por fora. A penicilina funciona impedindo a bactéria de montar essa parede.`,
@@ -205,7 +215,7 @@ Object.assign(ORG,{
   d:`<b>Fiozinhos curtos e finos na superfície.</b> As fímbrias prendem a bactéria em superfícies e tecidos (é assim que bactérias grudam no trato urinário). O <b>pilus sexual</b>, mais longo, liga duas bactérias para passar um plasmídeo de uma para a outra, a <b>conjugação</b>.`,
   kv:[['Espessura','~3–10 nm'],['Função','adesão'],['Pilus sexual','conjugação'],['Quantidade','até centenas']],links:[]},
  celula_neuronio:{t:'Neurônio',s:'célula nervosa',c:'#fcc419',bar:[20,'µm'],
-  d:`<b>A célula que conduz sinais elétricos.</b> Os <b>dendritos</b> recebem sinais, o <b>corpo celular</b> soma tudo e, se o estímulo passar de um limite, dispara um <b>potencial de ação</b> que corre pelo <b>axônio</b> até as <b>sinapses</b>. O cérebro humano tem cerca de <b>86 bilhões</b> de neurônios. Os pulsos (pontos brilhantes) andam pelo axônio pulando de um nodo a outro.`,
+  d:`<b>A célula que conduz sinais elétricos.</b> Os <b>dendritos</b> recebem sinais, o <b>corpo celular</b> soma tudo e, se o estímulo passar de um limite, dispara um <b>potencial de ação</b> que corre pelo <b>axônio</b> até as <b>sinapses</b>. O cérebro humano tem cerca de <b>86 bilhões</b> de neurônios, número medido pelo grupo de Suzana Herculano-Houzel, na UFRJ. Os pulsos (pontos brilhantes) andam pelo axônio pulando de um nodo a outro.`,
   kv:[['Corpo celular','~4–100 µm'],['Axônio','até ~1 m (medula ao pé)'],['Cérebro humano','~86 bilhões'],['Velocidade','até ~120 m/s']],links:[]},
  dendrito:{t:'Dendritos',s:'antenas de entrada',c:'#ffd43b',bar:[20,'µm'],
   d:`<b>Ramificações que recebem sinais de outros neurônios.</b> Um único neurônio pode receber milhares de sinapses nos dendritos, muitas delas em pequenas saliências chamadas <b>espinhas dendríticas</b>, que mudam de forma quando aprendemos algo.`,
@@ -217,10 +227,10 @@ Object.assign(ORG,{
   d:`<b>Camadas de membrana enroladas no axônio</b>, feitas por outras células (células de Schwann nos nervos, oligodendrócitos no cérebro). A mielina isola o axônio, e o sinal salta de um <b>nodo de Ranvier</b> (os intervalos) para o próximo: a <b>condução saltatória</b>, até ~100 vezes mais rápida. Doenças como a esclerose múltipla destroem a mielina.`,
   kv:[['Feita por','Schwann / oligodendrócitos'],['Composição','~70–80% lipídios'],['Nodos de Ranvier','~1 µm, a cada ~1 mm'],['Condução','saltatória']],links:[['Bicamada lipídica','../biomoleculas/index.html#bicamada']]},
  sinapse:{t:'Sinapse',s:'ponto de contato',c:'#ff8787',bar:[1,'µm'],
-  d:`<b>Onde um neurônio passa o sinal para o próximo.</b> Quando o potencial de ação chega ao terminal, vesículas cheias de <b>neurotransmissores</b> (como glutamato, dopamina ou serotonina) se fundem com a membrana e soltam seu conteúdo numa fenda de só <b>~20 nm</b>. As moléculas atravessam e abrem canais na célula seguinte.`,
+  d:`<b>Na sinapse química, a mais comum, o neurônio passa o sinal para o próximo.</b> Quando o potencial de ação chega ao terminal, vesículas cheias de <b>neurotransmissores</b> (como glutamato, dopamina ou serotonina) se fundem com a membrana e soltam seu conteúdo numa fenda de só <b>~20 nm</b>. As moléculas atravessam e abrem canais na célula seguinte.`,
   kv:[['Fenda sináptica','~20 nm'],['Mensageiros','neurotransmissores'],['Tempo','~1 ms'],['No cérebro','~100 trilhões']],links:[]},
  celula_esperma:{t:'Espermatozoide',s:'gameta masculino',c:'#74c0fc',bar:[10,'µm'],
-  d:`<b>A célula humana mais especializada para nadar.</b> Mede cerca de <b>55 µm</b>, quase tudo cauda. A cabeça leva só o DNA, bem compactado, e a cauda bate em ondas usando energia das mitocôndrias da peça intermediária. Carrega <b>23 cromossomos</b>, metade do normal; o óvulo traz a outra metade.`,
+  d:`<b>A célula humana mais especializada para nadar.</b> Mede cerca de <b>55 µm</b>, quase tudo cauda. A cabeça leva o núcleo, com o DNA bem compactado, e o acrossomo, e a cauda bate em ondas usando energia das mitocôndrias da peça intermediária. Carrega <b>23 cromossomos</b>, metade do normal; o óvulo traz a outra metade.`,
   kv:[['Comprimento','~55 µm'],['Cabeça','~5 × 3 µm'],['Cromossomos','23 (haploide)'],['Velocidade','~50 µm/s']],links:[['O DNA','../dna/index.html']]},
  acrossomo:{t:'Acrossomo',s:'kit de entrada',c:'#da77f2',bar:[1,'µm'],
   d:`<b>Uma "capa" na ponta da cabeça cheia de enzimas.</b> Quando o espermatozoide encosta no óvulo, o acrossomo libera enzimas (como a acrosina) que digerem a camada protetora do óvulo, a <b>zona pelúcida</b>, abrindo caminho. Ele é derivado do complexo de Golgi.`,
@@ -235,7 +245,7 @@ Object.assign(ORG,{
   d:`<b>Um flagelo eucarionte, diferente do bacteriano:</b> não gira, ele <b>ondula</b>. Por dentro tem o <b>axonema</b>, com 9 pares de microtúbulos em volta de 2 centrais (arranjo "9+2"). Motores de <b>dineína</b> fazem os pares deslizarem uns sobre os outros, e isso dobra a cauda.`,
   kv:[['Comprimento','~45–50 µm'],['Estrutura','axonema 9+2'],['Motor','dineína'],['Movimento','ondulação']],links:[]},
  celula_levedura:{t:'Levedura',s:'fungo unicelular',c:'#e6c07b',bar:[2,'µm'],
-  d:`<b><i>Saccharomyces cerevisiae</i>, o fermento de pão e de cerveja.</b> É um <b>eucarionte</b> como nós: tem núcleo, mitocôndrias e vacúolo, num corpo de 5–10 µm. Sem oxigênio, ela <b>fermenta</b> o açúcar: C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂. O gás (bolhas) faz o pão crescer e o álcool vai para a cerveja. Foi o primeiro eucarionte a ter o genoma inteiro lido, em 1996.`,
+  d:`<b><i>Saccharomyces cerevisiae</i>, o fermento de pão e de cerveja.</b> É um <b>eucarionte</b> como nós: tem núcleo, mitocôndrias e vacúolo, num corpo de 5–10 µm. Sem oxigênio (e mesmo com ele, quando há muito açúcar), ela <b>fermenta</b> o açúcar: C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂. Com oxigênio, ela também respira e tira muito mais energia de cada glicose. O gás (bolhas) faz o pão crescer e o álcool vai para a cerveja. Foi o primeiro eucarionte a ter o genoma inteiro lido, em 1996.`,
   kv:[['Tamanho','5–10 µm'],['Reino','fungos'],['Genoma','~12 milhões de pb, 16 cromossomos'],['Fermentação','açúcar → etanol + CO₂']],links:[['CO₂ em 3D','../moleculas/index.html#co2']]},
  broto:{t:'Broto',s:'reprodução',c:'#f2d49b',bar:[2,'µm'],
   d:`<b>A levedura se reproduz por brotamento.</b> Uma bolinha cresce na superfície, recebe uma cópia do núcleo e se solta, deixando na mãe uma <b>cicatriz de brotamento</b> (os anéis). Contando as cicatrizes dá para saber quantas vezes a célula já se dividiu; uma célula-mãe produz em média uns 20 a 30 brotos na vida.`,
@@ -246,8 +256,8 @@ Object.assign(ORG,{
  parede_lev:{t:'Parede celular',s:'glucana e quitina',c:'#e6c07b',bar:[1,'µm'],
   d:`<b>A parede dos fungos não é de celulose.</b> É feita de <b>glucanas</b> e <b>mananas</b> (açúcares) com um pouco de <b>quitina</b>, o mesmo material da carapaça dos insetos. Alguns remédios antifúngicos atacam justamente a montagem dessa parede, que nossas células não têm.`,
   kv:[['Material','glucanas, mananas, quitina'],['Espessura','~100–200 nm'],['Diferença','plantas usam celulose'],['Alvo de','antifúngicos']],links:[]},
- celula_sangue:{t:'Células do sangue',s:'hemácias, leucócitos, plaquetas',c:'#ff6b6b',bar:[5,'µm'],
-  d:`<b>Uma gota de sangue de 1 µL tem uns 5 milhões de hemácias</b>, 4 a 11 mil leucócitos e 150 a 400 mil plaquetas, todos boiando no plasma. As hemácias levam oxigênio, os leucócitos defendem o corpo e as plaquetas fecham machucados. Todos nascem na medula óssea.`,
+ celula_sangue:{t:'Células do sangue',s:'Hemácias, leucócitos e plaquetas',c:'#ff6b6b',bar:[5,'µm'],
+  d:`<b>Um microlitro de sangue (1 µL = 1 mm³, umas 50 vezes menos que uma gota) tem uns 5 milhões de hemácias</b>, 4 a 11 mil leucócitos e 150 a 400 mil plaquetas, todos boiando no plasma. As hemácias levam oxigênio, os leucócitos defendem o corpo e as plaquetas fecham machucados. Todos nascem na medula óssea.`,
   kv:[['Hemácias','~5 milhões/µL'],['Leucócitos','4–11 mil/µL'],['Plaquetas','150–400 mil/µL'],['Origem','medula óssea']],links:[]},
  hemacia:{t:'Hemácia',s:'transporte de O₂',c:'#e03131',bar:[2,'µm'],
   d:`<b>Um disco bicôncavo de ~7,5 µm, sem núcleo.</b> O formato aumenta a área para trocar gases e deixa a célula dobrar para passar em capilares mais finos que ela. Cada hemácia tem uns <b>270 milhões</b> de moléculas de <b>hemoglobina</b>, cada uma com 4 átomos de ferro que prendem O₂. Vive cerca de 120 dias.`,
@@ -258,7 +268,7 @@ Object.assign(ORG,{
  plaqueta:{t:'Plaqueta',s:'coagulação',c:'#ffd8a8',bar:[1,'µm'],
   d:`<b>Fragmentos de célula de só 2–3 µm</b>, soltos de uma célula gigante da medula, o megacariócito. Não têm núcleo. Quando um vaso se rompe, as plaquetas grudam no local, mudam de forma e chamam outras, formando um tampão que depois é reforçado por fios de fibrina: o coágulo.`,
   kv:[['Tamanho','2–3 µm'],['Origem','megacariócito'],['Núcleo','não tem'],['Vida','~7–10 dias']],links:[]},
- celula_fago:{t:'Bacteriófago T4',s:'vírus, não é célula',c:'#ced4da',bar:[50,'nm'],
+ celula_fago:{t:'Bacteriófago T4',s:'Vírus: não é célula',c:'#ced4da',bar:[50,'nm'],
   d:`<b>Um vírus que infecta bactérias</b>, com uns 200 nm, 10 vezes menor que a própria bactéria. Não é célula: não tem citoplasma, ribossomos nem metabolismo. As <b>fibras da cauda</b> reconhecem a bactéria, a cauda se contrai como uma seringa e <b>injeta o DNA</b>; em ~25 minutos a bactéria vira uma fábrica que libera umas 100–200 cópias novas.`,
   kv:[['Tamanho','~200 nm'],['Material genético','DNA, ~169 mil pb'],['Hospedeiro','E. coli'],['Ciclo','~25 min, ~100–200 vírus']],links:[]},
  capsideo:{t:'Capsídeo',s:'cabeça de proteína',c:'#ced4da',bar:[50,'nm'],
@@ -275,9 +285,82 @@ Object.assign(ORG,{
   kv:[['Número','6 longas'],['Comprimento','~150 nm'],['Função','achar o hospedeiro'],['Alvo','moléculas da superfície']],links:[]}
 });
 
+
+// ---- núcleo da levedura (revisão de biologia, E3) ----
+ORG.nucleo_lev={t:'Núcleo',s:'16 cromossomos',c:'#9A6BFF',bar:[1,'µm'],
+  d:`<b>Igual ao nosso no essencial:</b> o DNA fica dentro de um envelope de duas membranas com poros. Mas é bem menor: ~2 µm, com <b>16 cromossomos</b> e uns 12 milhões de pares de bases (cerca de 250 vezes menos DNA que o genoma humano). Na levedura, o envelope nuclear não se desfaz na divisão.`,
+  kv:[['Diâmetro','~2 µm'],['Cromossomos','16'],['Genoma','~12 milhões de pb'],['Membranas','2 (envelope nuclear)']],links:[['DNA dupla hélice','../dna/index.html']]};
+
+// ---- famílias e cores da paleta científica (guia 2.3, tokens --sci-* do base.css) ----
+const FAM={gen:['Informação genética','#9A6BFF'],mem:['Membranas','#F06AAE'],par:['Envoltórios rígidos','#A9C54A'],ene:['Energia','#F25C3B'],
+ fot:['Fotossíntese','#3FBF6A'],sin:['Síntese de proteínas','#4B7BFF'],emp:['Empacotamento','#F7C13B'],rib:['Ribossomos e proteínas','#FFE1A6'],
+ dig:['Digestão e defesa química','#2FCFBF'],agu:['Água e reserva','#2A9FC9'],sus:['Sustentação e movimento','#CFE0FF'],
+ neu:['Neurônio','#F4B860'],san:['Sangue','#D7303B'],vir:['Vírus','#B9C2D3'],cel:['Célula inteira',null]};
+{const F={gen:'nucleo nucleo_lev nucleoide plasmidio nucleo_esp dna_fago',mem:'membrana mielina',par:'parede_bac parede_lev',ene:'mitocondria peca_int',fot:'cloroplasto',
+  sin:'re',emp:'golgi acrossomo',rib:'ribossomo ribo70',dig:'lisossomo peroxissomo',agu:'vacuolo vacuolo_lev',sus:'citoesqueleto centriolo flagelo pili cauda',
+  neu:'dendrito axonio sinapse',san:'hemacia leucocito plaqueta',vir:'capsideo cauda_fago fibras',cel:'broto'};
+ for(const f in F)for(const k of F[f].split(' ')){ORG[k].fam=f;if(FAM[f][1])ORG[k].c=FAM[f][1]}
+ Object.assign(ORG.sinapse,{c:'#FF8F8F'});Object.assign(ORG.axonio,{c:'#F7D08A'});Object.assign(ORG.leucocito,{c:'#B79CFF'});Object.assign(ORG.plaqueta,{c:'#E8C9A0'});
+ Object.assign(ORG.cauda_fago,{c:'#9AA3B5'});Object.assign(ORG.fibras,{c:'#7E889C'});Object.assign(ORG.broto,{c:'#E2B55F',fam:'cel'});
+ Object.assign(ORG.peroxissomo,{c:'#5FE0C8'});Object.assign(ORG.ribo70,{c:'#FFE1A6'});
+ for(const k in ORG)if(k.startsWith('celula_'))ORG[k].fam='cel';}
+
+// ---- ligações com o módulo 06 (Morfofisiologia) ----
+{const M='../morfofisiologia/index.html#';const L={membrana:'membranas/mosaico',nucleo:'nucleo/geral',nucleo_lev:'nucleo/geral',mitocondria:'origem/mito',cloroplasto:'origem/cloro',celula_bacteria:'tipos/proc'};
+ for(const k in L)ORG[k].links.unshift(['Ver em Morfofisiologia',M+L[k]]);}
+
+// ---- caixa "No ENEM" (revisão de biologia, seção 5) ----
+const ENEM={
+ celula_animal:'Cai muito a comparação entre célula animal, vegetal e bacteriana. Cuidado com "exclusivas": centríolos também existem em algas, musgos e samambaias; só faltam nas plantas com flores.',
+ celula_vegetal:'Parede de celulose, cloroplastos e vacúolo central são o trio que a prova pede. Lembre que a planta também tem mitocôndrias e respira de dia e de noite (fluxo de energia, H9).',
+ celula_bacteria:'"Vírus não é célula" e "procarionte não tem núcleo, mas tem DNA, ribossomos e parede" são pegadinhas frequentes. Resistência a antibióticos se liga a seleção natural (H30).',
+ celula_neuronio:'Mostra a diferenciação celular: o neurônio tem o mesmo DNA que as outras células, com genes diferentes ligados. Bainha de mielina e sinapse aparecem em questões de sistema nervoso.',
+ celula_esperma:'Gameta haploide (23 cromossomos) e herança mitocondrial materna: as mitocôndrias do espermatozoide são destruídas após a fecundação (H13).',
+ celula_levedura:'Respiração × fermentação: com oxigênio a levedura tira muito mais ATP de cada glicose; sem oxigênio, faz etanol e CO₂ (pão, cerveja, biocombustível; H11 e H29).',
+ celula_sangue:'Questões com hemograma usam valores por µL (= mm³). Hemácia leva O₂, leucócito defende, plaqueta coagula (H14).',
+ celula_fago:'Vírus não tem metabolismo nem ribossomos: só se reproduz dentro de uma célula. O fago também transfere genes entre bactérias.',
+ nucleo:'Núcleo, cromossomos e divisão celular (H13). Lembre: a célula humana tem 46 cromossomos; os gametas, 23.',
+ nucleo_lev:'A levedura é eucarionte: tem núcleo com envelope, como nós. Isso a separa das bactérias, que são procariontes.',
+ mitocondria:'Respiração celular e teoria endossimbiótica (H16): DNA circular próprio, ribossomos parecidos com os bacterianos e herança materna. Os prótons vão da matriz para o espaço intermembranas.',
+ cloroplasto:'Fotossíntese: fase clara nos tilacoides (quebra da água, libera O₂) e ciclo de Calvin no estroma (fixa CO₂). Também tem DNA próprio (endossimbiose).',
+ re:'Caminho da secreção: ribossomo do RE rugoso → retículo → complexo golgiense → vesícula → fora da célula (ex.: insulina, anticorpos).',
+ golgi:'Aparece no caminho da secreção e na origem do acrossomo do espermatozoide e dos lisossomos.',
+ lisossomo:'Digestão intracelular e autofagia. Em plantas, o vacúolo faz esse papel.',
+ ribossomo:'Tradução (código genético, H13): o ribossomo lê o mRNA de três em três bases (códons). Ribossomo 80S em eucariontes, 70S em bactérias.',
+ membrana:'Modelo do mosaico fluido, permeabilidade seletiva, osmose e transporte ativo. O glicocálix é o "crachá" de reconhecimento.',
+ citoesqueleto:'Forma, movimento e transporte dentro da célula. Plantas também têm citoesqueleto.',
+ centriolo:'Divisão celular (fuso) e base de cílios e flagelos. Pegadinha: não são exclusivos de animais.',
+ peroxissomo:'Catalase quebrando a água oxigenada (2 H₂O₂ → 2 H₂O + O₂) é exemplo clássico de enzima.',
+ vacuolo:'Osmose, turgor e plasmólise: célula vegetal em água salgada perde água e a membrana se descola da parede.',
+ nucleoide:'Procarionte não tem carioteca: o DNA circular fica solto no citoplasma, no nucleoide.',
+ plasmidio:'Resistência a antibióticos se espalha por conjugação (plasmídeos passam pelo pilus). O antibiótico não "induz" a resistência: seleciona as bactérias que já a tinham (H30). Plasmídeos também são usados para produzir insulina (H11).',
+ ribo70:'O ribossomo 70S é alvo de antibióticos; ribossomos parecidos nas mitocôndrias reforçam a endossimbiose (H16).',
+ parede_bac:'A penicilina impede a montagem da parede de peptidoglicano. Nossas células não têm essa parede.',
+ flagelo:'Flagelo bacteriano gira; o flagelo eucarionte (como a cauda do espermatozoide) ondula. Estruturas diferentes para a mesma função.',
+ pili:'O pilus sexual permite a conjugação, que espalha genes de resistência entre bactérias.',
+ dendrito:'Dendritos recebem, axônio conduz, sinapse transmite: a direção do impulso nervoso cai bastante.',
+ axonio:'Potencial de ação: entrada de Na⁺ e saída de K⁺. A bomba de sódio e potássio gasta ATP.',
+ mielina:'Condução saltatória mais rápida; doenças como a esclerose múltipla destroem a mielina.',
+ sinapse:'Neurotransmissores e drogas que agem na sinapse (por exemplo, antidepressivos que mexem na serotonina).',
+ acrossomo:'Derivado do complexo golgiense; libera enzimas que digerem a camada protetora do óvulo na fecundação.',
+ nucleo_esp:'Gameta haploide: 23 cromossomos, com X ou Y definindo o sexo.',
+ peca_int:'Mitocôndrias do espermatozoide não passam para o embrião: herança mitocondrial materna.',
+ cauda:'Flagelo eucarionte com axonema 9+2, movido por dineína e ATP.',
+ broto:'Reprodução assexuada por brotamento: as células-filhas são geneticamente iguais à mãe.',
+ vacuolo_lev:'Autofagia (Nobel de 2016) e a semelhança entre o vacúolo dos fungos e o lisossomo animal.',
+ parede_lev:'Fungos têm parede de quitina e glucanas, não de celulose: uma diferença clássica entre os reinos.',
+ hemacia:'Hemácia madura de mamífero não tem núcleo; anemia e oxigenação aparecem em questões de hemograma (H14).',
+ leucocito:'Fagocitose e defesa inespecífica. Leucócitos altos no hemograma sugerem infecção.',
+ plaqueta:'Coagulação; plaquetas baixas aumentam o risco de sangramento (por exemplo, na dengue).',
+ capsideo:'Vírus: capsídeo de proteína + material genético. Não tem citoplasma nem ribossomos.',
+ dna_fago:'O experimento de Hershey e Chase (1952) usou fagos para mostrar que o material genético é o DNA.',
+ cauda_fago:'O vírus injeta só o material genético; o capsídeo fica do lado de fora da bactéria.',
+ fibras:'A especificidade vírus-hospedeiro depende do encaixe entre proteínas do vírus e receptores da célula.'};
 // ================= 3D: utilidades (geometria procedural, materiais) =================
 const {React,ReactDOMClient,THREE,FIBER,DREI,RoomEnvironment,mergeVertices,html}=window.R3F;
-const {Canvas,useFrame,useThree}=FIBER;const {OrbitControls,Html}=DREI;
+const {Canvas,useFrame,useThree}=FIBER;
+const MAT=window.LAB_MATERIALS?window.LAB_MATERIALS(THREE):null;   // biblioteca de materiais da equipe (site/assets/materials.js)
+const {OrbitControls,Html}=DREI;
 const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
 const TAU=Math.PI*2;
 let SEED=1;const rnd=()=>((SEED=(SEED*16807)%2147483647)/2147483647);const rr=(a,b)=>a+(b-a)*rnd();
@@ -293,7 +376,7 @@ function weld(g){g.deleteAttribute('uv');g.deleteAttribute('normal');g=mergeVert
 function bumpy(g,amp=.05,freq=2,seed=0,col=null,cvar=.25,oct=4){g=weld(g);const p=g.attributes.position,n=g.attributes.normal;const c=col?new Float32Array(p.count*3):null;const base=col?new THREE.Color(col):null;
   for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i);const d=fbm(x*freq+seed,y*freq-seed*.7,z*freq+seed*1.3,oct);
     p.setXYZ(i,x+n.getX(i)*d*amp,y+n.getY(i)*d*amp,z+n.getZ(i)*d*amp);
-    if(c){const m=1+cvar*fbm(x*freq*2.7-seed,y*freq*2.7,z*freq*2.7+seed,3)*1.6;c[i*3]=base.r*m;c[i*3+1]=base.g*m;c[i*3+2]=base.b*m}}
+    if(c){const m=(1+cvar*fbm(x*freq*2.7-seed,y*freq*2.7,z*freq*2.7+seed,3)*1.6)*(1+Math.max(-.5,Math.min(.5,d))*.7);c[i*3]=base.r*m;c[i*3+1]=base.g*m;c[i*3+2]=base.b*m}}
   if(c)g.setAttribute('color',new THREE.BufferAttribute(c,3));g.computeVertexNormals();return g}
 const sphG=(r,s=48)=>new THREE.SphereGeometry(r,s,Math.round(s*.75));
 function ellG(rx,ry,rz,s=64){const g=sphG(1,s);g.scale(rx,ry,rz);return g}
@@ -312,9 +395,9 @@ function walk(n,step,inside,start=V3(0,0,0)){const a=[start.clone()];let d=V3(rr
 // ---------- materiais ----------
 const MATS=[];// registro do cenário atual: materiais com userData.k
 function M(k,col,o={}){const vc=!!o.vc;delete o.vc;const c=new THREE.Color(col);
-  const m=new THREE.MeshPhysicalMaterial(Object.assign({color:vc?0xffffff:c,vertexColors:vc,roughness:.42,metalness:0,clearcoat:.55,clearcoatRoughness:.35,
-    sheen:.6,sheenRoughness:.45,sheenColor:c.clone().lerp(new THREE.Color('#ffffff'),.45),emissive:c.clone(),emissiveIntensity:0},o));
-  m.userData.k=k;m.userData.e0=m.emissiveIntensity;MATS.push(m);return m}
+  const m=new THREE.MeshPhysicalMaterial(Object.assign({color:vc?0xffffff:c,vertexColors:vc,roughness:.58,metalness:0,clearcoat:.12,clearcoatRoughness:.5,
+    sheen:.3,sheenRoughness:.6,sheenColor:c.clone().lerp(new THREE.Color('#ffffff'),.2),specularIntensity:.65,emissive:vc?new THREE.Color('#ffffff'):c.clone(),emissiveIntensity:0},o));
+  m.userData.k=k;m.userData.e0=m.emissiveIntensity;if(!m.transparent||m.opacity>.5)m.userData.c0=m.color.clone();MATS.push(m);return m}
 // vidro biológico (membranas que deixam ver o interior)
 function GLASS(k,tint,o={}){const t=new THREE.Color(tint);const keep={};for(const x of['roughness','opacity','clearcoat'])if(o[x]!==undefined)keep[x]=o[x];
   return M(k,t.clone().lerp(new THREE.Color('#ffffff'),.25),Object.assign({transparent:true,opacity:.2,depthWrite:false,roughness:.32,clearcoat:.7,clearcoatRoughness:.3,sheen:0,envMapIntensity:.7,specularIntensity:.8},keep))}
@@ -355,9 +438,9 @@ function nucleus(G,k,pos,r,col=C('nucleo')){const cut=.8,face=Math.PI/2;
   G.add(mesh(env,M(k,'#fff',{vc:true,side:THREE.DoubleSide,roughness:.5,clearcoat:.3}),k,pos));
   const pores=[];for(let i=0;i<70;i++){const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();let ph=Math.atan2(d.z,-d.x);if(ph<0)ph+=TAU;if(Math.abs(ph-face)<cut+.08)continue;
     pores.push({p:pos.clone().addScaledVector(d,r*1.01),q:new THREE.Quaternion().setFromUnitVectors(V3(0,0,1),d),s:r/.78})}
-  G.add(inst(new THREE.TorusGeometry(.03,.011,6,14),M(k,'#d0bfff',{roughness:.3}),k,pores));
-  G.add(mesh(bumpy(sphG(r*.38,40),r*.05,6,2,'#5f3dc4',.4),M(k,'#fff',{vc:true,roughness:.6}),k,pos.clone().add(V3(r*.15,-r*.08,r*.05))));
-  const inn=ellIn(r*.88,r*.88,r*.88,pos);for(let i=0;i<5;i++){const w=walk(40,r*.12,p=>inn(p),pos.clone().add(V3(rr(-.4,.4)*r,rr(-.4,.4)*r,rr(-.4,.4)*r)));if(w.length>4)G.add(mesh(tubeG(w,r*.022,140,5),M(k,'#c5b3ff',{roughness:.6}),k))}
+  G.add(inst(new THREE.TorusGeometry(.03,.011,6,14),M(k,'#E2D6FF',{roughness:.45}),k,pores));
+  G.add(mesh(bumpy(sphG(r*.38,40),r*.05,6,2,'#6A45D8',.4),M(k,'#fff',{vc:true,roughness:.6}),k,pos.clone().add(V3(r*.15,-r*.08,r*.05))));
+  const inn=ellIn(r*.88,r*.88,r*.88,pos);for(let i=0;i<5;i++){const w=walk(40,r*.12,p=>inn(p),pos.clone().add(V3(rr(-.4,.4)*r,rr(-.4,.4)*r,rr(-.4,.4)*r)));if(w.length>4)G.add(mesh(tubeG(w,r*.022,140,5),M(k,'#C9B6FF',{roughness:.62}),k))}
   return pos.clone().add(V3(0,r*.95,0))}
 function mito(G,p,len,r,rot){const g=bumpy(capG(r,len,24),r*.12,9,rr(0,9),C('mitocondria'),.35);const o=mesh(g,M('mitocondria','#fff',{vc:true,roughness:.38}),'mitocondria',p,rot);G.add(o);return o}
 function erSheets(G,ctr,r0,n,arc,ph,h=4){const pts=[];for(let i=0;i<n;i++){const R=r0+i*.13;const tg=bumpy(new THREE.TorusGeometry(R,.04,10,110,arc),.025,4,i,C('re'),.25);
@@ -412,6 +495,10 @@ vegetal(){SEED=5;const s=scene({dist:8.2,upu:50/5.6,cam:V3(0,.62,1)}),G=s.g;cons
   const pe=scatter(3,.14,gen,pl,800).filter(p=>okP(p,.12));const pm=M('peroxissomo',C('peroxissomo'),{roughness:.3});pe.forEach(p=>G.add(mesh(sphG(.08,24),pm,'peroxissomo',p)));if(pe[0])s.anch.peroxissomo=up(pe[0],.12);
   const rib=ribos(G,'ribossomo',300,rndIn(A,B,Cc),p=>okP(p,.06)&&p.distanceTo(nP)>nr+.04);s.anch.ribossomo=up(rib[3].p,.06);
   s.anch.membrana=V3(A*.86,B*.86,Cc*.55);
+  // citoesqueleto: microtúbulos corticais logo abaixo da membrana (plantas também têm citoesqueleto)
+  const cyto=M('citoesqueleto',C('citoesqueleto'),{transparent:true,opacity:.6,roughness:.4});const ctr=[];
+  for(let i=0;i<12;i++){const a0=rr(0,TAU),y=rr(-.75,.75);const pts=[];for(let j=0;j<=6;j++){const a=a0+j*.2;pts.push(V3(Math.cos(a)*A*.86,y+Math.sin(j*.9+i)*.05,Math.sin(a)*Cc*.86))}G.add(mesh(tubeG(pts,.012,40,5),cyto,'citoesqueleto'));ctr.push(pts[3])}
+  s.anch.citoesqueleto=ctr.reduce((a,b)=>b.z>a.z?b:a).clone().add(V3(0,.06,0));
   // ciclose: cloroplastos circulam devagar em volta do vacúolo
   const chs=G.children.filter(o=>o.userData.k==='cloroplasto').map(o=>({o,p:o.position.clone(),a:rnd()*TAU}));
   s.tick=(t)=>{for(const c of chs){c.o.position.set(c.p.x+Math.sin(t*.4+c.a)*.025,c.p.y+Math.cos(t*.5+c.a)*.02,c.p.z)}};return s},
@@ -434,18 +521,18 @@ bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const
   s.anch.pili=V3(.4,-R-.3,.1).applyAxisAngle(V3(1,0,0),-.9);
   G.position.x=-1.45;s.tick=(t)=>{fl.rotation.x=t*4};return s},
 
-neuronio(){SEED=21;const s=scene({dist:11.6,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
-  const soma=bumpy(ellG(.72,.55,.62,80),.07,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
-  s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.3);
+neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
+  const soma=bumpy(ellG(.95,.72,.82,80),.08,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
+  s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.4);
   const dm=M('dendrito','#fff',{vc:true,roughness:.4});
   function branch(p,d,len,r,dep){const pts=[p.clone()];let q=p.clone(),dd=d.clone();for(let i=0;i<4;i++){dd.add(V3(rr(-.35,.35),rr(-.25,.25),rr(-.35,.35))).normalize();q=q.clone().addScaledVector(dd,len/4);pts.push(q)}
     const g=bumpy(tubeG(pts,r,40,8,t=>1-t*.45),r*.25,6,rr(0,9),C('dendrito'),.3);G.add(mesh(g,dm,'dendrito'));
     if(dep>0)for(const sgn of[-1,1])branch(q,dd.clone().applyAxisAngle(V3(0,1,0),sgn*rr(.35,.7)).add(V3(0,rr(-.3,.3),0)).normalize(),len*.65,r*.55,dep-1);
     else for(let i=0;i<5;i++){const sp=pts[2+(i%2)];G.add(noPick(mesh(sphG(.018,6),dm,null,sp.clone().add(V3(rr(-.06,.06),rr(-.06,.06),rr(-.06,.06))))))}return pts}
-  const dirs=[[-1,.15,.5],[-1,-.1,-.6],[-.4,.5,1],[-.3,-.4,-1],[-.2,.3,-1.1],[-.9,.6,0]];dirs.forEach((d,i)=>{const dd=V3(...d).normalize();const pts=branch(sP.clone().addScaledVector(dd,.5),dd,1.3,.09,2);if(i===0)s.anch.dendrito=up(pts[2],.18)});
-  const ax=[sP.clone().add(V3(.62,0,0)),V3(-1.2,.05,.1),V3(0,-.05,-.1),V3(1.3,.08,.05),V3(2.6,0,-.15),V3(3.6,.05,0)];const axc=new THREE.CatmullRomCurve3(ax);
-  G.add(mesh(bumpy(tubeG(ax,.06,160,10,t=>t<.06?1.9-t*15:1),.006,8,1,C('axonio'),.2),M('axonio','#fff',{vc:true,roughness:.35}),'axonio'));s.anch.axonio=axc.getPointAt(.08).add(V3(0,.2,0));
-  const mm=M('mielina','#fff',{vc:true,roughness:.3,clearcoat:1,sheen:1});const sheaths=[];for(let i=0;i<7;i++){const t=.16+i*.11;const p=axc.getPointAt(t),tg=axc.getTangentAt(t);const o=mesh(bumpy(capG(.14,.38,24),.01,8,i,C('mielina'),.12),mm,'mielina',p);o.quaternion.copy(qY(tg));G.add(o);sheaths.push(t)}
+  const dirs=[[-1,.15,.5],[-1,-.1,-.6],[-.4,.5,1],[-.3,-.4,-1],[-.2,.3,-1.1],[-.9,.6,0]];dirs.forEach((d,i)=>{const dd=V3(...d).normalize();const pts=branch(sP.clone().addScaledVector(dd,.68),dd,1.3,.12,2);if(i===0)s.anch.dendrito=up(pts[2],.18)});
+  const ax=[sP.clone().add(V3(.85,0,0)),V3(-1.2,.05,.1),V3(0,-.05,-.1),V3(1.3,.08,.05),V3(2.6,0,-.15),V3(3.6,.05,0)];const axc=new THREE.CatmullRomCurve3(ax);
+  G.add(mesh(bumpy(tubeG(ax,.08,160,10,t=>t<.06?1.9-t*15:1),.006,8,1,C('axonio'),.2),M('axonio','#fff',{vc:true,roughness:.35}),'axonio'));s.anch.axonio=axc.getPointAt(.08).add(V3(0,.2,0));
+  const mm=M('mielina','#fff',{vc:true,roughness:.3,clearcoat:1,sheen:1});const sheaths=[];for(let i=0;i<7;i++){const t=.16+i*.11;const p=axc.getPointAt(t),tg=axc.getTangentAt(t);const o=mesh(bumpy(capG(.18,.38,24),.01,8,i,C('mielina'),.12),mm,'mielina',p);o.quaternion.copy(qY(tg));G.add(o);sheaths.push(t)}
   s.anch.mielina=axc.getPointAt(.38).add(V3(0,.25,0));
   const sm=M('sinapse',C('sinapse'),{roughness:.3});const tip=ax[ax.length-1];for(let i=0;i<5;i++){const d=V3(1,rr(-.8,.8),rr(-1,1)).normalize();const e=tip.clone().addScaledVector(d,rr(.45,.7));
     G.add(mesh(tubeG([tip,tip.clone().lerp(e,.5).add(V3(0,rr(-.1,.1),0)),e],.025,20,6),M('axonio',C('axonio')),'axonio'));const b=mesh(bumpy(sphG(.1,24),.01,9,i),sm,'sinapse',e);G.add(b);if(i===0)s.anch.sinapse=up(e,.16)}
@@ -454,7 +541,7 @@ neuronio(){SEED=21;const s=scene({dist:11.6,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;c
   // potencial de ação saltando de nó em nó
   const sp=noPick(mesh(sphG(.09,16),new THREE.MeshBasicMaterial({color:'#fff3bf',transparent:true,opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false})));const halo=noPick(mesh(sphG(.22,16),RIM('#ffe066',1.6,1.2)));G.add(sp,halo);
   s.tick=(t)=>{const u=(t*.22)%1;const k=sheaths.findIndex(x=>x>u);const tt=u<.16?u:(k<0?u:sheaths[Math.max(0,k-1)]+.11*Math.pow((u-sheaths[Math.max(0,k-1)])/.11,4));const p=axc.getPointAt(Math.min(1,tt));sp.position.copy(p);halo.position.copy(p)};
-  G.position.x=.75;return s},
+  G.position.x=1.25;return s},
 
 esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(0,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
   const head=bumpy(ellG(.62,.2,.4,72),.012,3,1);head.translate(hP.x,hP.y,hP.z);shell(G,head,null,'#74c0fc','#d0ebff',{thickness:.5,attenuationDistance:1.2});
@@ -474,7 +561,7 @@ levedura(){SEED=31;const s=scene({dist:8,upu:10/4.6,cam:V3(0,.62,1)}),G=s.g;cons
   s.anch.parede_lev=mP.clone().add(V3(-.7,1.15,.35));s.anch.broto=bP.clone().add(V3(.1,.75,0));
   const vP=V3(-.75,-.1,-.25);const vg=bumpy(sphG(.62,64),.03,2.5,4);G.add(mesh(vg,FILM('vacuolo_lev',C('vacuolo_lev'),.32,{roughness:.05}),'vacuolo_lev',vP));const vr=noPick(mesh(vg,RIM('#66d9e8',1.2,2)));vr.position.copy(vP);G.add(vr);
   G.add(inst(sphG(.03,10),M('vacuolo_lev','#c5f6fa',{roughness:.2}),'vacuolo_lev',Array.from({length:14},()=>({p:vP.clone().add(V3(rr(-.4,.4),rr(-.35,.35),rr(-.4,.4)))}))));s.anch.vacuolo_lev=vP.clone().add(V3(0,.7,0));
-  s.anch.nucleo=nucleus(G,'nucleo',V3(.25,.12,.35),.4);
+  s.anch.nucleo_lev=nucleus(G,'nucleo_lev',V3(.25,.12,.35),.4,C('nucleo_lev'));
   const IN=ellIn(1.3,1.1,1.15,mP);for(let i=0;i<5;i++){const w=walk(8,.12,p=>IN(p)&&p.distanceTo(vP)>.7&&p.distanceTo(V3(.25,.12,.35))>.5,V3(rr(-1,.6),rr(-.6,.6),rr(-.8,.8)));if(w.length>3)G.add(mesh(tubeG(w,.045,40,8),M('mitocondria',C('mitocondria'),{roughness:.4}),'mitocondria'));if(i===0&&w[2])s.anch.mitocondria=up(w[2],.12)}
   const lip=M(null,'#ffe066',{roughness:.15,clearcoat:1});for(let i=0;i<6;i++){const p=V3(rr(-1.4,.6),rr(-.8,.8),rr(-.9,.9)).add(mP);if(IN(p,.1)&&p.distanceTo(vP)>.7)G.add(noPick(mesh(sphG(rr(.06,.1),20),lip,null,p)))}
   ribos(G,'ribossomo',180,rndIn(1.5,1.3,1.3,mP),p=>IN(p,.05)&&p.distanceTo(vP)>.65);
@@ -520,32 +607,34 @@ fago(){SEED=51;const s=scene({dist:11,upu:.36/6.2,cam:V3(0,.25,1)}),G=s.g;const 
 const CUT=()=>[new THREE.Plane(V3(0,-1,0),0.02)];
 function lab(s,t,p){s.labels.push([t,p.isVector3?p:V3(...p)])}
 const DETB={
-nucleo(){SEED=61;const s=scene({dist:7.4,upu:6/3.6,cam:V3(0,.5,1)}),G=s.g;const r=1.75;nucleus(G,'nucleo',V3(0,0,0),r);
+nucleo(){SEED=61;const s=scene({dist:8.4,upu:6/3.6,cam:V3(0,.5,1)}),G=s.g;const r=1.75;nucleus(G,'nucleo',V3(0,0,0),r);
   erSheets(G,V3(0,0,0),r+.22,2,TAU*.42,Math.PI*.62,5);
   lab(s,'envelope duplo',[1.45,.75,.75]);lab(s,'poro nuclear',[.4,1.62,-.4]);lab(s,'nucléolo',[.3,-.1,.3]);lab(s,'cromatina (DNA + proteínas)',[-.55,.45,.5]);lab(s,'retículo ligado ao núcleo',[-1.75,-.55,.95]);return s},
 
 mitocondria(){SEED=62;const s=scene({dist:7,upu:2/5,cam:V3(0,.95,1)}),G=s.g;const P=CUT(),L=2.6;
   const o=bumpy(capG(1,L,64),.025,2,1);o.rotateZ(Math.PI/2);G.add(mesh(o,M('mitocondria',C('mitocondria'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'mitocondria'));
-  const i=capG(.86,L,64);i.rotateZ(Math.PI/2);G.add(mesh(i,M('mitocondria','#e8590c',{clippingPlanes:P,side:THREE.DoubleSide,roughness:.5}),'mitocondria'));
+  const i=capG(.86,L,64);i.rotateZ(Math.PI/2);G.add(mesh(i,M('mitocondria','#B8402A',{clippingPlanes:P,side:THREE.DoubleSide,roughness:.5}),'mitocondria'));
   const cm=M('mitocondria','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.45});const atp=[];
   for(let k=0;k<9;k++){const x=-1.75+k*.44,sg=k%2?1:-1;const g=new THREE.BoxGeometry(.07,1.7,1.05,2,40,28);const p=g.attributes.position;const cr=Math.min(.78,Math.sqrt(Math.max(0,.86**2-Math.max(0,Math.abs(x)-1.3)**2))-.08);for(let j=0;j<p.count;j++){let y=p.getY(j),z=p.getZ(j);const zw=z+sg*.32,rr2=Math.hypot(y,zw);if(rr2>cr){y*=cr/rr2;z=zw*cr/rr2-sg*.32;p.setY(j,y);p.setZ(j,z)}p.setX(j,p.getX(j)+Math.sin(y*4+k)*.06+Math.sin(z*5)*.05)}
-    const cg=bumpy(g,.01,6,k,'#ff922b',.25);const m=mesh(cg,cm,'mitocondria',[x,0,sg*.32]);G.add(m);
+    const cg=bumpy(g,.01,6,k,'#FF8A5C',.3);const m=mesh(cg,cm,'mitocondria',[x,0,sg*.32]);G.add(m);
     for(let j=0;j<26;j++){const y=rr(-.8,0),z=sg*.32+rr(-.5,.5);if(Math.hypot(y,z)<.8)atp.push({p:V3(x+(rnd()<.5?-.05:.05),y,z)})}}
   G.add(inst(sphG(.028,8),M('mitocondria','#ffe066',{roughness:.3,clippingPlanes:P}),'mitocondria',atp));
   G.add(inst(sphG(.03,8),M('mitocondria','#ffd8a8',{roughness:.5,clippingPlanes:P}),'mitocondria',Array.from({length:160},()=>({p:V3(rr(-2,2),rr(-.75,-.05),rr(-.7,.7))})).filter(t=>Math.hypot(t.p.y,t.p.z)<.78)));
   [V3(-.9,-.35,.55),V3(1.1,-.4,-.5)].forEach(p=>G.add(mesh(new THREE.TorusGeometry(.12,.012,6,30),M('mitocondria','#74c0fc'),'mitocondria',p,[Math.PI/2,0,0])));
-  lab(s,'membrana externa',[-2.2,.15,-.95]);lab(s,'membrana interna',[2.3,.05,.55]);lab(s,'cristas (dobras)',[-.35,.05,.45]);lab(s,'matriz',[.68,-.35,.1]);lab(s,'ATP sintase',[1.36,.05,-.32]);lab(s,'DNA próprio',[-.9,-.25,.55]);return s},
+  lab(s,'membrana externa',[-2.2,.15,-.95]);lab(s,'membrana interna',[2.3,.05,.55]);lab(s,'cristas (dobras)',[-.35,.05,.45]);lab(s,'matriz',[.68,-.35,.1]);lab(s,'ATP sintase',[1.36,.05,-.32]);lab(s,'DNA próprio',[-.9,-.25,.55]);if(typeof MODELOS!=='undefined')MODELOS.trocar(s,'mitocondria',{tamanho:4.6,
+    rotulos:[['matriz','Matriz mitocondrial'],['cristas','Cristas'],['membrana_externa','Membrana externa'],['membrana_interna','Membrana interna'],['atp_sintase','ATP sintase'],
+      ['cadeia_transportadora','Cadeia transportadora'],['espaco_intermembranas','Espaço intermembranas'],['dna_mitocondrial','DNA mitocondrial'],['ribossomos','Ribossomos']],ancoras:{matriz:[-1.25,-.3,.35]}});return s},
 
 cloroplasto(){SEED=63;const s=scene({dist:7.6,upu:5/5,cam:V3(0,1.05,1)}),G=s.g;const P=CUT();
   G.add(mesh(bumpy(ellG(2.5,.95,1.45,90),.02,2,1),M('cloroplasto',C('cloroplasto'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'cloroplasto'));
   G.add(mesh(ellG(2.38,.86,1.35,90),FILM('cloroplasto','#b2f2bb',.35,{clippingPlanes:P}),'cloroplasto'));
-  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2b8a3e',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.35,clearcoat:.8,clippingPlanes:P});const disks=[],stacks=[];
+  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2A9450',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.35,clearcoat:.8,clippingPlanes:P});const disks=[],stacks=[];
   const pl=placer();scatter(10,.36,()=>V3(rr(-1.8,1.8),0,rr(-.9,.9)),pl,800).forEach(c=>{if((c.x/2.1)**2+(c.z/1.15)**2>1)return;stacks.push(c);const n=6+Math.floor(rnd()*5);for(let j=0;j<n;j++)disks.push({p:V3(c.x,-.6+j*.085,c.z)})});
   G.add(inst(tg,tm,'cloroplasto',disks));
   const lm=M('cloroplasto','#37b24d',{roughness:.4,clippingPlanes:P,transparent:true,opacity:.85});for(let i=0;i<stacks.length-1;i++){const a=stacks[i],b=stacks[i+1];const d=b.clone().sub(a);const o=mesh(new THREE.BoxGeometry(d.length(),.025,.12),lm,'cloroplasto',a.clone().lerp(b,.5).setY(-.35+(i%3)*.12));o.rotation.y=-Math.atan2(d.z,d.x);G.add(o)}
   G.add(mesh(bumpy(ellG(.35,.18,.25,32),.02,5,1,'#f8f9fa',.1),M('cloroplasto','#fff',{vc:true,roughness:.6,clippingPlanes:P}),'cloroplasto',[1.6,-.35,.6]));
   G.add(inst(sphG(.05,12),M('cloroplasto','#ffe066',{roughness:.2,clippingPlanes:P}),'cloroplasto',Array.from({length:14},()=>({p:V3(rr(-2,2),rr(-.6,-.1),rr(-1,1))})).filter(t=>(t.p.x/2.2)**2+(t.p.z/1.2)**2<1)));
-  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: onde a luz vira energia',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);return s},
+  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: luz → ATP',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);return s},
 
 re(){SEED=64;const s=scene({dist:9,upu:2/5,cam:V3(0,.75,1)}),G=s.g;const rib=[];
   for(let k=0;k<4;k++){const g=new THREE.BoxGeometry(3.6,.12,2.8,90,1,70);const p=g.attributes.position;const y0=-.95+k*.62;
@@ -553,11 +642,11 @@ re(){SEED=64;const s=scene({dist:9,upu:2/5,cam:V3(0,.75,1)}),G=s.g;const rib=[];
     const o=mesh(bumpy(g,.008,5,k,C('re'),.25),M('re','#fff',{vc:true,roughness:.35,clearcoat:.9}),'re',[-.9,y0,0]);G.add(o);
     for(let j=0;j<260;j++){const x=rr(-1.75,1.75),z=rr(-1.35,1.35),sg=rnd()<.5?1:-1;rib.push({p:V3(x-.9,y0+Math.sin(x*1.8+k)*.12+Math.sin(z*2.2+k*.7)*.1+sg*.1,z)})}}
   G.add(inst(sphG(.045,10),M('ribossomo',C('ribossomo'),{roughness:.5}),'ribossomo',rib));
-  const sm=M('re','#8ce99a',{roughness:.3,clearcoat:1});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
+  const sm=M('re','#8FB0FF',{roughness:.3,clearcoat:1});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
   const ves=noPick(mesh(sphG(.12,20),FILM(null,'#d3f9d8',.6,{depthWrite:true})));G.add(ves);s.tick=t=>{const u=(t*.25)%1;ves.position.set(2.2+u*1.2,.2+u*1.1,.2);ves.scale.setScalar(Math.min(1,u*5))};
   lab(s,'RE rugoso (cheio de ribossomos)',[-1.9,.95,.6]);lab(s,'ribossomo',[-.3,.45,-.9]);lab(s,'RE liso (tubos, faz lipídios)',[2.0,-.75,.6]);lab(s,'vesícula saindo',[3,1,.2]);return s},
 
-golgi(){SEED=65;const s=scene({dist:7.6,upu:1/5,cam:V3(0,.55,1)}),G=s.g;const c0=new THREE.Color('#fab005'),c1=new THREE.Color('#ff6b35');
+golgi(){SEED=65;const s=scene({dist:7.6,upu:1/5,cam:V3(0,.55,1)}),G=s.g;const c0=new THREE.Color('#F7C13B'),c1=new THREE.Color('#E58A2E');
   for(let i=0;i<6;i++){const a=1.75-i*.1;const g=superG(a,.075,1.05-i*.04,.7,64);const p=g.attributes.position;for(let j=0;j<p.count;j++){const x=p.getX(j);p.setY(j,p.getY(j)+x*x*.13)}
     const col='#'+c0.clone().lerp(c1,i/5).getHexString();G.add(mesh(bumpy(g,.012,4,i,col,.2),M('golgi','#fff',{vc:true,roughness:.3,clearcoat:1}),'golgi',[0,-.75+i*.28,0]));
     for(const sg of[-1,1])G.add(mesh(sphG(.11,20),M('golgi',col,{roughness:.25}),'golgi',[sg*(a+.05),-.75+i*.28+a*a*.13,rr(-.4,.4)]))}
@@ -644,25 +733,17 @@ vacuolo(){SEED=72;const s=scene({dist:10.4,upu:10/6,cam:V3(0,.36,1)}),G=s.g;cons
 };
 // ================= APP: estado, cena React Three Fiber e interface =================
 const CELLS={
- vegetal:['Célula vegetal',['nucleo','cloroplasto','vacuolo','mitocondria','re','golgi','ribossomo','peroxissomo','membrana']],
+ vegetal:['Célula vegetal',['nucleo','cloroplasto','vacuolo','mitocondria','re','golgi','ribossomo','peroxissomo','citoesqueleto','membrana']],
  animal:['Célula animal',['nucleo','mitocondria','re','golgi','ribossomo','lisossomo','peroxissomo','centriolo','citoesqueleto','membrana']],
  bacteria:['Célula bacteriana',['nucleoide','plasmidio','ribo70','parede_bac','flagelo','pili']],
  neuronio:['Neurônio',['nucleo','dendrito','axonio','mielina','sinapse','mitocondria']],
  esperma:['Espermatozoide',['acrossomo','nucleo_esp','peca_int','cauda']],
- levedura:['Levedura',['nucleo','vacuolo_lev','mitocondria','broto','parede_lev']],
+ levedura:['Levedura',['nucleo_lev','vacuolo_lev','mitocondria','broto','parede_lev']],
  sangue:['Células do sangue',['hemacia','leucocito','plaqueta']],
  fago:['Bacteriófago (vírus)',['capsideo','dna_fago','cauda_fago','fibras']]};
-const ICONS={
- vegetal:'<path d="M10 1.5 17.5 6v8L10 18.5 2.5 14V6z" fill="#3a5a1a" stroke="#a9e34b" stroke-width="1.6"/><ellipse cx="8" cy="11" rx="3.2" ry="3.6" fill="#15aabf"/><circle cx="12.5" cy="7.5" r="2.2" fill="#9775fa"/>',
- animal:'<ellipse cx="10" cy="10" rx="8.5" ry="7.3" fill="#3d2456" stroke="#f06595" stroke-width="1.6"/><circle cx="9" cy="10" r="3.2" fill="#9775fa"/><rect x="13" y="6" width="3" height="1.6" rx=".8" fill="#ff6b35"/>',
- bacteria:'<rect x="2.5" y="6" width="13" height="8" rx="4" fill="#34253f" stroke="#82c91e" stroke-width="1.6"/><path d="M2.5 10c-1-2-2 0-2.3-1" stroke="#ffa94d" fill="none"/><circle cx="9" cy="10" r="2" fill="none" stroke="#4dabf7" stroke-width="1.2"/>',
- neuronio:'<circle cx="6" cy="10" r="3.3" fill="#f08c00"/><path d="M9 10h9M3.5 7.5 1 5M3.5 12.5 1 15M6 6.7 5 3" stroke="#ffe066" stroke-width="1.5" stroke-linecap="round"/><rect x="11" y="8.6" width="3" height="2.8" rx="1.4" fill="#e9ecef"/>',
- esperma:'<ellipse cx="5" cy="10" rx="3.6" ry="2.6" fill="#7b5cd6"/><path d="M8.5 10c2 0 2.5-2 4.5-2s2 4 4 4 1.5-1.5 2.5-1.5" stroke="#a5d8ff" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
- levedura:'<ellipse cx="8" cy="11" rx="6" ry="5.6" fill="#d9b26f"/><circle cx="15.5" cy="6.5" r="3" fill="#d9b26f"/><circle cx="7" cy="12" r="2" fill="#15aabf"/>',
- sangue:'<circle cx="7" cy="9" r="5" fill="#d6262a"/><circle cx="7" cy="9" r="2.2" fill="#8a0d14"/><circle cx="15" cy="13" r="3.6" fill="#cdbfe6"/><circle cx="15" cy="13" r="1.5" fill="#7048e8"/>',
- fago:'<path d="M10 1.5l3.5 2v4L10 9.5 6.5 7.5v-4z" fill="#adb5bd"/><rect x="9" y="9.5" width="2" height="5.5" fill="#ced4da"/><path d="M9 15 5 18.5M11 15l4 3.5M9 15l-2.5 4M11 15l2.5 4" stroke="#868e96" stroke-width="1.2"/>'};
+DETB.nucleo_lev=DETB.nucleo;   // o núcleo da levedura usa a mesma tela em corte, com o texto próprio
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const S={ctype:'animal',view:'celula',sel:null,hv:null,labels:false,paused:RM,z:0,ver:0};
+const S={ctype:'animal',view:'celula',sel:null,hv:null,labels:true,paused:RM,z:0,ver:0};
 const subs=new Set();
 function set(p){let ch=false;for(const k in p)if(S[k]!==p[k]){ch=true;break}if(!ch)return;Object.assign(S,p);S.ver++;subs.forEach(f=>f());ui()}
 const useS=()=>React.useSyncExternalStore(cb=>{subs.add(cb);return()=>subs.delete(cb)},()=>S.ver);
@@ -670,40 +751,83 @@ const sceneKey=()=>S.view==='celula'?'c:'+S.ctype:'d:'+S.view;
 const CACHE={};
 function getScene(key){if(CACHE[key])return CACHE[key];MATS.length=0;const [t,k]=key.split(':');const sc=(t==='c'?CELLB[k]:DETB[k])();sc.mats=MATS.slice();MATS.length=0;sc.g.updateMatrixWorld(true);return CACHE[key]=sc}
 const inList=k=>CELLS[S.ctype][1].includes(k);
-function choose(k){stopTour();if(!inList(k))return;if(S.sel===k&&DETB[k])open(k);else set({sel:k,hv:k})}
+function choose(k){stopTour();if(!inList(k))return;if(k==='mitocondria'&&typeof MODELOS!=='undefined')MODELOS.preparar('mitocondria');if(S.sel===k&&DETB[k])open(k);else set({sel:k,hv:k})}
 function open(k){if(!DETB[k])return;set({view:k,sel:null,hv:null,z:0});setHash(k)}
 function back(){set({view:'celula',hv:null,z:0});setHash(S.ctype)}
 function setType(t){if(!CELLS[t])return;stopTour();set({ctype:t,view:'celula',sel:null,hv:null,z:0});setHash(t)}
 function setHash(h){try{history.replaceState(null,'','#'+h)}catch(e){}}
-let T=0;const PORTAL={current:document.getElementById("stage")};
+let T=0;const PORTAL={current:document.getElementById('stage')};
+const BAR=()=>innerWidth<700?68:76;   // altura ocupada pela barra de ferramentas embaixo do palco (px)
 // ---------- componentes 3D ----------
-function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClippingEnabled=true;const pm=new THREE.PMREMGenerator(gl);const env=pm.fromScene(new RoomEnvironment(),.04).texture;scene.environment=env;scene.environmentIntensity=.55;
-  const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');const g=x.createRadialGradient(256,230,10,256,256,400);g.addColorStop(0,'#1d2446');g.addColorStop(.5,'#0f1329');g.addColorStop(1,'#05060c');x.fillStyle=g;x.fillRect(0,0,512,512);
-  const bt=new THREE.CanvasTexture(c);bt.colorSpace=THREE.SRGBColorSpace;scene.background=bt;pm.dispose();return()=>{env.dispose();bt.dispose()}},[]);return null}
-function Lights(){return html`<ambientLight intensity=${.22}/><directionalLight position=${[4,7,5]} intensity=${2.4} color="#fff1df"/><directionalLight position=${[-6,2,-5]} intensity=${1.3} color="#7fb4ff"/><pointLight position=${[0,-4,3]} intensity=${10} distance=${14} color="#e599f7"/>`}
+function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClippingEnabled=true;if(MAT)MAT.configurarRenderer(gl);
+  const pm=new THREE.PMREMGenerator(gl);const env=pm.fromScene(new RoomEnvironment(),.04).texture;scene.environment=env;scene.environmentIntensity=.38;pm.dispose();
+  let bg=null,bt=null;
+  if(MAT){bg=MAT.fundoPalco(34);scene.add(bg)}   // degradê do palco (guia 2.1), da biblioteca de materiais
+  else{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,120,8,128,128,200);g.addColorStop(0,'#161D33');g.addColorStop(1,'#0B0F1C');x.fillStyle=g;x.fillRect(0,0,256,256);bt=new THREE.CanvasTexture(c);bt.colorSpace=THREE.SRGBColorSpace;scene.background=bt}
+  return()=>{env.dispose();if(bg){scene.remove(bg);bg.geometry.dispose();bg.material.dispose()}if(bt)bt.dispose()}},[]);return null}
+// três luzes do "laboratório" (guia 5): principal morna de cima e da esquerda, preenchimento frio, contorno por trás
+const LUZ=MAT?MAT.luzes(1.05):null;
+function Lights(){return LUZ?html`<primitive object=${LUZ}/>`:html`<ambientLight intensity=${.2}/><directionalLight position=${[-5,5,5]} intensity=${2.3} color="#FFF4E6"/><directionalLight position=${[6,1,3]} intensity=${.7} color="#CFE0FF"/><directionalLight position=${[0,3,-6]} intensity=${1.4}/>`}
 const fitK=(w,h)=>Math.min(2.5,Math.max(1,1.27/(w/h)));
 function Rig({sc}){const ctl=React.useRef();const {camera,size}=useThree();
   React.useEffect(()=>{camera.position.copy(sc.cam.clone().normalize().multiplyScalar(sc.dist*fitK(size.width,size.height)*1.35));if(ctl.current)ctl.current.target.set(0,0,0);camera.lookAt(0,0,0)},[sc]);
   useFrame((st,dt)=>{const c=ctl.current;if(!c)return;dt=Math.min(dt,.05);let tgt=V3(0,0,0),f=1;
-    if(S.view==='celula'&&S.sel&&sc.anch[S.sel]){tgt=sc.anch[S.sel].clone().applyMatrix4(sc.g.matrixWorld).multiplyScalar(.8);f=.7}
-    const oy=Math.round(Math.min(40,size.height*.05));if(!camera.view||camera.view.offsetY!==oy||camera.view.fullWidth!==size.width||camera.view.fullHeight!==size.height)camera.setViewOffset(size.width,size.height,0,oy,size.width,size.height);
-    c.target.lerp(tgt,Math.min(1,dt*2.5));const want=sc.dist*fitK(size.width,size.height)*f*Math.pow(1.3,-S.z);const off=camera.position.clone().sub(c.target);const cur=off.length();off.setLength(cur+(want-cur)*Math.min(1,dt*3.5));camera.position.copy(c.target).add(off);c.update();
+    // com seleção: a organela vai para o centro da área livre (acima da barra)
+    if(S.view==='celula'&&S.sel&&sc.anch[S.sel]){tgt=sc.anch[S.sel].clone().applyMatrix4(sc.g.matrixWorld);f=.66}
+    const oy=Math.round(BAR()/2);if(!camera.view||camera.view.offsetY!==oy||camera.view.fullWidth!==size.width||camera.view.fullHeight!==size.height)camera.setViewOffset(size.width,size.height,0,oy,size.width,size.height);
+    c.target.lerp(tgt,Math.min(1,dt*3));const want=sc.dist*fitK(size.width,size.height)*f*Math.pow(1.3,-S.z);const off=camera.position.clone().sub(c.target);const cur=off.length();off.setLength(cur+(want-cur)*Math.min(1,dt*4));camera.position.copy(c.target).add(off);c.update();
     const vis=2*off.length()*Math.tan(camera.fov*Math.PI/360)*size.width/size.height;updMag(size.width/(vis*sc.upu),vis*sc.upu,size.width)});
   return html`<${OrbitControls} ref=${ctl} makeDefault enablePan=${false} enableZoom=${false} enableDamping=${true} dampingFactor=${.08} rotateSpeed=${.55} minPolarAngle=${.12} maxPolarAngle=${Math.PI-.12}/>`}
-const _pv=new THREE.Vector3();function flip(g,d,cam){if(!g||!d)return;g.getWorldPosition(_pv).project(cam);d.classList.toggle('r',_pv.x>.3)}
-function Hot({k,p}){useS();const g=React.useRef(),d=React.useRef();useFrame(st=>{if(g.current){g.current.position.copy(p);flip(g.current,d.current,st.camera)}});const on=S.sel===k||S.hv===k;
+// ---------- rótulos sem sobreposição (guia 5, "Rótulos") ----------
+// Cada rótulo se registra; a cada quadro, do mais importante para o menos, cada um tenta ficar à direita ou à
+// esquerda do seu ponto. Se não couber sem tocar num já colocado (nem nas bordas, no cartão ou na barra), fica escondido.
+const LBL=new Set();const _pv=new THREE.Vector3();let _lt=0,_mr=null,_mt=0;
+function layoutLabels(cam,size){const now=performance.now();if(now-_lt<90)return;_lt=now;const W=size.width,H=size.height,list=[...LBL].filter(e=>e.g&&e.d&&e.d.isConnected);
+  const sp=e=>e.d.querySelector('span');const max=W<700?5:8;
+  list.sort((a,b)=>b.pri()-a.pri()||a.i-b.i);
+  if(!_mr||now-_mt>1000){_mt=now;const mag=document.getElementById('mag'),sr=document.getElementById('stage').getBoundingClientRect(),r=mag.getBoundingClientRect();_mr=[r.left-sr.left,r.top-sr.top,r.right-sr.left,r.bottom-sr.top]}
+  const block=[_mr];
+  block.push([W/2-200,H-BAR()-4,W/2+200,H]);
+  const hit=(r,arr)=>arr.some(q=>r[0]<q[2]+4&&r[2]+4>q[0]&&r[1]<q[3]+3&&r[3]+3>q[1]);
+  const placed=[];let n=0;
+  for(const e of list){e.g.getWorldPosition(_pv).project(cam);e.x=(_pv.x*.5+.5)*W;e.y=(-_pv.y*.5+.5)*H;e.off=_pv.z>1||e.x<-8||e.x>W+8||e.y<-8||e.y>H+8}
+  const dots=list.filter(e=>!e.off).map(e=>{const r=e.dot===18?11:5;return[e.x-r,e.y-r,e.x+r,e.y+r,e]});
+  for(const e of list){const s=sp(e);if(!s){e.d.classList.remove('hid');continue}
+    if(e.off){e.d.classList.add('hid');continue}
+    const x=e.x,y=e.y;if(!e.w||e.d.dataset.t!==s.textContent){e.w=s.offsetWidth||s.textContent.length*7.5+22;e.d.dataset.t=s.textContent}
+    const h=28,gap=e.dot,R=[x+gap,y-h/2,x+gap+e.w,y+h/2],L=[x-gap-e.w,y-h/2,x-gap,y+h/2];
+    const od=e.dot===12&&e.i===0?[]:dots.filter(q=>q[4]!==e);// 1º rótulo do detalhe é o principal: não cede a pontos
+    const okR=R[2]<W-4&&!hit(R,placed)&&!hit(R,block)&&!hit(R,od),okL=L[0]>4&&!hit(L,placed)&&!hit(L,block)&&!hit(L,od);
+    const must=e.pri()>=2;let side=null;
+    if(n<max||must){if(x>W*.62){side=okL?'l':okR?'r':null}else{side=okR?'r':okL?'l':null}if(!side&&must)side=x>W*.62?'l':'r'}
+    e.LR=[L,R];if(side){placed.push(side==='r'?R:L);n++;e.d.classList.toggle('r',side==='l');e.d.classList.remove('hid')}else e.d.classList.add('hid')}
+  // cena densa (pontos muito juntos, comum no celular): 2ª passada sem bloquear por pontos, até 3 nomes
+  if(n<3)for(const e of list){if(n>=3)break;if(e.off||!e.LR||!e.d.classList.contains('hid'))continue;const [L,R]=e.LR;
+    const okR=R[2]<W-4&&!hit(R,placed)&&!hit(R,block),okL=L[0]>4&&!hit(L,placed)&&!hit(L,block);const side=e.x>W*.62?(okL?'l':okR?'r':null):(okR?'r':okL?'l':null);
+    if(side){placed.push(side==='r'?R:L);n++;e.d.classList.toggle('r',side==='l');e.d.classList.remove('hid')}}}
+function Hot({k,p,i}){useS();const g=React.useRef(),d=React.useRef();const on=S.sel===k||S.hv===k;
+  React.useEffect(()=>{const e={g:null,d:null,i,dot:18,pri:()=>S.sel===k?3:S.hv===k?2:0};const t=setInterval(()=>{e.g=g.current;e.d=d.current},200);e.g=g.current;e.d=d.current;LBL.add(e);return()=>{clearInterval(t);LBL.delete(e)}},[]);
+  useFrame(()=>{if(g.current)g.current.position.copy(p)});
   return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className=${'hs'+(on?' on':'')} style=${{'--c':ORG[k].c}}><button aria-label=${ORG[k].t} onClick=${e=>{e.stopPropagation();choose(k)}} onPointerEnter=${()=>set({hv:k})} onPointerLeave=${()=>set({hv:null})}></button>${S.labels||on?html`<span>${ORG[k].t}</span>`:null}</div><//></group>`}
-function Lab({l}){const g=React.useRef(),d=React.useRef();useFrame(st=>{if(g.current){g.current.position.copy(l.live?l.live():l[1]);flip(g.current,d.current,st.camera)}});
+function Lab({l,i}){const g=React.useRef(),d=React.useRef();
+  React.useEffect(()=>{const e={g:null,d:null,i,dot:12,pri:()=>0};const t=setInterval(()=>{e.g=g.current;e.d=d.current},200);e.g=g.current;e.d=d.current;LBL.add(e);return()=>{clearInterval(t);LBL.delete(e)}},[]);
+  useFrame(()=>{if(g.current)g.current.position.copy(l.live?l.live():l[1])});
   return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className="dl"><i></i><span>${l[0]}</span></div><//></group>`}
+// seleção: a organela escolhida ganha um realce; as outras perdem 40% da saturação (guia 5, "Brilho")
+const _hsl={},_c=new THREE.Color();
 function World({sc}){useS();const kg=React.useRef();
-  useFrame((st,dt)=>{dt=Math.min(dt,.05);if(!S.paused){T+=dt;if(sc.tick)sc.tick(T,dt);if(S.view==='celula'&&!S.sel)sc.g.rotation.y+=(Math.sin(T*.15)*.4-sc.g.rotation.y)*Math.min(1,dt*2)}
+  useFrame((st,dt)=>{dt=Math.min(dt,.05);if(!S.paused){T+=dt;if(sc.tick)sc.tick(T,dt)}
     sc.g.updateMatrixWorld();if(kg.current){kg.current.position.copy(sc.g.position);kg.current.quaternion.copy(sc.g.quaternion);kg.current.scale.copy(sc.g.scale)}const now=st.clock.elapsedTime;
-    for(const m of sc.mats){const k=m.userData.k;const on=k&&(k===S.sel||k===S.hv)&&S.view==='celula';const t=on?.32+.14*Math.sin(now*4):m.userData.e0;m.emissiveIntensity+=(t-m.emissiveIntensity)*Math.min(1,dt*8)}});
+    const cell=S.view==='celula',focus=cell?(S.sel||S.hv):null;
+    for(const m of sc.mats){const k=m.userData.k;const on=k&&k===focus;const t=on?.22+.08*Math.sin(now*4):m.userData.e0;m.emissiveIntensity+=(t-m.emissiveIntensity)*Math.min(1,dt*8);
+      const c0=m.userData.c0;if(!c0)continue;const dim=focus&&!on&&k!=='membrana'?1:0;m.userData.dz=(m.userData.dz||0)+(dim-(m.userData.dz||0))*Math.min(1,dt*6);
+      const q=m.userData.dz;_c.copy(c0);if(q>.002){_c.getHSL(_hsl);_c.setHSL(_hsl.h,_hsl.s*(1-.4*q),_hsl.l*(1-.25*q))}m.color.copy(_c)}
+    layoutLabels(st.camera,st.size)});
   const kOf=e=>{let o=e.object;while(o&&!o.userData.k)o=o.parent;return o&&o.userData.k};
   const cell=S.view==='celula';
   const ev=cell?{onPointerMove:e=>{e.stopPropagation();const k=kOf(e);const v=k&&inList(k)?k:null;if(v!==S.hv)set({hv:v});document.body.style.cursor=v?'pointer':''},
     onPointerOut:()=>{if(S.hv)set({hv:null});document.body.style.cursor=''},onClick:e=>{e.stopPropagation();const k=kOf(e);if(k&&inList(k))choose(k)}}:{};
-  const kids=cell?CELLS[S.ctype][1].filter(k=>sc.anch[k]).map(k=>html`<${Hot} key=${k} k=${k} p=${sc.anch[k]}/>`):sc.labels.map((l,i)=>html`<${Lab} key=${i} l=${l}/>`);
+  const kids=cell?CELLS[S.ctype][1].filter(k=>sc.anch[k]).map((k,i)=>html`<${Hot} key=${k} k=${k} i=${i} p=${sc.anch[k]}/>`):sc.labels.map((l,i)=>html`<${Lab} key=${i} i=${i} l=${l}/>`);
   return html`<primitive object=${sc.g} dispose=${null} ...${ev}/><group ref=${kg}>${kids}</group>`}
 function App(){useS();const sc=getScene(sceneKey());
   return html`<${Canvas} dpr=${[1,2]} gl=${{antialias:true,powerPreference:'high-performance'}} camera=${{fov:34,near:.05,far:120,position:[0,5,9]}}
@@ -712,7 +836,7 @@ function App(){useS();const sc=getScene(sceneKey());
 // ---------- interface HTML ----------
 const $=id=>document.getElementById(id);
 const typesEl=$('types'),orgsEl=$('orgs'),viewEl=$('view');
-typesEl.innerHTML=Object.keys(CELLS).map(k=>`<button data-t="${k}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICONS[k]}</svg>${CELLS[k][0]}</button>`).join('');
+typesEl.innerHTML=Object.keys(CELLS).map(k=>`<button role="tab" data-t="${k}"><svg aria-hidden="true"><use href="#cel-${k}"/></svg>${CELLS[k][0]}</button>`).join('');
 typesEl.onclick=e=>{const b=e.target.closest('button');if(b)setType(b.dataset.t)};
 orgsEl.onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;if(k==='celula'){stopTour();if(S.view!=='celula')back();set({sel:null});return}
   if(S.view!=='celula')set({view:'celula'});choose(k);if(innerWidth<900)viewEl.scrollIntoView({behavior:'smooth',block:'start'})};
@@ -727,38 +851,235 @@ viewEl.addEventListener('wheel',e=>{if(!e.target.closest('canvas'))return;e.prev
 addEventListener('keydown',e=>{if(e.key==='Escape'){stopTour();if(S.view!=='celula')back();else set({sel:null})}});
 // passeio guiado
 let tourT=null,tourI=0;const tb=$('tour');
-function stopTour(){if(tourT){clearInterval(tourT);tourT=null;tb.classList.remove('on');tb.querySelector('.tx').textContent='Tour'}}
+function stopTour(){if(tourT){clearInterval(tourT);tourT=null;tb.classList.remove('on');tb.setAttribute('aria-pressed','false');tb.querySelector('.tx').textContent='Passeio';tb.title='Começar o passeio guiado'}}
 function tourStep(){const ks=CELLS[S.ctype][1];if(tourI>=ks.length){stopTour();set({sel:null,hv:null});return}const k=ks[tourI++];set({view:'celula',sel:k,hv:k})}
-tb.onclick=()=>{if(tourT){stopTour();return}if(S.view!=='celula')back();tourI=0;tourStep();tb.classList.add('on');tb.querySelector('.tx').textContent='Parar';tourT=setInterval(tourStep,6000)};
-// ficha e marcações
+tb.onclick=()=>{if(tourT){stopTour();return}if(S.view!=='celula')back();tourI=0;tourStep();tb.classList.add('on');tb.setAttribute('aria-pressed','true');tb.querySelector('.tx').textContent='Parar';tb.title='Parar o passeio';tourT=setInterval(tourStep,6000)};
+// painel e marcações
 let lastKey='',lastList='';
 function ui(){const cell=S.view==='celula';const list=S.ctype;
   if(list!==lastList){lastList=list;orgsEl.innerHTML=`<button class="all" data-k="celula">${CELLS[S.ctype][0]} inteira</button>`+CELLS[S.ctype][1].map(k=>`<button data-k="${k}"><i style="background:${ORG[k].c}"></i><span>${ORG[k].t}</span></button>`).join('')}
-  const cur=cell?(S.sel||'celula'):S.view;[...orgsEl.children].forEach(b=>b.classList.toggle('on',b.dataset.k===cur));[...typesEl.children].forEach(b=>b.classList.toggle('on',b.dataset.t===S.ctype));
-  $('back').style.display=cell?'none':'block';$('lbls').classList.toggle('on',S.labels);const pb=$('pause');pb.classList.toggle('on',S.paused);pb.title=S.paused?'Continuar animação':'Pausar animação';
+  const cur=cell?(S.sel||'celula'):S.view;[...orgsEl.children].forEach(b=>{const on=b.dataset.k===cur;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  [...typesEl.children].forEach(b=>{const on=b.dataset.t===S.ctype;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+  $('back').style.display=cell?'none':'flex';const lb=$('lbls');lb.classList.toggle('on',S.labels);lb.setAttribute('aria-pressed',S.labels);
+  const pb=$('pause');pb.title=pb.ariaLabel=S.paused?'Continuar animação':'Pausar animação';pb.querySelector('use').setAttribute('href',S.paused?'#ui-continuar':'#ui-pausar');
   const sk=sceneKey();if(sk!==lastKey){lastKey=sk;viewEl.classList.remove('fade');void viewEl.offsetWidth;viewEl.classList.add('fade')}
-  const k=!cell?S.view:(S.sel||'celula_'+S.ctype);const o=ORG[k];
-  $('iT').textContent=o.t;$('iS').textContent=o.s;$('iC').style.cssText=`background:${o.c};box-shadow:0 0 12px ${o.c}`;$('desc').innerHTML=o.d;
+  const k=!cell?S.view:(S.sel||'celula_'+S.ctype);const o=ORG[k];const fam=FAM[o.fam]||FAM.cel;
+  $('iT').textContent=o.t;$('iF').textContent=fam[0];$('iC').style.background=o.c;$('iSub').textContent=o.s;$('desc').innerHTML=o.d;
   $('kv').innerHTML=o.kv.map(([a,b])=>`<div>${a}</div><div>${b}</div>`).join('');
-  const op=cell&&S.sel&&DETB[S.sel]?`<button class="open" data-o="${S.sel}">Ver ${ORG[S.sel].t.toLowerCase()} por dentro, em 3D</button>`:'';
-  $('links').innerHTML=op+o.links.map(([t,h])=>`<a href="${h}">${t}</a>`).join('');
+  $('enemT').innerHTML=ENEM[k]||'';$('enem').hidden=!ENEM[k];
+  const op=cell&&S.sel&&DETB[S.sel]?`<button class="btn primary open" data-o="${S.sel}">Ver ${ORG[S.sel].t.toLowerCase()} por dentro, em 3D</button>`:'';
+  $('links').innerHTML=op+o.links.map(([t,h])=>`<a class="btn" href="${h}">${t}</a>`).join('');
   const tk=!cell?S.view:(S.hv||S.sel);const tt=$('tagT'),tc=$('tagC');
-  if(tk){tt.innerHTML=ORG[tk].t+(cell&&DETB[tk]?' <small>· toque de novo para ver por dentro</small>':!cell?' <small>· em corte, arraste para girar</small>':'');tc.style.cssText=`background:${ORG[tk].c};color:${ORG[tk].c}`}
-  else{tt.innerHTML=`${CELLS[S.ctype][0]} <small>· toque num ponto ou arraste para girar</small>`;tc.style.cssText='display:none'}}
+  if(tk){tt.innerHTML=ORG[tk].t+(cell&&DETB[tk]?' <small>Toque de novo para ver por dentro.</small>':!cell?' <small>Em corte. Arraste para girar.</small>':'');tc.style.cssText=`display:block;background:${ORG[tk].c}`}
+  else{tt.innerHTML=`${CELLS[S.ctype][0]} <small>Toque num ponto ou arraste para girar.</small>`;tc.style.cssText='display:none'}}
 $('links').onclick=e=>{const b=e.target.closest('button.open');if(b){stopTour();open(b.dataset.o);viewEl.scrollIntoView({behavior:'smooth',block:'start'})}};
-// cartão de ampliação (escala real)
-const NICE=[1,2,5];const fmtLen=um=>um>=1?`${+um.toPrecision(3)} µm`.replace('.',','):`${Math.round(um*1000)} nm`;let lastMag='';
+// cartão de ampliação (escala real): ampliação arredondada a 2 algarismos
+const NICE=[1,2,5];const nf=new Intl.NumberFormat('pt-BR');
+const fmtLen=um=>um>=1000?`${nf.format(+(um/1000).toPrecision(2))} mm`:um>=1?`${nf.format(+um.toPrecision(2))} µm`:`${nf.format(+(um*1000).toPrecision(2))} nm`;
+const fmtMag=m=>{const r=+m.toPrecision(2);return r>=1e6?`${nf.format(+(r/1e6).toPrecision(2))} milhões de vezes`:`${nf.format(r)} vezes`};let lastMag='';
 function updMag(ppu,viewUm,W){const target=Math.min(150,W*.22)/ppu;const e=Math.floor(Math.log10(target));let v=Math.pow(10,e);for(const n of NICE)if(n*Math.pow(10,e)<=target)v=n*Math.pow(10,e);
-  const mag=ppu*264.6;const key=`${Math.round(mag/Math.pow(10,Math.floor(Math.log10(mag))-2))}|${v}`;if(key===lastMag)return;lastMag=key;
-  $('magX').textContent='ampliado ×'+Math.round(mag).toLocaleString('pt-BR');$('magBar').style.width=Math.round(v*ppu)+'px';
-  $('magL').textContent=`${fmtLen(v)} · ${fmtLen(viewUm)} de largura na vista`;$('magU').textContent=v<1?'Um nanômetro (nm) é um milionésimo de milímetro.':'Um micrômetro (µm) é um milésimo de milímetro.'}
+  const mag=ppu*264.6;const key=`${fmtMag(mag)}|${v}|${fmtLen(viewUm)}`;if(key===lastMag)return;lastMag=key;
+  $('magX').innerHTML='<span class="pre">Ampliada </span>cerca de '+fmtMag(mag);$('magBar').style.width=Math.round(v*ppu)+'px';
+  $('magL').innerHTML=`${fmtLen(v)}<span class="vw">; vista de ${fmtLen(viewUm)}</span>`;$('magU').textContent=v<1?'1 nm é um milionésimo de milímetro.':'1 µm é um milésimo de milímetro; uma hemácia tem cerca de 7 µm.'}
 // início
-{const h=decodeURIComponent(location.hash.slice(1));if(CELLS[h])S.ctype=h;else if(DETB[h]){if(ORG[h].veg)S.ctype='vegetal';S.view=h}}
+{const h=decodeURIComponent(location.hash.slice(1));if(CELLS[h])S.ctype=h;else if(DETB[h]){if(ORG[h].veg)S.ctype='vegetal';if(h==='nucleo_lev')S.ctype='levedura';S.view=h}}
 function webgl(){try{const c=document.createElement('canvas');return!!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
-addEventListener('hashchange',()=>{const h=decodeURIComponent(location.hash.slice(1));if(CELLS[h]){if(S.view!==h||S.ctype!==h)setType(h)}else if(DETB[h]&&S.view!==h){stopTour();if(ORG[h].veg&&!CELLS[S.ctype][1].includes(h))S.ctype='vegetal';set({view:h,sel:null,hv:null,z:0})}});
+addEventListener('hashchange',()=>{const h=decodeURIComponent(location.hash.slice(1));if(CELLS[h]){if(S.view!==h||S.ctype!==h)setType(h)}else if(DETB[h]&&S.view!==h){stopTour();if(ORG[h].veg&&!CELLS[S.ctype][1].includes(h))S.ctype='vegetal';if(h==='nucleo_lev')S.ctype='levedura';set({view:h,sel:null,hv:null,z:0})}});
 ui();
 if(webgl())ReactDOMClient.createRoot($('stage')).render(html`<${App}/>`);
-else $('stage').innerHTML='<p class="nogl">Este navegador não conseguiu ligar o WebGL, que desenha a célula em 3D. Tente atualizar o navegador ou ativar a aceleração por hardware.</p>';
+else $('stage').innerHTML='<p class="nogl">Seu navegador não mostrou o 3D. Tente atualizar a página ou abrir no Chrome ou no Firefox.</p>';
+// ================= MODELOS do Blender (.glb embutido em .glb.js) · dono: Prometeu =================
+// Este arquivo é concatenado DEPOIS de d_app.js, dentro do mesmo IIFE. Para não colidir com nomes do
+// Aurelius (já houve bug com `hash` duplicado), tudo aqui mora no objeto MODELOS ou começa com "mod".
+// Os únicos nomes soltos são MODELOS, carregarModelo e os auxiliares mod*.
+//
+// ATENÇÃO: este arquivo vai embutido num script inline do index.html. Nunca escreva aqui "<" seguido de "/script",
+// nem em comentário: ela fecha a tag e quebra a página inteira ("Unexpected end of input").
+// De onde vem o modelo: scripts/glb2js.py transforma site/assets/modelos/X.glb em X.glb.js, que faz
+//   window.LAB_MODELOS = window.LAB_MODELOS||{}; LAB_MODELOS['X'] = '<base64>';
+// (Em file:// o navegador bloqueia fetch de .glb, mas não bloqueia <script src>.)
+//
+// CARREGAMENTO SOB DEMANDA: o carregador aceita os DOIS casos, e o resto do código não precisa saber qual é:
+//   a) modelo já na página: LAB_MODELOS[nome] já existe (tag script estática no index.html, ou o .glb.js
+//      embutido inline, como na prévia do artifact, onde não há arquivo externo). Faz o parse direto.
+//   b) modelo fora da página: carregarModelo(nome) injeta uma tag script com src = BASE + nome + '.glb.js', espera o
+//      onload e faz o parse. Nunca injeta duas vezes: se já houver uma tag com esse arquivo, espera por ela.
+//   Para não pedir arquivo que não existe (gera erro de console), antes de (b) lê o índice BASE + 'indice.js',
+//   gerado pelo scripts/glb2js.py (LAB_MODELOS_INDICE = ['mitocondria', ...]). Sem índice, tenta o arquivo mesmo assim.
+//   BASE: window.LAB_MODELOS_BASE, se definido; senão a pasta de uma tag *.glb.js já presente; senão
+//   site/assets/modelos/ calculada a partir da tag de vendor/r3f.js; senão '../assets/modelos/'.
+//   Por isso, no build, a tag estática do modelo é opcional: sem ela, o .glb.js só é baixado quando a cena pede.
+//
+// API
+//   carregarModelo(nome)  -> Promise<THREE.Group|null>
+//       null quando o modelo não existe (nem na página nem no índice), quando o bundle não tem GLTFLoader ou quando o .glb falha:
+//       nesses casos a cena fica com a versão procedural. Resultado em cache (a mesma Promise por nome).
+//       O grupo traz:  grupo.pecas   = {membrana_externa:[Mesh,...], cristas:[...], matriz:[...], ...}
+//                      grupo.ancoras = {membrana_externa:Vector3, ...}  (no espaço do próprio grupo)
+//       Nomes vêm dos objetos do Blender; sufixos ".001", "_002" são ignorados (cristas.001 -> cristas).
+//   MODELOS.preparar(nome) -> começa a baixar e ler o modelo sem esperar (ex.: ao passar o mouse ou selecionar a
+//       organela), para a troca ser imediata quando a cena abrir. Pode chamar à vontade; erros são engolidos.
+//   MODELOS.tem(nome)     -> true se o .glb.js já está na página (LAB_MODELOS[nome] existe)
+//   MODELOS.pronto(nome)  -> o grupo, se já terminou de carregar (síncrono); senão undefined
+//   MODELOS.trocar(s, nome, opcoes) -> troca, numa cena {g, anch, labels, tick, mats...}, o conteúdo
+//       procedural pelo modelo assim que ele carregar, e refaz os rótulos nas âncoras do modelo.
+//
+// ---------------------------------------------------------------------------------------------------
+// INTEGRAÇÃO (para o Aurelius; este arquivo não mexe em c_details.js, d_app.js nem build.sh):
+//
+// 1) build.sh: incluir este arquivo depois de d_app.js na concatenação
+//      ... "$F"/src/d_app.js "$F"/src/e_modelos.js; echo '})();' ...
+//    A tag estática do modelo não é mais necessária (sob demanda; ver acima). Mantê-la também funciona.
+//    Na prévia embutida, continuar embutindo os .glb.js inline (caso a) e, se quiser evitar o pedido do índice,
+//    definir window.LAB_MODELOS_INDICE=[] antes deste arquivo.
+//    Opcional: MODELOS.preparar('mitocondria') no hover/seleção da mitocôndria na célula inteira.
+//
+// 2) c_details.js, em DETB.mitocondria(), trocar o final
+//      ...;lab(s,'DNA próprio',[-.9,-.25,.55]);return s},
+//    por
+//      ...;lab(s,'DNA próprio',[-.9,-.25,.55]);
+//      if(typeof MODELOS!=='undefined')MODELOS.trocar(s,'mitocondria',{tamanho:4.6});return s},
+//    O builder continua síncrono (getScene guarda a cena em CACHE): a procedural aparece na hora e é
+//    trocada pela do Blender quando o parse termina (dezenas de ms). Se o modelo já estiver pronto
+//    (pré-carregado), a troca acontece ali mesmo, sem piscar.
+//    O `typeof` evita ReferenceError se alguém montar a página sem e_modelos.js.
+// ---------------------------------------------------------------------------------------------------
+
+// funciona também sozinho (teste-modelo.html): só depende de window.R3F, não de a_util.js
+const modTHREE=window.R3F.THREE;
+const MODELOS={
+  _cache:{},      // nome -> Promise<Group|null>
+  _prontos:{},    // nome -> Group (depois de resolvido)
+  // rótulos padrão por modelo: [nome da peça no Blender, texto]. A ordem é a prioridade (os primeiros
+  // ficam quando não cabe tudo). Os seis primeiros repetem os da mitocôndria procedural.
+  ROTULOS:{
+    mitocondria:[['membrana_externa','membrana externa'],['membrana_interna','membrana interna'],['cristas','cristas (dobras)'],
+      ['matriz','matriz'],['atp_sintase','ATP sintase'],['dna_mitocondrial','DNA próprio'],['ribossomos','ribossomos próprios'],
+      ['espaco_intermembranas','espaço intermembranas'],['cadeia_transportadora','cadeia transportadora de elétrons']]
+  },
+  tem(nome){return !!(window.LAB_MODELOS&&typeof window.LAB_MODELOS[nome]==='string')},
+  pronto(nome){return MODELOS._prontos[nome]},
+  preparar(nome){MODELOS.carregar(nome).catch(()=>{});return MODELOS._cache[nome]},
+  carregar(nome){
+    if(MODELOS._cache[nome])return MODELOS._cache[nome];
+    const p=modBuscar(nome).then(()=>new Promise(res=>{
+      const b64=window.LAB_MODELOS&&window.LAB_MODELOS[nome];
+      const Loader=window.R3F&&window.R3F.GLTFLoader;
+      if(typeof b64!=='string'){res(null);return}
+      if(!Loader){console.warn('[modelos] o bundle vendor/r3f.js não tem GLTFLoader; usando a versão procedural de',nome);res(null);return}
+      let buf;try{buf=modBase64(b64)}catch(e){console.warn('[modelos] base64 inválido em',nome,e);res(null);return}
+      try{new Loader().parse(buf,'',gltf=>{
+          const g=gltf.scene||(gltf.scenes&&gltf.scenes[0]);if(!g){res(null);return}
+          g.name=g.name||nome;g.userData.modelo=nome;modIndexar(g);MODELOS._prontos[nome]=g;res(g)},
+        err=>{console.warn('[modelos] falha ao ler',nome+'.glb',err);res(null)})}
+      catch(e){console.warn('[modelos] falha ao ler',nome+'.glb',e);res(null)}}));
+    return MODELOS._cache[nome]=p},
+  // opcoes: tamanho (maior dimensão, em unidades da cena; sem ele mantém a escala do Blender), centrar (padrão true),
+  //   rotacao [x,y,z] em radianos, k (chave de seleção dos materiais; padrão = nome),
+  //   rotulos ([[peça,texto],...]; padrão MODELOS.ROTULOS[nome]), ancoras ({peça:[x,y,z]} para ajustar à mão),
+  //   material (função (peça, materialDoBlender) -> material a usar, ex.: um da biblioteca MAT),
+  //   manterTick (padrão false: a animação procedural para de rodar).
+  trocar(s,nome,o={}){
+    if(!s||!s.g)return false;
+    const aplicar=orig=>{if(!orig)return;
+      const m=orig.parent?modClonar(orig):orig;           // o mesmo grupo não pode estar em duas cenas
+      if(o.rotacao)m.rotation.set(...o.rotacao);
+      modEncaixar(m,o.tamanho,o.centrar!==false);modIndexar(m);
+      const k=o.k||nome;const mats=new Set();
+      m.traverse(c=>{if(!c.isMesh)return;c.userData.k=k;
+        const peca=modPeca(c.name);
+        c.material=[].concat(c.material).map(mt=>o.material?(o.material(peca,mt)||mt):mt);if(c.material.length===1)c.material=c.material[0];
+        [].concat(c.material).forEach(mt=>mats.add(mt))});
+      // os materiais entram no mesmo esquema de destaque/dessaturação de World (d_app.js): userData.k, e0, c0
+      for(const mt of mats){mt.userData.k=k;mt.userData.e0=mt.emissiveIntensity||0;if(!mt.emissive)mt.emissive=new modTHREE.Color(0);
+        if(mt.color&&(!mt.transparent||mt.opacity>.5))mt.userData.c0=mt.color.clone();if(s.mats&&!s.mats.includes(mt))s.mats.push(mt)}
+      // tira a geometria procedural (fica só o modelo)
+      for(const c of [...s.g.children]){s.g.remove(c);modDescartar(c)}
+      s.g.add(m);s.g.updateMatrixWorld(true);
+      if(s.mats)for(let i=s.mats.length-1;i>=0;i--)if(!mats.has(s.mats[i])){s.mats[i].dispose();s.mats.splice(i,1)}
+      if(!o.manterTick)s.tick=null;
+      // rótulos nas âncoras do modelo (mesmo formato de lab(): [texto, Vector3])
+      const rot=o.rotulos||MODELOS.ROTULOS[nome]||Object.keys(m.pecas).map(p=>[p,p.replace(/_/g,' ')]);
+      // pontos espalhados, na face voltada para a câmera (o.vista; padrão a direção da câmera da mitocôndria procedural),
+      // já no espaço de s.g; o.ancoras ({peça:[x,y,z]}, também no espaço de s.g) vence o cálculo automático
+      const auto=modEspalhar(m,rot.map(r=>r[0]),o.vista||[0,.95,1]);
+      const nov=[];for(const [peca,texto] of rot){const a=o.ancoras&&o.ancoras[peca]?new modTHREE.Vector3(...o.ancoras[peca]):auto[peca];if(a)nov.push([texto,a])}
+      s.labels.length=0;s.labels.push(...nov);
+      s.modelo=m;modAvisar()};
+    const ja=MODELOS.pronto(nome);
+    if(ja)aplicar(ja);else MODELOS.carregar(nome).then(aplicar);
+    return true}
+};
+const carregarModelo=nome=>MODELOS.carregar(nome);
+
+// ---------- auxiliares (prefixo mod) ----------
+// pasta dos .glb.js (ver BASE no topo)
+function modBase(){if(window.LAB_MODELOS_BASE)return new URL(window.LAB_MODELOS_BASE,location.href).href;
+  for(const sc of document.scripts){const m=sc.src&&sc.src.match(/^(.*\/)[a-z0-9_\-]+\.glb\.js(\?.*)?$/);if(m)return m[1]}
+  for(const sc of document.scripts)if(sc.src&&/\/vendor\/r3f\.js(\?.*)?$/.test(sc.src))return new URL('../../assets/modelos/',sc.src).href;
+  return new URL('../assets/modelos/',location.href).href}
+// tag script: reaproveita a que já existe com o mesmo endereço; senão injeta. Resolve true/false (carregou ou não).
+const modScripts={};
+function modScript(url){if(modScripts[url])return modScripts[url];
+  const ja=[...document.scripts].find(sc=>sc.src===url);
+  return modScripts[url]=new Promise(res=>{
+    if(ja){if(ja.dataset.modOk)res(ja.dataset.modOk==='1');else{ja.addEventListener('load',()=>res(true));ja.addEventListener('error',()=>res(false));
+      // tag estática que já rodou antes deste arquivo: não dispara mais eventos
+      if(!ja.async&&!ja.defer&&!ja.dataset.modInj)res(true)}return}
+    const sc=document.createElement('script');sc.src=url;sc.async=true;sc.dataset.modInj='1';
+    sc.onload=()=>{sc.dataset.modOk='1';res(true)};sc.onerror=()=>{sc.dataset.modOk='0';res(false)};document.head.appendChild(sc)})}
+// índice dos modelos existentes (LAB_MODELOS_INDICE, de scripts/glb2js.py); null = sem índice
+let modIndice=null;
+function modLerIndice(){if(Array.isArray(window.LAB_MODELOS_INDICE))return Promise.resolve(window.LAB_MODELOS_INDICE);
+  return modIndice||(modIndice=modScript(modBase()+'indice.js').then(()=>Array.isArray(window.LAB_MODELOS_INDICE)?window.LAB_MODELOS_INDICE:null))}
+// garante LAB_MODELOS[nome] na página, se o modelo existir (caso a: já está; caso b: injeta a tag)
+function modBuscar(nome){if(MODELOS.tem(nome))return Promise.resolve(true);
+  if(!/^[a-z0-9_\-]+$/.test(nome))return Promise.resolve(false);
+  return modLerIndice().then(ind=>ind&&!ind.includes(nome)?false:modScript(modBase()+nome+'.glb.js')).then(()=>MODELOS.tem(nome))}
+function modBase64(b64){const s=atob(b64);const n=s.length;const u=new Uint8Array(n);for(let i=0;i<n;i++)u[i]=s.charCodeAt(i);return u.buffer}
+// nome da peça: o GLTFLoader já tira "." e espaços dos nomes (cristas.001 -> cristas001); aqui some o número final
+function modPeca(n){return String(n||'').toLowerCase().replace(/[._ -]?\d{3}$/,'')}
+// pecas: peça -> lista de meshes; ancoras: peça -> ponto da superfície mais perto do centro da caixa da peça
+// (fica sobre a peça, e não no meio do vazio, como aconteceria com o centro de uma casca)
+function modIndexar(root){root.updateMatrixWorld(true);const inv=root.matrixWorld.clone().invert();const pecas={},ancoras={};
+  root.traverse(c=>{if(!c.isMesh||c===root)return;let o=c,p=modPeca(o.name);
+    // malha com vários materiais vira Group com filhos sem nome próprio: herda o nome do pai
+    while((!p||/^mesh_?\d*$/.test(p))&&o.parent&&o.parent!==root){o=o.parent;p=modPeca(o.name)}if(!p)return;(pecas[p]=pecas[p]||[]).push(c)});
+  const b=new modTHREE.Box3(),ctr=new modTHREE.Vector3(),v=new modTHREE.Vector3();
+  for(const p in pecas){b.makeEmpty();for(const c of pecas[p])b.expandByObject(c);b.getCenter(ctr);let best=null,bd=Infinity;
+    for(const c of pecas[p]){const pos=c.geometry&&c.geometry.attributes.position;if(!pos)continue;const st=Math.max(1,Math.floor(pos.count/4000));
+      for(let i=0;i<pos.count;i+=st){v.fromBufferAttribute(pos,i).applyMatrix4(c.matrixWorld);const d=v.distanceToSquared(ctr);if(d<bd){bd=d;best=v.clone()}}}
+    ancoras[p]=(best||ctr.clone()).applyMatrix4(inv)}
+  root.pecas=pecas;root.ancoras=ancoras;return root}
+// âncoras para rótulos, no espaço do pai de root: para cada peça (na ordem de prioridade), entre os vértices da face
+// voltada para `vista`, escolhe o que fica mais longe das âncoras já escolhidas, sem se afastar demais do centro da peça.
+// Assim os rótulos não se amontoam no meio, como acontece com o centro da caixa de peças espalhadas (cristas, ribossomos).
+function modEspalhar(root,ordem,vista){root.updateMatrixWorld(true);const pinv=root.parent?root.parent.matrixWorld.clone().invert():new modTHREE.Matrix4();
+  const d=new modTHREE.Vector3(...vista).normalize(),v=new modTHREE.Vector3(),out={},usadas=[];
+  const raio=new modTHREE.Box3().setFromObject(root).getSize(new modTHREE.Vector3()).length()/2||1;
+  for(const p of ordem){const ms=root.pecas[p];if(!ms)continue;const pts=[];
+    for(const c of ms){const pos=c.geometry&&c.geometry.attributes.position;if(!pos)continue;const st=Math.max(1,Math.floor(pos.count/1500));
+      for(let i=0;i<pos.count;i+=st)pts.push(v.fromBufferAttribute(pos,i).applyMatrix4(c.matrixWorld).clone())}
+    if(!pts.length)continue;const ctr=new modTHREE.Box3().setFromPoints(pts).getCenter(new modTHREE.Vector3());
+    const fr=pts.map(q=>q.dot(d)).sort((a,b)=>a-b);const lim=fr[Math.floor(fr.length*.6)];
+    let best=null,bs=-Infinity;for(const q of pts){if(q.dot(d)<lim)continue;
+      const longe=usadas.length?Math.min(...usadas.map(u=>u.distanceTo(q))):0;const sc=Math.min(longe,raio*.5)-.35*q.distanceTo(ctr);
+      if(sc>bs){bs=sc;best=q}}
+    usadas.push(best);out[p]=best.clone().applyMatrix4(pinv)}
+  return out}
+// centra na origem e escala para que a maior dimensão valha `tam`
+function modEncaixar(root,tam,centrar){root.updateMatrixWorld(true);const b=new modTHREE.Box3().setFromObject(root);if(b.isEmpty())return;
+  const sz=b.getSize(new modTHREE.Vector3()),mx=Math.max(sz.x,sz.y,sz.z);const k=tam&&mx>0?tam/mx:1;
+  if(k!==1)root.scale.multiplyScalar(k);
+  if(centrar){root.updateMatrixWorld(true);const c=new modTHREE.Box3().setFromObject(root).getCenter(new modTHREE.Vector3());root.position.sub(c)}
+  root.updateMatrixWorld(true)}
+// clone com materiais próprios (o destaque mexe em emissive/cor, que não podem vazar para outra cena)
+function modClonar(g){const c=g.clone(true);c.traverse(o=>{if(o.isMesh)o.material=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone()});return c}
+function modDescartar(o){o.traverse(c=>{if(c.geometry)c.geometry.dispose()})}
+// pede a World/rótulos que redesenhem (usa o store de d_app.js se existir; ver S, subs)
+function modAvisar(){try{if(typeof S!=='undefined'&&typeof subs!=='undefined'){S.ver++;subs.forEach(f=>f())}}catch(e){}}
+// pré-carrega todo modelo presente na página, para que a troca já aconteça na primeira vez que a cena for montada
+if(window.LAB_MODELOS)Object.keys(window.LAB_MODELOS).forEach(n=>MODELOS.carregar(n));
 })();
 </script>
 </body>
