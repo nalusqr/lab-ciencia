@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img">
+  <title>Mostrar nomes</title>
+  <rect x="3" y="3.5" width="18" height="8" rx="4"/>
+  <circle cx="7.2" cy="7.5" r="1.4" fill="currentColor" stroke="none"/>
+  <path d="M10.6 7.5h6.6M7.2 11.5v5.2"/>
+  <circle cx="7.2" cy="19.2" r="1.9" fill="currentColor" stroke="none"/>
+</svg>

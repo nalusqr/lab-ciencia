@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img">
+  <title>Célula animal</title>
+  <path d="M12.2 3.2c4.9 0 8.6 3.4 8.6 8.1 0 5-3.8 9.3-8.9 9.3-4.9 0-8.7-3.6-8.7-8.4 0-5 4-9 9-9z" fill="#F06AAE" fill-opacity=".1" stroke="#F06AAE"/>
+  <circle cx="10.6" cy="11.4" r="3.3" fill="#9A6BFF"/>
+  <circle cx="11.3" cy="10.7" r="1.1" fill="#6A45D8"/>
+  <rect x="14" y="15.3" width="4.6" height="2.3" rx="1.15" transform="rotate(-28 16.3 16.45)" fill="#F25C3B"/>
+  <circle cx="16.4" cy="7.6" r="1.1" fill="#2FCFBF"/>
+</svg>

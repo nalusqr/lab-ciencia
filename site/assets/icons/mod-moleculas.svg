@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img">
+  <title>Moléculas</title>
+  <circle cx="12" cy="13.5" r="3.6"/>
+  <circle cx="5.2" cy="7.3" r="2.4"/>
+  <circle cx="18.8" cy="7.3" r="2.4"/>
+  <path d="M9.3 11.1 7 9M14.7 11.1 17 9"/>
+</svg>
