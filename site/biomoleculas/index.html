@@ -4,98 +4,111 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Biomoléculas · LAB</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css">
 <style>
-.tabs{display:flex;gap:4px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
-.tabs a{flex:1;text-align:center;text-decoration:none;font-size:10px;letter-spacing:.1em;padding:9px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--dim);white-space:nowrap}
-.tabs a.on{color:var(--amber);border-color:var(--amber)}
-@media(max-width:440px){.tabs a{letter-spacing:.03em;padding:9px 4px}}
-.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:6px}
-.chips .gh{flex:none;align-self:center;font-size:8.5px;letter-spacing:.14em;color:var(--dim);padding:0 4px 0 6px}
-.chips a{flex:none;text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--panel);color:var(--txt);font-size:11px}
-.chips a b{font-family:'Space Grotesk',sans-serif;font-size:14px;color:#fff;margin-right:5px}
-.chips a.on{border-color:var(--amber);box-shadow:0 0 12px rgba(255,179,71,.2)}
-#view{position:relative;height:min(62vh,560px);min-height:360px;padding:0;overflow:hidden;background:radial-gradient(55% 50% at 50% 48%,rgba(80,120,255,.13),transparent 70%),radial-gradient(120% 90% at 50% 50%,rgba(8,12,26,.6),rgba(3,5,12,.95)),#080c1a}
+#chips{margin-bottom:16px}
+#chips .gh{flex:none;align-self:center;font-size:13px;font-weight:400;color:var(--dim);padding:0 4px 0 12px;white-space:nowrap}
+#chips .gh:first-child{padding-left:8px}
+#chips a b{font-family:var(--f-title);font-size:15px;font-weight:600;color:inherit;margin-right:2px}
+#chips a.on b{color:#fff}
+#groups{margin-bottom:8px}
+#view{height:min(62vh,560px);min-height:360px;margin-bottom:16px}
 #view canvas{display:block;width:100%;height:100%;touch-action:pan-y}
-.hud{position:absolute;pointer-events:none;font-size:9px;letter-spacing:.06em;line-height:1.5;color:var(--dim)}
-.hud b{color:var(--txt)}.tl{top:10px;left:12px}.tr{top:10px;right:12px;text-align:right}.bl{bottom:10px;left:12px}.br{bottom:10px;right:12px;text-align:right}
-.big{font-family:'Space Grotesk',sans-serif;font-size:26px;color:#fff}
-.btns{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
-.btns button{flex:1 0 auto;font:inherit;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--dim);cursor:pointer}
-.btns button.on{color:var(--amber);border-color:var(--amber)}
-.btns.vib button.on{color:#7fd3ff;border-color:#7fd3ff}
-.grid2{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.big{font-family:var(--f-title);font-size:24px;font-weight:700;color:var(--txt);line-height:1.2}
+.pill.tl b{font-size:14px}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.ctrls .seg{flex:1 1 auto}
+#vibs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+#vibs:empty{display:none}
+#vibs .num{color:var(--dim);font-size:13px}
+#vibs .btn.on .num{color:inherit}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-bottom:24px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+@media(max-width:699px){.grid2{gap:16px;margin-bottom:16px}}
 .grid2 .box{margin:0;min-width:0}
-.atoms{display:flex;flex-wrap:wrap;gap:6px}
-.atoms a{text-decoration:none;display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;padding:6px 9px;background:var(--panel);font-size:11px}
+.atoms{display:flex;flex-wrap:wrap;gap:8px}
+.atoms a{text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1px solid var(--line-strong);border-radius:8px;padding:8px 12px;background:var(--panel);font-size:14px;transition:background .15s}
+.atoms a:hover{background:var(--panel-2)}
 .atoms i{width:14px;height:14px;border-radius:50%;display:inline-block;box-shadow:inset -3px -3px 5px rgba(0,0,0,.4)}
-.note{border-left:3px solid var(--amber);line-height:1.55;font-size:11.5px}
-.sel{min-height:20px;font-size:11px}
-.sel a{color:var(--amber)}
-.tag{display:inline-block;font-size:9px;padding:2px 6px;border:1px solid var(--line);border-radius:4px;margin:2px 4px 0 0;color:var(--txt)}
+.sel{font-size:16px;line-height:1.6;min-height:0}
+.sel .cap{margin:0;font-size:16px}
+.sel a{color:var(--txt);font-weight:600}
+@media(max-width:699px){.sel,.sel .cap{font-size:15px}}
+.tag{display:inline-block;font-size:13px;padding:2px 8px;border:1px solid var(--line);background:var(--panel-2);border-radius:4px;margin:4px 4px 0 0;color:var(--txt)}
+#tags{margin-top:12px}
+.kv>div:nth-child(even){font-family:var(--f-txt);font-size:14px}
+@media(max-width:699px){#view .pill.bl,#view .pill.br{display:none}.ctrls .seg{flex-wrap:wrap}.ctrls .seg>button{flex:1 1 40%}}
+#seq{font-family:var(--f-data);font-size:14px;line-height:2;word-break:break-all;margin-bottom:12px}
+#seq a{padding:2px 1px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="tabs"><a href="../index.html">LAB</a><a href="../dna/index.html">DNA</a><a href="../tabela-periodica/index.html">TABELA</a><a href="../moleculas/index.html">MOLÉCULAS</a><a class="on" href="index.html">BIO</a><a href="../celula/index.html">CÉLULA</a><a href="../morfofisiologia/index.html">MORFO</a></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol><symbol id="ui-informacao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r="1.15" fill="currentColor" stroke="none"/></g></symbol></svg>
+  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a></nav>
 
-  <div class="box head">
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-biomoleculas"/></svg>
     <div>
-      <div class="k" style="color:var(--amber)">MÓDULO 04 · BIOQUÍMICA</div>
-      <h1>MOLÉCULAS DA VIDA</h1>
-      <div class="sub">Aminoácidos, lipídios e proteínas montados átomo por átomo. Arraste para girar.</div>
+      <h1>Moléculas da vida</h1>
+      <div class="k">Módulo 4 <span class="badge">Bioquímica</span></div>
     </div>
-  </div>
+  </header>
+  <p class="lead" style="margin:-8px 0 24px">Aminoácidos, lipídios e proteínas montados átomo por átomo. Arraste para girar.</p>
 
-  <div class="btns" id="groups"></div>
-  <div class="chips" id="chips"></div>
+  <div class="seg" id="groups" role="group" aria-label="Grupo"></div>
+  <div class="seg scroll" id="chips" aria-label="Escolha a molécula"></div>
 
-  <div class="box" id="view">
+  <div class="stage-3d" id="view">
     <canvas id="cv"></canvas>
-    <div class="hud tl"><span class="big" id="hf">—</span><br><b id="hn">—</b></div>
-    <div class="hud tr"><span class="dot"></span><b id="hm">BOLA E VARETA</b><br>arraste para girar</div>
-    <div class="hud bl" id="hbl"></div>
-    <div class="hud br" id="hbr"></div>
+    <div class="pill tl"><span class="big" id="hf">—</span><br><b id="hn">—</b></div>
+    <div class="pill tr"><b id="hm">Bola e vareta</b><br>Arraste para girar</div>
+    <div class="pill bl" id="hbl"></div>
+    <div class="pill br" id="hbr"></div>
   </div>
 
-  <div class="btns" id="modes">
-    <button data-m="3" id="bRib">〰 FITA</button>
-    <button data-m="0" class="on">⚬ BOLA E VARETA</button>
-    <button data-m="1">● ESPAÇO PREENCHIDO</button>
-    <button data-m="2">± POLARIDADE</button>
-    <button data-t="med">📐 MEDIDAS</button>
+  <div class="ctrls" id="modes">
+    <div class="seg" role="group" aria-label="Modo de visualização">
+      <button data-m="3" id="bRib">Fita</button>
+      <button data-m="0" class="on">Bola e vareta</button>
+      <button data-m="1">Espaço preenchido</button>
+      <button data-m="2">Polaridade</button>
+    </div>
+    <button class="btn" data-t="med" aria-pressed="false">Medidas</button>
   </div>
-  <div class="btns vib" id="vibs"></div>
+  <div id="vibs" role="group" aria-label="Vibrações"></div>
 
-  <div class="box sel" id="sel"><span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span></div>
+  <div class="box sel" id="sel" aria-live="polite"><span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span></div>
 
   <div class="box note" id="fato"></div>
 
   <div class="box" id="seqbox" style="display:none">
-    <h2><em>◆</em>ESTRUTURA PRIMÁRIA REAL · β-GLOBINA HUMANA</h2>
-    <div class="cap">A sequência de aminoácidos da cadeia β da hemoglobina (146 resíduos, sem a Met inicial), escrita a partir do mesmo gene HBB do módulo DNA. A cor indica a classe; o resíduo 6 é o que muda na anemia falciforme (Glu → Val).</div>
-    <div id="seq" style="font-size:11px;line-height:1.9;word-break:break-all"></div>
-    <div class="cap" style="margin-top:8px">Níveis de estrutura: <b>primária</b> = a sequência acima · <b>secundária</b> = hélices e folhas (veja ao lado) · <b>terciária</b> = a cadeia inteira dobrada em 3D · <b>quaternária</b> = 4 cadeias juntas (2 α + 2 β) formam a hemoglobina. A estrutura 3D completa vem de cristalografia (Protein Data Bank) e não está incluída aqui.</div>
+    <h2>Estrutura primária real da β-globina humana</h2>
+    <div class="txt">A sequência de aminoácidos da cadeia β da hemoglobina (146 resíduos, sem a Met inicial), escrita a partir do mesmo gene HBB do módulo DNA. A cor indica a classe; o resíduo 6 é o que muda na anemia falciforme (Glu → Val).</div>
+    <div id="seq"></div>
+    <div class="txt" style="margin-bottom:0">Níveis de estrutura: <b>primária</b> = a sequência acima · <b>secundária</b> = hélices e folhas (veja ao lado) · <b>terciária</b> = a cadeia inteira dobrada em 3D · <b>quaternária</b> = 4 cadeias juntas (2 α + 2 β) formam a hemoglobina. A estrutura 3D completa vem de cristalografia (Protein Data Bank) e não está incluída aqui.</div>
   </div>
 
   <div class="grid2">
     <div class="box">
-      <h2><em>I</em>FICHA DA MOLÉCULA</h2>
+      <h2>Ficha da molécula</h2>
       <div class="cap" id="apx">valores experimentais de referência</div>
       <div class="kv" id="kv"></div>
     </div>
     <div class="box">
-      <h2><em>II</em>DO QUE É FEITA</h2>
-      <div class="cap">toque para abrir a ficha do elemento</div>
+      <h2>Do que é feita</h2>
+      <div class="cap">Toque para abrir a ficha do elemento.</div>
       <div class="atoms" id="atoms"></div>
-      <div id="tags" style="margin-top:10px"></div>
+      <div id="tags"></div>
     </div>
   </div>
 
   <div class="foot">Estruturas montadas átomo por átomo com comprimentos e ângulos de ligação padrão (geometria idealizada, não cristalográfica). Aminoácidos na forma L e com as cargas de pH 7. Hélice e folha construídas com os ângulos φ/ψ clássicos (Pauling, 1951); as ligações de hidrogênio e as distâncias mostradas são calculadas a partir dessas coordenadas.<br>
   Conformações de lipídios escolhidas por busca para evitar choques entre átomos. Bicamada: esquema simplificado. Massas molares calculadas com as massas atômicas da IUPAC.</div>
 </div>
+<script>(()=>{const t=document.querySelector(".tabs"),a=t&&t.querySelector(".on");if(a&&t.scrollWidth>t.clientWidth)t.scrollLeft=a.offsetLeft-(t.clientWidth-a.offsetWidth)/2})();</script>
 <script src="../tabela-periodica/dados.js"></script>
 <script src="../tabela-periodica/comum.js"></script>
 <script src="dados.js"></script>
@@ -103,24 +116,25 @@
 <script>
 (()=>{
 const EL={};ELS.forEach(e=>EL[e.s]=e);
-const CPK={H:[240,244,250],C:[110,118,130],N:[64,110,255],O:[255,60,60],Cl:[60,220,90],Na:[171,92,242],S:[255,205,50],P:[255,140,0]};
+const CPK={H:[242,244,248],C:[154,163,178],N:[77,125,255],O:[255,77,77],Cl:[60,220,90],Na:[171,92,242],S:[255,205,50],P:[255,140,0]};
 const VDW={H:1.20,C:1.70,N:1.55,O:1.52,Cl:1.75,Na:2.27,S:1.80,P:1.80}; // Bondi
 const ION={Na:1.02,Cl:1.81}; // Shannon ionic radii
 const COV={H:0.31,C:0.76,N:0.71,O:0.66,Cl:1.02,Na:1.66,S:1.05,P:1.07};
 const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
 const enOf=s=>num(EL[s].en);
-let mol=null,mode=0,vib=-1,yaw=0.5,pitch=-0.5,vyaw=0.25,simT=0,t0=0,selIdx=-1,charges=[],dipole=null;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let mol=null,mode=0,vib=-1,yaw=0.5,pitch=-0.5,vyaw=RM?0:0.25,simT=0,t0=0,selIdx=-1,charges=[],dipole=null;
 
 // group tabs + chips
 const CLSC={apolar:'#9fe870','aromático':'#ffd166',polar:'#7fd3ff','ácido':'#ff8a8a','básico':'#c5a3ff'};
 const GROUPS=['Aminoácidos','Lipídios','Proteínas'];let curGroup=null;
-document.getElementById('groups').innerHTML=GROUPS.map(g=>`<button data-g="${g}">${g.toUpperCase()}</button>`).join('');
+document.getElementById('groups').innerHTML=GROUPS.map(g=>`<button data-g="${g}">${g}</button>`).join('');
 document.getElementById('groups').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const first=MOLECULAS.find(m=>m.grupo===b.dataset.g);location.hash=first.id};
 function chips(g){if(g===curGroup)return;curGroup=g;[...document.querySelectorAll('#groups button')].forEach(b=>b.classList.toggle('on',b.dataset.g===g));
   document.getElementById('chips').innerHTML=MOLECULAS.filter(m=>m.grupo===g).map(m=>`<a href="#${m.id}" data-id="${m.id}">${m.cls?`<i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${CLSC[m.cls]};margin-right:6px"></i>`:''}<b>${m.cls?m.sub.split(' · ')[0]:''}</b>${m.nome.split(' (')[0]}</a>`).join('');
   document.getElementById('seqbox').style.display=g==='Proteínas'?'block':'none'}
 function load(id){
-  mol=MOLECULAS.find(m=>m.id===id)||MOLECULAS[0];chips(mol.grupo);if(mol.ca&&mol.id!=='peptidica'){mode=3;document.querySelectorAll('#modes [data-m]').forEach(x=>x.classList.toggle('on',x.dataset.m==='3'));document.getElementById('hm').textContent='FITA (CARTOON)'}else if(mode===3&&!mol.ca){mode=0;document.querySelectorAll('#modes [data-m]').forEach(x=>x.classList.toggle('on',x.dataset.m==='0'))}document.getElementById('bRib').style.display=mol.ca?'':'none';selIdx=-1;vib=-1;yaw=0.45;pitch=-0.5;
+  mol=MOLECULAS.find(m=>m.id===id)||MOLECULAS[0];chips(mol.grupo);if(mol.ca&&mol.id!=='peptidica'){mode=3;document.querySelectorAll('#modes [data-m]').forEach(x=>x.classList.toggle('on',x.dataset.m==='3'));document.getElementById('hm').textContent='Fita (cartoon)'}else if(mode===3&&!mol.ca){mode=0;document.querySelectorAll('#modes [data-m]').forEach(x=>x.classList.toggle('on',x.dataset.m==='0'))}document.getElementById('bRib').style.display=mol.ca?'':'none';selIdx=-1;vib=-1;yaw=0.45;pitch=-0.5;
   document.querySelectorAll('#chips a').forEach(a=>a.classList.toggle('on',a.dataset.id===mol.id));
   const on=document.querySelector('#chips a.on');if(on)on.scrollIntoView({inline:'center',block:'nearest'});
   // partial charges from electronegativity differences (qualitative), ions fixed
@@ -131,33 +145,33 @@ function load(id){
   // dipole direction (chemistry convention: points to the negative end)
   dipole=null;if(mol.dip>0){let v=[0,0,0];mol.atoms.forEach((a,i)=>{for(let k=0;k<3;k++)v[k]+=-charges[i]*a[k+1]});const L=Math.hypot(...v);if(L>1e-6)dipole=v.map(x=>x/L)}
   const net=mol.fc?Object.values(mol.fc).reduce((a,b)=>a+b,0):0;const netS=mol.schem?'':Math.abs(net)<1e-6?'':net>0?(net===1?'⁺':net+'⁺'):(net===-1?'⁻':(-net)+'⁻');
-  document.getElementById('hf').textContent=mol.schem?'esquema':mol.f+netS;document.getElementById('hn').textContent=mol.nome.toUpperCase();
+  document.getElementById('hf').textContent=mol.schem?'esquema':mol.f+netS;document.getElementById('hn').textContent=mol.nome;
   const counts={};mol.atoms.forEach(a=>counts[a[0]]=(counts[a[0]]||0)+1);
-  document.getElementById('hbl').innerHTML=Object.entries(counts).map(([s,n])=>`<span style="color:${rgba(CPK[s],1)}">●</span> ${n} ${EL[s].n}`).join('<br>');
+  document.getElementById('hbl').innerHTML=Object.entries(counts).map(([s,n])=>`<span style="color:${rgba(CPK[s],1)}" aria-hidden="true">●</span> <span class="num">${n}</span> ${EL[s].n}`).join('<br>');
   document.getElementById('hbr').innerHTML=`${mol.sub||''}<br>${mol.geo}`;
   document.getElementById('fato').innerHTML=`<b>${mol.nome}.</b> ${mol.fato}`;
-  document.getElementById('apx').textContent=mol.schem?'modelo esquemático':'geometria idealizada · valores calculados';
+  document.getElementById('apx').textContent=mol.schem?'modelo esquemático':'geometria idealizada, valores calculados';
   document.getElementById('kv').innerHTML=[
     ...(mol.schem?[]:[[mol.cls?'Fórmula (em pH 7)':'Fórmula',mol.f+netS],['Massa molar',`${br(mol.mm.toFixed(2))} g/mol${netS?' (íon, pH 7)':''}`]]),['Átomos',mol.atoms.length],...mol.kv
   ].map(([k,v])=>`<div>${k}</div><div>${v}</div>`).join('');
-  document.getElementById('atoms').innerHTML=Object.entries(counts).map(([s,n])=>`<a href="../tabela-periodica/elementos/${EL[s].slug}.html"><i style="background:${rgba(CPK[s],1)}"></i><b>${s}</b> ${EL[s].n} ×${n}</a>`).join('');
+  document.getElementById('atoms').innerHTML=Object.entries(counts).map(([s,n])=>`<a href="../tabela-periodica/elementos/${EL[s].slug}.html"><i style="background:${rgba(CPK[s],1)}" aria-hidden="true"></i><b>${s}</b> ${EL[s].n} <span class="num">×${n}</span></a>`).join('');
   const t=[];if(mol.cls)t.push(mol.geo);if(mol.hb)t.push(`${mol.hb.length} ligações de hidrogênio`);if(mol.lp)t.push(`${mol.lp.length} par${mol.lp.length>1?'es':''} livre${mol.lp.length>1?'s':''} que define${mol.lp.length>1?'m':''} a geometria`);
   const bo=new Set(mol.bonds.map(b=>b[2]));if(bo.has(2))t.push('ligação dupla');if(bo.has(3))t.push('ligação tripla');if(bo.has(1.5))t.push('ligações deslocalizadas');if(bo.has('i'))t.push('ligação iônica');
   document.getElementById('tags').innerHTML=t.map(x=>`<span class="tag">${x}</span>`).join('');
-  document.getElementById('vibs').innerHTML=(mol.vib||[]).length?mol.vib.map((v,i)=>`<button data-v="${i}">〰 ${v[0]} · ${v[1]} cm⁻¹</button>`).join(''):'';
+  document.getElementById('vibs').innerHTML=(mol.vib||[]).length?mol.vib.map((v,i)=>`<button class="btn" data-v="${i}" aria-pressed="false">${v[0]} <span class="num">${v[1]}&nbsp;cm⁻¹</span></button>`).join(''):'';
   document.getElementById('sel').innerHTML='<span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span>';
   setVibNote();
 }
 function setVibNote(){if(vib<0||!mol.vib[vib])return;const v=mol.vib[vib];const hz=v[1]*2.998e10;const e=Math.floor(Math.log10(hz));
-  document.getElementById('sel').innerHTML=`<b style="color:#7fd3ff">Vibração: ${v[0]}</b> · ν = ${v[1]} cm⁻¹ ≈ ${br((hz/10**e).toFixed(1))}×10${String(e).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('')} vezes por segundo. A animação está ~10¹⁴ vezes mais lenta. Os deslocamentos estão exagerados para dar para ver.`}
-document.getElementById('modes').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.t){showMeas=!showMeas;b.classList.toggle('on',showMeas);return}mode=+b.dataset.m;[...ev.currentTarget.querySelectorAll('[data-m]')].forEach(x=>x.classList.toggle('on',x===b));
-  document.getElementById('hm').textContent=['BOLA E VARETA','ESPAÇO PREENCHIDO','POLARIDADE','FITA (CARTOON)'][mode]};
-document.getElementById('vibs').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const v=+b.dataset.v;vib=vib===v?-1:v;[...ev.currentTarget.children].forEach(x=>x.classList.toggle('on',+x.dataset.v===vib));
+  document.getElementById('sel').innerHTML=`<b>Vibração: ${v[0]}.</b> ν = ${v[1]} cm⁻¹ ≈ ${br((hz/10**e).toFixed(1))}×10${String(e).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('')} vezes por segundo. A animação está ~10¹⁴ vezes mais lenta. Os deslocamentos estão exagerados para dar para ver.`}
+document.getElementById('modes').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.t){showMeas=!showMeas;b.classList.toggle('on',showMeas);b.setAttribute('aria-pressed',showMeas);return}mode=+b.dataset.m;[...ev.currentTarget.querySelectorAll('[data-m]')].forEach(x=>x.classList.toggle('on',x===b));
+  document.getElementById('hm').textContent=['Bola e vareta','Espaço preenchido','Polaridade','Fita (cartoon)'][mode]};
+document.getElementById('vibs').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const v=+b.dataset.v;vib=vib===v?-1:v;[...ev.currentTarget.children].forEach(x=>{x.classList.toggle('on',+x.dataset.v===vib);x.setAttribute('aria-pressed',+x.dataset.v===vib)});
   if(vib<0)document.getElementById('sel').innerHTML='<span class="cap">Toque num átomo para ver qual é e abrir a ficha dele.</span>';else setVibNote()};
 {const HBB='VHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH';
  const cls={G:'apolar',A:'apolar',V:'apolar',L:'apolar',I:'apolar',M:'apolar',P:'apolar',F:'aromático',W:'aromático',Y:'aromático',S:'polar',T:'polar',C:'polar',N:'polar',Q:'polar',D:'ácido',E:'ácido',K:'básico',R:'básico',H:'básico'};
  const ids={};MOLECULAS.filter(m=>m.cls).forEach(m=>ids[m.sub.split(' · ')[1]]=m.id);
- document.getElementById('seq').innerHTML=HBB.split('').map((c,i)=>`<a href="#${ids[c]}" title="${i+1}" style="text-decoration:none;color:${CLSC[cls[c]]};${i===5?'background:#ff3b5c;color:#000;border-radius:2px;padding:0 1px;':''}">${c}</a>${(i+1)%10===0?'<span style="color:#3a4870"> '+(i+1)+' </span>':''}`).join('')+
+ document.getElementById('seq').innerHTML=HBB.split('').map((c,i)=>`<a href="#${ids[c]}" title="${i+1}" style="text-decoration:none;color:${CLSC[cls[c]]};${i===5?'background:#FF6B7D;color:#1A0A0D;border-radius:2px;padding:0 1px;':''}">${c}</a>${(i+1)%10===0?'<span style="color:#3a4870"> '+(i+1)+' </span>':''}`).join('')+
   '<div class="cap" style="margin-top:6px">146 resíduos · toque numa letra para ver o aminoácido · <a href="../dna/index.html" style="color:var(--amber)">ver o gene no módulo DNA →</a></div>'}
 addEventListener('hashchange',()=>load(location.hash.slice(1)));
 load(location.hash.slice(1)||'gly');
@@ -200,7 +214,7 @@ function cylinder(a,b,ra,rb,c,fog){const dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,d
   g.addColorStop(0,rgba(mix(dark,[0,0,0],.3),1));g.addColorStop(.3,rgba(lite,1));g.addColorStop(.55,rgba(base,1));g.addColorStop(1,rgba(dark,1));
   ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(a.X+nx*ra,a.Y+ny*ra);ctx.lineTo(b.X+nx*rb,b.Y+ny*rb);ctx.lineTo(b.X-nx*rb,b.Y-ny*rb);ctx.lineTo(a.X-nx*ra,a.Y-ny*ra);ctx.closePath();ctx.fill()}
 function haze(x,y,r,c,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,rgba(c,a));g.addColorStop(1,rgba(c,0));ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill()}
-function txt(t,x,y,c,al='left',sz=9.5,wt=''){ctx.font=`${wt} ${sz}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
+function txt(t,x,y,c,al='left',sz=12,wt=''){ctx.font=`${wt} ${Math.max(12,sz)}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
 // background motes
 const motes=[...Array(70)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.2,v:Math.random()*.02+.005}));
 let lastP=[];let showMeas=false;
@@ -209,14 +223,7 @@ function frame(now){const dt=Math.min(.05,(now-(t0||now))/1000);t0=now;simT+=dt;
   ctx.clearRect(0,0,W,H);CX=W/2;CY=H/2+2;
   const ION_=mol.ionic;
   const ext=Math.max(...mol.atoms.map(a=>Math.hypot(a[1],a[2],a[3])+(ION_?ION[a[0]]:mode===1?VDW[a[0]]:0.6)));SCL=Math.min(W,H)*0.43/Math.max(1.2,ext);FOV=Math.max(9,ext*3.2);
-  // motes + HUD frame
-  for(const m of motes){m.y-=m.v*dt;if(m.y<0)m.y=1;ctx.fillStyle='rgba(150,170,230,.25)';ctx.beginPath();ctx.arc(m.x*W,m.y*H,m.r,0,7);ctx.fill()}
-  const R0=Math.min(W,H)*0.46;
-  ctx.strokeStyle='rgba(120,160,255,.08)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(CX,CY,R0,0,7);ctx.stroke();
-  ctx.strokeStyle='rgba(255,179,71,.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(CX,CY,R0,simT*0.6,simT*0.6+0.9);ctx.stroke();
-  ctx.strokeStyle='rgba(120,200,255,.25)';ctx.beginPath();ctx.arc(CX,CY,R0*0.93,-simT*0.4,-simT*0.4+0.5);ctx.stroke();
-  for(let k=0;k<72;k++){const a=k/72*6.283,l=k%6?3:7;ctx.strokeStyle='rgba(120,160,255,.15)';ctx.beginPath();ctx.moveTo(CX+Math.cos(a)*R0,CY+Math.sin(a)*R0);ctx.lineTo(CX+Math.cos(a)*(R0+l),CY+Math.sin(a)*(R0+l));ctx.stroke()}
-  const bk=14;ctx.strokeStyle='rgba(200,215,255,.25)';ctx.lineWidth=1;for(const [x,y,sx,sy] of [[8,8,1,1],[W-8,8,-1,1],[8,H-8,1,-1],[W-8,H-8,-1,-1]]){ctx.beginPath();ctx.moveTo(x,y+sy*bk);ctx.lineTo(x,y);ctx.lineTo(x+sx*bk,y);ctx.stroke()}
+  // (Campo escuro: sem partículas nem moldura de painel atrás do modelo)
   // geometry with vibration
   const D=disp(),amp=0.16*Math.sin(simT*5);
   const pos=mol.atoms.map((a,i)=>[a[1]+D[i][0]*amp,a[2]+D[i][1]*amp,a[3]+D[i][2]*amp]);
@@ -301,11 +308,9 @@ function frame(now){const dt=Math.min(.05,(now-(t0||now))/1000);t0=now;simT+=dt;
       const dx=b.X-a.X,dy=b.Y-a.Y,Ln=Math.hypot(dx,dy)||1,ux=dx/Ln,uy=dy/Ln;ctx.beginPath();ctx.moveTo(b.X,b.Y);ctx.lineTo(b.X-ux*12-uy*6,b.Y-uy*12+ux*6);ctx.lineTo(b.X-ux*12+uy*6,b.Y-uy*12-ux*6);ctx.fill();
       const cx=a.X+ux*14,cy=a.Y+uy*14;ctx.beginPath();ctx.moveTo(cx-uy*7,cy+ux*7);ctx.lineTo(cx+uy*7,cy-ux*7);ctx.stroke();ctx.restore();
       txt(`μ = ${br(String(mol.dip))} D`,b.X+8,b.Y,'#ffd166','left',10.5,'600')}
-    txt(ION_?'+ = Na⁺ (cátion) · − = Cl⁻ (ânion)':'vermelho = δ− · azul = δ+ · verde = apolar (hidrofóbico)',CX,92,'rgba(170,190,235,.75)','center',9)}
+    txt(ION_?'+ = Na⁺ (cátion), − = Cl⁻ (ânion)':'vermelho = δ−, azul = δ+, verde = apolar (hidrofóbico)',CX,92,'rgba(170,190,235,.75)','center',9)}
   // axis gizmo
   {const gx=W-34,gy=H-74;for(const [v,c,l] of [[[1,0,0],'#ff6b6b','x'],[[0,1,0],'#69db7c','y'],[[0,0,1],'#4dabf7','z']]){const [X,Y]=rot(...v);ctx.strokeStyle=c;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx+X*16,gy-Y*16);ctx.stroke();txt(l,gx+X*21-3,gy-Y*21+3,c,'left',8.5)}}
-  // live readout
-  txt(`θ ${String(Math.round(((yaw*180/Math.PI)%360+360)%360)).padStart(3,'0')}° · φ ${Math.round(pitch*180/Math.PI)}° · ${mol.atoms.length} átomos`,12,72,'rgba(140,160,210,.6)','left',8.5);
   requestAnimationFrame(frame)}
 
 // input
@@ -315,8 +320,8 @@ cv.addEventListener('pointermove',ev=>{if(!drag)return;const dx=ev.clientX-drag.
 cv.addEventListener('pointerup',ev=>{if(drag&&drag.m<8){const r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;let best=-1,bd=1e9;
     for(const p of lastP){const d=Math.hypot(p.X-x,p.Y-y)-p.z*2;if(Math.hypot(p.X-x,p.Y-y)<26&&d<bd){bd=d;best=p.i}}
     if(best>=0){selIdx=best;const s=mol.atoms[best][0],e=EL[s];const q=charges[best];
-      document.getElementById('sel').innerHTML=`<b style="color:${rgba(CPK[s],1)}">●</b> <b>${e.n} (${s})</b> · Z ${e.z} · eletronegatividade ${br(String(num(e.en)))}${mol.ionic?` · íon ${q>0?'Na⁺':'Cl⁻'}`:Math.abs(q)>0.05?` · carga parcial ${q<0?'δ−':'δ+'}`:''} · <a href="../tabela-periodica/elementos/${e.slug}.html">abrir ficha →</a>`}}
-  drag=null;if(Math.abs(vyaw)<0.05)vyaw=0.25*Math.sign(vyaw||1)});
+      document.getElementById('sel').innerHTML=`<b style="color:${rgba(CPK[s],1)}" aria-hidden="true">●</b> <b>${e.n} (${s})</b>: Z ${e.z}, eletronegatividade ${br(String(num(e.en)))}${mol.ionic?`, íon ${q>0?'Na⁺':'Cl⁻'}`:Math.abs(q)>0.05?`, carga parcial ${q<0?'δ−':'δ+'}`:''}. <a href="../tabela-periodica/elementos/${e.slug}.html">Abrir a ficha do elemento</a>`}}
+  drag=null;if(Math.abs(vyaw)<0.05)vyaw=RM?0:0.25*Math.sign(vyaw||1)});
 requestAnimationFrame(frame);
 })();
 </script>

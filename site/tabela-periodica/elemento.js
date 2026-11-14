@@ -10,33 +10,37 @@ const cfgStr=list=>list.map(([o,n])=>`${o}${sup(n)}`).join(' ');
 document.title=`${e.n} (${e.s}) · Z ${Z}`;
 
 const css=`
-.hero{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border-left:3px solid ${C}}
-.tile{width:92px;height:104px;border-radius:8px;border:1px solid ${C};background:linear-gradient(160deg,${C}55,${C}12);display:flex;flex-direction:column;justify-content:space-between;padding:6px 8px;box-shadow:0 0 24px ${C}33}
-.tile .z{font-size:11px}.tile .s{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;color:#fff;text-align:center;line-height:1}.tile .m{font-size:9.5px;text-align:center;color:#fff}
-.hero h1{font-family:'Space Grotesk',sans-serif;font-size:24px;color:#fff;letter-spacing:.03em}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.chips span{font-size:9.5px;padding:3px 6px;border-radius:4px;border:1px solid var(--line);color:var(--txt)}
-.chips .c{border-color:${C};color:${C}}
-#atom{position:relative;height:min(60vh,520px);min-height:360px;padding:0;overflow:hidden}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.tile{width:96px;height:108px;border-radius:12px;border:1px solid ${C};background:linear-gradient(160deg,${C}55,${C}12);display:flex;flex-direction:column;justify-content:space-between;padding:8px}
+.tile .z{font-family:var(--f-data);font-size:13px;font-weight:500}.tile .s{font-family:var(--f-title);font-size:40px;font-weight:700;color:#fff;text-align:center;line-height:1}.tile .m{font-family:var(--f-data);font-size:12px;text-align:center;color:#fff}
+.hero h1{font-family:var(--f-title);font-size:32px;font-weight:700;line-height:1.1;color:var(--txt);margin:4px 0}
+@media(max-width:699px){.hero h1{font-size:26px}.tile{width:80px;height:92px}.tile .s{font-size:32px}}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}.chips span{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:2px 8px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2);color:var(--txt)}
+.chips .c i{width:8px;height:8px;border-radius:50%;background:${C}}
+#atom{position:relative;height:min(60vh,520px);min-height:360px;padding:0;overflow:hidden;border-radius:20px;margin-bottom:16px}
 #atom canvas{width:100%;height:100%;display:block}
-.hud{position:absolute;pointer-events:none;font-size:9px;letter-spacing:.06em;line-height:1.5;color:var(--dim)}
-.hud b{color:var(--txt)}.tl{top:10px;left:12px}.tr{top:10px;right:12px;text-align:right}.bl{bottom:10px;left:12px}.br{bottom:10px;right:12px;text-align:right}
-.shells{display:flex;gap:4px;flex-wrap:wrap}.shells div{flex:1;min-width:44px;border:1px solid var(--line);border-radius:5px;padding:6px;text-align:center;background:var(--panel)}
-.shells b{display:block;font-size:16px;color:#fff}.shells .last{border-color:${C};box-shadow:0 0 10px ${C}33}
-.cfg{font-size:15px;color:#fff;line-height:1.6;word-break:break-word}.cfg.small{font-size:11px;color:var(--dim)}
-.orb{display:flex;flex-wrap:wrap;gap:10px 14px}.orb .sub{display:flex;flex-direction:column;align-items:center;gap:3px}
-.orb .bx{display:flex}.orb .bx span{width:20px;height:24px;border:1px solid #3a4870;margin-left:-1px;display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:-2px;color:#fff;background:#0d1428}
-.orb .bx span.f{border-color:${C}99}.orb small{font-size:9px;color:var(--dim)}
-.pred{font-size:8.5px;color:var(--amber);border:1px solid var(--amber);border-radius:3px;padding:0 3px;margin-left:4px}
-.grid2{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.shells{display:flex;gap:4px;flex-wrap:wrap}.shells div{flex:1;min-width:52px;border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;background:var(--panel-2)}
+.shells .k{font-size:12px}.shells b{display:block;font-family:var(--f-data);font-weight:500;font-size:18px;color:var(--txt)}.shells .last{border-color:${C}}
+.cfg{font-family:var(--f-data);font-weight:500;font-size:16px;color:var(--txt);line-height:1.6;word-break:break-word}.cfg.small{font-size:13px;color:var(--dim)}
+.orb{display:flex;flex-wrap:wrap;gap:12px 16px}.orb .sub{display:flex;flex-direction:column;align-items:center;gap:4px}
+.orb .bx{display:flex}.orb .bx span{width:24px;height:28px;border:1px solid var(--line-strong);margin-left:-1px;display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:-2px;color:#fff;background:var(--bg)}
+.orb .bx span.f{border-color:${C}}.orb small{font-family:var(--f-data);font-size:12px;color:var(--dim)}
+.pred{font-size:12px;color:var(--amber);border:1px solid var(--amber);border-radius:4px;padding:0 4px;margin-left:4px;font-family:var(--f-txt);font-weight:400}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-bottom:24px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+@media(max-width:699px){.grid2{gap:16px;margin-bottom:16px}}
 .grid2 .box{margin:0;min-width:0}
-.modes{display:flex;gap:6px;margin-bottom:8px}.modes button{flex:1;font:inherit;font-size:10.5px;letter-spacing:.08em;padding:10px 6px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--dim);cursor:pointer}.modes button.on{color:${C};border-color:${C};box-shadow:0 0 12px ${C}33}.modes #mp{flex:0 0 48px}.lv{overflow-x:auto;scrollbar-width:none}.lv button{flex:1 0 auto;min-width:64px;padding:10px 8px}.lv .z{flex:0 0 40px;min-width:40px;font-size:15px;color:#fff}
-.sm{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.sm .gh{grid-column:1/-1;font-size:9px;letter-spacing:.14em;color:var(--dim);margin-top:6px}
-.pc{border:1px solid var(--line);border-radius:6px;padding:6px;background:var(--panel);position:relative;transition:.3s}.pc b{font-family:'Space Grotesk',sans-serif;font-size:17px;color:#fff;display:block}.pc i{font-style:normal;font-size:8.5px;color:var(--dim);display:block;line-height:1.4}.pc .nm{font-size:9px;color:var(--txt)}
-.pc.in{border-color:#3d4f80}.pc.in::after{content:'NESTE ÁTOMO';position:absolute;top:4px;right:5px;font-size:6.5px;color:var(--amber);letter-spacing:.08em}.pc.hl{border-color:${C};box-shadow:0 0 14px ${C}44}
+.modes{display:flex;gap:4px;margin-bottom:16px}.modes button{flex:1}.modes #mp{flex:0 0 52px;padding:0}.lv button{flex:1 0 auto;min-width:64px}.lv .z{flex:0 0 52px;min-width:44px;padding:0}
+.modes .ico{width:20px;height:20px}
+.sm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sm .gh{grid-column:1/-1;font-size:13px;color:var(--dim);margin-top:8px}
+@media(min-width:760px){.sm{grid-template-columns:repeat(6,1fr)}}
+.pc{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel-2);position:relative;transition:border-color .15s}.pc b{font-family:var(--f-title);font-size:18px;color:#fff;display:block}.pc i{font-style:normal;font-family:var(--f-data);font-size:12px;color:var(--dim);display:block;line-height:1.4}.pc .nm{font-size:13px;color:var(--txt)}
+.pc.in{border-color:var(--line-strong)}.pc.in::after{content:'neste átomo';position:absolute;top:4px;right:6px;font-size:12px;color:var(--amber)}.pc.hl{border-color:${C}}
+@media(max-width:699px){.pc.in::after{content:'';top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--amber)}}
 .pc.q b{color:#c3a6ff}.pc.l b{color:#8ce99a}.pc.g b{color:#ffd166}.pc.h b{color:#ff8787}
-.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}.counts div{border:1px solid var(--line);border-radius:6px;padding:7px;background:var(--panel)}.counts b{display:block;font-size:18px;color:#fff}
-#atom{background:radial-gradient(60% 55% at 50% 50%,${C}14,transparent 70%),rgba(8,12,26,.9)}
-.note{border-left:3px solid var(--line);line-height:1.55;font-size:11px;color:var(--txt)}`;
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.counts div{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--panel-2)}.counts b{display:block;font-family:var(--f-data);font-weight:500;font-size:18px;color:var(--txt)}
+.counts .cap{margin:0}
+#atom{background:radial-gradient(60% 55% at 50% 50%,${C}14,transparent 70%),radial-gradient(70% 70% at 50% 48%,#161D33,#0B0F1C 78%)}
+@media(max-width:699px){#atom .pill.bl,#atom .pill.br{display:none}}`;
 document.head.insertAdjacentHTML('beforeend',`<style>${css}</style>`);
 
 const RADIO_EXTRA={
@@ -45,7 +49,7 @@ const RADIO_EXTRA={
   Bi:' O bismuto-209 tem meia-vida de ~2×10¹⁹ anos, mais de um bilhão de vezes a idade do Universo: na prática, ele se comporta como estável.',
   Pa:' O Pa-231 (meia-vida de ~33 mil anos) existe na natureza só em traços, porque se forma o tempo todo pelo decaimento do urânio-235.'
 };
-const where=e.g?`Grupo ${e.g} · Período ${e.p}`:`Série ${e.c==='lantanideo'?'dos lantanídeos':'dos actinídeos'} · Período ${e.p}`;
+const where=e.g?`Grupo ${e.g}, período ${e.p}`:`Série ${e.c==='lantanideo'?'dos lantanídeos':'dos actinídeos'}, período ${e.p}`;
 const massTxt=e.est?`${br(e.m)} u`:`[${e.m}]`;
 const enTxt=e.en==='-'?'— (sem valor)':br(e.en);
 const densTxt=e.d==='-'?'—':`${br(e.d.replace(/[()]/g,''))} g/cm³${isPred(e.d)?' <span class="pred">previsto</span>':''}${e.ph==='gas'?' <span class="cap">(gás, 0 °C)</span>':''}`;
@@ -53,66 +57,67 @@ const lastShell=e.sh.length;
 const outer=e.sh[lastShell-1];
 
 document.body.innerHTML=`<div class="wrap">
- <div class="nav">
-   <a href="../index.html">▦ TABELA</a>
-   ${prev?`<a href="${prev.slug}.html">‹ ${prev.s} ${prev.z}</a>`:''}
-   ${next?`<a href="${next.slug}.html">${next.s} ${next.z} ›</a>`:''}
- </div>
+ <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ui-voltar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="ui-pausar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></g></symbol><symbol id="ui-continuar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.3v13.4a.9.9 0 0 0 1.4.75l10.2-6.7a.9.9 0 0 0 0-1.5L9.4 4.55A.9.9 0 0 0 8 5.3z"/></g></symbol></svg>
+ <nav class="nav" aria-label="Navegação da tabela">
+   <a href="../index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg>Tabela periódica</a>
+   ${prev?`<a href="${prev.slug}.html" aria-label="Elemento anterior: ${prev.n}"><svg class="ico" aria-hidden="true"><use href="#ui-voltar"/></svg>${prev.s} <span class="num">${prev.z}</span></a>`:''}
+   ${next?`<a href="${next.slug}.html" aria-label="Próximo elemento: ${next.n}">${next.s} <span class="num">${next.z}</span><svg class="ico" aria-hidden="true" style="transform:scaleX(-1)"><use href="#ui-voltar"/></svg></a>`:''}
+ </nav>
  <div class="box hero">
    <div class="tile"><span class="z">${Z}</span><span class="s">${e.s}</span><span class="m">${massTxt}</span></div>
    <div>
-     <div class="k" style="color:${C}">ELEMENTO ${String(Z).padStart(3,'0')} · ${cat.n.toUpperCase()}</div>
+     <div class="k">Elemento ${Z}</div>
      <h1>${e.n}</h1>
-     <div class="chips"><span class="c">${cat.n}</span><span>${where}</span><span>Bloco ${e.b}</span><span>${FASE[e.ph]} a 25 °C</span><span>${ORIGEM_CURTA[e.o]}</span></div>
+     <div class="chips"><span class="c"><i aria-hidden="true"></i>${cat.n}</span><span>${where}</span><span>Bloco ${e.b}</span><span>${FASE[e.ph]} a 25 °C</span><span>${ORIGEM_CURTA[e.o]}</span></div>
    </div>
  </div>
 
- <div class="box" id="atom">
+ <div class="stage-3d" id="atom">
    <canvas id="cv"></canvas>
-   <div class="hud tl"><b id="mtitle">ÓRBITAS 3D</b><br>escala <b id="mscale">—</b></div>
-   <div class="hud tr"><span class="dot"></span><b id="mstate">AO VIVO</b><br>arraste para girar</div>
-   <div class="hud bl" id="hbl"></div>
-   <div class="hud br" id="hbr"></div>
+   <div class="pill tl"><b id="mtitle">Órbitas 3D</b><br>Escala <span class="num" id="mscale">—</span></div>
+   <div class="pill tr"><b id="mstate">Animando</b><br>Arraste para girar</div>
+   <div class="pill bl" id="hbl"></div>
+   <div class="pill br" id="hbr"></div>
  </div>
- <div class="modes lv" id="lv"><button id="zout" class="z">−</button><button data-l="atomo">ÁTOMO</button><button data-l="nucleo">NÚCLEO</button><button data-l="proton">PRÓTON</button><button data-l="neutron">NÊUTRON</button><button data-l="eletron">ELÉTRON</button><button id="zin" class="z">+</button></div>
- <div class="modes" id="modes"><button id="m0" class="on">◎ ÓRBITAS 3D</button><button id="m1">☁ NUVEM ELETRÔNICA</button><button id="mp">⏸</button></div>
+ <div class="seg modes lv" id="lv" role="group" aria-label="Escala"><button id="zout" class="z" aria-label="Afastar" title="Afastar">−</button><button data-l="atomo">Átomo</button><button data-l="nucleo">Núcleo</button><button data-l="proton">Próton</button><button data-l="neutron">Nêutron</button><button data-l="eletron">Elétron</button><button id="zin" class="z" aria-label="Aproximar" title="Aproximar">+</button></div>
+ <div class="seg modes" id="modes" role="group" aria-label="Modelo"><button id="m0" class="on">Órbitas 3D</button><button id="m1">Nuvem eletrônica</button><button id="mp" aria-label="Pausar" title="Pausar"><svg class="ico" aria-hidden="true"><use href="#ui-pausar"/></svg></button></div>
  <div class="box note" id="mnote"></div>
 
  <div class="box">
-   <h2><em>◆</em>MODELO PADRÃO · DO QUE ${e.n.toUpperCase()} É FEITO</h2>
+   <h2>Do que o elemento ${e.n.toLowerCase()} é feito: o modelo padrão</h2>
    <div class="cap">Contagem real para ${e.est?`o isótopo mais comum (${e.s}-${A})`:`${e.s}-${A}`}: cada próton tem 2 quarks up e 1 down; cada nêutron, 1 up e 2 down.</div>
    <div class="counts">
-     <div><span class="k">quarks up</span><b>${2*Z+N}</b><span class="cap">2×${Z} + ${N}</span></div>
-     <div><span class="k">quarks down</span><b>${Z+2*N}</b><span class="cap">${Z} + 2×${N}</span></div>
-     <div><span class="k">elétrons</span><b>${Z}</b><span class="cap">léptons</span></div>
+     <div><span class="k">Quarks up</span><b>${2*Z+N}</b><span class="cap">2×${Z} + ${N}</span></div>
+     <div><span class="k">Quarks down</span><b>${Z+2*N}</b><span class="cap">${Z} + 2×${N}</span></div>
+     <div><span class="k">Elétrons</span><b>${Z}</b><span class="cap">léptons</span></div>
    </div>
    <div class="cap">Glúons e fótons também estão lá, mas como partículas virtuais que aparecem e somem o tempo todo, sem um número fixo. Os 17 tipos de partícula conhecidos (massas: PDG):</div>
    <div class="sm" id="sm"></div>
  </div>
 
  <div class="box">
-   <h2><em>I</em>CAMADAS ELETRÔNICAS</h2>
+   <h2>Camadas eletrônicas</h2>
    <div class="cap">Quantos elétrons há em cada camada, de dentro (K) para fora. A última camada define como o elemento reage.</div>
-   <div class="shells">${e.sh.map((n,i)=>`<div class="${i===lastShell-1?'last':''}"><span class="k">${SHELL[i]} · n=${i+1}</span><b>${n}</b></div>`).join('')}</div>
+   <div class="shells">${e.sh.map((n,i)=>`<div class="${i===lastShell-1?'last':''}"><span class="k">${SHELL[i]} (n=${i+1})</span><b>${n}</b></div>`).join('')}</div>
  </div>
 
  <div class="box">
-   <h2><em>II</em>CONFIGURAÇÃO ELETRÔNICA${e.prev?' <span class="pred">prevista</span>':''}</h2>
+   <h2>Configuração eletrônica${e.prev?' <span class="pred">prevista</span>':''}</h2>
    <div class="cap">Forma curta: o colchete resume o gás nobre anterior. Os elétrons ocupam os subníveis na ordem de energia (regra de Madelung, o “diagrama de Pauling” dos livros)${['Cr','Cu','Mo','Ag','Au','Pd','Gd','Cm'].includes(e.s)?' — <b style="color:var(--amber)">este elemento é uma exceção real à regra</b>, porque subníveis cheios ou meio cheios deixam o átomo mais estável':['Nb','Ru','Rh','La','Ce','Pt','Ac','Th','Pa','U','Np','Lr'].includes(e.s)?' — <b style="color:var(--amber)">este elemento é uma exceção real à regra</b>: as energias dos subníveis são tão próximas que a ordem de preenchimento muda. A configuração mostrada é a medida em laboratório':''}.</div>
    <div class="cfg">${e.core?`[${e.core}] `:''}${cfgStr(e.val)}</div>
    <div class="cfg small">completa: ${cfgStr(e.cfg)}</div>
  </div>
 
  <div class="box">
-   <h2><em>III</em>DIAGRAMA DE ORBITAIS</h2>
+   <h2>Diagrama de orbitais</h2>
    <div class="cap">Cada caixa é um orbital e cabe 2 elétrons de spins opostos (↑↓). Num mesmo subnível, os elétrons primeiro ocupam caixas vazias (regra de Hund).</div>
    <div class="orb" id="orb"></div>
  </div>
 
  <div class="grid2">
   <div class="box">
-   <h2><em>IV</em>PROPRIEDADES FÍSICAS</h2>
-   <div class="cap">medidas em pressão normal (1 atm)</div>
+   <h2>Propriedades físicas</h2>
+   <div class="cap">Medidas em pressão normal (1&nbsp;atm).</div>
    <div class="kv">
      <div>Massa atômica</div><div>${massTxt}</div>
      <div>Densidade</div><div>${densTxt}</div>
@@ -123,8 +128,8 @@ document.body.innerHTML=`<div class="wrap">
    <div class="cap" style="margin-top:6px"><b style="color:var(--amber)">Obs.:</b> ${e.nota}.</div>`:''}
   </div>
   <div class="box">
-   <h2><em>V</em>IDENTIDADE ATÔMICA</h2>
-   <div class="cap">o que define este elemento</div>
+   <h2>Identidade atômica</h2>
+   <div class="cap">O que define este elemento.</div>
    <div class="kv">
      <div>Número atômico (Z)</div><div>${Z} prótons</div>
      <div>Nêutrons</div><div>${N} ${e.est?`(${e.s}-${A}, o isótopo mais comum)`:`(${e.s}-${A})`}</div>
@@ -140,24 +145,24 @@ document.body.innerHTML=`<div class="wrap">
    :`${e.n} não tem isótopo estável: todos os seus núcleos são radioativos. <b>[${e.m}]</b> é o número de massa do isótopo de vida mais longa, usado aqui para contar os nêutrons.`}
    O desenho em órbitas é o modelo de Bohr (1913): ótimo para contar camadas, mas na física quântica o elétron fica numa “nuvem” de probabilidade (orbital), não numa trilha. O núcleo real é cerca de 100 000 vezes menor que o átomo.</div>
 
- <div class="foot">Dados: Wikipedia, "List of chemical elements" (IUPAC) · configuração calculada pela regra de Madelung com as exceções experimentais conhecidas.<br><a href="../index.html">voltar à tabela periódica</a> · <a href="../../index.html">LAB</a></div>
+ <div class="foot">Dados: Wikipedia, "List of chemical elements" (IUPAC); configuração calculada pela regra de Madelung com as exceções experimentais conhecidas.<br><a href="../index.html">Voltar à tabela periódica</a> <a href="../../index.html" style="margin-left:16px">Início do LAB</a></div>
 </div>`;
 
 // orbital diagram
 const orb=document.getElementById('orb');
 const LIDX={s:0,p:1,d:2,f:3};
 orb.innerHTML=e.cfg.map(([o,n])=>{const k=2*LIDX[o[1]]+1;const box=[];for(let i=0;i<k;i++){const up=n>i,dn=n>k+i;box.push(`<span class="${up?'f':''}">${up?'↑':''}${dn?'↓':''}</span>`)}
-  return `<div class="sub"><div class="bx">${box.join('')}</div><small>${o} · ${n}</small></div>`}).join('');
+  return `<div class="sub"><div class="bx">${box.join('')}</div><small>${o}: ${n}</small></div>`}).join('');
 
 
 // Standard Model cards
 {const P=[
- ['GH','QUARKS · férmions, spin ½, sentem a força forte'],
+ ['GH','Quarks: férmions, spin ½, sentem a força forte'],
  ['q','u','up','2,2 MeV','+⅔','proton neutron nucleo atomo'],['q','c','charm','1,27 GeV','+⅔',''],['q','t','top','172,6 GeV','+⅔',''],['q','d','down','4,7 MeV','−⅓','proton neutron nucleo atomo'],
  ['q','s','strange','93 MeV','−⅓',''],['q','b','bottom','4,18 GeV','−⅓',''],
- ['GH','LÉPTONS · férmions, spin ½, não sentem a força forte'],
+ ['GH','Léptons: férmions, spin ½, não sentem a força forte'],
  ['l','e','elétron','0,511 MeV','−1','eletron atomo'],['l','μ','múon','105,7 MeV','−1',''],['l','τ','tau','1,777 GeV','−1',''],['l','νₑ','neutrino e','< 1 eV','0',''],['l','ν_μ','neutrino μ','< 1 eV','0',''],['l','ν_τ','neutrino τ','< 1 eV','0',''],
- ['GH','BÓSONS · carregam as forças'],
+ ['GH','Bósons: carregam as forças'],
  ['g','g','glúon · força forte','0','0 · spin 1','proton neutron nucleo'],['g','γ','fóton · eletromagnética','0','0 · spin 1','eletron atomo'],['g','Z','Z · força fraca','91,19 GeV','0 · spin 1',''],['g','W','W · força fraca','80,37 GeV','±1 · spin 1','neutron'],
  ['h','H','Higgs · dá massa','125,2 GeV','0 · spin 0','']];
  const used=new Set(['u','d','e','g','γ']);
@@ -189,7 +194,8 @@ const cloud=[];{const per=Math.max(90,Math.min(900,Math.floor(9000/Z)));
     const u=rnd()*2-1,th=rnd()*6.283,q=Math.sqrt(1-u*u);cloud.push({x:r*q*Math.cos(th),y:r*u,z:r*q*Math.sin(th),s})}}}
 
 // ---- state ----
-let mode=0,paused=false,yaw=0.4,pitch=-0.32,vyaw=0.22,simT=0,t0=0;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let mode=0,paused=false,yaw=0.4,pitch=-0.32,vyaw=RM?0:0.22,simT=0,t0=0;
 const LV=['atomo','nucleo','proton','neutron','eletron'];
 const DEPTH={atomo:0,nucleo:1,eletron:1,proton:2,neutron:2};
 let level='atomo',prevLevel=null,trans=1;
@@ -209,7 +215,7 @@ function ball(x,y,r,c0,c1,c2,a=1){const g=ctx.createRadialGradient(x-r*.35,y-r*.
 function glow(x,y,r,c,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,rgba(c,a));g.addColorStop(1,rgba(c,0));ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill()}
 function arrow(x,y,dx,dy,c,w=1.5){const L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L;ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+dx,y+dy);ctx.stroke();
   const h=Math.max(3,L*0.3);ctx.beginPath();ctx.moveTo(x+dx,y+dy);ctx.lineTo(x+dx-ux*h-uy*h*.55,y+dy-uy*h+ux*h*.55);ctx.lineTo(x+dx-ux*h+uy*h*.55,y+dy-uy*h-ux*h*.55);ctx.closePath();ctx.fill()}
-function label(t,x,y,c='rgba(220,230,250,.85)',al='left',sz=9){ctx.font=`${sz}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
+function label(t,x,y,c='rgba(220,230,250,.85)',al='left',sz=12){ctx.font=`${Math.max(12,sz)}px JetBrains Mono, monospace`;ctx.textAlign=al;ctx.fillStyle=c;ctx.fillText(t,x,y);ctx.textAlign='left'}
 function wavy(a,b,amp,waves,c,w,phase){const dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();
   for(let i=0;i<=60;i++){const t=i/60,s=Math.sin(t*waves*6.283+phase)*amp*Math.sin(t*Math.PI);const x=a.X+dx*t+nx*s,y=a.Y+dy*t+ny*s;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
 function coil(a,b,amp,turns,c,w,phase){const dx=b.X-a.X,dy=b.Y-a.Y,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,nx=-uy,ny=ux;ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();
@@ -343,24 +349,24 @@ function drawElectron(dt){
 
 // ---- info per level ----
 const INFO={
- atomo:{t:()=>mode?'NUVEM ELETRÔNICA':'ÓRBITAS 3D',scale:'~10⁻¹⁰ m',
+ atomo:{t:()=>mode?'Nuvem eletrônica':'Órbitas 3D',scale:'~10⁻¹⁰ m',
    bl:`<span style="color:#ff6b6b">●</span> ${Z} próton${Z>1?'s':''}<br><span style="color:#8aa4d6">●</span> ${N} nêutron${N!==1?'s':''} (${e.s}-${A})`,
    br:`<span style="color:${C}">●</span> elétrons<br>camada de valência: ${e.sh[NS-1]} e⁻`,
    note:()=>mode?`<b>Nuvem eletrônica.</b> Cada ponto é uma posição possível de um elétron, sorteada pela distribuição de probabilidade do átomo de hidrogênio (orbital com l = n−1). O tracejado marca o raio mais provável, n² vezes o raio de Bohr. Representação qualitativa para átomos com muitos elétrons.`
      :`<b>Órbitas 3D.</b> Cada camada gira num plano diferente com o número real de elétrons de ${e.n.toLowerCase()}. No modelo de Bohr (1913), as camadas internas giram mais rápido porque estão mais presas ao núcleo. Hoje sabemos que o elétron não segue uma trilha: veja a NUVEM ELETRÔNICA. <b>Toque no núcleo</b> para dar zoom, ou <b>num elétron</b> para ver um lépton por dentro. Também dá para usar a roda do mouse ou o gesto de pinça.`},
- nucleo:{t:()=>'NÚCLEO',scale:'~10⁻¹⁴ m',
+ nucleo:{t:()=>'Núcleo',scale:'~10⁻¹⁴ m',
    bl:`<span style="color:#ff6b6b">●</span> ${Z} prótons · <span style="color:#8aa4d6">●</span> ${N} nêutrons${Z%2||N%2?'<br><span style="color:#ffd166">◯</span> spin sem par':'<br>todos os spins em pares ↑↓'}`,
    br:`<span style="color:#ffd166">- -</span> troca de píons (π)<br>força nuclear residual`,
    note:()=>`<b>Núcleo de ${e.n.toLowerCase()} (${e.s}-${A}).</b> Raio ≈ 1,2 fm × A^⅓ = <b>${fmt((1.2*Math.cbrt(A)).toFixed(1))} fm</b> (1 fm = 10⁻¹⁵ m), cerca de 100 000 vezes menor que o átomo inteiro. Prótons se repelem pela carga, mas a <b>força forte</b> os segura: entre núcleons ela atua pela troca de píons (linhas amarelas), um efeito residual dos glúons de dentro deles. As setas são os <b>spins</b>: prótons e nêutrons tendem a formar pares de spins opostos (↑↓); ${Z%2||N%2?'o anel amarelo marca quem ficou sem par.':'aqui todos ficam pareados (Z e N pares), e o spin total do núcleo no estado fundamental é 0.'} Disposição ilustrativa.`},
- proton:{t:()=>'PRÓTON',scale:'~10⁻¹⁵ m',
+ proton:{t:()=>'Próton',scale:'~10⁻¹⁵ m',
    bl:`<span style="color:#ff4d5f">●</span><span style="color:#40d678">●</span><span style="color:#5096ff">●</span> carga de cor<br>quarks de valência: u u d`,
    br:`<span style="color:#fff">~~</span> glúons (g)<br>q q̄ = pares virtuais`,
    note:()=>`<b>Próton = 2 quarks up + 1 down</b>, presos por <b>glúons</b>, os bósons da força forte. Cada quark tem uma "carga de cor" (vermelho, verde ou azul) que muda quando troca glúons, mas o próton inteiro fica sempre "branco". Raio de carga: <b>0,84 fm</b>. Massa: <b>938,27 MeV/c²</b>, mas os 3 quarks somam só ~9 MeV (2,2 + 2,2 + 4,7): <b>~99% da massa vem da energia da interação forte</b> (o movimento dos quarks e o campo de glúons), e não da massa dos próprios quarks. Spin ½: o desenho ↑↑↓ é o modelo simples; medições mostram que os quarks carregam só ~30% do spin, o resto vem de glúons e do movimento orbital.`},
- neutron:{t:()=>'NÊUTRON',scale:'~10⁻¹⁵ m',
+ neutron:{t:()=>'Nêutron',scale:'~10⁻¹⁵ m',
    bl:`<span style="color:#ff4d5f">●</span><span style="color:#40d678">●</span><span style="color:#5096ff">●</span> carga de cor<br>quarks de valência: u d d`,
    br:`<span style="color:#fff">~~</span> glúons (g)<br>q q̄ = pares virtuais`,
    note:()=>`<b>Nêutron = 1 quark up + 2 down</b>: carga +⅔ −⅓ −⅓ = 0. Massa <b>939,57 MeV/c²</b>, um pouco maior que a do próton. Fora do núcleo ele é instável e vive em média <b>~14,6 minutos</b> (878 s; meia-vida de ~10 minutos): um quark d vira u emitindo um <b>bóson W⁻</b>, e o resultado é n → p + e⁻ + ν̄ₑ (decaimento beta, força fraca). Dentro de um núcleo estável, como ${e.est&&!e.radio?'o de '+e.n.toLowerCase():'o de muitos elementos'}, ele não decai.`},
- eletron:{t:()=>'ELÉTRON',scale:'< 10⁻¹⁸ m',
+ eletron:{t:()=>'Elétron',scale:'< 10⁻¹⁸ m',
    bl:`<span style="color:#9cc4ff">●</span> elétron e⁻ (lépton)<br><span style="color:#ffe678">~</span> fótons virtuais γ`,
    br:`<span style="color:#ff8ca0">●</span>e⁺ <span style="color:#78b4ff">●</span>e⁻ pares virtuais<br>↗ spin ½`,
    note:()=>`<b>O elétron é um lépton: uma partícula elementar.</b> Até onde os experimentos alcançam, não tem nada dentro (raio < 10⁻¹⁸ m). Carga −1, massa <b>0,511 MeV/c²</b> (1836 vezes mais leve que o próton). Ele sente a força eletromagnética trocando <b>fótons</b> (γ) e a força fraca (bósons W e Z), mas não a força forte. O <b>spin ½</b> não é uma bolinha girando: é um momento angular intrinsecamente quântico, que num campo magnético faz precessão como a seta. Em volta dele, pares virtuais e⁺e⁻ blindam parte da carga (polarização do vácuo).`}
@@ -376,7 +382,7 @@ function updateUI(){const I=INFO[level];document.getElementById('mtitle').textCo
 lvBtns.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.l)setLevel(b.dataset.l);if(b.id==='zin')zoom(1);if(b.id==='zout')zoom(-1)};
 function zoom(d){const chain={atomo:['nucleo',null],nucleo:['proton','atomo'],proton:[null,'nucleo'],neutron:[null,'nucleo'],eletron:[null,'atomo']};const n=chain[level][d>0?0:1];if(n)setLevel(n)}
 document.getElementById('m0').onclick=()=>{mode=0;updateUI()};document.getElementById('m1').onclick=()=>{mode=1;updateUI()};
-document.getElementById('mp').onclick=()=>{paused=!paused;document.getElementById('mp').textContent=paused?'▶':'⏸';document.getElementById('mstate').textContent=paused?'PAUSADO':'AO VIVO'};
+document.getElementById('mp').onclick=()=>{paused=!paused;const mp=document.getElementById('mp');mp.innerHTML=`<svg class="ico" aria-hidden="true"><use href="#ui-${paused?'continuar':'pausar'}"/></svg>`;mp.setAttribute('aria-label',paused?'Continuar':'Pausar');mp.title=paused?'Continuar':'Pausar';document.getElementById('mstate').textContent=paused?'Pausado':'Animando'};
 
 // ---- input: drag rotate, tap to dive, wheel / pinch zoom ----
 const ptrs=new Map();let dragStart=null,pinch0=null;
@@ -389,7 +395,7 @@ cv.addEventListener('pointermove',ev=>{if(!ptrs.has(ev.pointerId))return;ptrs.se
   if(!dragStart)return;const dx=ev.clientX-dragStart.lx,dy=ev.clientY-dragStart.ly;dragStart.lx=ev.clientX;dragStart.ly=ev.clientY;dragStart.moved+=Math.abs(dx)+Math.abs(dy);
   yaw+=dx*0.01;pitch=Math.max(-1.3,Math.min(1.3,pitch+dy*0.01));vyaw=dx*0.002});
 cv.addEventListener('pointerup',ev=>{ptrs.delete(ev.pointerId);if(ptrs.size<2)pinch0=null;
-  if(dragStart&&dragStart.moved<8)tap(ev);dragStart=null;if(Math.abs(vyaw)<0.05)vyaw=0.22*Math.sign(vyaw||1)});
+  if(dragStart&&dragStart.moved<8)tap(ev);dragStart=null;if(Math.abs(vyaw)<0.05)vyaw=RM?0:0.22*Math.sign(vyaw||1)});
 cv.addEventListener('pointercancel',ev=>{ptrs.delete(ev.pointerId);dragStart=null;pinch0=null});
 cv.addEventListener('wheel',ev=>{ev.preventDefault();if(trans<1)return;zoom(ev.deltaY<0?1:-1)},{passive:false});
 function tap(ev){const r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;
