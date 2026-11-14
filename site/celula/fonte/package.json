@@ -1,21 +1,22 @@
 {
   "name": "r3f",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bundle das bibliotecas 3D da Célula (gera ../vendor/r3f.js a partir de entry.js)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bundle": "esbuild entry.js --bundle --minify --format=iife --outfile=../vendor/r3f.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@react-three/drei": "^10.7.9",
-    "@react-three/fiber": "^9.8.2",
-    "esbuild": "^0.28.2",
-    "htm": "^3.1.1",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "three": "^0.187.0"
-  }
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "esbuild": "0.28.2",
+    "htm": "3.1.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.187.0"
+  },
+  "private": true
 }

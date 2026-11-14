@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teste de modelo 3D</title>
+<!--
+  Página de validação dos modelos do Blender (dono: Prometeu). Abre por duplo clique (file://).
+  Carrega ../vendor/r3f.js + ../../assets/modelos/<nome>.glb.js + src/e_modelos.js e mostra o modelo girando,
+  com um rótulo em cada âncora (grupo.ancoras). Outro modelo: teste-modelo.html?modelo=nome
+  Para os testes automáticos: <body data-status="carregando|ok|sem-modelo|erro"> e window.TESTE_MODELO.
+-->
+<style>
+  :root{--bg0:#0B0F1C;--bg1:#161D33;--tx:#E8ECF5;--tx2:#9AA6C2;--amb:#FFB547;--pane:rgba(19,26,43,.78)}
+  html,body{margin:0;height:100%;background:radial-gradient(circle at 50% 45%,var(--bg1),var(--bg0) 70%);color:var(--tx);font:15px/1.45 system-ui,"Segoe UI",sans-serif}
+  #palco{position:fixed;inset:0}
+  canvas{display:block}
+  #info{position:fixed;left:16px;top:16px;max-width:min(420px,calc(100vw - 32px));background:var(--pane);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px}
+  #info h1{font-size:16px;margin:0 0 6px}
+  #info p{margin:4px 0;color:var(--tx2);font-size:13px}
+  #info code{font:12px ui-monospace,Consolas,monospace;color:var(--tx)}
+  #st{color:var(--amb)}
+  .rot{position:fixed;pointer-events:none;transform:translate(10px,-50%);background:rgba(11,15,28,.82);border-radius:999px;padding:3px 10px;font-size:12px;white-space:nowrap}
+  .rot::before{content:"";position:absolute;left:-10px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--amb)}
+</style>
+</head>
+<body data-status="carregando">
+<div id="palco"></div>
+<div id="info"><h1>Teste de modelo: <code id="nome">—</code></h1><p id="st">Carregando…</p><p id="pecas"></p></div>
+<script src="../vendor/r3f.js"></script>
+<script>
+(()=>{
+const nome=(new URLSearchParams(location.search).get('modelo')||'mitocondria').replace(/[^a-z0-9_\-]/g,'');
+document.getElementById('nome').textContent=nome;
+const st=t=>{document.getElementById('st').textContent=t};
+const fim=(status,extra)=>{document.body.dataset.status=status;window.TESTE_MODELO=Object.assign({nome,status},extra||{})};
+function script(src){return new Promise(res=>{const s=document.createElement('script');s.src=src;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s)})}
+(async()=>{
+  if(!window.R3F||!window.R3F.GLTFLoader){st('O bundle vendor/r3f.js não tem GLTFLoader. Regere o bundle (ver build.sh).');fim('erro');return}
+  const temArquivo=await script('../../assets/modelos/'+nome+'.glb.js');
+  if(!await script('src/e_modelos.js')){st('Não achei src/e_modelos.js.');fim('erro');return}
+  if(!temArquivo||!MODELOS.tem(nome)){st('Sem modelo: falta site/assets/modelos/'+nome+'.glb.js (rode python3 scripts/glb2js.py). O site usaria a versão procedural.');fim('sem-modelo');return}
+  const t0=performance.now();const grupo=await carregarModelo(nome);const ms=Math.round(performance.now()-t0);
+  if(!grupo){st('O .glb não pôde ser lido (ver o console). O site usaria a versão procedural.');fim('erro');return}
+  const {THREE,RoomEnvironment}=window.R3F;
+  // mesmo encaixe que MODELOS.trocar usa no site (maior dimensão = 4,6, centrado)
+  const cena={g:new THREE.Group(),labels:[],mats:[],tick:null};MODELOS.trocar(cena,nome,{tamanho:4.6});
+  const pecas=Object.keys(grupo.pecas);
+  document.getElementById('pecas').innerHTML='Peças ('+pecas.length+'): <code>'+pecas.join(', ')+'</code><br>O modelo gira sozinho; os pontos âmbar são as âncoras dos rótulos.';
+  const W=()=>innerWidth,H=()=>innerHeight;
+  const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(2,devicePixelRatio));r.setSize(W(),H());r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;r.localClippingEnabled=true;
+  document.getElementById('palco').appendChild(r.domElement);
+  const sc=new THREE.Scene();const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),.04).texture;sc.environmentIntensity=.4;
+  sc.add(new THREE.AmbientLight(0xffffff,.2));const l1=new THREE.DirectionalLight('#FFF4E6',2.3);l1.position.set(-5,5,5);sc.add(l1);
+  const l2=new THREE.DirectionalLight('#CFE0FF',.7);l2.position.set(6,1,3);sc.add(l2);const l3=new THREE.DirectionalLight(0xffffff,1.4);l3.position.set(0,3,-6);sc.add(l3);
+  sc.add(cena.g);
+  const cam=new THREE.PerspectiveCamera(34,W()/H(),.05,120);cam.position.set(0,4,8.5);cam.lookAt(0,0,0);
+  addEventListener('resize',()=>{cam.aspect=W()/H();cam.updateProjectionMatrix();r.setSize(W(),H())});
+  const rots=cena.labels.map(([t])=>{const d=document.createElement('div');d.className='rot';d.textContent=t;document.body.appendChild(d);return d});
+  const v=new THREE.Vector3();let quadros=0;
+  r.setAnimationLoop(t=>{cena.g.rotation.y=t*.0004;cena.g.updateMatrixWorld(true);r.render(sc,cam);quadros++;
+    cena.labels.forEach(([,p],i)=>{v.copy(p).applyMatrix4(cena.g.matrixWorld).project(cam);const d=rots[i];d.style.display=v.z>1?'none':'';d.style.left=((v.x*.5+.5)*W())+'px';d.style.top=((-v.y*.5+.5)*H())+'px'});
+    if(quadros===3)fim('ok',{pecas,rotulos:cena.labels.map(l=>l[0]),ms})});
+  st('Modelo carregado.');
+})().catch(e=>{console.error(e);st('Erro: '+e.message);fim('erro')});
+})();
+</script>
+</body>
+</html>
