@@ -1,0 +1,10 @@
+import * as React from 'react';
+import * as ReactDOMClient from 'react-dom/client';
+import * as THREE from 'three';
+import * as FIBER from '@react-three/fiber';
+import { OrbitControls, Html, ContactShadows, Sparkles } from '@react-three/drei';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import htm from 'htm';
+const html = htm.bind(React.createElement);
+window.R3F = { React, ReactDOMClient, THREE, FIBER, DREI:{OrbitControls, Html, ContactShadows, Sparkles}, RoomEnvironment, mergeVertices, html };
