@@ -6,7 +6,10 @@ porém, carrega normalmente. Então cada X.glb vira X.glb.js com o binário em b
 
     window.LAB_MODELOS = window.LAB_MODELOS||{}; LAB_MODELOS['X'] = '<base64>';
 
-Quem lê isso é site/celula/fonte/src/e_modelos.js (carregarModelo('X')).
+Quem lê isso é site/celula/fonte/src/e_modelos.js (carregarModelo('X')), que injeta o .glb.js só quando precisa.
+Junto, o script (re)gera site/assets/modelos/indice.js com a lista dos modelos existentes:
+    window.LAB_MODELOS_INDICE=["mitocondria", ...];
+Assim o carregador não pede arquivo que não existe (o que daria erro de console).
 
 Uso (na raiz do repositório):
     python3 scripts/glb2js.py                      # converte todo site/assets/modelos/*.glb
@@ -82,6 +85,25 @@ def converter(caminho, verificar=False):
     return True
 
 
+def gerar_indice(pasta):
+    nomes = sorted(os.path.basename(p)[:-len('.glb.js')] for p in glob.glob(os.path.join(pasta, '*.glb.js')))
+    return ('// Gerado por scripts/glb2js.py: modelos .glb.js disponíveis nesta pasta. Não edite à mão.\n'
+            'window.LAB_MODELOS_INDICE=%s;\n' % json.dumps(nomes)), nomes
+
+
+def indice(pasta, verificar):
+    novo, nomes = gerar_indice(pasta)
+    saida = os.path.join(pasta, 'indice.js')
+    if verificar:
+        ok = os.path.exists(saida) and open(saida, encoding='utf-8').read() == novo
+        print('%s %s' % ('em dia ' if ok else 'DESATUALIZADO', os.path.relpath(saida, RAIZ)))
+        return ok
+    with open(saida, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(novo)
+    print('%s: %s' % (os.path.relpath(saida, RAIZ), ', '.join(nomes) or '(vazio)'))
+    return True
+
+
 def main(args):
     verificar = '--verificar' in args
     arquivos = [a for a in args if not a.startswith('--')] or sorted(glob.glob(os.path.join(PASTA_PADRAO, '*.glb')))
@@ -95,6 +117,9 @@ def main(args):
                 falhou = True
         except (OSError, ValueError) as e:
             print('ERRO %s: %s' % (a, e), file=sys.stderr)
+            falhou = True
+    for pasta in sorted({os.path.dirname(os.path.abspath(a)) for a in arquivos}):
+        if not indice(pasta, verificar):
             falhou = True
     return 1 if falhou else 0
 

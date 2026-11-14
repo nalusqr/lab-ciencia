@@ -100,17 +100,33 @@ async function celula(rel) {
 }
 
 async function testeModelo() {
-  const t0 = Date.now(); const { ctx, page } = await abrir();
-  const nome = 'celula: teste-modelo.html (mitocôndria do Blender)';
-  try {
-    await page.goto(url('site/celula/fonte/teste-modelo.html'), { waitUntil: 'commit', timeout: LENTO });
-    await page.waitForFunction(() => document.body && document.body.dataset.status !== 'carregando', null, { timeout: LENTO });
-    const r = await page.evaluate(() => window.TESTE_MODELO || { status: document.body.dataset.status });
-    if (r.status === 'sem-modelo') registrar(nome, null, 'sem .glb.js: o site fica com a versão procedural', Date.now() - t0);
-    else registrar(nome, r.status === 'ok' && page.erros.length === 0,
-      `${r.status}; peças: ${(r.pecas || []).join(', ')}; parse ${r.ms} ms` + (page.erros.length ? ' || ' + page.erros.slice(0, 5).join(' || ') : ''), Date.now() - t0);
-  } catch (err) { registrar(nome, false, err.message.split('\n')[0] + ' || ' + page.erros.slice(0, 5).join(' || '), Date.now() - t0); }
-  await ctx.close();
+  // 1) o modelo real, carregado sob demanda (a página não traz o .glb.js; carregarModelo injeta a tag)
+  {
+    const t0 = Date.now(); const { ctx, page } = await abrir();
+    const nome = 'celula: teste-modelo.html (mitocôndria do Blender, sob demanda)';
+    try {
+      await page.goto(url('site/celula/fonte/teste-modelo.html'), { waitUntil: 'commit', timeout: LENTO });
+      await page.waitForFunction(() => document.body && document.body.dataset.status !== 'carregando', null, { timeout: LENTO });
+      const r = await page.evaluate(() => window.TESTE_MODELO || { status: document.body.dataset.status });
+      if (r.status === 'sem-modelo') registrar(nome, null, 'sem .glb.js: o site fica com a versão procedural', Date.now() - t0);
+      else registrar(nome, r.status === 'ok' && r.sobDemanda === true && page.erros.length === 0,
+        `${r.status}; sob demanda: ${r.sobDemanda}; peças: ${(r.pecas || []).join(', ')}; ${r.ms} ms` + (page.erros.length ? ' || ' + page.erros.slice(0, 5).join(' || ') : ''), Date.now() - t0);
+    } catch (err) { registrar(nome, false, err.message.split('\n')[0] + ' || ' + page.erros.slice(0, 5).join(' || '), Date.now() - t0); }
+    await ctx.close();
+  }
+  // 2) modelo que não existe: deve cair na versão procedural sem pedir arquivo (o índice evita o erro de console)
+  {
+    const t0 = Date.now(); const { ctx, page } = await abrir();
+    const nome = 'celula: teste-modelo.html?modelo=inexistente (volta ao procedural, sem erro)';
+    try {
+      await page.goto(url('site/celula/fonte/teste-modelo.html', '?modelo=inexistente'), { waitUntil: 'commit', timeout: LENTO });
+      await page.waitForFunction(() => document.body && document.body.dataset.status !== 'carregando', null, { timeout: LENTO });
+      const r = await page.evaluate(() => window.TESTE_MODELO || { status: document.body.dataset.status });
+      registrar(nome, r.status === 'sem-modelo' && !r.injetado && page.erros.length === 0,
+        `${r.status}; injetou .glb.js: ${!!r.injetado}` + (page.erros.length ? ' || ' + page.erros.slice(0, 5).join(' || ') : ''), Date.now() - t0);
+    } catch (err) { registrar(nome, false, err.message.split('\n')[0] + ' || ' + page.erros.slice(0, 5).join(' || '), Date.now() - t0); }
+    await ctx.close();
+  }
 }
 
 (async () => {

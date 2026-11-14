@@ -37,16 +37,18 @@ const fim=(status,extra)=>{document.body.dataset.status=status;window.TESTE_MODE
 function script(src){return new Promise(res=>{const s=document.createElement('script');s.src=src;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s)})}
 (async()=>{
   if(!window.R3F||!window.R3F.GLTFLoader){st('O bundle vendor/r3f.js não tem GLTFLoader. Regere o bundle (ver build.sh).');fim('erro');return}
-  const temArquivo=await script('../../assets/modelos/'+nome+'.glb.js');
+  // só o carregador: o .glb.js é injetado sob demanda por carregarModelo (como no site)
   if(!await script('src/e_modelos.js')){st('Não achei src/e_modelos.js.');fim('erro');return}
-  if(!temArquivo||!MODELOS.tem(nome)){st('Sem modelo: falta site/assets/modelos/'+nome+'.glb.js (rode python3 scripts/glb2js.py). O site usaria a versão procedural.');fim('sem-modelo');return}
+  const antes=MODELOS.tem(nome);
   const t0=performance.now();const grupo=await carregarModelo(nome);const ms=Math.round(performance.now()-t0);
+  const injetado=[...document.scripts].some(x=>x.dataset.modInj&&x.src.endsWith('/'+nome+'.glb.js'));
+  if(!grupo&&!MODELOS.tem(nome)){st('Sem modelo: '+nome+' não está em site/assets/modelos/indice.js (rode python3 scripts/glb2js.py). O site usaria a versão procedural.');fim('sem-modelo',{injetado});return}
   if(!grupo){st('O .glb não pôde ser lido (ver o console). O site usaria a versão procedural.');fim('erro');return}
   const {THREE,RoomEnvironment}=window.R3F;
   // mesmo encaixe que MODELOS.trocar usa no site (maior dimensão = 4,6, centrado)
   const cena={g:new THREE.Group(),labels:[],mats:[],tick:null};MODELOS.trocar(cena,nome,{tamanho:4.6});
   const pecas=Object.keys(grupo.pecas);
-  document.getElementById('pecas').innerHTML='Peças ('+pecas.length+'): <code>'+pecas.join(', ')+'</code><br>O modelo gira sozinho; os pontos âmbar são as âncoras dos rótulos.';
+  document.getElementById('pecas').innerHTML='Peças ('+pecas.length+'): <code>'+pecas.join(', ')+'</code><br>Carregado '+(!antes&&injetado?'sob demanda':'da página')+' em '+ms+' ms. O modelo gira sozinho; os pontos âmbar são as âncoras dos rótulos.';
   const W=()=>innerWidth,H=()=>innerHeight;
   const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(2,devicePixelRatio));r.setSize(W(),H());r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;r.localClippingEnabled=true;
   document.getElementById('palco').appendChild(r.domElement);
@@ -60,7 +62,7 @@ function script(src){return new Promise(res=>{const s=document.createElement('sc
   const v=new THREE.Vector3();let quadros=0;
   r.setAnimationLoop(t=>{cena.g.rotation.y=t*.0004;cena.g.updateMatrixWorld(true);r.render(sc,cam);quadros++;
     cena.labels.forEach(([,p],i)=>{v.copy(p).applyMatrix4(cena.g.matrixWorld).project(cam);const d=rots[i];d.style.display=v.z>1?'none':'';d.style.left=((v.x*.5+.5)*W())+'px';d.style.top=((-v.y*.5+.5)*H())+'px'});
-    if(quadros===3)fim('ok',{pecas,rotulos:cena.labels.map(l=>l[0]),ms})});
+    if(quadros===3)fim('ok',{pecas,rotulos:cena.labels.map(l=>l[0]),ms,sobDemanda:!antes&&injetado})});
   st('Modelo carregado.');
 })().catch(e=>{console.error(e);st('Erro: '+e.message);fim('erro')});
 })();

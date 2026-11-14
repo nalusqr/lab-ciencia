@@ -7,17 +7,29 @@
 // nem em comentário: ela fecha a tag e quebra a página inteira ("Unexpected end of input").
 // De onde vem o modelo: scripts/glb2js.py transforma site/assets/modelos/X.glb em X.glb.js, que faz
 //   window.LAB_MODELOS = window.LAB_MODELOS||{}; LAB_MODELOS['X'] = '<base64>';
-// Basta uma tag script com src="../assets/modelos/X.glb.js" na página, ANTES do script principal.
 // (Em file:// o navegador bloqueia fetch de .glb, mas não bloqueia <script src>.)
+//
+// CARREGAMENTO SOB DEMANDA: o carregador aceita os DOIS casos, e o resto do código não precisa saber qual é:
+//   a) modelo já na página: LAB_MODELOS[nome] já existe (tag script estática no index.html, ou o .glb.js
+//      embutido inline, como na prévia do artifact, onde não há arquivo externo). Faz o parse direto.
+//   b) modelo fora da página: carregarModelo(nome) injeta uma tag script com src = BASE + nome + '.glb.js', espera o
+//      onload e faz o parse. Nunca injeta duas vezes: se já houver uma tag com esse arquivo, espera por ela.
+//   Para não pedir arquivo que não existe (gera erro de console), antes de (b) lê o índice BASE + 'indice.js',
+//   gerado pelo scripts/glb2js.py (LAB_MODELOS_INDICE = ['mitocondria', ...]). Sem índice, tenta o arquivo mesmo assim.
+//   BASE: window.LAB_MODELOS_BASE, se definido; senão a pasta de uma tag *.glb.js já presente; senão
+//   site/assets/modelos/ calculada a partir da tag de vendor/r3f.js; senão '../assets/modelos/'.
+//   Por isso, no build, a tag estática do modelo é opcional: sem ela, o .glb.js só é baixado quando a cena pede.
 //
 // API
 //   carregarModelo(nome)  -> Promise<THREE.Group|null>
-//       null quando não há LAB_MODELOS[nome], quando o bundle não tem GLTFLoader ou quando o .glb falha:
+//       null quando o modelo não existe (nem na página nem no índice), quando o bundle não tem GLTFLoader ou quando o .glb falha:
 //       nesses casos a cena fica com a versão procedural. Resultado em cache (a mesma Promise por nome).
 //       O grupo traz:  grupo.pecas   = {membrana_externa:[Mesh,...], cristas:[...], matriz:[...], ...}
 //                      grupo.ancoras = {membrana_externa:Vector3, ...}  (no espaço do próprio grupo)
 //       Nomes vêm dos objetos do Blender; sufixos ".001", "_002" são ignorados (cristas.001 -> cristas).
-//   MODELOS.tem(nome)     -> true se o .glb.js foi incluído na página
+//   MODELOS.preparar(nome) -> começa a baixar e ler o modelo sem esperar (ex.: ao passar o mouse ou selecionar a
+//       organela), para a troca ser imediata quando a cena abrir. Pode chamar à vontade; erros são engolidos.
+//   MODELOS.tem(nome)     -> true se o .glb.js já está na página (LAB_MODELOS[nome] existe)
 //   MODELOS.pronto(nome)  -> o grupo, se já terminou de carregar (síncrono); senão undefined
 //   MODELOS.trocar(s, nome, opcoes) -> troca, numa cena {g, anch, labels, tick, mats...}, o conteúdo
 //       procedural pelo modelo assim que ele carregar, e refaz os rótulos nas âncoras do modelo.
@@ -27,9 +39,10 @@
 //
 // 1) build.sh: incluir este arquivo depois de d_app.js na concatenação
 //      ... "$F"/src/d_app.js "$F"/src/e_modelos.js; echo '})();' ...
-//    e carregar o modelo antes do script principal (junto de materials.js / r3f.js):
-//      echo "<script src=\"../assets/modelos/mitocondria.glb.js\"><\/script>"   (sem a barra invertida)
-//    Se o arquivo não existir, o navegador só registra um 404 de script e a cena fica procedural.
+//    A tag estática do modelo não é mais necessária (sob demanda; ver acima). Mantê-la também funciona.
+//    Na prévia embutida, continuar embutindo os .glb.js inline (caso a) e, se quiser evitar o pedido do índice,
+//    definir window.LAB_MODELOS_INDICE=[] antes deste arquivo.
+//    Opcional: MODELOS.preparar('mitocondria') no hover/seleção da mitocôndria na célula inteira.
 //
 // 2) c_details.js, em DETB.mitocondria(), trocar o final
 //      ...;lab(s,'DNA próprio',[-.9,-.25,.55]);return s},
@@ -56,9 +69,10 @@ const MODELOS={
   },
   tem(nome){return !!(window.LAB_MODELOS&&typeof window.LAB_MODELOS[nome]==='string')},
   pronto(nome){return MODELOS._prontos[nome]},
+  preparar(nome){MODELOS.carregar(nome).catch(()=>{});return MODELOS._cache[nome]},
   carregar(nome){
     if(MODELOS._cache[nome])return MODELOS._cache[nome];
-    const p=new Promise(res=>{
+    const p=modBuscar(nome).then(()=>new Promise(res=>{
       const b64=window.LAB_MODELOS&&window.LAB_MODELOS[nome];
       const Loader=window.R3F&&window.R3F.GLTFLoader;
       if(typeof b64!=='string'){res(null);return}
@@ -68,7 +82,7 @@ const MODELOS={
           const g=gltf.scene||(gltf.scenes&&gltf.scenes[0]);if(!g){res(null);return}
           g.name=g.name||nome;g.userData.modelo=nome;modIndexar(g);MODELOS._prontos[nome]=g;res(g)},
         err=>{console.warn('[modelos] falha ao ler',nome+'.glb',err);res(null)})}
-      catch(e){console.warn('[modelos] falha ao ler',nome+'.glb',e);res(null)}});
+      catch(e){console.warn('[modelos] falha ao ler',nome+'.glb',e);res(null)}}));
     return MODELOS._cache[nome]=p},
   // opcoes: tamanho (maior dimensão, em unidades da cena; sem ele mantém a escala do Blender), centrar (padrão true),
   //   rotacao [x,y,z] em radianos, k (chave de seleção dos materiais; padrão = nome),
@@ -76,7 +90,7 @@ const MODELOS={
   //   material (função (peça, materialDoBlender) -> material a usar, ex.: um da biblioteca MAT),
   //   manterTick (padrão false: a animação procedural para de rodar).
   trocar(s,nome,o={}){
-    if(!s||!s.g||!MODELOS.tem(nome))return false;
+    if(!s||!s.g)return false;
     const aplicar=orig=>{if(!orig)return;
       const m=orig.parent?modClonar(orig):orig;           // o mesmo grupo não pode estar em duas cenas
       if(o.rotacao)m.rotation.set(...o.rotacao);
@@ -109,6 +123,29 @@ const MODELOS={
 const carregarModelo=nome=>MODELOS.carregar(nome);
 
 // ---------- auxiliares (prefixo mod) ----------
+// pasta dos .glb.js (ver BASE no topo)
+function modBase(){if(window.LAB_MODELOS_BASE)return new URL(window.LAB_MODELOS_BASE,location.href).href;
+  for(const sc of document.scripts){const m=sc.src&&sc.src.match(/^(.*\/)[a-z0-9_\-]+\.glb\.js(\?.*)?$/);if(m)return m[1]}
+  for(const sc of document.scripts)if(sc.src&&/\/vendor\/r3f\.js(\?.*)?$/.test(sc.src))return new URL('../../assets/modelos/',sc.src).href;
+  return new URL('../assets/modelos/',location.href).href}
+// tag script: reaproveita a que já existe com o mesmo endereço; senão injeta. Resolve true/false (carregou ou não).
+const modScripts={};
+function modScript(url){if(modScripts[url])return modScripts[url];
+  const ja=[...document.scripts].find(sc=>sc.src===url);
+  return modScripts[url]=new Promise(res=>{
+    if(ja){if(ja.dataset.modOk)res(ja.dataset.modOk==='1');else{ja.addEventListener('load',()=>res(true));ja.addEventListener('error',()=>res(false));
+      // tag estática que já rodou antes deste arquivo: não dispara mais eventos
+      if(!ja.async&&!ja.defer&&!ja.dataset.modInj)res(true)}return}
+    const sc=document.createElement('script');sc.src=url;sc.async=true;sc.dataset.modInj='1';
+    sc.onload=()=>{sc.dataset.modOk='1';res(true)};sc.onerror=()=>{sc.dataset.modOk='0';res(false)};document.head.appendChild(sc)})}
+// índice dos modelos existentes (LAB_MODELOS_INDICE, de scripts/glb2js.py); null = sem índice
+let modIndice=null;
+function modLerIndice(){if(Array.isArray(window.LAB_MODELOS_INDICE))return Promise.resolve(window.LAB_MODELOS_INDICE);
+  return modIndice||(modIndice=modScript(modBase()+'indice.js').then(()=>Array.isArray(window.LAB_MODELOS_INDICE)?window.LAB_MODELOS_INDICE:null))}
+// garante LAB_MODELOS[nome] na página, se o modelo existir (caso a: já está; caso b: injeta a tag)
+function modBuscar(nome){if(MODELOS.tem(nome))return Promise.resolve(true);
+  if(!/^[a-z0-9_\-]+$/.test(nome))return Promise.resolve(false);
+  return modLerIndice().then(ind=>ind&&!ind.includes(nome)?false:modScript(modBase()+nome+'.glb.js')).then(()=>MODELOS.tem(nome))}
 function modBase64(b64){const s=atob(b64);const n=s.length;const u=new Uint8Array(n);for(let i=0;i<n;i++)u[i]=s.charCodeAt(i);return u.buffer}
 // nome da peça: o GLTFLoader já tira "." e espaços dos nomes (cristas.001 -> cristas001); aqui some o número final
 function modPeca(n){return String(n||'').toLowerCase().replace(/[._ -]?\d{3}$/,'')}
