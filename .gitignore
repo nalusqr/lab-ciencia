@@ -1,2 +1,3 @@
 .testes-3d/
 node_modules/
+__pycache__/
