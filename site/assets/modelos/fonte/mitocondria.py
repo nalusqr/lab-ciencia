@@ -68,11 +68,14 @@ N_GIRO = 40     # divisões no meio giro (a metade que fica)
 # Cristas
 CRISTA_H = 0.024        # meia espessura da crista (dobra com duas membranas)
 CRISTA_T = 0.015        # espessura de cada membrana da crista
-CRISTA_EMBUTE = 0.008   # quanto a crista entra na membrana interna (esconde a emenda)
 
 # Tons de corte (fator multiplicado na cor base, em espaço linear, como o `corte()` do materials.js)
 TOM_CORTE = 0.62
-TOM_LUMEN = 0.48        # interior da crista (espaço intracristas), mais escuro
+
+# Quantidades que mais pesam no orçamento
+ATP_Y_MAX = 0.20       # ATP sintases só até 0,20 µm a partir do corte
+N_RIBOSSOMOS = 80
+# O lúmen da crista usa o material do espaço intermembranas (revisão E2), não um tom próprio.
 
 # Cores da paleta científica do guia (seção 2.3), em sRGB
 SCI = {
@@ -216,9 +219,17 @@ def criar_objeto(nome, mont, material, rotulo, usa_tom=False):
     return ob
 
 
-def perfil_capsula(r):
+# Junções das cristas (revisão de Biologia, E1): sob cada crista, a membrana interna
+# fica aberta nas primeiras N_JUNCAO divisões do giro a partir do corte. Os braços do "U"
+# viram a própria membrana interna e o espaço intracristas desemboca no intermembranas.
+N_JUNCAO = 2
+Y_EIM = 0.0015   # o espaço intermembranas (e o intracristas) fica 1,5 nm atrás do plano do corte
+
+
+def perfil_capsula(r, cortes_x=()):
     """Perfil (x, rho) de uma cápsula de raio r, de uma ponta à outra, sem os polos.
-    Todas as camadas usam os mesmos ângulos, então ficam paralelas."""
+    Todas as camadas usam os mesmos ângulos, então ficam paralelas. `cortes_x` acrescenta
+    pontos em x exatos (as bordas das junções das cristas)."""
     pts = []
     for k in range(1, N_TAMPA + 1):
         th = (math.pi / 2) * k / N_TAMPA
@@ -228,12 +239,22 @@ def perfil_capsula(r):
     for k in range(N_TAMPA, 0, -1):
         th = (math.pi / 2) * k / N_TAMPA
         pts.append((MEIO_CILINDRO + r * math.cos(th), r * math.sin(th)))
+    if cortes_x:
+        pts = sorted(pts + [(x, raio_capsula(x, r)) for x in cortes_x], key=lambda p: p[0])
     return pts
 
 
-def superficie_meia_capsula(mont, r, para_fora, tom=1.0):
-    """Meia cápsula (a metade y >= 0). para_fora=True: normais para fora; senão para o eixo."""
-    perfil = perfil_capsula(r)
+def _aberto(x0, x1, lado, aberturas):
+    """True se o trecho [x0, x1] do lado `lado` (+1 em cima, -1 embaixo) é uma junção."""
+    if lado == 0:
+        return False
+    return any(s == lado and x0 >= xa - 1e-7 and x1 <= xb + 1e-7 for xa, xb, s in aberturas)
+
+
+def superficie_meia_capsula(mont, r, para_fora, tom=1.0, aberturas=()):
+    """Meia cápsula (a metade y >= 0). para_fora=True: normais para fora; senão para o eixo.
+    `aberturas`: lista (xa, xb, lado) de junções de crista, deixadas sem face perto do corte."""
+    perfil = perfil_capsula(r, [x for a in aberturas for x in a[:2]])
     pts = []
     for x, rho in perfil:
         for i in range(N_GIRO + 1):
@@ -245,37 +266,55 @@ def superficie_meia_capsula(mont, r, para_fora, tom=1.0):
     base = mont.vertices(pts, tom)
     nl, ng = len(perfil), N_GIRO + 1
     ia, ib = base + nl * ng, base + nl * ng + 1
-    faces = []
+    faces, ref = [], 0
     for k in range(nl - 1):
         for i in range(N_GIRO):
+            lado = 1 if i >= N_GIRO - N_JUNCAO else (-1 if i < N_JUNCAO else 0)
+            if _aberto(perfil[k][0], perfil[k + 1][0], lado, aberturas):
+                continue
+            if k == nl // 2 and i == N_GIRO // 2:
+                ref = len(faces)   # face de referência: meio do trecho reto, no fundo (y > 0)
             a = base + k * ng + i
             faces.append((a, a + ng, a + ng + 1, a + 1))
     for i in range(N_GIRO):
         faces.append((ia, base + i, base + i + 1))
         u = base + (nl - 1) * ng
         faces.append((u + i, ib, u + i + 1))
-    # face de referência: meio do trecho reto, no fundo (phi = 0, y > 0)
-    ref = (nl // 2) * N_GIRO + N_GIRO // 2
     esperado = (0, 1, 0) if para_fora else (0, -1, 0)
-    todos = mont.v
-    faces = orientar(todos, faces, ref, esperado)
-    mont.faces(faces, suave=True)
+    mont.faces(orientar(mont.v, faces, ref, esperado), suave=True)
 
 
-def faixa_corte(mont, r_fora, r_dentro, y=0.0, tom=TOM_CORTE):
+def faixa_corte(mont, r_fora, r_dentro, y=0.0, tom=TOM_CORTE, aberturas=()):
     """Faixa plana no plano do corte entre dois raios (a "fatia" de uma membrana).
-    Normais para -y, olhando para quem vê o corte."""
+    Normais para -y, olhando para quem vê o corte. Pula as junções das cristas."""
+    cortes = [x for a in aberturas for x in a[:2]]
     for sinal in (1, -1):
-        cad_f = [(-MEIO_CILINDRO - r_fora, 0.0)] + perfil_capsula(r_fora) + [(MEIO_CILINDRO + r_fora, 0.0)]
-        cad_d = [(-MEIO_CILINDRO - r_dentro, 0.0)] + perfil_capsula(r_dentro) + [(MEIO_CILINDRO + r_dentro, 0.0)]
+        cad_f = [(-MEIO_CILINDRO - r_fora, 0.0)] + perfil_capsula(r_fora, cortes) + [(MEIO_CILINDRO + r_fora, 0.0)]
+        cad_d = [(-MEIO_CILINDRO - r_dentro, 0.0)] + perfil_capsula(r_dentro, cortes) + [(MEIO_CILINDRO + r_dentro, 0.0)]
         pts = [(x, y, sinal * rho) for x, rho in cad_f] + [(x, y, sinal * rho) for x, rho in cad_d]
         base = mont.vertices(pts, tom)
         n = len(cad_f)
         faces = []
         for k in range(n - 1):
+            if _aberto(cad_f[k][0], cad_f[k + 1][0], sinal, aberturas):
+                continue
             faces.append((base + k, base + k + 1, base + n + k + 1, base + n + k))
-        faces = orientar(mont.v, faces, n // 2, (0, -1, 0))
-        mont.faces(faces, suave=False)
+        mont.faces(orientar(mont.v, faces, 0, (0, -1, 0)), suave=False)
+
+
+def paredes_juncao(mont, aberturas):
+    """Fecha o fundo de cada junção: a fatia da membrana interna onde a abertura termina."""
+    for xa, xb, s in aberturas:
+        i = N_GIRO - N_JUNCAO if s > 0 else N_JUNCAO
+        phi = -math.pi / 2 + math.pi * i / N_GIRO
+        c, sn = math.cos(phi), math.sin(phi)
+        pts = []
+        for x, r in ((xa, R_INT_DENTRO), (xb, R_INT_DENTRO), (xb, R_INT_FORA), (xa, R_INT_FORA)):
+            rho = raio_capsula(x, r)
+            pts.append((x, rho * c, rho * sn))
+        base = mont.vertices(pts, TOM_CORTE)
+        esperado = (0, -sn, c) if s > 0 else (0, sn, -c)   # olhando para dentro da abertura
+        mont.faces(orientar(mont.v, [(base, base + 1, base + 2, base + 3)], 0, esperado), suave=False)
 
 
 # ---------------------------------------------------------------------------
@@ -286,7 +325,8 @@ class Crista:
     """Uma crista lamelar: dobra da membrana interna para dentro da matriz.
     Em corte ela aparece como um "U" fino: duas membranas que se encontram na ponta,
     com o espaço intracristas (lúmen) no meio. Fica presa à parede de um lado
-    (s = +1 em cima, s = -1 embaixo) e alterna com a vizinha, como nas micrografias."""
+    (s = +1 em cima, s = -1 embaixo) e alterna com a vizinha, como nas micrografias.
+    Perto do corte, a membrana interna se abre sob o "U" (junção da crista)."""
 
     NY, NP, NA = 10, 4, 6   # passos ao longo da profundidade, nas placas e na ponta curva
 
@@ -298,9 +338,17 @@ class Crista:
         self.psi_e = math.acos(min(1.0, z_fim / self.ric))
         self.y_e = self.ric * math.sin(self.psi_e)
 
+    def abertura(self):
+        """Faixa em x da junção: a largura toda do "U". Ali a membrana interna some e
+        os braços da crista atravessam a espessura dela, virando a própria membrana."""
+        return (self.xi - CRISTA_H, self.xi + CRISTA_H, self.s)
+
     def onda(self, y, zf):
-        """Ondulação suave da lâmina (cristas reais não são placas perfeitas)."""
-        return self.amp * math.sin(9.0 * zf + self.fase) + 0.6 * self.amp * math.sin(7.0 * y + 1.7 * self.fase)
+        """Ondulação suave da lâmina (cristas reais não são placas perfeitas).
+        Some perto da parede, para o "U" encaixar certinho na abertura da membrana interna."""
+        f = min(1.0, max(0.0, (self.z_parede(y) - zf) / 0.08))
+        f = f * f * (3 - 2 * f)
+        return f * (self.amp * math.sin(9.0 * zf + self.fase) + 0.6 * self.amp * math.sin(7.0 * y + 1.7 * self.fase))
 
     def z_parede(self, y):
         return math.sqrt(max(self.ric ** 2 - y * y, 0.0))
@@ -310,58 +358,66 @@ class Crista:
         proporcional à altura da parede, para a crista nunca encostar no outro lado."""
         return self.z_parede(y) * (1.0 - self.frac)
 
-    def perfil(self, a, y):
-        """Pontos do "U" (raio a) na profundidade y, já em coordenadas do mundo."""
+    def perfil(self, a, y, r_topo):
+        """Pontos do "U" (raio a) na profundidade y, já em coordenadas do mundo.
+        Os braços sobem até o raio r_topo."""
         h = CRISTA_H
         zc = self.z_ponta(y) + h
         loc = []
         for m in range(self.NP):
-            r_top = raio_capsula(self.xi - a, R_INT_DENTRO + CRISTA_EMBUTE)
-            zt = math.sqrt(max(r_top ** 2 - y * y, 0.0))
+            zt = math.sqrt(max(raio_capsula(self.xi - a, r_topo) ** 2 - y * y, 0.0))
             loc.append((-a, zt + (zc - zt) * m / self.NP))
         for k in range(self.NA + 1):
             al = -math.pi / 2 + math.pi * k / self.NA
             loc.append((a * math.sin(al), zc - a * math.cos(al)))
         for m in range(1, self.NP + 1):
-            r_top = raio_capsula(self.xi + a, R_INT_DENTRO + CRISTA_EMBUTE)
-            zt = math.sqrt(max(r_top ** 2 - y * y, 0.0))
+            zt = math.sqrt(max(raio_capsula(self.xi + a, r_topo) ** 2 - y * y, 0.0))
             loc.append((a, zc + (zt - zc) * m / self.NP))
         return [(self.xi + dx + self.onda(y, zf), y, self.s * zf) for dx, zf in loc]
 
     def ys(self):
         return [self.ric * math.sin(self.psi_e * j / self.NY) for j in range(self.NY + 1)]
 
-    def montar(self, mont):
+    def montar(self, mont, mont_eim):
+        """Casca da crista em `mont` (cristas) e o lúmen em `mont_eim` (espaço
+        intermembranas: o espaço intracristas é o mesmo compartimento, revisão E2)."""
         h, t = CRISTA_H, CRISTA_T
+        # Os dois lados do "U" sobem até a face de fora da membrana interna: na junção eles
+        # SÃO a membrana interna, e o lúmen desemboca no espaço intermembranas.
+        topo_fora = topo_lumen = R_INT_FORA
         ys = self.ys()
         npf = 2 * self.NP + self.NA + 1
         meio = self.NP + self.NA // 2
-        grades = {}
-        for nome, a, tom, esperado in (("fora", h, 1.0, (0, 0, -self.s)), ("lumen", h - t, TOM_LUMEN, (0, 0, self.s))):
+        for alvo, a, topo, esperado in ((mont, h, topo_fora, (0, 0, -self.s)), (mont_eim, h - t, topo_lumen, (0, 0, self.s))):
             pts = []
             for y in ys:
-                pts += self.perfil(a, y)
-            base = mont.vertices(pts, tom)
+                pts += self.perfil(a, y, topo)
+            base = alvo.vertices(pts, 1.0)
             faces = []
             for j in range(self.NY):
                 for p in range(npf - 1):
                     a0 = base + j * npf + p
                     faces.append((a0, a0 + npf, a0 + npf + 1, a0 + 1))
-            faces = orientar(mont.v, faces, (self.NY // 2) * (npf - 1) + meio, esperado)
-            mont.faces(faces, suave=True)
-            grades[nome] = base
-        # Face do corte (y = 0): o "U" escuro que o aluno vê na fatia
-        pf, pd = self.perfil(h, ys[0]), self.perfil(h - t, ys[0])
+            alvo.faces(orientar(alvo.v, faces, (self.NY // 2) * (npf - 1) + meio, esperado), suave=True)
+        # Face do corte (y = 0): o "U" de membrana que o aluno vê na fatia
+        pf, pd = self.perfil(h, ys[0], topo_fora), self.perfil(h - t, ys[0], topo_lumen)
         base = mont.vertices(pf + pd, TOM_CORTE)
         faces = [(base + p, base + p + 1, base + npf + p + 1, base + npf + p) for p in range(npf - 1)]
         mont.faces(orientar(mont.v, faces, meio, (0, -1, 0)), suave=False)
+        # Fatia do lúmen, na cor do intermembranas, ligada a ele pela junção
+        pl = [(x, Y_EIM, z) for x, _, z in pd]
+        bl = mont_eim.vertices(pl, 1.0)
+        mont_eim.faces(orientar(mont_eim.v, [tuple(range(bl, bl + npf))], 0, (0, -1, 0)), suave=False)
         # Fundo da crista (lá atrás, perto da parede): fecha a casca e o lúmen
-        pf, pd = self.perfil(h, ys[-1]), self.perfil(h - t, ys[-1])
+        pf, pd = self.perfil(h, ys[-1], topo_fora), self.perfil(h - t, ys[-1], topo_lumen)
         bf = mont.vertices(pf, 1.0)
-        bd = mont.vertices(pd, TOM_LUMEN)
-        f1 = orientar(mont.v, [tuple(range(bf, bf + npf))], 0, (0, 1, 0))
-        f2 = orientar(mont.v, [tuple(range(bd, bd + npf))], 0, (0, -1, 0))
-        mont.faces(f1 + f2, suave=False)
+        bd = mont_eim.vertices(pd, 1.0)
+        mont.faces(orientar(mont.v, [tuple(range(bf, bf + npf))], 0, (0, 1, 0)), suave=False)
+        mont_eim.faces(orientar(mont_eim.v, [tuple(range(bd, bd + npf))], 0, (0, -1, 0)), suave=False)
+
+    def ancora_placa(self, lado, y, zf):
+        """Ponto na face plana da crista voltada para a matriz (lado = -1 ou +1 em x)."""
+        return Vector((self.xi + lado * CRISTA_H + self.onda(y, zf), y, self.s * zf))
 
     def bloqueia(self, p, margem):
         """True se o ponto p cai na lâmina desta crista (com margem). Usado para
@@ -456,6 +512,21 @@ def tubo_fechado(mont, caminho, raio, lados=5):
     mont.faces(orientar(mont.v, faces, 0, tuple(cf - centros[0])), suave=True)
 
 
+def caixa(mont, centro, n, u, meias):
+    """Bloco orientado (8 vértices, sombreado suave: fica com cara de proteína, não de tijolo).
+    n = normal da membrana, u = direção ao longo dela; meias = meias medidas em (n, u, n × u)."""
+    n, u = Vector(n).normalized(), Vector(u).normalized()
+    w = n.cross(u)
+    c = Vector(centro)
+    pts = [tuple(c + n * a * meias[0] + u * b * meias[1] + w * d * meias[2])
+           for a in (-1, 1) for b in (-1, 1) for d in (-1, 1)]
+    base = mont.vertices(pts)
+    for q in ((0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)):
+        f = tuple(base + i for i in q)
+        cf = sum((Vector(mont.v[k]) for k in f), Vector()) / 4
+        mont.faces(orientar(mont.v, [f], 0, tuple(cf - c)), suave=True)
+
+
 # ---------------------------------------------------------------------------
 # Materiais (PBR simples, metalness 0, cores da paleta convertidas para linear)
 # ---------------------------------------------------------------------------
@@ -537,8 +608,19 @@ def construir():
         "ribossomos": material("ribossomos", SCI["ribossomo"], 0.7),
         # ATP sintase: a cor da família energia, clareada para se separar da crista
         "atp_sintase": material("atp_sintase", misturar_hex(cor, SCI["branco"], 0.32), 0.55),
+        # cadeia transportadora: laranja-dourado (energia puxada para o amarelo-ouro do guia),
+        # distinto do salmão da ATP sintase e do creme dos ribossomos
+        "cadeia_transportadora": material("cadeia_transportadora", misturar_hex(cor, "#F7C13B", 0.65), 0.6),
     }
     objs = {}
+
+    # Cristas primeiro: a membrana interna precisa saber onde abrir as junções
+    xs, meios_dna = posicoes_cristas()
+    cristas = []
+    for i, xi in enumerate(xs):
+        s = 1 if i % 2 == 0 else -1
+        cristas.append(Crista(xi, s, frac=rng.uniform(1.12, 1.3), fase=rng.uniform(0, 6.28), amp=rng.uniform(0.006, 0.012)))
+    aberturas = [c.abertura() for c in cristas]
 
     # 1. Membrana externa: lisa, translúcida, com a fatia escurecida
     m = Montador()
@@ -547,28 +629,22 @@ def construir():
     faixa_corte(m, R_EXT, R_EXT_DENTRO)
     objs["membrana_externa"] = criar_objeto("membrana_externa", m, mats["membrana_externa"], "Membrana externa", usa_tom=True)
 
-    # 2. Espaço intermembranas: a fatia entre as duas membranas, um fio atrás do plano do corte
-    m = Montador()
-    faixa_corte(m, R_EXT_DENTRO, R_INT_FORA, y=0.0015, tom=1.0)
-    objs["espaco_intermembranas"] = criar_objeto("espaco_intermembranas", m, mats["espaco_intermembranas"], "Espaço intermembranas")
-
-    # 3. Membrana interna (a parte junto à parede; as dobras ficam em "cristas")
-    m = Montador()
-    superficie_meia_capsula(m, R_INT_FORA, para_fora=True)
-    superficie_meia_capsula(m, R_INT_DENTRO, para_fora=False)
-    faixa_corte(m, R_INT_FORA, R_INT_DENTRO)
-    objs["membrana_interna"] = criar_objeto("membrana_interna", m, mats["membrana_interna"], "Membrana interna", usa_tom=True)
-
-    # 4. Cristas lamelares, alternando em cima e embaixo
-    xs, meios_dna = posicoes_cristas()
-    cristas = []
-    for i, xi in enumerate(xs):
-        s = 1 if i % 2 == 0 else -1
-        cristas.append(Crista(xi, s, frac=rng.uniform(1.12, 1.3), fase=rng.uniform(0, 6.28), amp=rng.uniform(0.006, 0.012)))
-    m = Montador()
+    # 2 e 4. Cristas lamelares, alternando em cima e embaixo. O lúmen de cada crista vai para
+    #    o objeto do espaço intermembranas: é o mesmo compartimento (revisão E2).
+    m, m_eim = Montador(), Montador()
+    faixa_corte(m_eim, R_EXT_DENTRO, R_INT_FORA, y=Y_EIM, tom=1.0)   # fatia entre as membranas
     for c in cristas:
-        c.montar(m)
+        c.montar(m, m_eim)
+    objs["espaco_intermembranas"] = criar_objeto("espaco_intermembranas", m_eim, mats["espaco_intermembranas"], "Espaço intermembranas")
     objs["cristas"] = criar_objeto("cristas", m, mats["cristas"], "Cristas", usa_tom=True)
+
+    # 3. Membrana interna (a parte junto à parede), aberta sob cada crista perto do corte
+    m = Montador()
+    superficie_meia_capsula(m, R_INT_FORA, para_fora=True, aberturas=aberturas)
+    superficie_meia_capsula(m, R_INT_DENTRO, para_fora=False, aberturas=aberturas)
+    faixa_corte(m, R_INT_FORA, R_INT_DENTRO, aberturas=aberturas)
+    paredes_juncao(m, aberturas)
+    objs["membrana_interna"] = criar_objeto("membrana_interna", m, mats["membrana_interna"], "Membrana interna", usa_tom=True)
 
     # 5. Matriz: o "forro" interno, logo abaixo da membrana interna. Fica atrás de tudo,
     #    então clicar no fundo do interior escolhe a matriz sem tapar cristas e grânulos.
@@ -611,7 +687,7 @@ def construir():
     cabecas = []
     for c in cristas:
         y = 0.022
-        while y < min(0.27, c.y_e - 0.03):
+        while y < min(ATP_Y_MAX, c.y_e - 0.03):
             zc = c.z_ponta(y) + CRISTA_H
             for al in (-0.75, 0.75):
                 al += rng.uniform(-0.06, 0.06)
@@ -625,12 +701,43 @@ def construir():
             y += 0.034 + rng.uniform(-0.003, 0.003)
     objs["atp_sintase"] = criar_objeto("atp_sintase", m, mats["atp_sintase"], "ATP sintase")
 
+    # 7b. Cadeia transportadora de elétrons (revisão E3): complexos I, II, III e IV
+    #    nas faces planas das cristas, longe da borda curva (onde ficam as ATP sintases)
+    #    e acima da faixa em que as cristas vizinhas se intercalam. Em fileira ao longo da
+    #    crista, na ordem do livro: I (em "L", com o braço na matriz), II (pequeno, do lado
+    #    da matriz), III (dímero) e IV.
+    m = Montador()
+    eixo_u = Vector((0.0, 1.0, 0.0))   # ao longo da crista, paralelo ao corte
+    for c in cristas:
+        y0 = 0.032
+        alto = c.z_parede(y0 + 0.1) - 0.05
+        niveis = [z for z in (0.205, 0.26) if z + 0.012 < alto]
+        for lado in (-1, 1):
+            n = Vector((lado, 0.0, 0.0))
+            for zf in niveis:
+                zf += rng.uniform(-0.008, 0.008)
+                y = y0 + rng.uniform(-0.004, 0.006)
+                comp = (
+                    (0.000, 0.002, (0.010, 0.022, 0.011)),   # complexo I, parte na membrana
+                    (-0.012, 0.026, (0.016, 0.008, 0.009)),  # complexo I, braço na matriz
+                    (0.040, 0.008, (0.008, 0.008, 0.008)),   # complexo II
+                    (0.068, 0.004, (0.012, 0.016, 0.011)),   # complexo III
+                    (0.098, 0.003, (0.010, 0.011, 0.010)),   # complexo IV
+                )
+                for du, dn, meias in comp:
+                    centro = c.ancora_placa(lado, y + du, zf) + n * dn
+                    caixa(m, centro, n, eixo_u, meias)
+                    cabecas.append(centro)   # obstáculo para os ribossomos
+    ob = criar_objeto("cadeia_transportadora", m, mats["cadeia_transportadora"], "Cadeia transportadora de elétrons")
+    ob["componentes"] = "Complexos I, II, III e IV"
+    objs["cadeia_transportadora"] = ob
+
     # 8. Ribossomos mitocondriais: grânulos de duas subunidades, espalhados na matriz,
     #    sem atravessar cristas, DNA, ATP sintases nem uns aos outros.
     m = Montador()
     ribos = []
     tentativas = 0
-    while len(ribos) < 80 and tentativas < 60000:
+    while len(ribos) < N_RIBOSSOMOS and tentativas < 60000:
         tentativas += 1
         x = rng.uniform(-(MEIO_CILINDRO + 0.26), MEIO_CILINDRO + 0.26)
         rmax = raio_capsula(x, R_MATRIZ) - 0.035
