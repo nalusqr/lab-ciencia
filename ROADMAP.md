@@ -9,11 +9,14 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 |---|---|---|
 | **Atlas**, líder de equipe / PM | Planeja, distribui, revisa, integra, publica as prévias, sobe para o GitHub, chama a Nalu só em bloqueio ou conflito grave | `ROADMAP.md` |
 | **Aurelius**, engenheiro sênior fullstack | Implementa módulos, 3D (three.js / React Three Fiber), testes com capturas | `site/<módulo>/` |
+| **Prometeu**, engenheiro fullstack sênior (18 anos; React, Node/Next, Java, APIs, CI) | Ajuda o Aurelius: bundle e infraestrutura do 3D, carregamento de modelos .glb, testes automáticos | `site/celula/fonte/entry.js`, `site/celula/fonte/src/e_modelos.js`, `site/celula/vendor/`, `site/assets/modelos/*.glb.js`, `testes/` |
 | **Apolo**, diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
 | **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
 | **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 
 ## Regras de trabalho
+
+- Aurelius e Prometeu não editam o mesmo arquivo. Na Célula, o Aurelius fica com `head.html`, `data.js` e `src/a_` a `src/d_`; o Prometeu, com `entry.js`, `src/e_modelos.js`, o bundle e `testes/`. Para ligar uma coisa na outra, combinam pelo PM.
 
 - Cada pessoa da equipe só edita os arquivos da sua coluna "Onde escreve". Mudança em arquivo de outro dono vira pedido ao PM.
 - O professor não edita o código: escreve as correções, e o engenheiro aplica.
@@ -51,6 +54,10 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 ### 6. Estilo "Campo escuro" escolhido pela Nalu (2026-11-14)
 - [x] Guia em `docs/GUIA-DE-ESTILO.md`.
 - [ ] Aplicar na Célula; depois em `site/base.css` e nos módulos 01 a 04.
+
+### 8. Modelos do Blender (Íris + Prometeu) · em andamento
+
+A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por duplo clique (file://), e nesse modo o navegador bloqueia o fetch de .glb. Por isso cada modelo também vira um `.glb.js` embutido em base64, e o Prometeu faz o carregador com recurso de volta para a versão procedural.
 
 ### 7. Pendências da revisão (decidir depois)
 - Fusão do arsênio sob pressão: 28 ou ~36 atm (falta fonte); carbono sem número.

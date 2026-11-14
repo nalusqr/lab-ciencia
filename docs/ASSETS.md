@@ -10,6 +10,8 @@ Regras de origem: guia de estilo, seções 2.3 (paleta científica), 5 (3D) e 6 
 | Página de conferência | `site/assets/icons/preview.html` |
 | Gerador dos ícones, sprite e prévia | `site/assets/fonte/gerar-icones.py` |
 | Biblioteca de materiais 3D | `site/assets/materials.js` |
+| Modelos 3D (.glb, .blend e prévia) | `site/assets/modelos/` |
+| Geradores dos modelos 3D (Blender, `bpy`) | `site/assets/modelos/fonte/*.py` |
 | Capturas de conferência | `prints/assets/icones.png`, `prints/assets/materiais.png` (pasta do projeto) |
 
 Origem e licença: todos são criação da equipe do LAB, mesma licença do site. As fontes (Atkinson Hyperlegible Next, Space Grotesk, JetBrains Mono) aparecem só na página de conferência, carregadas do sistema. Nenhum arquivo de fonte foi incluído aqui.
@@ -163,8 +165,55 @@ Conferido numa cena de teste (three 0.187, Chromium): veja `prints/assets/materi
 
 ---
 
-## 5. Pendências e pontos para o PM
+## 5. Modelos 3D (Blender)
+
+Piloto de modelagem: a mitocôndria. Cada modelo sai de um script Python que usa o `bpy` (Blender 5.3 como módulo), com semente fixa: rodar de novo dá um arquivo idêntico, byte a byte. Nada de terceiros: geometria, cores, luzes e fundo da prévia são gerados pelo script.
+
+### 5.1 Mitocôndria (`mitocondria`)
+
+| Arquivo | Para quê |
+|---|---|
+| `site/assets/modelos/mitocondria.glb` | Modelo do módulo Célula (three 0.187 / R3F). glTF binário, **sem Draco**, sem texturas e sem UV. 1,19 MB, 58 168 triângulos |
+| `site/assets/modelos/mitocondria.blend` | A mesma cena, com câmera e as três luzes do guia, para abrir no Blender |
+| `site/assets/modelos/previa-mitocondria.png` | Prévia 1200 × 800 (Cycles, AgX) sobre o degradê do palco (`#161D33` → `#0B0F1C`) |
+| `site/assets/modelos/fonte/mitocondria.py` | Gerador. `python3 site/assets/modelos/fonte/mitocondria.py` (cerca de 1 min com a prévia; `--sem-previa` leva 1 s; `--amostras N` muda as amostras) |
+
+**Orientação e escala.** 1 unidade = 1 µm. Eixo maior em X (2,2 µm de comprimento, 0,84 µm de diâmetro). Corte longitudinal no plano z = 0 do glTF: a metade aberta olha para **+Z**, onde fica a câmera padrão do three.js. Caixa: x de −1,09 a 1,10, y de −0,45 a 0,43, z de −0,44 a 0.
+
+**Objetos** (todos filhos do nó `mitocondria`; o nome com acento vai em `userData.rotulo`, vindo do `extras` do glTF):
+
+| Nome do mesh | `rotulo` | Triângulos | Cor (sRGB) | Material |
+|---|---|---|---|---|
+| `membrana_externa` | Membrana externa | 7 712 | `#F25C3B` (energia) | rugosidade 0,45, `opacity` 0,5 (`alphaMode` BLEND), face do corte escurecida |
+| `espaco_intermembranas` | Espaço intermembranas | 192 | `#44292F` (energia + `--panel`) | faixa plana só na fatia, 1,5 nm atrás do plano do corte |
+| `membrana_interna` | Membrana interna | 7 712 | `#F25C3B` | opaca, rugosidade 0,6, face do corte escurecida |
+| `cristas` | Cristas | 7 368 | `#F25C3B` | igual à membrana interna (é a mesma membrana); lúmen e corte escurecidos |
+| `matriz` | Matriz mitocondrial | 3 760 | `#622F3C` (energia + ameixa do citoplasma) | "forro" interno, rugosidade 0,85 |
+| `dna_mitocondrial` | DNA mitocondrial | 5 760 | `#9A6BFF` (informação genética) | rugosidade 0,5 |
+| `ribossomos` | Ribossomos | 8 000 | `#FFE1A6` (ribossomos) | rugosidade 0,7 |
+| `atp_sintase` | ATP sintase | 17 664 | `#F6907A` (energia clareada 32%) | rugosidade 0,55 |
+
+Todos com `metalness` 0, sem emissivo e `doubleSided: false`.
+
+**Face do corte.** `membrana_externa`, `membrana_interna` e `cristas` têm `COLOR_0` (cor de vértice): 1 na superfície, 0,62 na fatia (o mesmo fator do `corte()` do `materials.js`) e 0,48 no lúmen das cristas. O `GLTFLoader` liga `vertexColors` sozinho. Se o engenheiro trocar o material por `MAT.membrana()`/`MAT.organela()`, é só pôr `vertexColors: true` para manter o corte escurecido.
+
+**Notas para o engenheiro**
+- Clique: a `matriz` é só o forro de trás, não um volume, então não tapa cristas e grânulos no raio. `ribossomos`, `atp_sintase` e `dna_mitocondrial` são um mesh cada (as peças pequenas estão juntas), e o rótulo vale para o grupo.
+- A `membrana_externa` é transparente (`depthWrite` desligado pelo loader). Ela tem as duas faces (de fora e de dentro) como geometria, então não precisa de `DoubleSide`.
+- O tamanho cabe sem Draco nem quantização. Se um dia precisar cortar, os pirulitos da `atp_sintase` e os ribossomos são as peças mais caras (44% dos triângulos).
+- Teste de carga feito em Node com `three@0.187.0` e `GLTFLoader.parse`, fora do repositório: 8 meshes, 58 168 triângulos, cores e `rotulo` corretos.
+
+**Decisões de Biologia (para o professor revisar)**
+- Cristas no modelo lamelar (dobras em placa, perpendiculares ao eixo), alternando em cima e embaixo, como nas micrografias de células animais. Cada crista é um "U" de duas membranas com o espaço intracristas no meio. As junções das cristas (as aberturas estreitas para o espaço intermembranas) não estão modeladas como tubos.
+- Membrana interna e cristas na mesma cor, porque são a mesma membrana. A externa é lisa e translúcida.
+- Espessuras exageradas cerca de 2,5 vezes (membranas de 18 nm no modelo contra ~7 nm reais), senão some no celular. Ribossomos (≈ 40 nm) e cabeças de ATP sintase (≈ 22 nm) seguem o mesmo exagero.
+- ATP sintase em fileiras de dímeros na borda curva das cristas, com a cabeça F1 na matriz e a base na membrana. Só existe nas cristas, numa faixa de até 0,27 µm a partir do corte, para não pesar.
+- DNA mitocondrial: três anéis com duas fitas enroladas, nos vãos entre cristas. Não está em escala: o mtDNA humano esticado tem cerca de 5 µm, e na célula fica compactado em nucleoides.
+- Ribossomos mitocondriais com duas subunidades, menores que a organela e soltos na matriz.
+
+## 6. Pendências e pontos para o PM
 
 - O guia (seção 6) fala em `site/assets/icones/`; a tarefa pediu `site/assets/icons/`. Usei `icons/`. Se o diretor de arte preferir o nome em português, é só renomear a pasta e os caminhos desta página.
 - Miniaturas renderizadas dos tipos de célula (WebP 80/120 px, seção 6 do guia) ainda não existem: dependem dos modelos 3D finais do engenheiro.
 - Faltam no guia, se forem necessários depois: ícones de busca, tema claro/escuro e tela cheia.
+- Modelos 3D: o próximo passo do piloto é a célula animal completa (ver seção 5). Falta o professor revisar as decisões de Biologia da mitocôndria.
