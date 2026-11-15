@@ -89,7 +89,7 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 
 ## Próxima etapa (decidida pela Nalu em 2026-11-15)
 
-A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente, sem rótulo "em breve" (pedido da Nalu); as que ainda não têm conteúdo só não terão módulos por enquanto. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
+A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente. Desde 2026-11-15 (rodada de design aprovada pela Nalu), as que ainda não têm conteúdo mostram o selo "Em breve" no cartão do centro, e o botão leva ao aviso da faixa; as que têm conteúdo mostram quantos módulos já estão no ar. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
 
 ## Ementa da Nalu (fila de etapas, uma por vez)
 
@@ -103,7 +103,7 @@ Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N
 6. Histologia: características gerais e fisiologia dos tecidos epiteliais, conjuntivos, musculares e nervoso. Módulo novo (site/histologia/).
 7. Taxonomia e nomenclatura: publicada (site/taxonomia/, 12 tópicos, 2026-11-15).
 8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); roteiro pronto (docs/revisao-biologia/virus-roteiro.md, 13 tópicos, no branch WIP); já existe o tópico #teoria/virus na Morfofisiologia.
-9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Provavelmente um módulo por reino, ou um módulo com uma seção por reino.
+9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Decisão da Nalu (2026-11-15): dois módulos. "Microrganismos e fungos" (site/microrganismos/: Monera, Protoctista e Fungi, 7 tópicos) e "Plantas e animais" (site/plantas-animais/: 13 tópicos). Roteiro pronto (docs/revisao-biologia/seres-vivos-roteiro.md, 20 tópicos, no branch WIP); as rotas internas ficam como no roteiro.
 10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor.
 11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
 12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo.
