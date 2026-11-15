@@ -1,6 +1,7 @@
 /* LAB, fundo animado da página inicial (dono: Leo). Código e desenho próprios, sem dependências; abre por file://.
    Ideia "campo escuro": como amostras sob a lente do microscópio, luzes azuladas grandes e difusas derivam devagar,
    dois feixes suaves descem do alto e partículas finas sobem, piscando de leve. Tudo com pouco contraste, atrás do texto.
+   - Abaixo da capa, o fundo fica com metade da opacidade, para a lista de módulos ler melhor.
    - prefers-reduced-motion: anda bem mais devagar (35% da velocidade), sem parar.
    - Aba oculta: o laço para (requestAnimationFrame cancelado) e volta quando a aba aparece.
    - Leve: no máximo cerca de 30 quadros por segundo, densidade de pixels até 1,5 e partículas contadas pela área. */
@@ -20,11 +21,15 @@
   var W = 0, H = 0, raf = 0, last = 0, t = 0, motes = [];
   var TAU = Math.PI * 2;
 
+  // Ajustes guiados pela skill UI/UX Pro Max (estilo "Aurora UI" e regras de animação e contraste):
+  // - brilho máximo das luzes limitado para o texto suave (--dim) manter contraste de pelo menos 4,5:1 em qualquer quadro;
+  // - ciclos lentos (cerca de 10 a 20 s) e piscar das partículas mais calmo, para o fundo não disputar atenção com a roda;
+  // - abaixo da capa (lista de módulos), o fundo fica mais apagado, para a leitura.
   // luzes difusas: posição base (fração da tela), raio (fração do lado maior), cor, alfa, frequências e amplitudes
   var LUZ = [
-    { x: .74, y: .18, r: .58, c: '70,104,200', a: .30, fx: .085, fy: .068, ax: .16, ay: .12, p: 0 },
-    { x: .16, y: .42, r: .46, c: '42,140,168', a: .18, fx: .064, fy: .096, ax: .14, ay: .16, p: 1.7 },
-    { x: .52, y: .86, r: .52, c: '104,84,196', a: .18, fx: .052, fy: .076, ax: .18, ay: .10, p: 3.1 }
+    { x: .74, y: .18, r: .58, c: '70,104,200', a: .23, fx: .085, fy: .068, ax: .16, ay: .12, p: 0 },
+    { x: .16, y: .42, r: .46, c: '42,140,168', a: .15, fx: .064, fy: .096, ax: .14, ay: .16, p: 1.7 },
+    { x: .52, y: .86, r: .52, c: '104,84,196', a: .15, fx: .052, fy: .076, ax: .18, ay: .10, p: 3.1 }
   ];
 
   // gerador simples e fixo, para o quadro parado ser sempre o mesmo
@@ -37,7 +42,7 @@
       x: rnd() * W, y: novo ? H + 10 : rnd() * H,
       r: grande ? 2.2 + rnd() * 2.6 : .5 + rnd() * 1.1,
       v: 14 + rnd() * 30, dr: 8 + rnd() * 18, f: .12 + rnd() * .25, p: rnd() * TAU,
-      a: grande ? .06 + rnd() * .06 : .18 + rnd() * .32, tw: 1 + rnd() * 2.5, g: grande
+      a: grande ? .06 + rnd() * .06 : .18 + rnd() * .32, tw: .6 + rnd() * 1.2, g: grande
     };
   }
 
@@ -60,7 +65,7 @@
       L = LUZ[i];
       cx = (L.x + Math.sin(t * L.fx * TAU + L.p) * L.ax) * W;
       cy = (L.y + Math.cos(t * L.fy * TAU + L.p) * L.ay) * H;
-      r = L.r * M * (1 + .12 * Math.sin(t * .15 * TAU + L.p));
+      r = L.r * M * (1 + .12 * Math.sin(t * .1 * TAU + L.p));   // respiração em ciclo de 10 s
       g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
       g.addColorStop(0, 'rgba(' + L.c + ',' + L.a + ')');
       g.addColorStop(.45, 'rgba(' + L.c + ',' + (L.a * .4) + ')');
@@ -117,7 +122,12 @@
     if (!document.hidden) raf = requestAnimationFrame(quadro);
   }
 
-  medir();
+  // abaixo da capa, o fundo apaga pela metade (a transição de opacidade fica no home.css)
+  var baixo = null;
+  function rolou() { var b = scrollY > H * .6; if (b !== baixo) { baixo = b; doc.classList.toggle('fundo-baixo', b); } }
+  addEventListener('scroll', rolou, { passive: true });
+
+  medir(); rolou();
   var espera = 0;
   addEventListener('resize', function () {
     clearTimeout(espera);
