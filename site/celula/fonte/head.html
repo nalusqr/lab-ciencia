@@ -108,6 +108,17 @@
   #view{height:clamp(460px,calc(100svh - 286px),820px)}
 }
 </style>
+<style>
+/* ?embed=1: vitrine da página inicial (num iframe). Só o palco, sem interface e com fundo transparente. */
+html.embed,html.embed body{background:transparent;min-height:0;overflow:hidden}
+html.embed .wrap{max-width:none;padding:0;margin:0}
+html.embed .wrap>*:not(#view){display:none!important}
+html.embed #view{position:fixed;inset:0;height:auto;min-height:0;border:0;border-radius:0;background:transparent}
+html.embed #view>*:not(#stage){display:none!important}
+html.embed #view.fade #stage{animation:none}
+html.embed #stage canvas{pointer-events:none}
+</style>
+<script>if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add('embed')</script>
 </head>
 <body>
 <!--SPRITE-->
