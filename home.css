@@ -1,0 +1,193 @@
+/* LAB, página inicial (dono: Leo). Estilo "Campo escuro", docs/GUIA-DE-ESTILO.md.
+   Usa os tokens de base.css. Espaços só da escala 4, 8, 12, 16, 24, 32, 48, 64.
+   Movimento: entrada orquestrada uma vez por sessão (home.js); com prefers-reduced-motion nada se move. */
+
+:root{
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --t-ui:150ms;                     /* retorno de interface (guia: 120 a 200 ms) */
+  --t-in:560ms;                     /* entrada de bloco */
+  --barra-h:64px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra-h) + 16px)}
+body{background:radial-gradient(90% 55% at 72% 18%,var(--stage-in) 0%,var(--bg) 62%) fixed}
+::selection{background:#3A4A78;color:#fff}
+
+/* Pular para o conteúdo: aparece só com o teclado */
+.pular{position:absolute;left:16px;top:-64px;z-index:100;padding:12px 16px;border-radius:8px;background:var(--panel-2);color:var(--txt);font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--line-strong);transition:top var(--t-ui)}
+.pular:focus{top:12px}
+
+/* ---------- Barra do topo (fica presa e ganha vidro ao rolar) ---------- */
+.barra{position:sticky;top:0;z-index:50;border-bottom:1px solid transparent;transition:background var(--t-ui),border-color var(--t-ui),-webkit-backdrop-filter var(--t-ui),backdrop-filter var(--t-ui)}
+.barra.rolou{background:rgba(11,15,28,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom-color:var(--line)}
+.barra-in{max-width:1100px;margin:0 auto;padding:0 24px;height:var(--barra-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.marca{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 8px 0 4px;margin-left:-4px;border-radius:8px;color:var(--txt);text-decoration:none;font-family:var(--f-title);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.marca-ic{width:24px;height:24px}
+.atalhos{display:flex;gap:4px}
+.atalhos a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:var(--dim);text-decoration:none;font-size:14px;font-weight:600;line-height:1.3;white-space:nowrap;transition:background var(--t-ui),color var(--t-ui)}
+.atalhos a:hover{background:var(--panel-2);color:var(--txt)}
+.atalhos a.on{color:var(--txt);box-shadow:inset 0 -2px 0 var(--amber)}
+@media(max-width:699px){.barra-in{padding:0 16px;gap:8px}.atalhos a{padding:0 8px}}
+
+/* ---------- Botões (complementa .btn de base.css) ---------- */
+.home .btn{min-height:48px;padding:12px 24px;font-size:15px;border-radius:8px;transition:background var(--t-ui),border-color var(--t-ui),color var(--t-ui),filter var(--t-ui)}
+.home .btn:hover{border-color:var(--txt)}
+.home .btn.primary:hover{border-color:var(--amber);filter:brightness(1.08)}
+.home .btn:active,.home .btn.primary:active{filter:brightness(.96);transition-duration:60ms}
+.home .btn:focus-visible{outline-offset:3px}
+
+/* ---------- Capa ---------- */
+.home{padding-top:0}
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:center;padding:48px 0 32px}
+.hero-txt{display:flex;flex-direction:column;align-items:flex-start}
+.sobre{margin-bottom:16px}
+.sobre .badge{padding:4px 12px;border-radius:999px;font-size:13px;color:var(--dim);background:rgba(27,36,64,.6)}
+.hero h1{font-family:var(--f-title);font-size:48px;font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--txt);text-wrap:balance;margin-bottom:24px}
+.hero .lead{font-size:18px;line-height:1.6;color:#C3CCE0;max-width:46ch;margin:0 0 32px}
+.acoes{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px}
+.fatos{display:flex;gap:32px;padding-top:24px;border-top:1px solid var(--line);width:100%}
+.fatos dt{font-size:13px;line-height:1.5;color:var(--dim)}
+.fatos dd{font-family:var(--f-title);font-size:24px;font-weight:600;line-height:1.2;color:var(--txt);font-variant-numeric:tabular-nums}
+
+/* Palco da vitrine 3D */
+.palco{position:relative;margin:0;aspect-ratio:1120/880;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(62% 62% at 50% 48%,var(--stage-in),var(--bg) 82%);isolation:isolate;transition:border-color var(--t-ui)}
+.palco .poster,.palco .vitrine{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.palco .poster{object-fit:contain;transition:opacity 600ms var(--ease-out)}
+.palco .vitrine{opacity:0;background:transparent;pointer-events:none;transition:opacity 600ms var(--ease-out)}
+.palco.pronta .vitrine{opacity:1}
+.palco.pronta .poster{opacity:0}
+.palco-link{position:absolute;inset:0;z-index:2;border-radius:20px}
+.palco-link:focus-visible{outline-offset:-4px}
+.palco .pill{z-index:3;display:flex;flex-direction:column;gap:0;max-width:calc(100% - 32px)}
+.palco .pill b{font-weight:600}
+.palco-nota{font-size:12.5px}
+.palco-cta{position:absolute;z-index:3;right:16px;bottom:16px;pointer-events:none;display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border-radius:8px;background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line-strong);color:var(--txt);font-size:14px;font-weight:600;line-height:1.3;transition:background var(--t-ui),border-color var(--t-ui)}
+.palco:hover{border-color:var(--line-strong)}
+.palco:hover .palco-cta,.palco-link:focus-visible~.palco-cta{background:var(--panel-2);border-color:var(--txt)}
+.palco:active .palco-cta{filter:brightness(.96)}
+
+@media(max-width:959px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:32px;padding:24px 0 16px}
+  .hero h1{font-size:40px}
+  .palco{max-width:640px;width:100%;justify-self:center}
+}
+@media(max-width:699px){
+  .hero{padding:16px 0 8px;gap:24px}
+  .hero h1{font-size:34px;margin-bottom:16px}
+  .hero .lead{font-size:16px;margin-bottom:24px}
+  .acoes{width:100%;margin-bottom:24px}
+  .acoes .btn{flex:1 1 100%}
+  .fatos{display:none}
+  .palco{border-radius:12px}
+  .palco-link{border-radius:12px}
+  .palco-nota{display:none}
+  .palco-cta{right:8px;top:8px;bottom:auto;min-height:44px}
+}
+
+/* ---------- Seções ---------- */
+.secao{padding:48px 0}
+.secao-cab{max-width:68ch;margin-bottom:32px}
+.secao-cab h2{font-family:var(--f-title);font-size:32px;font-weight:700;line-height:1.1;letter-spacing:-.01em;margin-bottom:12px}
+.secao-cab p{font-size:16px;line-height:1.6;color:var(--dim)}
+@media(max-width:699px){.secao{padding:32px 0}.secao-cab{margin-bottom:24px}.secao-cab h2{font-size:26px}.secao-cab p{font-size:15px}}
+
+/* ---------- Trilha (formato gerado por scripts/abas.py; ver comentário no HTML) ---------- */
+.trilha{list-style:none;position:relative;display:flex;flex-direction:column;gap:16px;--no:40px}
+/* o trilho: linha que liga os números, desenhada de cima para baixo na entrada */
+.trilha::before{content:'';position:absolute;left:calc(var(--no) / 2 - 1px);top:24px;bottom:24px;width:2px;border-radius:2px;background:linear-gradient(var(--line-strong),var(--line) 85%);transform-origin:top}
+.etapa{position:relative;padding-left:calc(var(--no) + 24px)}
+.etapa .no{position:absolute;left:0;top:20px;width:var(--no);height:var(--no);display:grid;place-items:center;border-radius:50%;background:var(--bg);border:2px solid var(--line-strong);font-family:var(--f-title);font-size:17px;font-weight:600;color:var(--txt);font-variant-numeric:tabular-nums;transition:background var(--t-ui),border-color var(--t-ui),color var(--t-ui)}
+.etapa.breve .no{border-style:dashed;border-color:var(--line-strong);color:var(--dim)}
+.etapa.pronta:hover .no,.etapa.pronta:focus-within .no{background:var(--panel-2);border-color:var(--txt)}
+.etapa.inicio .no{border-color:var(--amber);color:var(--amber)}
+
+.passo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);grid-template-areas:"meta temas" "h3 temas" "p temas";column-gap:32px;align-items:start;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--txt);text-decoration:none;transition:background var(--t-ui),border-color var(--t-ui)}
+.passo .meta{grid-area:meta;display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;line-height:1.5;color:var(--dim)}
+.passo .meta .ico{width:24px;height:24px;color:var(--txt)}
+.passo h3{grid-area:h3;font-family:var(--f-title);font-size:24px;font-weight:600;line-height:1.25;margin:8px 0}
+.passo p{grid-area:p;font-size:15px;line-height:1.6;color:var(--dim);max-width:60ch}
+.temas{grid-area:temas;align-self:center;list-style:none;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.temas li{font-size:13px;line-height:1.5;padding:4px 8px;border-radius:4px;border:1px solid var(--line);color:#C3CCE0;background:rgba(11,15,28,.35);white-space:nowrap}
+a.passo:hover{background:var(--panel-2);border-color:var(--line-strong)}
+a.passo:hover .temas li{border-color:var(--line-strong)}
+a.passo:active{filter:brightness(.96)}
+a.passo:focus-visible{outline-offset:3px}
+/* "Em breve": mesmo desenho, mais quieto (borda tracejada), sem hover; o texto continua com contraste AA */
+.etapa.breve .passo{background:rgba(19,26,43,.45);border-style:dashed}
+.etapa.breve .passo h3{color:#C3CCE0}
+.etapa.breve .passo .meta .ico{color:var(--dim)}
+.etapa.breve .temas li{background:transparent}
+.badge.breve{background:transparent;border-color:var(--line-strong);color:var(--dim)}
+.badge.new{background:var(--panel-2);border-color:var(--line-strong);color:var(--txt);font-weight:600}
+.etapa.inicio .passo{border-color:var(--line-strong)}
+.comece{display:none}
+.etapa.inicio .comece{display:inline-flex;color:var(--txt);font-weight:600}
+
+@media(max-width:959px){
+  .passo{grid-template-columns:minmax(0,1fr);grid-template-areas:"meta" "h3" "p" "temas"}
+  .temas{justify-content:flex-start;margin-top:16px}
+}
+@media(max-width:699px){
+  .trilha{--no:32px;gap:12px}
+  .trilha::before{top:20px;bottom:20px}
+  .etapa{padding-left:calc(var(--no) + 12px)}
+  .etapa .no{top:16px;font-size:15px}
+  .passo{padding:16px}
+  .passo h3{font-size:21px}
+  .temas{gap:4px;margin-top:12px}
+  .temas li{font-size:12.5px;white-space:normal}
+}
+
+/* Diorama 3D no card (piloto: Biologia molecular). Entra por home.js; sem o arquivo, o card fica como os outros. */
+.diorama{grid-area:img;display:block;align-self:center;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 80%);border:1px solid var(--line)}
+.diorama img{display:block;width:100%;height:100%;object-fit:contain;transform:scale(1.18);opacity:0;transition:opacity 400ms var(--ease-out)}
+.diorama.carregou img{opacity:1}
+.passo.com-diorama{grid-template-columns:176px minmax(0,1fr) minmax(0,.8fr);grid-template-areas:"img meta temas" "img h3 temas" "img p temas";column-gap:24px}
+a.passo:hover .diorama,.etapa.breve .diorama{border-color:var(--line-strong)}
+@media(max-width:959px){
+  .passo.com-diorama{grid-template-columns:160px minmax(0,1fr);grid-template-areas:"img meta" "img h3" "img p" "img temas"}
+}
+@media(max-width:699px){
+  .passo.com-diorama{grid-template-columns:minmax(0,1fr);grid-template-areas:"img" "meta" "h3" "p" "temas"}
+  .diorama{margin-bottom:16px;aspect-ratio:16/10}
+}
+
+/* ---------- Para consultar ---------- */
+.apoio{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.ref{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--txt);text-decoration:none;transition:background var(--t-ui),border-color var(--t-ui)}
+.ref>.ico{width:48px;height:48px;padding:12px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line);color:var(--dim);transition:color var(--t-ui),border-color var(--t-ui),background var(--t-ui)}
+.ref>span{display:flex;flex-direction:column;gap:4px}
+.ref b{font-family:var(--f-title);font-size:18px;font-weight:600;line-height:1.3}
+.ref small{font-size:14px;line-height:1.5;color:var(--dim)}
+.ref:hover{background:var(--panel-2);border-color:var(--line-strong)}
+.ref:hover>.ico{color:var(--txt);border-color:var(--line-strong);background:var(--bg)}
+.ref:active{filter:brightness(.96)}
+.ref:focus-visible{outline-offset:3px}
+@media(max-width:959px){.apoio{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:699px){
+  .apoio{grid-template-columns:minmax(0,1fr);gap:8px}
+  .ref{flex-direction:row;align-items:center;gap:16px;padding:16px}
+  .ref b{font-size:17px}
+  .ref small{font-size:13px}
+}
+
+/* ---------- Rodapé ---------- */
+.rodape{margin-top:16px;padding:24px 0 48px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.rodape p{font-size:13px;line-height:1.5;color:var(--dim);max-width:90ch}
+
+/* ---------- Entrada orquestrada (só com JS, só uma vez por sessão, nunca com movimento reduzido) ----------
+   .e = bloco da capa; --i = sua posição na fila. home.js põe .entrou no <html> no primeiro quadro. */
+html.js:not(.sem-entrada) .e{opacity:0;transform:translateY(12px)}
+html.js:not(.sem-entrada) .palco.e{transform:scale(.98)}
+html.js.entrou .e{opacity:1;transform:none;transition:opacity var(--t-in) var(--ease-out),transform var(--t-in) var(--ease-out);transition-delay:calc(var(--i) * 80ms)}
+/* trilha: o trilho se desenha e as etapas chegam em sequência quando a seção aparece na tela */
+html.js:not(.sem-entrada) .trilha:not(.vista)::before{transform:scaleY(0)}
+html.js:not(.sem-entrada) .trilha:not(.vista)>.etapa,html.js:not(.sem-entrada) .apoio:not(.vista)>.ref{opacity:0;transform:translateY(12px)}
+.trilha.vista::before{transition:transform 700ms var(--ease-out)}
+.trilha.vista>.etapa,.apoio.vista>.ref{transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out),background var(--t-ui),border-color var(--t-ui);transition-delay:calc(var(--k,0) * 60ms)}
+.trilha.vista>.etapa.pronto-ja,.apoio.vista>.ref.pronto-ja{transition-delay:0ms}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .e,.trilha>.etapa,.apoio>.ref{opacity:1!important;transform:none!important}
+  .trilha::before{transform:none!important}
+}
