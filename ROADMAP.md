@@ -106,3 +106,7 @@ Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N
 11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
 12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo.
 13. Ecologia: conceitos; cadeias e teias; fluxo de energia; pirâmides; ciclos biogeoquímicos; dinâmica populacional; relações ecológicas; sucessão; biomas; desequilíbrios. O módulo site/ecologia/ está pausado em cerca de 90% (fora do main, no WIP); retomar e completar.
+
+## Lembretes da Nalu
+
+- 2026-11-15: melhorar o design da Embriologia (e dos módulos 2D que usam o mesmo motor) numa rodada de polimento visual, depois dos próximos tópicos.
