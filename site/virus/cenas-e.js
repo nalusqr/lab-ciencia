@@ -14,8 +14,8 @@
   // =====================================================================================
   // quantidade de anticorpos (0 a 1) no dia d; o vírus (ou o reforço) chega no dia 60
   const DV = 60;
-  const prim = d => d <= 4 ? 0 : .4 * (1 - Math.exp(-(d - 4) / 6)) * Math.exp(-(d - 4) / 45);                  // resposta primária
-  const secu = d => d <= DV + 2 ? 0 : .88 * (1 - Math.exp(-(d - DV - 2) / 3)) * Math.exp(-(d - DV - 2) / 80); // secundária (memória)
+  const prim = d => d <= 7 ? 0 : .4 * (1 - Math.exp(-(d - 7) / 7)) * Math.exp(-(d - 7) / 45);                  // resposta primária
+  const secu = d => d <= DV + 2 ? 0 : .88 * (1 - Math.exp(-(d - DV - 2) / 4)) * Math.exp(-(d - DV - 2) / 80); // secundária (memória)
   const vac = d => Math.min(1, prim(d) + secu(d));
   const soro = d => d < 0 ? 0 : .85 * Math.exp(-d / 11);
   const soroPrim = d => prim(d - DV); // sem memória: diante do vírus, o corpo responde como na primeira vez
@@ -63,7 +63,7 @@
       { t: 'criança que vai completar o calendário de vacinação', k: 0, x: 'o objetivo é prevenir, e a vacina deixa memória por muito tempo.' },
       { t: 'pessoa mordida por um morcego', k: 1, x: 'o soro antirrábico age na hora, com anticorpos prontos, e a vacina faz o corpo produzir a própria defesa, que dura.' },
       { t: 'viajante que vai para área de febre amarela daqui a um mês', k: 0, x: 'a vacina precisa de tempo para agir: deve ser tomada com pelo menos 10 dias de antecedência.' },
-      { t: 'pré-adolescente que ainda não tomou a vacina contra o HPV', k: 0, x: 'é uma vacina que previne câncer; a faixa de idade está no calendário vigente.' }
+      { t: 'menina ou menino na idade da vacina contra o HPV que ainda não se vacinou', k: 0, x: 'é uma vacina que previne câncer; a faixa de idade está no calendário vigente.' }
     ],
     certo: c => `Isso: ${c.x}`,
     errado: c => c.k ? 'A vacina sozinha demora dias ou semanas para agir. Depois de uma mordida, também é preciso o soro, que age na hora.' : 'Aqui não há emergência: o objetivo é prevenir, e isso é papel da vacina.',
@@ -74,15 +74,15 @@
     nome: 'ab',
     alvos: [{ t: 'antibiótico não serve', c: C.erro }, { t: 'antibiótico serve', c: C.ok }],
     cartas: [
-      { t: 'gripe', k: 0 }, { t: 'covid-19', k: 0 }, { t: 'dengue', k: 0 }, { t: 'resfriado comum', k: 0 },
+      { t: 'gripe', k: 0 }, { t: 'covid-19', k: 0 }, { t: 'dengue', k: 0 }, { t: 'resfriado comum', k: 0, m: 1 },
       { t: 'pneumonia bacteriana depois de uma gripe', k: 1 }
     ],
-    certo: c => c.k ? 'Isso: aí a doença é causada por uma bactéria, que aproveitou a gripe. O antibiótico age nela.' : `Isso: ${c.t} é causada por vírus, e antibiótico não age em vírus.`,
+    certo: c => c.k ? 'Isso: aí a doença é causada por uma bactéria, que aproveitou a gripe. O antibiótico age nela.' : `Isso: ${c.t} é ${c.m ? 'causado' : 'causada'} por vírus, e antibiótico não age em vírus.`,
     errado: c => c.k ? 'Olhe de novo: essa pneumonia é causada por uma bactéria.' : `Olhe de novo: ${c.t} é uma virose.`,
     fim: () => 'Antibióticos atacam parede celular e ribossomos de bactérias, estruturas que o vírus não tem. Usá-los sem necessidade seleciona bactérias resistentes.',
     dica: 'Primeiro toque numa doença; depois, na coluna.'
   });
-  // imunidade coletiva: 100 pessoas; cada uma encontra 15 outras; o caso de sarampo vem de fora e encontra 6 pessoas.
+  // imunidade coletiva: 100 pessoas; cada uma encontra 15 outras; o caso de sarampo vem de fora, encontra 6 pessoas e transmite a todas as que não têm vacina.
   // Com transmissão de 85% por encontro, cada doente passaria o vírus a cerca de 13 pessoas sem imunidade (o roteiro dá de 12 a 18).
   // Ordem de vacinação embaralhada: com cobertura de c%, exatamente c pessoas estão vacinadas. Calibrado por simulação:
   // até 85%, o surto pega quase todos os sem vacina; em 90%, boa parte; em 95%, a cadeia para em uma ou duas pessoas.
@@ -98,7 +98,7 @@
     r.tm += passo(S); if (r.tm < .55) return; r.tm = 0;
     const R = sorte(r.seed * 7919 + r.step), novos = Object.keys(r.inf).map(Number).filter(i => r.inf[i] === r.step);
     let houve = false;
-    for (const i of novos) for (const j of CONT[i]) if (!vacinado(j, r.cov) && r.inf[j] == null && R() < PQ) { r.inf[j] = r.step + 1; r.links.push([i, j]); houve = true; }
+    for (const i of novos) for (const j of CONT[i]) if (!vacinado(j, r.cov) && r.inf[j] == null && (i === NP || R() < PQ)) { r.inf[j] = r.step + 1; r.links.push([i, j]); houve = true; }
     if (houve) { r.step++; return; }
     r.fim = true;
     const n = Object.keys(r.inf).length - 1, u = PES.filter((p, i) => !vacinado(i, r.cov)).length, ger = Math.max(...Object.values(r.inf));
@@ -167,7 +167,7 @@
     ],
     init(S) { S.modo = 'graf'; S.rede = null; VS.zera(S); AB.zera(S); },
     d: `<p>Uma <b>vacina</b> apresenta ao sistema imune o vírus enfraquecido, morto, ou só um pedaço dele, sem causar a doença. O corpo produz <b>anticorpos</b> e células de <b>memória</b>, e, quando encontra o vírus de verdade, responde rápido e forte. É uma <b>imunização ativa</b> (o próprio corpo produz a defesa), <b>preventiva</b> e <b>duradoura</b>, mas que leva alguns dias ou semanas para fazer efeito. Os principais tipos são: <b>vírus atenuado</b> (vivo, enfraquecido: tríplice viral, febre amarela, catapora); <b>vírus inativado</b> (morto: poliomielite injetável, CoronaVac, gripe); <b>subunidade</b> ou <b>partícula semelhante ao vírus</b> (só proteínas do vírus, sem ácido nucleico: hepatite B e HPV); <b>vetor viral</b> e <b>RNA mensageiro</b> (o corpo recebe a "receita" de uma proteína do vírus e a produz por pouco tempo). O <b>soro</b> é diferente: contém <b>anticorpos prontos</b>, produzidos em outro animal (em geral cavalos) ou em pessoas. É uma <b>imunização passiva</b>: age <b>na hora</b>, mas <b>dura pouco</b> e não deixa memória. Por isso é usado para <b>tratar</b> ou em emergências, como o <b>soro antirrábico</b> depois da mordida de um animal com suspeita de raiva, junto com a vacina.</p>
-<p>Quando muita gente se vacina, o vírus encontra poucas pessoas para infectar e para de circular, protegendo também quem não pode tomar a vacina (bebês muito pequenos, pessoas com imunidade baixa): é a <b>imunidade coletiva</b> (ou "de rebanho"). Foi assim que a <b>varíola</b> foi <b>erradicada</b> do mundo (a OMS declarou em <b>1980</b>) e que o Brasil não tem casos de <b>poliomielite</b> desde <b>1989</b>. A história das vacinas no Brasil passa pela <b>Revolta da Vacina</b> (1904), no Rio de Janeiro, contra a vacinação obrigatória contra a varíola liderada por <b>Oswaldo Cruz</b>. Contra vírus já instalados, <b>antibióticos não funcionam</b>: eles atacam parede celular e ribossomos de bactérias, estruturas que o vírus não tem, e usá-los sem necessidade seleciona <b>bactérias resistentes</b>. Para alguns vírus existem <b>antivirais</b>, que bloqueiam etapas da multiplicação viral: aciclovir (herpes), oseltamivir (gripe), os antirretrovirais (HIV) e os remédios que curam a hepatite C.</p>
+<p>Quando muita gente se vacina, o vírus encontra poucas pessoas para infectar e para de circular, protegendo também quem não pode tomar a vacina (bebês muito pequenos, pessoas com imunidade baixa): é a <b>imunidade coletiva</b> (ou "de rebanho"). Foi assim que a <b>varíola</b> foi <b>erradicada</b> do mundo (a OMS declarou em <b>1980</b>) e que o Brasil não tem casos de <b>poliomielite</b> desde <b>1989</b>. A história das vacinas no Brasil passa pela <b>Revolta da Vacina</b> (1904), no Rio de Janeiro: a população se revoltou contra a vacinação obrigatória contra a varíola, campanha comandada pelo médico sanitarista <b>Oswaldo Cruz</b>. Contra vírus já instalados, <b>antibióticos não funcionam</b>: eles atacam parede celular e ribossomos de bactérias, estruturas que o vírus não tem, e usá-los sem necessidade seleciona <b>bactérias resistentes</b>. Para alguns vírus existem <b>antivirais</b>, que bloqueiam etapas da multiplicação viral: aciclovir (herpes), oseltamivir (gripe), os antirretrovirais (HIV) e os remédios que curam a hepatite C.</p>
 <div class="tab"><table><thead><tr><th></th><th>Vacina</th><th>Soro</th></tr></thead><tbody>
 <tr><td>O que contém</td><td>antígeno (vírus atenuado, inativado ou parte dele)</td><td>anticorpos prontos</td></tr>
 <tr><td>Tipo de imunização</td><td>ativa</td><td>passiva</td></tr>
@@ -278,7 +278,7 @@
         const hgt = wrapTx(m[0], xx + 26, yy + 1, NAR ? tw : colW - 30, { s: NAR ? 12 : 13, w: on ? 600 : 400, a: 'left', c: on ? C.txt : C.dim, lh: 15 });
         if (NAR) ly += Math.max(24, hgt + 9);
       });
-      cap(nt >= p.m.length ? `Porta da via ${p.n} trancada. A vacina, quando existe, é uma tranca que serve em várias portas.` : `Via ${p.n}: cada medida de prevenção é uma tranca nessa porta.`);
+      cap(nt >= p.m.length ? `Porta da via ${p.n} trancada. A vacinação aparece em todas as portas, mas cada vacina protege contra um vírus específico.` : `Via ${p.n}: cada medida de prevenção é uma tranca nessa porta.`);
     } else {
       // legenda: o que é cada tranca
       const lx = NAR ? A.x0 + 4 : A.cx - 230, s = NAR ? 15 : 17;
@@ -286,7 +286,7 @@
       const h1 = wrapTx('cada medida de prevenção é uma tranca na porta da sua via', lx + 26, ly0 + 1, NAR ? tw : 460, { s: NAR ? 12 : 13, a: 'left', c: C.txt, lh: 15 });
       const y2 = ly0 + Math.max(28, h1 + 13);
       tranca(lx + 10, y2, s, C.vacina, true);
-      wrapTx('a vacina, quando existe, é uma tranca que serve em várias portas', lx + 26, y2 + 1, NAR ? tw : 460, { s: NAR ? 12 : 13, a: 'left', c: C.txt, lh: 15 });
+      wrapTx('a vacinação aparece em todas as portas, mas cada vacina protege contra um vírus específico', lx + 26, y2 + 1, NAR ? tw : 460, { s: NAR ? 12 : 13, a: 'left', c: C.txt, lh: 15 });
       cap('Para prevenir uma virose, a primeira pergunta é: como o vírus chega até a pessoa? Toque numa porta.');
     }
   }
@@ -308,17 +308,19 @@
     { p: 'a poliomielite', v: 'fecal', b: [0, 6, 7], ok: [8], vac: 1 },
     { p: 'o sarampo', v: 'resp', b: [0, 1, 8], vac: 1 },
     { p: 'a infecção pelo HPV', v: 'sangue', b: [0, 4, 9], vac: 1, nota: 'o exame preventivo encontra lesões antes que virem câncer.' },
-    { p: 'a febre amarela', v: 'vetor', b: [0, 3, 2], vac: 1 },
+    { p: 'a febre amarela', v: 'vetor', b: [0, 3, 2], vac: 1, nota: 'no Brasil, a febre amarela é silvestre (vírus na mata, entre macacos, por <i>Haemagogus</i> e <i>Sabethes</i>); eliminar criadouros impede a volta do ciclo urbano pelo <i>Aedes</i>.' },
     { p: 'a hepatite C', sv: 'a hepatite C', v: 'sangue', b: [5, 9, 4], vac: 0, nota: 'a hepatite C tem cura com antivirais.' },
     { p: 'a infecção por rotavírus', v: 'fecal', b: [0, 7, 8], ok: [6], vac: 1 }
   ];
   const up = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const inutil = (V, m) => m === 10 || (m === 0 && !V.vac) || (m === 8 && (V.v === 'sangue' || V.v === 'vetor')) || (!!MED[m].v && MED[m].v !== V.v);
   const boa = (V, m) => V.b.includes(m) || (V.ok || []).includes(m);
   function explica(m, V) {
     const M = MED[m];
     if (m === 10) return 'Antibiótico não age em vírus.';
-    if (m === 11) return V.v === 'vetor' ? 'Mosquiteiro só à noite protege pouco: o <i>Aedes</i> pica de dia.' : `Mosquiteiro não ajuda: a via ${VN[V.v]} não tem mosquito.`;
+    if (m === 11) return V.v !== 'vetor' ? `Mosquiteiro não ajuda: a via ${VN[V.v]} não tem mosquito.` : V.p === 'a febre amarela' ? 'Mosquiteiro só à noite protege pouco: os mosquitos que transmitem a febre amarela na mata (<i>Haemagogus</i> e <i>Sabethes</i>) picam de dia.' : 'Mosquiteiro só à noite protege pouco: o <i>Aedes</i> pica de dia.';
     if (m === 0 && !V.vac) return `Não existe vacina contra ${V.sv}.`;
+    if (m === 8 && (V.v === 'sangue' || V.v === 'vetor')) return `Lavar as mãos não impede a via ${VN[V.v]}.`;
     if (M.v && M.v !== V.v) return `${up(M.t)} não ${M.pl ? 'ajudam' : 'ajuda'} aqui: a via é ${VN[V.v]}.`;
     return `${up(M.t)} ${M.pl ? 'ajudam' : 'ajuda'}, mas há medidas mais eficazes para essa via.`;
   }
@@ -342,7 +344,7 @@
       let bc = es ? C.amber : 'rgba(157,169,196,.5)', lw = es ? 2.5 : 1.3, dash = null, f = 'rgba(19,26,43,.94)', nota = '';
       if (P.fim) {
         if (es && vale) { bc = C.ok; f = rgba(C.ok, .12); nota = best ? 'certa' : 'também vale'; }
-        else if (es) { bc = C.erro; f = rgba(C.erro, .12); nota = 'não é a melhor'; }
+        else if (es) { bc = C.erro; f = rgba(C.erro, .12); nota = inutil(V, i) ? 'não serve aqui' : 'não é a melhor'; }
         else if (best) { bc = C.ok; dash = [6, 4]; lw = 1.8; nota = P.pts < 3 ? 'faltou' : 'outra boa opção'; }
         else bc = 'rgba(157,169,196,.3)';
       }
@@ -355,11 +357,11 @@
     const ey = y0 + rows * (ch + g) + (NAR ? 8 : 12);
     if (P.fim) {
       const L = V.b.map(m => MED[m].t);
-      let s = `<b>${P.pts} de 3.</b> As mais eficazes contra ${V.p}: ${L[0]}, ${L[1]} e ${L[2]}.`;
+      let s = `<b>${P.pts} de 3.</b> As mais eficazes contra ${V.p}: ${L[0]}; ${L[1]}; ${L[2]}.`;
       for (const m of P.sel) if (!boa(V, m)) s += ' ' + explica(m, V);
       if (V.nota) s += ' Atenção: ' + V.nota;
       wrapTx(s, A.cx, ey + 6, Math.min(A.w - 8, 760), { s: NAR ? 12 : 13, c: C.txt, lh: NAR ? 16 : 18 });
-      cap(P.pts === 3 ? 'Muito bem! Toque em "Outra virose" para treinar mais.' : 'Leia a correção e toque em "Outra virose" para treinar mais.');
+      cap(P.pts === 3 ? 'Muito bem: 3 de 3. Toque em "Outra virose" para treinar mais.' : 'Leia a correção e toque em "Outra virose" para treinar mais.');
     } else {
       // pista: as quatro vias (sem dizer qual é a certa)
       tx('As quatro vias:', A.cx, ey + 6, { s: 12, c: C.dim, bg: false });
@@ -373,7 +375,7 @@
   def('prevencao', 'transmissao', {
     t: 'Cada via, sua prevenção', s: 'ar, mosquito, sangue e sexo, água e alimento', c: PRE,
     loc: 'Vias de transmissão', locNota: 'Desenho esquemático',
-    alt: 'quatro portas coloridas, uma por via de transmissão (respiratória, vetorial, sangue e sexual, fecal-oral): ao tocar numa porta, os vírus daquela via entram e cada medida de prevenção aparece como uma tranca que fecha a porta; a vacina é uma tranca que serve em várias portas; há também um jogo para escolher as três medidas mais eficazes contra uma virose sorteada',
+    alt: 'quatro portas coloridas, uma por via de transmissão (respiratória, vetorial, sangue e sexual, fecal-oral): ao tocar numa porta, os vírus daquela via entram e cada medida de prevenção aparece como uma tranca que fecha a porta; a vacinação aparece em todas as portas, mas cada vacina protege contra um vírus específico; há também um jogo para escolher as três medidas mais eficazes contra uma virose sorteada',
     still: 0, ctl: false,
     extra: [
       modo('portas', 'As portas'), modo('plano', 'Monte o plano'),

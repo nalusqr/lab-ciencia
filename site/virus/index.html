@@ -31,6 +31,8 @@
 .barra button[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);background:var(--panel-2)}
 .barra button.sq{padding:0;width:44px}
 .barra svg{width:20px;height:20px;flex:none}
+.onde-m{display:none}@media(max-width:699px){.onde-m:not([hidden]){display:block;font-size:13px;color:var(--dim);margin:4px 0 0}}
+.barra.compacta .tx{display:none}.barra.compacta #lbls,.barra.compacta #pause,.barra.compacta #reset{padding:0;width:44px}
 .ctl{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:8px;border:1px solid var(--line-strong);color:var(--txt);font-size:14px;font-weight:600;min-width:0;flex:0 1 auto}
 .ctl span{white-space:nowrap}
 .ctl output{font-family:var(--f-data);font-weight:500;font-size:13px;white-space:nowrap;min-width:44px;text-align:right;color:var(--txt)}
@@ -144,6 +146,7 @@
     <article class="box insp">
       <div class="sub"><i id="iD"></i><span id="iS"></span></div>
       <h2 id="iT"></h2>
+      <p class="onde-m" id="ondeM" hidden></p>
       <div id="desc"></div>
       <div class="kv" id="kv"></div>
       <div class="enem" id="enem"><div class="eh"><svg aria-hidden="true"><use href="#ui-enem"/></svg>No ENEM</div><p id="enemT"></p></div>
@@ -154,6 +157,8 @@
         <li><i style="background:#F7C13B"></i>espículas (glicoproteínas)</li>
         <li><i style="background:#7CC4FF"></i>receptor da célula</li>
         <li><i style="background:#9A6BFF"></i>DNA</li>
+        <li><i style="background:#C9B2FF"></i>DNA do vírus (fago, prófago, provírus)</li>
+        <li><i style="background:#6A45D8"></i>DNA da célula ou da bactéria</li>
         <li><i style="background:#FF8A6B"></i>RNA</li>
         <li><i style="background:#A9C54A"></i>parede da bactéria</li>
         <li><i style="background:#5AA9FF"></i>via respiratória</li>
@@ -168,7 +173,7 @@
     </aside>
   </div>
 
-  <footer class="foot">Desenhos esquemáticos e próprios, fora de escala; as cores marcam estruturas e vias de transmissão, não a cor real dos vírus. Números de tamanho, tempo e contágio são aproximados (ordem de grandeza). Fichas de pacientes são fictícias. Idades e doses de vacinas mudam: consulte o calendário vigente do Programa Nacional de Imunizações. Conteúdo educativo, não substitui orientação médica; dúvidas de saúde: Disque Saúde 136. Conceitos e datas conferidos em: Amabis &amp; Martho, <i>Biologia Moderna</i> (Moderna, 2016); Lopes &amp; Rosso, <i>Bio</i> (Saraiva, 2016); Linhares, Gewandsznajder &amp; Pacca, <i>Biologia Hoje</i> (Ática, 2016); Reece et al., <i>Biologia de Campbell</i>, 10. ed. (Artmed, 2015); Tortora, Funke &amp; Case, <i>Microbiologia</i>, 12. ed. (Artmed, 2017); Madigan et al., <i>Microbiologia de Brock</i>, 14. ed. (Artmed, 2016); Ministério da Saúde, <i>Guia de Vigilância em Saúde</i>, 6. ed. (2023); fichas informativas da OMS; Lwoff (1957); Temin &amp; Mizutani (1970); Baltimore (1970).</footer>
+  <footer class="foot">Desenhos esquemáticos e próprios, fora de escala; as cores marcam estruturas e vias de transmissão, não a cor real dos vírus. Números de tamanho, tempo e contágio são aproximados (ordem de grandeza). Fichas de pacientes são fictícias. Idades e doses de vacinas mudam: consulte o <a href="https://www.gov.br/saude/pt-br/vacinacao/calendario" target="_blank" rel="noopener">calendário de vacinação vigente do Ministério da Saúde</a>. Conteúdo educativo, não substitui orientação médica; dúvidas de saúde: Disque Saúde 136. Conceitos e datas conferidos em: Amabis &amp; Martho, <i>Biologia Moderna</i> (Moderna, 2016); Lopes &amp; Rosso, <i>Bio</i> (Saraiva, 2016); Linhares, Gewandsznajder &amp; Pacca, <i>Biologia Hoje</i> (Ática, 2016); Reece et al., <i>Biologia de Campbell</i>, 10. ed. (Artmed, 2015); Tortora, Funke &amp; Case, <i>Microbiologia</i>, 12. ed. (Artmed, 2017); Madigan et al., <i>Microbiologia de Brock</i>, 14. ed. (Artmed, 2016); Ministério da Saúde, <i>Guia de Vigilância em Saúde</i>, 6. ed. (2023); fichas informativas da OMS; Lwoff (1957); Temin &amp; Mizutani (1970); Baltimore (1970).</footer>
 </div>
 <script src="motor.js"></script>
 <script src="cenas-a.js"></script>

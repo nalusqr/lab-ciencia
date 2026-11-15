@@ -13,9 +13,6 @@
   // ---------- utilidades locais ----------
   function poeV(S, v, ctl) {
     S.v = v; S.touch = performance.now();
-    const r = $('ctlR'), vv = $('ctlV');
-    if (r) { r.value = v; r.setAttribute('aria-valuetext', ctl.f(v)); }
-    if (vv) vv.textContent = ctl.f(v);
   }
   const embaralha = (a, R) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   // posições fixas (semente), normalizadas de -1 a 1, dentro de um círculo de raio lim; o 3º valor é um sorteio de 0 a 1
@@ -106,8 +103,9 @@
   const F1N = ['Adsorção', 'Penetração', 'Síntese', 'Montagem', 'Liberação (lise)'];
   const F1B = [0, 3, 6, 15, 24, 30];
   const f1Etapa = tm => tm < 3 ? 0 : tm < 6 ? 1 : tm < 15 ? 2 : tm < 24 ? 3 : 4;
-  const minTx = tm => tm < .5 ? '0 min' : 'cerca de ' + Math.round(tm) + ' min';
-  const ctlF1 = { l: 'Tempo', min: 0, max: 30, step: .5, v: 0, f: v => Math.round(v) + ' min', rate: () => 1 };
+  const tReal = tm => tm < 6 ? tm / 3 : 2 + (tm - 6) * 28 / 24;
+  const minTx = tm => tReal(tm) < .5 ? '0 min' : 'cerca de ' + Math.round(tReal(tm)) + ' min';
+  const ctlF1 = { l: 'Tempo', min: 0, max: 30, step: .5, v: 0, f: v => Math.round(tReal(v)) + ' min', rate: () => 1 };
   const F1CAP = [
     '<b>Adsorção:</b> as fibras da cauda do fago se prendem a receptores da parede da bactéria.',
     '<b>Penetração:</b> a cauda se contrai como uma seringa e injeta só o DNA; o capsídeo vazio fica do lado de fora.',
@@ -119,7 +117,7 @@
   const F1_SLOT = (() => { const out = [], R = rng(31); for (let r = 0; r < 2; r++) for (let c = 0; c < 6; c++) out.push([-.66 + c * .264 + (r ? .13 : 0), r ? .36 : -.02, (R() - .5) * 1.2, (R() - .5) * .9, (R() - .5) * 1.1, (R() - .5) * .7, (R() - .5) * 2.4]); return out; })();
 
   function layF1(A, cartoes) {
-    if (!NAR) { const cw = Math.min(214, A.w * .19); return { lst: { x: A.x0, y: A.y0 + 4, w: cw, h: A.h - 8 }, cont: { x: A.x1 - cw, y: A.y0 + 14, w: cw }, cena: { x: A.x0 + cw + 20, y: A.y0, w: A.w - 2 * cw - 40, h: A.h } }; }
+    if (!NAR) { const cw = Math.min(214, Math.max(168, A.w * .19)); return { lst: { x: A.x0, y: A.y0 + 4, w: cw, h: A.h - 8 }, cont: { x: A.x1 - cw, y: A.y0 + 14, w: cw }, cena: { x: A.x0 + cw + 20, y: A.y0, w: A.w - 2 * cw - 40, h: A.h } }; }
     const top = cartoes ? 124 : 58;
     return { lst: { x: A.x0, y: A.y0, w: A.w, h: top - 8 }, cont: null, cena: { x: A.x0, y: A.y0 + top, w: A.w, h: A.h - top } };
   }
@@ -185,7 +183,7 @@
       if (tm > 11 && !NAR) lab(bx - bw * .36, by - bh * .2, bx - bw * .5, by + bh * .66, 'ribossomos da bactéria');
     }
     if (et === 3 && kMont > .6) { const ax = bx + F1_SLOT[3][0] * bw * .5, ay = by + F1_SLOT[3][1] * bh - sm * .7; if (NAR) labC(ax, ay, top - bh * .45, 'fago novo montado'); else lab(ax, ay, bx + bw * .4, top - bh * .45, 'fago novo montado'); }
-    if (et === 4 && kBur <= 0) { if (NAR) labC(bx + bw * .47, by - bh * .25, top - bh * .5, 'lisozima rompe a parede'); else lab(bx + bw * .47, by - bh * .25, bx + bw * .5, top - bh * .5, 'lisozima rompe a parede'); }
+    if (et === 4 && kBur <= 0) { if (NAR) labC(bx + bw * .47, by - bh * .25, top - bh * .5, 'lisozima rompe a parede'); else lab(bx + bw * .47, by - bh * .25, bx + bw * .47 - 2, top - bh * .5, 'lisozima rompe a parede'); }
   }
   const A_H = R => area().y1 - R.y;
   function contadorF1(L, tm) {
@@ -235,12 +233,12 @@
     X.restore();
     if (S.placas.length) { const p = S.placas[0], r = raio((S.tAcc - p.t0) / 2.2); lab(p.x + r * .7, p.y - r * .7, p.x + R0 * .5, p.y - R0 * .6, 'placa de lise'); }
     const h = Math.max(.5, Math.round(maxG) * .5), n = S.placas.length;
-    const msg = n ? `${n} ${n > 1 ? 'fagos soltos' : 'fago solto'}; cultura de cerca de ${nbr(h, h % 1 ? 1 : 0)} h` : 'Toque no tapete de bactérias para soltar um fago.';
+    const msg = n ? `${n} ${n > 1 ? 'fagos soltos' : 'fago solto'}; cerca de ${nbr(h, h % 1 ? 1 : 0)} h de cultura` : 'Toque no tapete de bactérias para soltar um fago.';
     if (!NAR) {
       const x = A.x1 - 246, w = 246; panel(x, A.y0 + 4, w, 200);
       tx('Placa de cultura', x + 14, A.y0 + 24, { s: 15, w: 700, f: FH, c: '#fff', a: 'left', bg: false });
       const y = A.y0 + 50 + wrapTx(msg, x + 14, A.y0 + 50, w - 28, { s: 13, a: 'left', c: C.txt });
-      wrapTx('Cada ciclo leva cerca de meia hora. Os fagos novos infectam as bactérias vizinhas, e o buraco claro cresce em círculo.', x + 14, y + 10, w - 28, { s: 13, a: 'left', c: C.dim });
+      wrapTx('Cada ciclo leva cerca de meia hora. Os fagos novos infectam as bactérias vizinhas, e o buraco sem bactérias cresce em círculo.', x + 14, y + 10, w - 28, { s: 13, a: 'left', c: C.dim });
     }
     return msg;
   }
@@ -259,7 +257,7 @@
 <p><b>3. Síntese:</b> o DNA do fago comanda a bactéria. Uma das primeiras proteínas virais degrada o DNA da própria bactéria, e os <b>ribossomos, enzimas, nucleotídeos, aminoácidos e ATP da bactéria</b> passam a produzir DNA e proteínas do fago.</p>
 <p><b>4. Montagem:</b> as cabeças, caudas e fibras se juntam sozinhas, e cada cabeça recebe uma cópia do DNA.</p>
 <p><b>5. Liberação (lise):</b> uma enzima do fago, a <b>lisozima</b>, rompe a parede da bactéria, que <b>arrebenta</b> e libera de <b>100 a 200</b> fagos novos, prontos para infectar outras bactérias.</p>
-<p>Tudo isso leva cerca de <b>meia hora</b> a 37 °C. Como cada bactéria libera centenas de fagos, e cada um infecta outra bactéria, uma cultura de bactérias pode ser destruída em poucas horas. Numa placa de cultura, isso aparece como "buracos" claros no tapete de bactérias, as <b>placas de lise</b>. Os fagos atacam bactérias, mas <b>não infectam células humanas</b>: por isso estão sendo estudados como alternativa aos antibióticos contra bactérias resistentes (a <b>fagoterapia</b>).</p>
+<p>Tudo isso leva cerca de <b>meia hora</b> a 37&nbsp;°C. Como cada bactéria libera centenas de fagos, e cada um infecta outra bactéria, uma cultura de bactérias pode ser destruída em poucas horas. Numa placa de cultura, isso aparece como "buracos" claros no tapete de bactérias, as <b>placas de lise</b>. Os fagos atacam bactérias, mas <b>não infectam células humanas</b>: por isso estão sendo estudados como alternativa aos antibióticos contra bactérias resistentes (a <b>fagoterapia</b>).</p>
 <p>Toque em <b>Monte o ciclo</b> e ponha as etapas em ordem: a cada acerto, a etapa toca na animação. Em <b>Placa de cultura</b>, toque no tapete de bactérias para soltar um fago e veja a placa de lise crescer. Tempo e número de fagos são aproximados.</p>`,
     enem: 'Guarde a sequência <b>adsorção, penetração, síntese, montagem e liberação</b>, e o ponto central: o vírus usa a <b>maquinaria da célula</b> (ribossomos, enzimas, energia, matéria-prima), porque não tem a própria. No fago, <b>só o ácido nucleico entra</b>; essa é a base do experimento de Hershey e Chase (1952), que marcou o DNA e as proteínas do fago com isótopos diferentes e mostrou que o DNA, e não a proteína, é o material genético.',
     links: [LK.fago3d, ['O ciclo lisogênico', '#fagos/lisogenico'], LK.morfo],
@@ -277,12 +275,12 @@
     },
     draw(t, S) {
       const A = area();
-      if (S.modo === 'placa') { S.tAcc += S.dt || 0; const m = placaF1(A, S); cap(NAR ? m : 'Cada fago solto começa uma <b>placa de lise</b>: um buraco claro no tapete de bactérias, que cresce a cada ciclo.'); return; }
+      if (S.modo === 'placa') { S.tAcc += S.dt || 0; const m = placaF1(A, S); cap(NAR ? m : 'Cada fago solto começa uma <b>placa de lise</b>: um buraco sem bactérias no tapete, que cresce a cada ciclo.'); return; }
       if (S.modo === 'monte') {
         const alvo = F1B[S.acertos]; if (S.mt < alvo) S.mt = Math.min(alvo, S.mt + (S.dt || 0) * 2);
         if (S.erro) S.erro.t -= S.dt || 0;
         const L = layF1(A, true); cartoesF1(L, S); cenaF1(L.cena, S.mt); if (!NAR) contadorF1(L, S.mt);
-        if (S.erro && S.erro.t > 0) cap(`Ainda não. Qual etapa vem antes de <b>${F1N[S.erro.e].toLowerCase()}</b>?`);
+        if (S.erro && S.erro.t > 0) cap(S.acertos ? `Ainda não. Qual etapa vem logo depois de <b>${F1N[S.acertos - 1].toLowerCase()}</b>?` : 'Ainda não. Qual é a <b>primeira</b> etapa, quando o fago encosta na bactéria?');
         else if (S.acertos === 0) cap('As cinco etapas estão embaralhadas. Toque na <b>primeira</b> etapa do ciclo lítico.');
         else if (S.acertos < 5) cap(F1CAP[S.acertos - 1] + ' Qual é a próxima?');
         else cap(S.mt >= 30 ? 'Ciclo completo: <b>adsorção, penetração, síntese, montagem e liberação</b>, em cerca de meia hora.' : F1CAP[4]);
@@ -401,7 +399,7 @@
   // quadro comparativo (cartões do motor)
   const BQ = baralho({
     nome: 'quadro',
-    cartas: [{ t: 'a bactéria morre logo', k: 0 }, { t: 'o DNA viral entra no cromossomo', k: 1 }, { t: 'o vírus é copiado quando a bactéria se divide', k: 1 }, { t: 'libera centenas de fagos', k: 0 }],
+    cartas: [{ t: 'a bactéria morre logo', k: 0 }, { t: 'o DNA viral entra no cromossomo', k: 1 }, { t: 'o DNA do fago é copiado a cada divisão', k: 1 }, { t: 'libera centenas de fagos', k: 0 }],
     alvos: [{ t: 'Ciclo lítico', c: C.capsideo }, { t: 'Ciclo lisogênico', c: C.dnaClaro }],
     certo: c => c.k ? 'Certo: isso acontece no <b>ciclo lisogênico</b>.' : 'Certo: isso acontece no <b>ciclo lítico</b>.',
     errado: (c, al) => `Ainda não: "${c.t}" não acontece no ${al.t.toLowerCase()}.`,
@@ -428,7 +426,7 @@
     celB(cx, cy, cw, ch, { prof: 1 - exc, livre: exc * (1 - seg(p, 0, .3)), p, voo: Math.min(Rg.w, Rg.h) * .5, box: Rg });
     lampada(lx, ly, 1 - seg(p, .8, 1) * .6, 'right');
     raioUV(lx - 10, ly + 10, cx + cw * .1, cy - ch / 2 + 2, uv, 1 - seg(exc, .3, 1));
-    return p > .7 ? 'A luz UV provocou a <b>indução</b>: o prófago se soltou, o fago entrou no ciclo lítico e a bactéria arrebentou.' : 'A luz UV estressa a bactéria: o prófago se solta do cromossomo (<b>indução</b>).';
+    return p > .7 ? 'A luz UV provocou a <b>indução</b>: o prófago se soltou, o fago entrou no ciclo lítico e a bactéria arrebentou.' : 'A luz UV danifica o DNA da bactéria; esse estresse faz o prófago se soltar do cromossomo (<b>indução</b>).';
   }
 
   def('fagos', 'lisogenico', {
@@ -439,10 +437,10 @@
       { t: 'Condições', on: S => { S.modo = S.modo === 'cond' ? null : 'cond'; S.cond = null; S.tc = 0; }, pressed: S => S.modo === 'cond' },
       { t: 'Quadro: lítico ou lisogênico?', on: S => { S.modo = S.modo === 'quadro' ? null : 'quadro'; BQ.zera(S); }, pressed: S => S.modo === 'quadro' }
     ],
-    d: `<p>Alguns fagos, como o <b>fago lambda (λ)</b>, podem seguir outro caminho. Depois de injetar o DNA, em vez de destruir a bactéria logo, o fago <b>insere o seu DNA no cromossomo bacteriano</b>. Esse DNA viral integrado se chama <b>prófago</b>. Ele fica "quieto": quase nenhum gene do fago é expresso, a bactéria continua viva e normal, e, cada vez que ela se divide, o prófago é <b>copiado junto</b> com o cromossomo. Assim, em poucas gerações, milhões de bactérias carregam o fago sem saber. A bactéria com prófago é chamada de <b>lisogênica</b>. Esse é o <b>ciclo lisogênico</b>.</p>
+    d: `<p>Alguns fagos, como o <b>fago lambda (λ)</b>, podem seguir outro caminho. Depois de injetar o DNA, em vez de destruir a bactéria logo, o fago <b>insere o seu DNA no cromossomo bacteriano</b>. Esse DNA viral integrado se chama <b>prófago</b>. Ele fica "quieto": quase nenhum gene do fago é expresso, a bactéria continua viva e normal, e, cada vez que ela se divide, o prófago é <b>copiado junto</b> com o cromossomo. Assim, em poucas gerações, milhões de bactérias carregam o fago. A bactéria com prófago é chamada de <b>lisogênica</b>. Esse é o <b>ciclo lisogênico</b>.</p>
 <p>O prófago pode ficar assim por muitas gerações, mas não para sempre. Um estresse para a bactéria, como <b>radiação ultravioleta</b> ou certas substâncias químicas, pode provocar a <b>indução</b>: o prófago se solta do cromossomo e o vírus entra no <b>ciclo lítico</b>, com montagem de fagos e lise da bactéria. Às vezes, os genes do prófago mudam a própria bactéria, o que se chama <b>conversão lisogênica</b>. Um exemplo importante para a saúde: as bactérias da <b>difteria</b> (<i>Corynebacterium diphtheriae</i>) e da <b>cólera</b> (<i>Vibrio cholerae</i>) só produzem as toxinas que causam essas doenças quando carregam o gene trazido por um fago. Ou seja, um vírus pode transformar uma bactéria inofensiva em perigosa. Fagos que carregam pedaços de DNA de uma bactéria para outra também espalham genes, inclusive alguns de resistência a antibióticos (a <b>transdução</b>).</p>
 <p>Em <b>Condições</b>, veja o que acontece com uma bactéria lisogênica sem estresse e com luz UV. Em <b>Quadro</b>, ponha cada frase na coluna do ciclo certo.</p>`,
-    enem: '<b>Lítico</b> = multiplicação imediata e <b>lise</b> (morte) da célula. <b>Lisogênico</b> = DNA viral <b>integrado</b> ao cromossomo (<b>prófago</b>), copiado a cada divisão, sem matar a célula, até a <b>indução</b> para o ciclo lítico. A questão pode trazer o gráfico de uma cultura de bactérias que cresce normalmente e, de repente, despenca depois de uma exposição a UV: é a indução do prófago. A ideia de vírus "dormindo" no DNA reaparece no HIV (provírus, em R2).',
+    enem: '<b>Lítico</b> = multiplicação imediata e <b>lise</b> (morte) da célula. <b>Lisogênico</b> = DNA viral <b>integrado</b> ao cromossomo (<b>prófago</b>), copiado a cada divisão, sem matar a célula, até a <b>indução</b> para o ciclo lítico. A questão pode trazer o gráfico de uma cultura de bactérias que cresce normalmente e, de repente, despenca depois de uma exposição a UV: é a indução do prófago. A ideia de vírus "dormindo" no DNA reaparece no HIV (o <b>provírus</b>, no tópico Retrovírus e transcriptase reversa).',
     links: [['O ciclo lítico', '#fagos/litico'], ['Retrovírus e provírus', '#replicacao/retrovirus']],
     init(S) { if (S.tc == null) { S.tc = 0; BQ.zera(S); } },
     tap(x, y, S) {
@@ -666,7 +664,7 @@
         if (sai <= 0) { virAdeno(px0, py0, rv * .5, { cap: ka, gen: ka, fibras: ka > .9 }); continue; }
         const p = R1_SAI[i % R1_SAI.length], ko = ss(seg(sai, 0, .3)), kx = G.cx + p[0] * G.rx * .7, ky = G.cy + p[1] * G.ry * .55;
         let x = lerp(px0, kx, ko), y = lerp(py0, ky, ko);
-        if (lise > 0) { const dx = x - G.cx, dy = y - G.cy, dl = Math.hypot(dx, dy) || 1, kk = ss(lise); x += dx / dl * kk * G.rx * .8; y += dy / dl * kk * G.ry * .9; }
+        if (lise > 0) { const dx = x - G.cx, dy = y - G.cy, dl = Math.hypot(dx, dy) || 1, kk = ss(lise), m = rv * .9; x = cl(x + dx / dl * kk * G.rx * .8, c.x + m, c.x + c.w - m); y = cl(y + dy / dl * kk * G.ry * .9, c.y + m, c.y + c.h - m); }
         virAdeno(x, y, rv * .5, { rot: lise * 2 + i });
       }
     }
@@ -682,7 +680,7 @@
     if (e === 1 && endo && k > .55 && k < .95) labR(G.cx + rS * 1.75, vy, G.cx + G.rx * .62, vy - rv * 2.4, 'vesícula');
     if (e === 2 && k > .4) labR(G.qx + rS * 1.6, G.qy - rS * .6, G.qx + G.rx * .45, G.qy - rv * 3.6, 'capsômeros se espalham');
     if (e >= 2 && e <= 3) labR(G.nx - G.nrx * .7, G.ny - G.nry * .7, G.nx - G.nrx * 1.5, G.ny - G.nry * 1.5, 'núcleo');
-    if (e === 3 && k > .55) { const p = R1_RIB[5]; labR(G.cx + p[0] * G.rx * .9, G.cy + p[1] * G.ry * .82, G.cx + G.rx * .78, G.cy + G.ry * .92, 'ribossomos da célula'); }
+    if (e === 3 && k > .55) { const p = R1_RIB[6]; labR(G.cx + p[0] * G.rx * .9, G.cy + p[1] * G.ry * .82, G.cx + G.rx * .78, G.cy + G.ry * .92, 'ribossomos da célula'); }
     if (e === 3 && k > .35) {
       if (adeno) labR(G.nx + G.nrx * .55, G.ny, G.nx + G.nrx * 1.8, G.ny + G.nry * .3, 'cópias do DNA');
       else labR(G.qx + rv * 2.2, G.qy, G.qx + G.rx * .5, G.qy + G.ry * .5, 'cópias do RNA');
@@ -717,7 +715,7 @@
     let yy = gy - (NAR ? 36 : 24);
     yy += wrapTx('O DNA do vírus fica guardado no <b>núcleo de neurônios</b> de um gânglio nervoso, <b>separado</b> do DNA da célula, sem se integrar.', tx0, yy, txw, { s: 13, a: 'left', c: C.txt }) + 8;
     wrapTx('Quando a imunidade cai, o vírus volta a se multiplicar e desce pelo nervo até a pele.', tx0, yy, txw, { s: 13, a: 'left', c: C.dim });
-    wrapTx('Existe vacina contra a catapora (no calendário infantil) e contra o herpes-zóster (para pessoas mais velhas). Idades e doses: veja o calendário vigente.', x0 + pw / 2, A.y1 - (NAR ? 40 : 22), pw - 24, { s: 12, c: C.dim });
+    wrapTx('Vacina contra a catapora: no calendário infantil do SUS (idades e doses no calendário vigente). Contra o herpes-zóster: existe, mas ainda não está no SUS.', x0 + pw / 2, A.y1 - (NAR ? 40 : 22), pw - 24, { s: 12, c: C.dim });
   }
   const circuloV = (x, y, r, a) => cromCirc(x, y, r, r * .8, { c: C.dna, a, lw: Math.max(1.2, r * .14), seed: 6 });
 
@@ -731,9 +729,9 @@
       { t: 'Endocitose', on: S => { S.lat = false; if (S.vir === 'adeno') S.aviso = 3.5; else S.endo = !S.endo; poeV(S, 0, ctlR1); }, pressed: S => (S.vir === 'adeno' || !!S.endo) && !S.lat },
       { t: 'Latência', on: S => { S.lat = !S.lat; }, pressed: S => !!S.lat }
     ],
-    d: `<p>Nos vírus que infectam animais, as etapas são parecidas com as do fago, com três diferenças importantes. <b>Na entrada</b>, o vírus entra <b>inteiro</b>: depois de se prender ao receptor, ou o envelope <b>se funde</b> com a membrana da célula, ou a célula engole o vírus numa vesícula (<b>endocitose</b>), sem saber que é uma armadilha. <b>Depois</b>, o capsídeo se desmonta e libera o ácido nucleico no citoplasma; essa etapa se chama <b>desnudamento</b>. Vírus de DNA, em geral, levam o DNA ao <b>núcleo</b>, onde são copiados; muitos vírus de RNA se copiam no próprio <b>citoplasma</b>, com uma enzima que eles mesmos codificam (a <b>RNA polimerase dependente de RNA</b>, que a célula não tem).</p>
+    d: `<p>Nos vírus que infectam animais, as etapas são parecidas com as do fago, com três diferenças importantes. <b>Na entrada</b>, o vírus entra <b>inteiro</b>: depois de se prender ao receptor, ou o envelope <b>se funde</b> com a membrana da célula, ou a célula engole o vírus numa vesícula (<b>endocitose</b>), o mesmo processo que ela usa para captar substâncias de fora. <b>Depois</b>, o capsídeo se desmonta e libera o ácido nucleico no citoplasma; essa etapa se chama <b>desnudamento</b>. Vírus de DNA, em geral, levam o DNA ao <b>núcleo</b>, onde são copiados; muitos vírus de RNA se copiam no próprio <b>citoplasma</b>, com uma enzima que eles mesmos codificam (a <b>RNA polimerase dependente de RNA</b>, que a célula não tem).</p>
 <p><b>Na saída</b>, vírus sem envelope costumam sair rompendo a célula, como no ciclo lítico. Os <b>envelopados</b> saem por <b>brotamento</b>: o nucleocapsídeo empurra um pedaço da membrana, onde as glicoproteínas virais já foram colocadas, e sai embrulhado nele, ganhando o envelope. A célula pode continuar produzindo vírus por um tempo antes de morrer. Alguns vírus também ficam <b>latentes</b>, quietos dentro da célula por anos. O vírus do <b>herpes simples</b> fica guardado em <b>neurônios</b> e volta a causar as bolhas do herpes labial quando a imunidade cai (estresse, febre, sol forte). O da <b>catapora</b> (varicela-zóster) faz o mesmo e pode voltar décadas depois como <b>herpes-zóster</b> ("cobreiro"). Isso lembra o ciclo lisogênico, mas o DNA do herpes <b>não se integra</b> ao DNA da célula: fica separado, dentro do núcleo.</p>
-<p>Na animação, o vírus com envelope é um esquema de vírus de RNA que se copia no citoplasma; o adenovírus, sem envelope, é um vírus de DNA. Compare a saída dos dois: brotamento (como no vírus da gripe) ou ruptura da célula. O botão <b>Endocitose</b> troca a forma de entrada do vírus com envelope. Em <b>Latência</b>, veja a linha do tempo da catapora e do herpes-zóster.</p>`,
+<p>Na animação, o vírus com envelope é um esquema de vírus de RNA que se copia no citoplasma; o adenovírus, sem envelope, é um vírus de DNA. Compare a saída dos dois: brotamento (como no vírus da chikungunya, que também copia o RNA no citoplasma) ou ruptura da célula. O botão <b>Endocitose</b> troca a forma de entrada do vírus com envelope. Em <b>Latência</b>, veja a linha do tempo da catapora e do herpes-zóster.</p>`,
     enem: 'As diferenças para o fago: o vírus animal <b>entra inteiro</b> (por <b>fusão</b> ou <b>endocitose</b>), passa pelo <b>desnudamento</b> e, se tiver envelope, sai por <b>brotamento</b>, levando um pedaço da membrana da célula. Uma questão pode perguntar por que uma pessoa tem herpes labial "de novo" sem ter se contaminado outra vez: o vírus ficou <b>latente</b> em neurônios e foi <b>reativado</b>.',
     links: [['O ciclo lítico do fago', '#fagos/litico'], ['A partícula viral', '#estrutura/particula'], ['Retrovírus', '#replicacao/retrovirus'], LK.calendario],
     init(S) { if (S.vir == null) { S.vir = 'env'; S.endo = false; S.lat = false; S.aviso = 0; } },
@@ -744,7 +742,7 @@
       const nomes = ['Ligação ao receptor', endo ? 'Entrada (endocitose)' : 'Entrada (fusão)', 'Desnudamento', 'Cópia e proteínas', 'Montagem', adeno ? 'Lise da célula' : 'Brotamento'];
       let c;
       if (!NAR) {
-        const cw = Math.min(214, A.w * .19), sw = Math.min(236, A.w * .2), px = A.x1 - sw;
+        const cw = Math.min(214, A.w * .19), sw = Math.min(236, Math.max(184, A.w * .2)), px = A.x1 - sw;
         etapas({ x: A.x0, y: A.y0 + 4, w: cw, h: A.h - 8 }, nomes, e);
         c = { x: A.x0 + cw + 20, y: A.y0, w: A.w - cw - sw - 40, h: A.h };
         panel(px, A.y0 + 14, sw, 214);
@@ -770,7 +768,7 @@
         adeno ? 'Os capsídeos novos se montam no núcleo, cada um com uma cópia do DNA.' : 'As espículas já estão na membrana; os capsídeos com RNA se montam logo abaixo delas.',
         adeno ? 'Sem envelope, o adenovírus sai <b>rompendo a célula</b>, como no ciclo lítico.'
           : k > .6 ? 'De onde veio o envelope do vírus novo? <b>Da membrana desta célula</b>, onde as espículas do vírus já estavam.'
-            : 'O capsídeo empurra a membrana e sai embrulhado nela: é o <b>brotamento</b>, como no vírus da gripe.'
+            : 'O capsídeo empurra a membrana e sai embrulhado nela: é o <b>brotamento</b>, como no vírus da chikungunya.'
       ];
       cap(CAPS[e]);
     }

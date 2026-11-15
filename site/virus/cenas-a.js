@@ -35,7 +35,7 @@
   const Q1B = Array.from({ length: 7 }, (_, i) => { const R = sorte(31 + i); return { u: .06 + .88 * R(), v: R(), d: R() * .4, g: (R() - .5) * 1.4 }; });
   const Q1V = Array.from({ length: 18 }, (_, i) => { const R = sorte(71 + i); return { u: .04 + .92 * R(), v: R(), d: R() * .42, bu: R(), bv: R() }; });
   const Q3R = Array.from({ length: 6 }, (_, i) => { const R = sorte(93 + i); return { u: R(), v: R(), g: R() * PI }; });
-  const QT = ['Filtrar o suco da folha', 'Pingar na folha sadia', 'Ver no microscópio eletrônico'], QA = ['1892', '1898', '1939'];
+  const QT = ['Filtrar o suco da folha', 'Pingar na folha sadia', 'Ver no microscópio eletrônico'], QA = ['1892', '1892 e 1898', '1939'];
   const QI = [0, 7, 13];
   function painel(P, n, ativo) {
     panel(P.x, P.y, P.w, P.h, { s: ativo ? 'rgba(232,237,247,.5)' : C.line, f: 'rgba(19,26,43,.55)' });
@@ -122,7 +122,7 @@
   }
   const QCAP = [
     '1892, Ivanovsky: o suco de uma folha de tabaco com mosaico passa por um filtro de porcelana, que segura as bactérias.',
-    'O filtrado, sem bactérias, ainda infecta a folha sadia. Em 1898, Beijerinck concluiu: é um agente novo, menor que qualquer bactéria.',
+    'O filtrado, sem bactérias, ainda infecta a folha sadia: Ivanovsky viu isso em 1892. Em 1898, Beijerinck concluiu que era um agente novo, menor que qualquer bactéria.',
     `1939: o microscópio eletrônico mostra os bastonetes do vírus do mosaico do tabaco, com cerca de 300${NB}nm.`
   ];
   function drawExp(t, S, A) {
@@ -224,26 +224,28 @@
       });
     }
     const e = ESC[S.sel];
-    cap(e ? `<b>${maiusc(e.n)}</b>: ${e.d}, ${e.x}` : `Toque em cada um para ver o tamanho. A régua é logarítmica: cada marca vale 10 vezes a anterior. A faixa cinza marca a maioria dos vírus (20 a 300${NB}nm).`);
+    cap(e ? `<b>${maiusc(e.n)}</b>: ${e.d}, ${e.x}` : `Toque em cada um para ver o tamanho. A régua é logarítmica: cada número vale 10 vezes o anterior. A faixa cinza marca a maioria dos vírus (20 a 300${NB}nm).`);
   }
 
   def('natureza', 'vivo', {
     t: 'Vírus são seres vivos?', s: 'passam no filtro, não têm célula e só se multiplicam dentro de outra', c: NAT,
-    loc: 'Do filtro ao microscópio eletrônico',
+    loc: S => ({ exp: 'Do filtro ao microscópio eletrônico', viv: 'Balança: o vírus e os seres vivos', esc: 'Régua de tamanhos' })[S.modo] || 'Do filtro ao microscópio eletrônico',
+    locNota: S => S.modo === 'esc' ? 'Régua logarítmica; ícones fora de escala' : 'Desenho esquemático',
+    ctlVis: S => S.modo === 'exp',
     alt: 'o experimento de Ivanovsky e Beijerinck em três quadros: o suco de folha de tabaco com mosaico passa por um filtro de porcelana que segura as bactérias, o filtrado infecta uma folha sadia, e o microscópio eletrônico mostra os bastonetes do vírus; há também uma balança para separar o que o vírus tem de parecido e de diferente dos seres vivos e uma régua de tamanhos de 10 nanômetros a 10 micrômetros',
     still: 19.5,
     extra: [modo('exp', 'Experimento'), modo('viv', 'Vivo ou não vivo?'), modo('esc', 'Escala')],
     init(S) { S.modo = 'exp'; S.sel = null; S.tilt = 0; VIVO.zera(S); },
     d: `<p>No fim do século XIX, os cientistas já sabiam que muitas doenças eram causadas por bactérias, e um jeito de provar isso era passar o líquido doente por um <b>filtro de porcelana</b>, com poros tão finos que seguravam as bactérias. Em <b>1892</b>, o russo <b>Dmitri Ivanovsky</b> fez isso com a seiva de plantas de tabaco com a <b>doença do mosaico</b> (folhas manchadas) e viu que o líquido filtrado continuava infectando plantas sadias. Em <b>1898</b>, o holandês <b>Martinus Beijerinck</b> repetiu o experimento e concluiu que o agente era algo novo, menor que qualquer bactéria e que só se multiplicava dentro da planta. Chamou-o de <b>vírus</b> (do latim, "veneno"). Ninguém viu um vírus até <b>1939</b>, quando o <b>microscópio eletrônico</b> mostrou os bastonetes do vírus do mosaico do tabaco. A maioria dos vírus mede de <b>20 a 300 nanômetros</b>: uma bactéria comum tem cerca de 2${NB}000${NB}nm.</p>
 <p>Um vírus <b>não tem célula</b>: é só um <b>ácido nucleico</b> (DNA ou RNA) dentro de uma capa de proteína. Não tem citoplasma, ribossomos nem enzimas para produzir energia, e por isso <b>não tem metabolismo próprio</b>. Fora de uma célula, é uma partícula inerte, que pode até ser <b>cristalizada</b>, como um sal (Wendell Stanley fez isso com o vírus do mosaico em 1935). Dentro de uma célula, usa a maquinaria dela para fazer cópias de si mesmo: é um <b>parasita intracelular obrigatório</b>. Também não cresce nem se divide: as cópias são <b>montadas</b> a partir de peças. Por tudo isso, muitos autores <b>não consideram os vírus seres vivos</b>, ou os colocam "na fronteira" da vida. Por outro lado, os vírus têm <b>material genético</b>, que passa para as cópias (<b>hereditariedade</b>), sofrem <b>mutação</b> e <b>evoluem por seleção natural</b>: é assim que surgem as variantes do vírus da gripe e da covid-19. A descoberta de <b>vírus gigantes</b>, como o <b>mimivírus</b> (cerca de 750${NB}nm, maior que algumas bactérias), reacendeu o debate. Na Biologia, a resposta mais honesta é: depende da definição de vida que se usa.</p>
-<p>Toque num quadro para ir direto a ele. Em "Vivo ou não vivo?", leve cada cartão para um prato da balança; em "Escala", toque em cada ser para ver o tamanho.</p>`,
+<p>Toque num quadro para ir direto a ele. Em "Vivo ou não vivo?", leve cada cartão para um prato da balança; em "Escala", toque em cada um para ver o tamanho. A régua de "Escala" é logarítmica: cada número vale 10 vezes o anterior, e os tracinhos entre dois números marcam 2, 3, 4 até 9 vezes o número menor.</p>`,
     enem: 'As duas ideias mais cobradas: vírus são <b>acelulares</b> e <b>parasitas intracelulares obrigatórios</b>. Delas sai tudo: por que não entram em nenhum reino, por que <b>antibióticos não funcionam</b> contra vírus (agem em parede e ribossomos de bactérias, que o vírus não tem) e por que é preciso cultivar vírus <b>em células vivas</b> (ovos embrionados, culturas de células) para estudá-los ou fazer vacinas. Se a questão perguntar o argumento <b>a favor</b> de serem vivos, a resposta é <b>material genético com mutação e evolução</b>.',
     links: [LK.morfo, LK.reinos, ['A partícula viral', '#estrutura/particula']],
     tap(x, y, S) {
       if (S.modo === 'viv') { VIVO.tap(x, y, S); return; }
       if (!toque(S)) return; const h = hitAt(x, y);
       if (S.modo === 'esc') { S.sel = typeof h === 'string' && h[0] === 'e' ? (S.sel === +h.slice(1) ? null : +h.slice(1)) : null; return; }
-      if (typeof h === 'string' && h[0] === 'q') S.ph = Math.floor(S.ph / 21) * 21 + QI[+h[1]] + .01;
+      if (typeof h === 'string' && h[0] === 'q') S.ph = Math.floor(S.ph / 21) * 21 + (S.paused ? [6.6, 12.6, 18.6][+h[1]] : QI[+h[1]] + .01);
     },
     grab(x, y, S) { return S.modo === 'viv' && VIVO.grab(x, y, S); },
     grabMove(x, y, S) { VIVO.grabMove(x, y, S); },
@@ -273,12 +275,12 @@
   const E1CAP = [
     '1. O ácido nucleico: aqui, RNA em 8 pedaços, como no vírus da gripe.',
     '2. Os capsômeros, unidades de proteína, se encaixam sozinhos em volta do RNA: formam o capsídeo.',
-    '3. O nucleocapsídeo empurra a membrana da célula e sai embrulhado num pedaço dela: é o envelope.',
-    '4. As espículas (glicoproteínas do vírus) ficam espetadas no envelope.'
+    '3. As espículas (glicoproteínas do vírus), fabricadas pela célula, ficam espetadas na membrana dela.',
+    '4. O nucleocapsídeo empurra esse trecho da membrana e sai embrulhado nele: é o envelope, já com as espículas.'
   ];
   function drawMont(t, S, A) {
     const L = layE1(A), r = L.r, cx = A.cx, tm = S.sabOn ? 99 : t;
-    const gen = ss(seg(tm, .3, 2.2)), capP = ss(seg(tm, 2.4, 5.4)), rise = ss(seg(tm, 5.8, 9.6)), espP = ss(seg(tm, 10, 12.5)), pronto = tm >= 12.5;
+    const gen = ss(seg(tm, .3, 2.2)), capP = ss(seg(tm, 2.4, 5.4)), espM = ss(seg(tm, 5.6, 7.2)), rise = ss(seg(tm, 7.4, 11)), pronto = tm >= 12.5;
     S.cv = lerp(S.cv || 0, S.corte ? 1 : 0, 1 - Math.exp(-6 * passo(S)));
     if (S.sabOn) S.sab = Math.min(1.2, (S.sab || 0) + passo(S) / 5);
     const sb = S.sabOn ? S.sab : 0, py = lerp(lerp(L.yin, L.yout, rise), A.cy, ss(seg(sb, 0, .25))), sep = py <= L.ym - r + .5 || S.sabOn, rot = Math.max(0, t - 12.5) * .05, desfaz = ss(seg(sb, .15, .7)), solta = ss(seg(sb, .2, .8)), lado = ss(seg(sb, .65, 1)) * r * .55, mA = 1 - ss(seg(sb, 0, .2));
@@ -299,8 +301,10 @@
     } else if (S.sabOn) {
       virion(cx - lado, py + lado * .3, r, { tipo: 'gripe', env: 0, ph: t });
       virion(cx, py, r, { tipo: 'gripe', gen: 0, cap: 0, rot, corte: 1, desfaz, solta });
-    } else virion(cx, py, r, { tipo: 'gripe', ph: t, rot, esp: espP, corte: S.cv });
+    } else virion(cx, py, r, { tipo: 'gripe', ph: t, rot, corte: S.cv });
     X.save(); X.globalAlpha *= mA; membrana(mp, { d: 4 }); X.restore();
+    // as espículas já estão na membrana da célula antes do brotamento: o envelope sai com elas
+    if (!sep && espM > 0) for (let i = 0; i < 22; i++) { const g = i / 22 * TAU; if (Math.sin(g) > -.05) continue; const ax = cx + Math.cos(g) * r, ay = py + Math.sin(g) * r, fora = ay < L.ym - 4; espicula(ax, fora ? ay : L.ym - 4, fora ? g : -PI / 2, r * .3 * espM, { tipo: i % 4 === 3 ? 'N' : 'H' }); }
     if (LB && mA > .05) { X.save(); X.globalAlpha *= mA; tx('fora da célula', A.x0 + 4, L.ym - 12, { s: 12, a: 'left', c: C.dim }); tx('citoplasma da célula', A.x0 + 4, L.ym + 18, { s: 12, a: 'left', c: C.dim }); X.restore(); }
     // sabão: moléculas com cabeça para fora e cauda para dentro, que entram no envelope e o desmancham
     if (S.sabOn) {
@@ -318,23 +322,26 @@
       const el = r * .3, sp = i => { const g = rot + i / 22 * TAU; return [cx + Math.cos(g) * (r + el * .7), py + Math.sin(g) * (r + el * .7)]; };
       const [hx, hy] = sp(0), [nx, ny] = sp(3), eg = rot + PI * .78, ex = cx + Math.cos(eg) * r, ey = py + Math.sin(eg) * r, R1 = r * 1.75;
       const T = NAR ? ['envelope', 'espícula H', 'espícula N', 'RNA', 'capsídeo', 'membrana'] : ['envelope (lipídios da célula)', 'espícula H (hemaglutinina)', 'espícula N (neuraminidase)', 'RNA (8 pedaços)', 'capsídeo (capsômeros)', 'membrana da célula'];
-      lab(ex, ey, cx - R1, py + r * .55, T[0]);
-      lab(hx, hy, cx + R1, py - r * .55, T[1]);
-      if (S.cv > .5) { lab(cx + Math.cos(.4) * r * .26, py + Math.sin(.4) * r * .26, cx + R1, py + r * .25, T[3]); lab(cx - r * .5, py - r * .12, cx - R1, py - r * .5, T[4]); }
-      lab(nx, ny, cx + R1, py + r * (S.cv > .5 ? .95 : .4), T[2]);
+      // no celular não cabe rótulo dos lados: duas fileiras acima da partícula e a espícula N embaixo, à direita
+      const P = NAR ? { e: [cx - r * .95, py - r * 1.7], h: [cx + r * .95, py - r * 1.7], rna: [cx + r * .95, py - r * 2.2], cap: [cx - r * .95, py - r * 2.2], n: [cx + r * 1.4, py + r * 1.05] }
+        : { e: [cx - R1, py + r * .55], h: [cx + R1, py - r * .55], rna: [cx + R1, py + r * .25], cap: [cx - R1, py - r * .5], n: [cx + R1, py + r * (S.cv > .5 ? .95 : .4)] };
+      lab(ex, ey, ...P.e, T[0]);
+      lab(hx, hy, ...P.h, T[1]);
+      if (S.cv > .5) { lab(cx + Math.cos(.4) * r * .26, py + Math.sin(.4) * r * .26, ...P.rna, T[3]); lab(cx - r * .5, py - r * .12, ...P.cap, T[4]); }
+      lab(nx, ny, ...P.n, T[2]);
       if (!NAR) lab(cx + r * 2.2, L.ym, cx + r * 2.6, L.ym + 40, T[5]);
     }
-    let c = pronto ? (S.cv > .5 ? 'Em corte: RNA, capsídeo (ácido nucleico mais capsídeo formam o nucleocapsídeo), envelope de lipídios e espículas H e N.' : 'Partícula pronta. Toque em Corte para abrir ao meio, ou em Sabão para ver o que acontece com o envelope.') : E1CAP[tm < 2.4 ? 0 : tm < 5.8 ? 1 : tm < 10 ? 2 : 3];
+    let c = pronto ? (S.cv > .5 ? 'Em corte: RNA, capsídeo (ácido nucleico mais capsídeo formam o nucleocapsídeo), envelope de lipídios e espículas H e N.' : 'Partícula pronta. Toque em Corte para abrir ao meio, ou em Sabão para ver o que acontece com o envelope.') : E1CAP[tm < 2.4 ? 0 : tm < 5.6 ? 1 : tm < 7.4 ? 2 : 3];
     if (S.sabOn) c = sb < .7 ? 'O sabão se mistura aos lipídios do envelope e o desmancha; as espículas se soltam.' : 'Sem envelope e sem espículas, o vírus não consegue se prender à célula: está inativado.';
     cap(c);
   }
   // "Chave e fechadura": cada vírus só entra na célula que tem o receptor certo
   const VK = [
     { n: 'HIV', e: 'gp120', tipo: 'hiv', c: 0, ok: 'A gp120 do HIV encaixa na proteína CD4 do linfócito T auxiliar: o vírus entra.' },
-    { n: 'SARS-CoV-2', e: 'proteína S', tipo: 'corona', c: 1, ok: 'A proteína S (<i>spike</i>) encaixa na ECA2 da célula do pulmão: o vírus entra.' },
-    { n: 'vírus da gripe', e: 'hemaglutinina (H)', tipo: 'gripe', c: 2, ok: 'A hemaglutinina (H) se liga ao ácido siálico da célula da traqueia: o vírus entra.' }
+    { n: 'SARS-CoV-2', e: 'proteína S', tipo: 'corona', c: 1, ok: 'A proteína S (<i>spike</i>) encaixa na ECA2, presente em células do nariz, do pulmão e de outros órgãos: o vírus entra.' },
+    { n: 'vírus da gripe', e: 'hemaglutinina (H)', tipo: 'gripe', c: 2, ok: 'A hemaglutinina (H) se liga ao ácido siálico, um açúcar da superfície das células das vias respiratórias: o vírus entra.' }
   ];
-  const CK = [{ n: 'linfócito T', r: 'receptor CD4', rec: 'CD4' }, { n: 'célula do pulmão', r: 'receptor ECA2', rec: 'ECA2' }, { n: 'célula da traqueia', r: 'ácido siálico', rec: 'sial' }, { n: 'hemácia', r: 'sem esses receptores', rec: null }];
+  const CK = [{ n: 'linfócito T auxiliar', r: 'receptor CD4', rec: 'CD4' }, { n: 'célula com ECA2', r: 'como as do pulmão', rec: 'ECA2' }, { n: 'célula com ácido siálico', r: 'como as da traqueia', rec: 'sial' }, { n: 'hemácia', r: 'sem núcleo e sem ribossomos', rec: null }];
   function layK(A) {
     if (!NAR) {
       const vr = Math.min(34, A.h * .08), ry = Math.min(A.h * .12, 52), rx = Math.min(A.w / 8 - 18, 120);
@@ -343,7 +350,7 @@
     const vr = 20, ry = Math.min(36, A.h * .075), rx = A.w * .2;
     return { vr, vs: VK.map((v, i) => [A.x0 + A.w * (1 + 2 * i) / 6, A.y0 + 30]), rx, ry, cs: CK.map((c, k) => [A.x0 + A.w * (k % 2 ? .75 : .25), A.y0 + A.h * (k < 2 ? .44 : .78)]) };
   }
-  function soltaK(S, v, k, from) { S.sel = null; if (S.an) return; S.an = { v, k, t: 0, ok: VK[v].c === k, from }; S.msg = null; }
+  function soltaK(S, v, k, from) { S.sel = null; if (S.an) return; S.an = { v, k, t: 0, ok: VK[v].c === k, gruda: v === 2 && k === 3, from }; S.msg = null; }
   function drawChave(t, S, A) {
     const L = layK(A), vr = L.vr;
     S.inf = S.inf || {};
@@ -352,15 +359,15 @@
     CK.forEach((c, k) => {
       const [x, y] = L.cs[k], inf = S.inf[k] != null;
       if (c.rec) { const o = celula(x, y, L.rx, L.ry, { nuc: { x: .3, y: .15, r: .42 }, ribo: 8, seed: k + 2, rec: { n: 5, tipo: c.rec, de: -PI * .85, ate: -PI * .15, s: NAR ? 11 : 13 } }); const m = o.rec[2]; alvo.push([m.tx, m.ty]); }
-      else { ell(x, y, L.rx * .62, L.ry * .9, 0, rgba(C.hemacia, .85), '#8E1F27', 1.4); ell(x, y, L.rx * .3, L.ry * .38, 0, 'rgba(240,120,128,.4)'); alvo.push([x, y - L.ry * .9]); }
-      if (inf) for (let j = 0; j < 3; j++) virion(x - L.rx * .45 + j * L.rx * .22, y + L.ry * .25, NAR ? 6 : 8, { tipo: VK[S.inf[k]].tipo, rot: t * .3 + j });
+      else { ell(x, y, L.rx * .62, L.ry * .9, 0, rgba(C.hemacia, .85), '#8E1F27', 1.4); ell(x, y, L.rx * .3, L.ry * .38, 0, 'rgba(240,120,128,.4)'); [-1, 0, 1].forEach(j => receptor(x + j * L.rx * .3, y - L.ry * .9 * Math.sqrt(1 - (j * .3 / .62) ** 2), -PI / 2 + j * .5, 'sial', { s: NAR ? 9 : 11 })); alvo.push([x, y - L.ry * .9]); }
+      if (inf) fita([[x - L.rx * .55, y + L.ry * .3], [x - L.rx * .05, y + L.ry * .3]], { amp: 3, ond: 12, ph: t * 2 });
       hitR(x - L.rx, y - L.ry - 18, L.rx * 2, L.ry * 2 + 18, 'kc' + k);
       tx(c.n, x, y + L.ry + (NAR ? 13 : 16), { s: NAR ? 12 : 13, w: 600, c: C.txt });
-      tx(inf ? 'o vírus entrou' : c.r, x, y + L.ry + (NAR ? 28 : 33), { s: 12, c: inf ? C.ok : C.dim });
+      tx(inf ? 'o RNA do vírus entrou' : c.r, x, y + L.ry + (NAR ? 28 : 33), { s: 12, c: inf ? C.ok : C.dim });
     });
     // vírus em casa (ou fantasma enquanto viaja)
     const an = S.an, T1 = .9, T2 = an && an.ok ? .9 : .7;
-    if (an) { an.t += passo(S); if (an.t > T1 + T2) { if (an.ok) S.inf[an.k] = an.v; S.an = null; if (Object.keys(S.inf).length === 3) S.msg = 'Cada vírus só infecta as células que têm o receptor certo: é a especificidade. A hemácia não tem nenhum desses receptores.'; } }
+    if (an) { an.t += passo(S); if (an.t > T1 + T2) { if (an.ok) S.inf[an.k] = an.v; S.an = null; if (Object.keys(S.inf).length === 3) S.msg = 'Cada vírus só infecta as células que têm o receptor certo: é a especificidade. A hemácia madura, sem núcleo nem ribossomos, não é infectada por nenhum dos três.'; } }
     VK.forEach((v, i) => {
       const [x, y] = L.vs[i], viaja = an && an.v === i, arr = S.drag && S.drag.v === i;
       if (S.sel === i) circ(x, y, vr * 1.55, null, C.amber, 2);
@@ -373,17 +380,18 @@
       const [hx, hy] = an.from || L.vs[an.v], [ax, ay] = alvo[an.k], [cx0, cy0] = L.cs[an.k], dx = ax, dy = ay - vr * 1.3;
       let x, y, a = 1, s = 1;
       if (an.t < T1) { const f = ss(an.t / T1); x = lerp(hx, dx, f); y = lerp(hy, dy, f) - Math.sin(f * PI) * 30; }
-      else { const f = ss((an.t - T1) / T2); if (an.ok) { x = lerp(dx, cx0, f); y = lerp(dy, cy0, f); s = 1 - .6 * f; a = 1 - f; } else { x = dx + f * vr * 2.2; y = dy + f * vr * .4; a = 1 - f; } }
+      else { const f = ss((an.t - T1) / T2); if (an.ok) { x = lerp(dx, cx0, f); y = lerp(dy, cy0, f); s = 1 - .6 * f; a = 1 - f; } else if (an.gruda) { x = dx; y = dy + f * vr * .3; a = 1 - f * f; } else { x = dx + f * vr * 2.2; y = dy + f * vr * .4; a = 1 - f; } }
       virion(x, y, vr * s, { tipo: VK[an.v].tipo, rot: t * .15, a });
-      if (an.t > T1 * .8) S.msg = an.ok ? VK[an.v].ok : `As espículas do ${VK[an.v].n} não encaixam nos receptores desenhados nesta célula: sem receptor, sem infecção.`;
+      if (an.t > T1 * .8 && S.an) S.msg = an.ok ? VK[an.v].ok : an.gruda ? 'A hemaglutinina até gruda no ácido siálico da hemácia (daí o nome: ela aglutina hemácias), mas a hemácia madura não tem núcleo nem ribossomos: o vírus não se multiplica nela.' : an.k === 3 ? `A hemácia madura não tem núcleo nem ribossomos: não fabrica vírus, e o ${VK[an.v].n} não a infecta.` : `As espículas do ${VK[an.v].n} não encaixam no receptor desta célula: sem o receptor certo, sem infecção.`;
     }
     cap(S.msg || 'Toque num vírus e depois numa célula (no computador, também dá para arrastar o vírus).');
   }
 
   def('estrutura', 'particula', {
     t: 'A partícula viral', s: 'ácido nucleico, capsídeo e, às vezes, um envelope', c: C.virus,
-    loc: 'Vírus envelopado (modelo da gripe)', locNota: 'Desenho esquemático, fora de escala',
-    alt: 'uma partícula de vírus envelopado se monta: o RNA em oito pedaços, os capsômeros em volta, o envelope que vem da membrana da célula por brotamento e as espículas; botões abrem a partícula em corte, mostram o sabão desmanchando o envelope e testam o encaixe de três vírus em quatro células, como chave e fechadura',
+    loc: S => S.modo === 'chave' ? 'Três vírus e quatro células' : 'Vírus envelopado (modelo da gripe)', locNota: 'Desenho esquemático, fora de escala',
+    ctlVis: S => S.modo !== 'chave',
+    alt: 'uma partícula de vírus envelopado se monta: o RNA em oito pedaços, os capsômeros em volta, as espículas na membrana da célula e o brotamento, em que o vírus sai embrulhado nesse pedaço de membrana, já com as espículas; botões abrem a partícula em corte, mostram o sabão desmanchando o envelope e testam o encaixe de três vírus em quatro células, como chave e fechadura',
     still: 14,
     extra: [
       { t: 'Corte', on: S => { if (S.modo !== 'mont') { S.modo = 'mont'; S.corte = true; } else S.corte = !S.corte; }, pressed: S => S.modo === 'mont' && !!S.corte },
@@ -391,8 +399,8 @@
       { t: 'Chave e fechadura', on: S => { S.modo = S.modo === 'chave' ? 'mont' : 'chave'; S.msg = null; S.sel = null; }, pressed: S => S.modo === 'chave' }
     ],
     init(S) { S.modo = 'mont'; S.corte = false; S.cv = 0; S.sabOn = false; S.sab = 0; S.sel = null; S.an = null; S.inf = {}; S.msg = null; S.drag = null; },
-    d: `<p>Todo vírus tem duas partes. No centro, o <b>ácido nucleico</b>, que guarda os genes do vírus: <b>DNA ou RNA, nunca os dois</b> como material genético. Ele pode ser de fita <b>simples</b> ou <b>dupla</b>, inteiro ou dividido em pedaços (o vírus da gripe tem o RNA em <b>8 segmentos</b>). Em volta, uma capa de proteína, o <b>capsídeo</b>, formada por muitas unidades iguais, os <b>capsômeros</b>, que se encaixam sozinhas, como peças de um brinquedo de montar. O capsídeo protege o ácido nucleico e, nos vírus sem envelope, é ele que se prende à célula. Ácido nucleico mais capsídeo formam o <b>nucleocapsídeo</b>. Alguns vírus carregam também <b>enzimas</b> dentro do capsídeo, como a transcriptase reversa do HIV (ver R2).</p>
-<p>Muitos vírus que infectam animais têm, por fora do capsídeo, um <b>envelope</b>: uma bicamada de <b>lipídios</b> que o vírus leva da <b>membrana da célula</b> onde foi montado, quando sai dela. Nesse envelope ficam espetadas <b>glicoproteínas virais</b>, as <b>espículas</b>, que funcionam como "chaves": elas se encaixam em <b>receptores</b> da membrana de certas células, como chave e fechadura. É por isso que cada vírus infecta só alguns tipos de célula (<b>especificidade</b>): o HIV usa a proteína <b>CD4</b> dos linfócitos T auxiliares; o SARS-CoV-2 usa a sua <b>proteína S</b> (<i>spike</i>) para se ligar à <b>ECA2</b>, presente em células do pulmão e de outros órgãos; o vírus da gripe usa a <b>hemaglutinina (H)</b> para entrar e a <b>neuraminidase (N)</b> para sair, e as letras H e N dão nome aos subtipos, como <b>H1N1</b> e <b>H3N2</b>. Como o envelope é feito de lipídios, <b>sabão</b> e <b>álcool 70%</b> o destroem e inativam o vírus. Vírus <b>sem envelope</b> (HPV, hepatite A, rotavírus, norovírus, poliovírus) são mais resistentes ao ambiente e ao álcool.</p>
+    d: `<p>Todo vírus tem duas partes. No centro, o <b>ácido nucleico</b>, que guarda os genes do vírus: <b>DNA ou RNA, nunca os dois</b> como material genético. Ele pode ser de fita <b>simples</b> ou <b>dupla</b>, inteiro ou dividido em pedaços (o vírus da gripe tem o RNA em <b>8 segmentos</b>). Em volta, uma capa de proteína, o <b>capsídeo</b>, formada por muitas unidades iguais, os <b>capsômeros</b>, que se encaixam sozinhas, como peças de um brinquedo de montar. O capsídeo protege o ácido nucleico e, nos vírus sem envelope, é ele que se prende à célula. Ácido nucleico mais capsídeo formam o <b>nucleocapsídeo</b>. Alguns vírus carregam também <b>enzimas</b> dentro do capsídeo, como a transcriptase reversa do HIV (veja <a href="#replicacao/retrovirus">Retrovírus e transcriptase reversa</a>).</p>
+<p>Muitos vírus que infectam animais têm, por fora do capsídeo, um <b>envelope</b>: uma bicamada de <b>lipídios</b> que o vírus leva da <b>membrana da célula</b> onde foi montado, quando sai dela. Nesse envelope ficam espetadas <b>glicoproteínas virais</b>, as <b>espículas</b>, que funcionam como "chaves": elas se encaixam em <b>receptores</b> da membrana de certas células, como chave e fechadura. É por isso que cada vírus infecta só alguns tipos de célula (<b>especificidade</b>): o HIV usa a proteína <b>CD4</b> dos linfócitos T auxiliares; o SARS-CoV-2 usa a sua <b>proteína S</b> (<i>spike</i>) para se ligar à <b>ECA2</b>, presente em células do nariz, do pulmão e de outros órgãos; o vírus da gripe usa a <b>hemaglutinina (H)</b> para entrar e a <b>neuraminidase (N)</b> para sair, e as letras H e N dão nome aos subtipos, como <b>H1N1</b> e <b>H3N2</b>. Como o envelope é feito de lipídios, <b>sabão</b> e <b>álcool 70%</b> o destroem e inativam o vírus. Vírus <b>sem envelope</b> (HPV, hepatite A, rotavírus, norovírus, poliovírus) são mais resistentes ao ambiente e ao álcool.</p>
 <p>Toque em "Corte" para abrir a partícula ao meio e em "Sabão" para ver o que acontece com o envelope. Em "Chave e fechadura", leve cada vírus até uma célula.</p>`,
     enem: 'Saiba as partes: <b>ácido nucleico</b> (DNA <b>ou</b> RNA), <b>capsídeo</b> (proteína, feito de capsômeros) e <b>envelope</b> (lipídios da célula hospedeira, com glicoproteínas virais). A ideia de <b>especificidade</b> (espícula e receptor) explica por que o HIV ataca linfócitos T CD4 e por que muitas vacinas miram a proteína da superfície do vírus. Pegadinha do dia a dia: lavar as mãos com <b>sabão</b> funciona contra vírus envelopados porque <b>dissolve o envelope</b> de lipídios, não porque "mata" o vírus como se mata uma bactéria.',
     links: [['Formas e tipos de vírus', '#estrutura/tipos'], ['Vírus em células animais', '#replicacao/animal'], LK.celula],
@@ -402,7 +410,7 @@
       if (h.startsWith('kv')) { const v = +h[2]; S.sel = S.sel === v ? null : v; if (S.sel != null) S.msg = `${VK[v].n} escolhido: agora toque numa célula.`; return; }
       if (h.startsWith('kc')) { if (S.sel != null) soltaK(S, S.sel, +h[2]); else S.msg = 'Primeiro toque num vírus; depois, numa célula.'; }
     },
-    grab(x, y, S) { if (S.modo !== 'chave' || S.an) return false; const h = hitAt(x, y); if (typeof h === 'string' && h.startsWith('kv')) { S.drag = { v: +h[2], x, y }; return true; } return false; },
+    grab(x, y, S) { if (S.modo !== 'chave' || S.an) return false; const h = hitAt(x, y); if (typeof h === 'string' && h.startsWith('kv')) { const v = +h[2]; S.drag = { v, x, y }; S.sel = v; S.msg = `${VK[v].n} escolhido: agora toque numa célula.`; return true; } return false; },
     grabMove(x, y, S) { if (S.drag) { S.drag.x = x; S.drag.y = y; } },
     grabEnd(x, y, S) { const d = S.drag; S.drag = null; if (!d) return; const h = hitAt(x, y); if (typeof h === 'string' && h.startsWith('kc')) soltaK(S, d.v, +h[2], [x, y]); },
     draw(t, S) { const A = area(); if (S.modo === 'chave') drawChave(t, S, A); else drawMont(t, S, A); }
@@ -434,19 +442,19 @@
       else { const rh = A.h / 3; mx = A.x0 + A.w * .26; my = A.y0 + rh * (i + .5); s = Math.min(rh * .86, A.w * .4); bx = A.x0 + A.w * .53; by = A.y0 + rh * i + rh * .2; al = 'left'; mw = A.x1 - bx; }
       const hl = modelo(i, mx, my, s, t, S);
       const env = i === 1 && S.ev > .5;
-      head(env ? 'Icosaédrico, com envelope' : f.n, bx, by, i === 1 && hl ? C.txt : C.txt, al);
+      head(env ? (NAR ? 'Com envelope' : 'Icosaédrico, com envelope') : f.n, bx, by, C.txt, al);
       let yy = by + (NAR ? 20 : 24);
-      yy += wrapTx(env ? 'por fora, parece uma esfera com espinhos: a forma do capsídeo some' : f.e, bx, yy, mw, { s: NAR ? 12 : 13, c: C.txt, a: al, lh: NAR ? 15 : 17 });
-      if (!env) yy += wrapTx(i === 1 ? `${f.x}; destacadas: ${hl} de 20` : f.x, bx, yy, mw, { s: 12, c: C.dim, a: al, lh: 15 });
-      const tw0 = mtw(f.ac, 12, 700) + 12; tok(al === 'left' ? bx + tw0 / 2 : bx, yy + 8, f.ac, f.ac[0] === 'R' ? C.rna : C.dna, { s: 12 });
+      yy += wrapTx(env ? 'como no vírus do herpes: por fora, parece uma esfera com espinhos' : f.e, bx, yy, mw, { s: NAR ? 12 : 13, c: C.txt, a: al, lh: NAR ? 15 : 17 });
+      yy += wrapTx(env ? 'adenovírus, HPV e poliovírus não têm envelope' : i === 1 ? `${f.x}; destacadas: ${hl} de 20` : f.x, bx, yy, mw, { s: 12, c: C.dim, a: al, lh: 15 });
+      const ac = env ? 'DNA (herpes)' : f.ac, tw0 = mtw(ac, 12, 700) + 12; tok(al === 'left' ? bx + tw0 / 2 : bx, yy + 8, ac, ac[0] === 'R' ? C.rna : C.dna, { s: 12 });
     }
-    cap(S.ev > .5 ? 'Com o envelope, por fora o vírus parece uma esfera com espinhos: a forma do capsídeo fica escondida.' : 'Três formas de capsídeo: helicoidal (bastonete), icosaédrica (20 faces) e complexa (cabeça e cauda).');
+    cap(S.ev > .5 ? 'Com envelope (como no herpes), por fora o vírus parece uma esfera com espinhos: a forma do capsídeo fica escondida.' : 'Três formas de capsídeo: helicoidal (bastonete), icosaédrica (20 faces) e complexa (cabeça e cauda).');
   }
   const ACN = baralho({
     nome: 'acn',
     alvos: [{ t: 'vírus de DNA', c: C.dna }, { t: 'vírus de RNA', c: C.rna }],
     cartas: [
-      ['gripe', 1, 1, 'O vírus da gripe', ' Muda muito: a vacina é atualizada todo ano.'], ['herpes', 0, 1, 'O vírus do herpes', ''], ['HIV', 1, 1, 'O HIV', ' É um retrovírus (ver R2).'],
+      ['gripe', 1, 1, 'O vírus da gripe', ' Muda muito: a vacina é atualizada todo ano.'], ['herpes', 0, 1, 'O vírus do herpes', ''], ['HIV', 1, 1, 'O HIV', ' É um retrovírus: dentro da célula, o RNA dele é copiado em DNA.'],
       ['HPV', 0, 0, 'O HPV', ''], ['dengue', 1, 1, 'O vírus da dengue', ''], ['hepatite B', 0, 1, 'O vírus da hepatite B', ''], ['sarampo', 1, 1, 'O vírus do sarampo', ''],
       ['covid-19', 1, 1, 'O SARS-CoV-2, vírus da covid-19,', ' Ganhou muitas variantes.'], ['febre amarela', 1, 1, 'O vírus da febre amarela', ''], ['hepatite A', 1, 0, 'O vírus da hepatite A', '']
     ].map(([t, k, e, v, x]) => ({ t, k, e, v, x, t2: `${t}: ${e ? 'com' : 'sem'} envelope` })),
@@ -461,7 +469,7 @@
     if (k > 0) { X.save(); X.globalAlpha *= k; const p = []; for (let i = 0; i <= 6; i++) p.push([x - s * .42 + i * s * .14, y + (i % 2 ? -1 : 1) * s * .24]); poly(p, '#F0605D', 2.6); arrowHead(p[6][0], p[6][1], Math.atan2(p[6][1] - p[5][1], p[6][0] - p[5][0]), '#F0605D', 7); X.restore(); }
   }
   const VP = [
-    { n: 'Vírus', c: C.virus, a: 'ácido nucleico e capsídeo', b: 'infecta bactérias, arqueas, fungos, plantas e animais' },
+    { n: 'Vírus', c: C.virus, a: 'ácido nucleico e capsídeo', b: 'há vírus de bactérias, arqueas, protistas, fungos, plantas e animais' },
     { n: 'Viroide', c: C.rna, a: 'só RNA circular, sem capsídeo', b: 'causa doenças em plantas, como a do tubérculo afilado da batata' },
     { n: 'Príon', c: '#F0605D', a: 'só proteína, sem nenhum ácido nucleico', b: 'proteína com a forma errada que muda a forma das outras: vaca louca e Creutzfeldt-Jakob' }
   ];
@@ -503,8 +511,9 @@
 
   def('estrutura', 'tipos', {
     t: 'Formas e tipos de vírus', s: 'hélice, icosaedro, cabeça e cauda; DNA ou RNA', c: C.virus,
-    loc: 'Helicoidal, icosaédrico e complexo', locNota: 'Desenho esquemático, fora de escala',
-    alt: 'três modelos girando devagar: o bastonete helicoidal do vírus do mosaico do tabaco, o icosaedro do adenovírus com as 20 faces destacadas uma a uma e o bacteriófago T4 com cabeça, cauda e fibras; um botão veste o icosaedro com envelope; cartões para separar vírus de DNA e de RNA; e três cartões que comparam vírus, viroide e príon',
+    loc: S => S.modo === 'acn' ? 'Vírus de DNA e de RNA' : S.modo === 'vp' ? 'Vírus, viroide e príon' : 'Helicoidal, icosaédrico e complexo', locNota: 'Desenho esquemático, fora de escala',
+    ctlVis: S => S.modo !== 'acn',
+    alt: 'três modelos girando devagar: o bastonete helicoidal do vírus do mosaico do tabaco, o icosaedro do adenovírus com as 20 faces destacadas uma a uma e o bacteriófago T4 com cabeça, cauda e fibras; um botão veste o icosaedro com envelope, como no vírus do herpes; cartões para separar vírus de DNA e de RNA; e três cartões que comparam vírus, viroide e príon',
     still: 4,
     extra: [
       modo('formas', 'Formas'),
@@ -514,7 +523,7 @@
     ],
     init(S) { S.modo = 'formas'; S.envOn = false; S.ev = 0; ACN.zera(S); },
     d: `<p>Os capsômeros se organizam em poucas formas. Na simetria <b>helicoidal</b>, eles giram em espiral em volta do ácido nucleico e formam um bastonete, como no <b>vírus do mosaico do tabaco</b>; o vírus da gripe e o do sarampo têm nucleocapsídeos helicoidais dentro do envelope. Na simetria <b>icosaédrica</b>, o capsídeo é um poliedro de <b>20 faces triangulares</b>, quase uma esfera, como no <b>HPV</b>, no <b>adenovírus</b> e no <b>poliovírus</b>. Os <b>bacteriófagos</b> como o <b>T4</b> têm forma <b>complexa</b>: uma "cabeça" icosaédrica com o DNA, uma <b>cauda</b> que funciona como seringa e <b>fibras</b> que prendem o fago na bactéria. Por fora, com o envelope, muitos vírus parecem esferas com espinhos, e a forma do capsídeo fica escondida.</p>
-<p>Os vírus também são separados pelo material genético. <b>Vírus de DNA:</b> herpes (herpes labial e genital, catapora), HPV, hepatite B, varíola, adenovírus e o fago T4. <b>Vírus de RNA:</b> gripe, SARS-CoV-2, HIV, dengue, zika, chikungunya, febre amarela, sarampo, raiva, poliomielite e hepatites A e C. Os vírus de RNA, em geral, <b>mutam mais</b>, porque as enzimas que copiam RNA quase não corrigem os próprios erros. É por isso que a vacina da gripe muda todo ano e que o SARS-CoV-2 ganhou tantas variantes. Existem vírus para <b>todos os grupos de seres vivos</b>: bactérias (bacteriófagos), arqueas, fungos, plantas e animais.</p>
+<p>Os vírus também são separados pelo material genético. <b>Vírus de DNA:</b> herpes (herpes labial e genital, catapora), HPV, hepatite B, varíola, adenovírus e o fago T4. <b>Vírus de RNA:</b> gripe, SARS-CoV-2, HIV, dengue, zika, chikungunya, febre amarela, sarampo, raiva, poliomielite e hepatites A e C. Os vírus de RNA, em geral, <b>mutam mais</b>, porque as enzimas que copiam RNA quase não corrigem os próprios erros. É por isso que a vacina da gripe muda todo ano. O SARS-CoV-2 corrige parte dos erros ao copiar o RNA, mas, com milhões de pessoas infectadas, muitas variantes surgiram e foram selecionadas. Existem vírus para <b>todos os grupos de seres vivos</b>: bactérias (bacteriófagos), arqueas, protistas (o mimivírus infecta amebas), fungos, plantas e animais.</p>
 <p>Na fronteira dos vírus há agentes ainda mais simples. Os <b>viroides</b> são só uma pequena molécula de <b>RNA circular, sem capsídeo</b>, e causam doenças em plantas (como a do tubérculo afilado da batata). Os <b>príons</b> não têm <b>nenhum ácido nucleico</b>: são <b>proteínas</b> com a forma errada que fazem outras proteínas iguais mudarem de forma. Eles causam doenças que destroem o cérebro, como a <b>encefalopatia espongiforme bovina</b> ("doença da vaca louca") e, em humanos, a doença de Creutzfeldt-Jakob.</p>
 <p>Em "DNA ou RNA?", leve cada vírus ou doença para a coluna certa; ao acertar, o cartão mostra se o vírus tem envelope.</p>`,
     enem: 'A prova não pede nome de família de vírus, mas cobra a relação entre <b>RNA</b>, <b>alta taxa de mutação</b> e <b>vacina que precisa ser atualizada</b> (gripe, covid-19). Formas que valem a pena reconhecer no desenho: o bastonete <b>helicoidal</b>, o <b>icosaedro</b> e o fago "cabeça e cauda". Se aparecer um agente infeccioso <b>sem ácido nucleico</b>, é um <b>príon</b>; só <b>RNA, sem capsídeo</b>, é um <b>viroide</b>.',

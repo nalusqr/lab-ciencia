@@ -339,8 +339,8 @@ function icosa(x, y, r, o = {}) {
   for (const f of fs) {
     const pts = f.q.map(p => [x + p[0] * r, y + p[1] * r]), front = f.z > 0;
     if (!front && o.fundo === false) continue;
-    if (front) shape(pts, f.h ? mix('#3A2E10', C.espicula, .55 + .45 * Math.max(0, f.sh)) : mix('#1A2033', c, .35 + .55 * Math.max(0, f.sh)), light(c, .3), r < 20 ? 1 : 1.3);
-    else shape(pts, f.h ? rgba(C.espicula, .16) : rgba(c, .05), rgba(c, .22), 1);
+    if (front) shape(pts, f.h ? mix('#1A2033', mix(c, '#FFFFFF', .6), .7 + .3 * Math.max(0, f.sh)) : mix('#1A2033', c, .35 + .55 * Math.max(0, f.sh)), light(c, .3), r < 20 ? 1 : 1.3);
+    else shape(pts, f.h ? rgba(mix(c, '#FFFFFF', .6), .16) : rgba(c, .05), rgba(c, .22), 1);
   }
   if (o.capso !== false && r > 22) for (const f of fs) if (f.z > .15) {
     const m = [0, 1].map(e => (f.q[0][e] + f.q[1][e] + f.q[2][e]) / 3);
@@ -684,7 +684,7 @@ function baralho(cfg) {
         let x = p.x + ox, y = p.y; if (b.drag && b.drag.i === c.i) { x = b.drag.x - p.w / 2; y = b.drag.y - p.h / 2; }
         const k2 = b.onde[c.i], sel = b.sel === c.i, bc = sel ? C.amber : k2 != null ? alvos[k2].c : 'rgba(157,169,196,.5)';
         rr(x, y, p.w, p.h, 8, 'rgba(19,26,43,.94)', bc, sel ? 2.5 : 1.3);
-        if (k2 == null) hitR(x, y, p.w, p.h, nm + ':c=' + c.i);
+        if (k2 == null && !(b.drag && b.drag.i === c.i)) hitR(x, y, p.w, p.h, nm + ':c=' + c.i);
         const txt = k2 != null && c.t2 ? c.t2 : c.t, fs = k2 != null ? 12 : (NAR ? 12 : 13), lh = fs + 3, th = wrapTx(txt, 0, 0, p.w - 12, { s: fs, w: 600, lh, dry: true });
         X.save(); X.beginPath(); X.rect(x, y, p.w, p.h); X.clip();
         wrapTx(txt, x + p.w / 2, y + p.h / 2 - th / 2 + lh / 2, p.w - 12, { s: fs, w: 600, lh, c: C.txt });
@@ -733,10 +733,17 @@ function LAB_VIRUS_iniciar() {
   $('secs').innerHTML = SEC.map(s => `<button type="button" data-s="${s.id}"${ORDER[s.id] && ORDER[s.id].length ? '' : ' disabled title="Em breve"'}><i style="background:${s.c}"></i>${s.t}</button>`).join('');
   $('secs').onclick = e => { const b = e.target.closest('button'); if (b && ORDER[b.dataset.s] && ORDER[b.dataset.s].length) go(ORDER[b.dataset.s][0], true); };
   const fresh = o => ({ ph: paused ? (o.still == null ? 2.5 : o.still) : 0, v: paused && o.stillV != null ? o.stillV : o.ctl.v, dt: 0 });
-  function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); }
+  function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); if (c.chLarg == null) { let n = 0; for (let k = 0; k <= 64; k++) n = Math.max(n, String(c.f(c.min + (c.max - c.min) * k / 64)).length); c.chLarg = n; } $('ctlV').style.minWidth = `max(44px, ${c.chLarg}ch)`; }
   // o.ctlVis(S) (opcional): false esconde a faixa naquele modo do tópico (ex.: a faixa só vale para uma das interações)
   const ctlShow = (o, S) => { let v = !o.noCtl; if (v && o.ctlVis) try { v = !!o.ctlVis(S); } catch (err) { console.error(err); } $('ctlR').parentNode.hidden = !v; };
-  function syncExtra() { const o = SC[cur], S = ST[cur]; if (!o) return; [...$('extra').children].forEach((el, i) => { const y = o.extra && o.extra[i]; if (y) el.setAttribute('aria-pressed', y.pressed ? !!y.pressed(S) : false); }); ctlShow(o, S); }
+  // barra larga demais (muitos botões extras): no computador, Nomes, Pausar e Recomeçar ficam só com o ícone, em vez de a barra quebrar em duas linhas
+  const barra = document.querySelector('.barra');
+  function ajustaBarra() { barra.classList.remove('compacta'); if (innerWidth >= 700 && barra.offsetHeight > 70) barra.classList.add('compacta'); }
+  // o.loc e o.locNota aceitam texto ou função de S: a pastilha acompanha o modo do tópico (só escreve no DOM quando o texto muda)
+  let ondeUlt = null;
+  const val = (f, S) => { try { return typeof f === 'function' ? f(S) : f; } catch (err) { console.error(err); return null; } };
+  function ondeSync(o, S) { const loc = val(o.loc, S) || '', n = val(o.locNota, S), nota = n == null ? 'Desenho esquemático' : n, k = loc + '\u0000' + nota; if (k === ondeUlt) return; ondeUlt = k; $('ondeV').innerHTML = loc; $('ondeS').innerHTML = nota; $('ondeS').hidden = nota === ''; $('ondeM').innerHTML = nota ? nota + '.' : ''; $('ondeM').hidden = !nota; }
+  function syncExtra() { const o = SC[cur], S = ST[cur]; if (!o) return; [...$('extra').children].forEach((el, i) => { const y = o.extra && o.extra[i]; if (y) el.setAttribute('aria-pressed', y.pressed ? !!y.pressed(S) : false); }); ctlShow(o, S); ondeSync(o, S); ajustaBarra(); }
   function go(key, force, keepHash) {
     const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) try { o.init(S); } catch (err) { console.error(err); }
@@ -749,11 +756,12 @@ function LAB_VIRUS_iniciar() {
     $('enemT').innerHTML = o.enem || ''; $('enem').hidden = !o.enem;
     $('kv').innerHTML = (o.kv || []).map(([a, b]) => `<div>${a}</div><div>${b}</div>`).join(''); $('kv').hidden = !(o.kv && o.kv.length);
     $('links').innerHTML = (o.links || []).map(([t, h]) => `<a class="btn" href="${h}">${t}</a>`).join('');
-    $('tagC').style.background = o.c || sec.c; $('tagT').innerHTML = o.t; $('ondeV').innerHTML = o.loc || ''; $('ondeS').innerHTML = o.locNota == null ? 'Desenho esquemático' : o.locNota; $('ondeS').hidden = o.locNota === '';
+    $('tagC').style.background = o.c || sec.c; $('tagT').innerHTML = o.t; ondeUlt = null; ondeSync(o, S);
     cv.setAttribute('aria-label', `Animação: ${semTag(o.t)}. ${semTag(o.alt || o.s)}.`); cv.classList.toggle('arr', !!o.drag);
     setCtl(o, S); ctlShow(o, S); capLast = null; cap('');
     // botões extras do tópico: o.extra = [{ t, on(S), pressed(S) }]; t aceita <i>
     $('extra').innerHTML = (o.extra || []).map((b, i) => `<button type="button" data-i="${i}" aria-pressed="${b.pressed ? !!b.pressed(S) : false}">${b.t}</button>`).join('');
+    ajustaBarra();
     document.title = `${semTag(o.t)} | Vírus | LAB`;
     if (!keepHash) try { history.replaceState(null, '', '#' + key); } catch (e) { /* file:// em navegadores antigos */ }
   }
@@ -763,7 +771,7 @@ function LAB_VIRUS_iniciar() {
     // no celular a barra fica abaixo do palco: traz o canvas de volta à tela para mostrar o resultado do toque
     if (NAR) try { cv.scrollIntoView({ block: 'nearest' }); } catch (err) { /* navegador antigo */ } };
   $('lbls').onclick = () => { LB = !LB; $('lbls').setAttribute('aria-pressed', LB); };
-  const setP = v => { paused = v; const b = $('pause'); b.title = paused ? 'Reproduzir a animação' : 'Pausar a animação'; b.setAttribute('aria-label', b.title); b.innerHTML = `<svg aria-hidden="true"><use href="#${paused ? 'ui-continuar' : 'ui-pausar'}"/></svg><span class="tx">${paused ? 'Reproduzir' : 'Pausar'}</span>`; };
+  const setP = v => { paused = v; const b = $('pause'); b.title = paused ? 'Reproduzir a animação' : 'Pausar a animação'; b.setAttribute('aria-label', b.title); b.innerHTML = `<svg aria-hidden="true"><use href="#${paused ? 'ui-continuar' : 'ui-pausar'}"/></svg><span class="tx">${paused ? 'Reproduzir' : 'Pausar'}</span>`; ajustaBarra(); };
   $('pause').onclick = () => setP(!paused); if (reduce) setP(true);
   $('reset').onclick = () => go(cur, true);
   const ALL = SEC.flatMap(s => ORDER[s.id] || []); const step = d => ALL.length && go(ALL[(ALL.indexOf(cur) + d + ALL.length) % ALL.length], true);
@@ -796,7 +804,7 @@ function LAB_VIRUS_iniciar() {
   addEventListener('pointerup', up); addEventListener('pointercancel', up);
   const route = keep => { let h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) { h = ''; } const k = SC[h] ? h : (ORDER[h] && ORDER[h].length) ? ORDER[h][0] : null; if (k) { if (k !== cur) go(k, true, keep && k === h); } else if (!cur && ALL.length) go(SC['natureza/vivo'] ? 'natureza/vivo' : ALL[0], true); };
   addEventListener('hashchange', () => route(true));
-  if (window.ResizeObserver) new ResizeObserver(rs).observe(cv); addEventListener('resize', rs); rs();
+  if (window.ResizeObserver) new ResizeObserver(rs).observe(cv); addEventListener('resize', rs); addEventListener('resize', ajustaBarra); rs();
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now; const o = SC[cur], S = ST[cur];
     if (!o) { requestAnimationFrame(frame); return; }
@@ -810,6 +818,7 @@ function LAB_VIRUS_iniciar() {
     }
     X.clearRect(0, 0, W, H); LBS = []; HITS = []; X.save();
     try { o.draw.call(o, S.ph, S); } catch (err) { console.error(err); }
+    ondeSync(o, S);
     X.restore(); X.globalAlpha = 1; X.setLineDash([]);
     requestAnimationFrame(frame);
   }
