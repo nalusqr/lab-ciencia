@@ -312,7 +312,7 @@ const SEC = [
   { id: 'especie', t: 'Espécie', c: C.esp },
   { id: 'nomes', t: 'Nomes', c: C.gen },
   { id: 'sistemas', t: 'Sistemas', c: C.euk },
-  { id: 'cladistica', t: 'Cladística', c: C.sinapo },
+  { id: 'cladistica', t: 'Cladística', c: '#E39B5B' },
   { id: 'chave', t: 'Chave', c: C.cla }
 ];
 const SC = {}, ORDER = {};
@@ -322,7 +322,7 @@ const LK = {
   virus: ['Vírus na Morfofisiologia', '../morfofisiologia/index.html#teoria/virus'],
   blastoporo: ['Protostômios e deuterostômios', '../embriologia/index.html#desenvolvimento/blastoporo'],
   meiose: ['Meiose na Citogenética', '../divisao-celular/index.html'],
-  procarionte: ['Procarionte e eucarionte', '../morfofisiologia/index.html'],
+  procarionte: ['Procarionte e eucarionte', '../morfofisiologia/index.html#tipos/lado'],
   celula: ['A célula por dentro', '../celula/index.html']
 };
 
@@ -348,7 +348,7 @@ function LAB_TAXO_iniciar() {
     $('enemT').innerHTML = o.enem || ''; $('enem').hidden = !o.enem;
     $('kv').innerHTML = (o.kv || []).map(([a, b]) => `<div>${a}</div><div>${b}</div>`).join(''); $('kv').hidden = !(o.kv && o.kv.length);
     $('links').innerHTML = (o.links || []).map(([t, h]) => `<a class="btn" href="${h}">${t}</a>`).join('');
-    $('tagC').style.background = o.c || sec.c; $('tagT').innerHTML = o.t; $('ondeV').innerHTML = o.loc || '';
+    $('tagC').style.background = o.c || sec.c; $('tagT').innerHTML = o.t; $('ondeV').innerHTML = o.loc || ''; $('ondeS').innerHTML = o.locNota == null ? 'Desenho esquemático' : o.locNota; $('ondeS').hidden = o.locNota === '';
     cv.setAttribute('aria-label', `Animação: ${semTag(o.t)}. ${semTag(o.alt || o.s)}.`); cv.classList.toggle('arr', !!o.drag);
     setCtl(o, S); $('ctlR').parentNode.hidden = !!o.noCtl; capLast = null; cap('');
     // botões extras do tópico: o.extra = [{ t, on(S), pressed(S) }]; t aceita <i>
@@ -358,7 +358,9 @@ function LAB_TAXO_iniciar() {
   }
   $('tops').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.k, true); };
   $('ctlR').oninput = e => { const o = SC[cur], S = ST[cur]; S.v = +e.target.value; S.touch = performance.now(); $('ctlV').textContent = o.ctl.f(S.v); e.target.setAttribute('aria-valuetext', o.ctl.f(S.v)); };
-  $('extra').onclick = e => { const b = e.target.closest('button'); if (!b) return; const o = SC[cur], S = ST[cur], x = o.extra[+b.dataset.i]; try { x.on(S); } catch (err) { console.error(err); } syncExtra(); setCtl(o, S); };
+  $('extra').onclick = e => { const b = e.target.closest('button'); if (!b) return; const o = SC[cur], S = ST[cur], x = o.extra[+b.dataset.i]; try { x.on(S); } catch (err) { console.error(err); } syncExtra(); setCtl(o, S);
+    // no celular a barra fica abaixo do palco: traz o canvas de volta à tela para mostrar o resultado do toque
+    if (NAR) try { cv.scrollIntoView({ block: 'nearest' }); } catch (err) { /* navegador antigo */ } };
   $('lbls').onclick = () => { LB = !LB; $('lbls').setAttribute('aria-pressed', LB); };
   const setP = v => { paused = v; const b = $('pause'); b.title = paused ? 'Reproduzir a animação' : 'Pausar a animação'; b.setAttribute('aria-label', b.title); b.innerHTML = `<svg aria-hidden="true"><use href="#${paused ? 'ui-continuar' : 'ui-pausar'}"/></svg><span class="tx">${paused ? 'Reproduzir' : 'Pausar'}</span>`; };
   $('pause').onclick = () => setP(!paused); if (reduce) setP(true);

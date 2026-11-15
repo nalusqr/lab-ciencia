@@ -46,7 +46,7 @@
   // quebra em linhas respeitando o itálico; devolve a altura usada (o.dry: só mede)
   function wrapR(s, x, y, maxw, o = {}) {
     const sz = o.s || 13, lh = o.lh || sz + 5, T = toks(s), lines = []; let cur = [];
-    const str = arr => arr.map((k, j) => (k.i ? '*' + k.w + '*' : k.w) + (j < arr.length - 1 ? ' ' : '')).join('');
+    const str = arr => arr.map((k, j) => (k.i ? '*' + k.w + '*' : k.w) + (j < arr.length - 1 && k.sp ? ' ' : '')).join('');
     for (const k of T) { const tryA = cur.concat([k]); if (cur.length && richW(str(tryA), o) > maxw) { lines.push(cur); cur = [k]; } else cur = tryA; }
     if (cur.length) lines.push(cur);
     if (!o.dry) lines.forEach((ln, i) => rich(str(ln), x, y + i * lh, Object.assign({ bg: false }, o)));
@@ -303,18 +303,18 @@
 
   function cenaMei(S, A, lt) {
     let r1, r2;
-    if (NAR) { const h = (A.h - 44) / 2; r1 = [A.x0, A.y0 + 4, A.w, h]; r2 = [A.x0, A.y0 + h + 12, A.w, h]; }
+    if (NAR) { const h = (A.h - 74) / 2; r1 = [A.x0, A.y0 + 4, A.w, h]; r2 = [A.x0, A.y0 + h + 12, A.w, h]; }
     else { const w = Math.min(520, (A.w - 24) / 2), h = Math.min(A.h - 40, 420), y = A.y0 + (A.h - 40 - h) / 2 + 4; r1 = [A.cx - w - 12, y, w, h]; r2 = [A.cx + 12, y, w, h]; }
     meiose(r1[0], r1[1], r1[2], r1[3], 'cav', lt);
     meiose(r2[0], r2[1], r2[2], r2[3], 'mula', lt);
     // legenda das cores
-    const ly = NAR ? A.y1 - 8 : A.y1 - 12;
+    const ly = NAR ? r2[1] + r2[3] + 14 : A.y1 - 12;
     const t1 = 'do cavalo', t2 = 'do jumento', t3 = NAR ? 'esquema: poucos cromossomos' : 'esquema: só alguns dos cromossomos';
     const w1 = tw(t1, 13, 600) + 40, w2 = tw(t2, 13, 600) + 40, w3 = tw(t3, 12, 400);
     const tot = NAR ? w1 + w2 : w1 + w2 + w3 + 24; let x = A.cx - tot / 2;
     rr(x, ly - 5, 14, 10, 4, CAV); tx(t1, x + 20, ly, { s: 13, w: 600, a: 'left', c: K('txt'), bg: false }); x += w1;
     rr(x, ly - 5, 14, 10, 4, JUM); tx(t2, x + 20, ly, { s: 13, w: 600, a: 'left', c: K('txt'), bg: false }); x += w2 + 24;
-    if (!NAR) tx(t3, x, ly, { s: 12, a: 'left', c: K('dim'), bg: false });
+    if (!NAR) tx(t3, x, ly, { s: 12, a: 'left', c: K('dim'), bg: false }); else tx(t3, A.cx, ly + 17, { s: 12, c: K('dim'), bg: false });
     cap(lt < 5 ? 'Na meiose, cada cromossomo precisa de um par. No cavalo os 32 pares se formam; na mula, os 32 cromossomos do cavalo e os 31 do jumento são diferentes e muitos ficam sem par.'
       : lt < 8 ? 'No cavalo, os pares se separam e a célula se divide. Na mula, sem pares certos, <b>a divisão trava</b>.'
         : 'Resultado: o cavalo forma <b>gametas normais</b>; a mula quase não forma gametas viáveis e por isso é <b>estéril</b> (há raríssimas exceções).');
@@ -448,6 +448,7 @@
     });
     // rótulo único e a divisão em gênero + epíteto
     const ap = ss(seg(T, 5.8, 6.8)), sp = ss(seg(T, 7.5, 9));
+    if (!NAR && ap < .99) { X.save(); X.globalAlpha = .45 * (1 - ap); tx('um só nome científico: ?', lx, ly, { s: 22, w: 700, c: K('dim'), bg: false }); X.restore(); }
     if (ap > .01) {
       X.save(); X.globalAlpha = ap;
       const big = NAR ? 24 : 34, gap = lerp(0, NAR ? 34 : 48, sp);
@@ -482,7 +483,7 @@
     'Zea mays': { p: 'milho', f: milho, m: 'planta da família do capim' },
     'Aedes aegypti': { p: 'mosquito-da-dengue', f: mosquito, m: 'transmite dengue, zika e chikungunya' },
     'Panthera onca': { p: 'onça-pintada', f: (x, y, u) => felino(x, y, u, false), m: 'maior felino das Américas' },
-    'Panthera leo': { p: 'leão', f: (x, y, u) => felino(x, y, u, true), m: 'felino da África' }
+    'Panthera leo': { p: 'leão', f: (x, y, u) => felino(x, y, u, true), m: 'felino da África e de uma região da Índia' }
   };
   function chip(x, y, w, h, s, c, on, done) {
     rr(x, y, w, h, 10, on ? rgba(c, .32) : done ? 'rgba(19,26,43,.6)' : PAN, on ? AMB : rgba(c, done ? .4 : .85), on ? 2.5 : 1.5);
@@ -610,7 +611,7 @@
     if (S.k === 2) { line(x0, tcy + sz * .62, k0.ax + k0.wd, tcy + sz * .62, AMB, 1.5); line(k1.ax, tcy + sz * .62, x1, tcy + sz * .62, AMB, 1.5); }
     // a lupa desliza até o alvo
     S.lx = S.lx == null ? tcx : lerp(S.lx, tcx, cl((S.paused ? 1 : S.dt * 6), 0, 1)); S.ly = S.ly == null ? tcy : lerp(S.ly, tcy, cl((S.paused ? 1 : S.dt * 6), 0, 1));
-    const R = NAR ? 34 : 50, zoom = 1.8, lcx = cl(S.lx, px + R, px + pw - R), lcy = S.ly - (NAR ? 0 : 0);
+    const R = NAR ? 22 : 50, zoom = NAR ? 1.5 : 1.8, lcx = cl(S.lx, px + R, px + pw - R), lcy = S.ly - (NAR ? 0 : 0);
     X.save(); X.beginPath(); X.arc(lcx, lcy, R, 0, TAU); X.clip(); X.fillStyle = '#18213a'; X.fillRect(lcx - R, lcy - R, 2 * R, 2 * R);
     X.translate(lcx, lcy); X.scale(zoom, zoom); X.translate(-S.lx, -S.ly);
     pagina(tx0, ty0, pw, lh, sz, null);

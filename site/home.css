@@ -207,7 +207,11 @@ html.js:not(.sem-entrada) .trilha:not(.vista)>.etapa,html.js:not(.sem-entrada) .
 .fundo-bt[aria-pressed="true"] .ic-anima{display:block}
 .fundo-bt:hover{background:var(--panel-2);border-color:var(--line-strong);color:var(--txt)}
 .fundo-bt:active{filter:brightness(.96)}
-@media(max-width:699px){.fundo-bt{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:0 12px}}
+/* no celular, só o ícone (44 x 44) para cobrir menos o conteúdo; o texto continua lá para o leitor de tela */
+@media(max-width:699px){
+  .fundo-bt{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:44px;padding:0;justify-content:center}
+  .fundo-bt span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+}
 @media print{.fundo-bt,.fundo-cv{display:none}}
 /* espaço no pé da página para o botão não cobrir o rodapé */
 .fundo-on .rodape{padding-bottom:96px}

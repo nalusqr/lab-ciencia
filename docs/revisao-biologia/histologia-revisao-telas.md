@@ -90,3 +90,55 @@ Nenhuma.
 **R4. `#conjuntivo/osso`, `kv` do paratormônio e da calcitonina (l. 472).** "liberam e guardam cálcio no osso" depende da ordem das palavras para ficar certo. Mais claro: `['Paratormônio', 'tira cálcio do osso para o sangue (osteoclastos)'], ['Calcitonina', 'faz o contrário: guarda cálcio no osso']`.
 
 **R5. `#conjuntivo/ossificacao`, cartilagem articular (`ossoEndo`, l. 611 a 613).** Os centros secundários quase cobrem a epífise inteira. Seria bom deixar à vista uma capa fina de cartilagem hialina na ponta do osso adulto, que nunca vira osso: é a cartilagem articular, que a tela de cartilagem cita ("reveste as superfícies das articulações"). Na captura do adulto ainda aparece um crescente azul. Basta garantir que ele não some e, se houver espaço, pôr o rótulo "cartilagem articular".
+
+## cenas-e (Íris)
+
+Revisados: `#nervoso/neuronio`, `/glia`, `/impulso` e `/sinapse` (🧬 Sapien), nos textos e nos desenhos, com as capturas `iris-*` em 1280 e 390 px e uma captura nova com a tela pausada (`rev-neuronio-pausado.png`, sem erros no console).
+
+**Textos:** `d`, `kv` e cartões ENEM conferem com o roteiro (tópicos 5 a 8). As setas "→" do roteiro foram trocadas por palavras, como pede o contrato.
+
+**Tempos do arco reflexo** (`TW` e `TP`, l. 148 e 149), conferidos contra Guyton e as latências de exame:
+- **Patelar:** o sensitivo vai de 0 a 8 ms, ou seja, cerca de 0,5 m a 60 a 100 m/s (fibras Ia). Há 1 ms de sinapse, o motor vai de 9 a 17 ms e a contração começa em **≈ 20 ms**. É a latência medida no reflexo patelar (18 a 25 ms). "Toque chega ao encéfalo" em **≈ 40 ms** corresponde ao potencial evocado somatossensitivo do membro inferior, com o pico cortical perto de 40 ms. **Correto.**
+- **Retirada:** o sensitivo vai de 0 a 38 ms, ou seja, cerca de 0,8 m a cerca de 20 m/s (fibras Aδ da dor, ainda mais lentas no calor). O interneurônio fica em 40 a 43 ms e o motor em 45 a 57 ms; a contração em **≈ 60 ms** fica na faixa medida para o reflexo de retirada do membro superior (50 a 80 ms). A dor em **≈ 115 ms** é plausível para a dor **percebida**, mas não para a simples chegada do sinal ao encéfalo, que seria por volta de 70 a 80 ms. **Aceitos** como estimativa, com a recomendação R1 sobre o nome do evento. O ponto que o ENEM cobra está certo: o braço se afasta antes da dor, e o patelar é o mais rápido.
+
+**Desenhos que conferem:** corpúsculos de Nissl e núcleo claro com nucléolo; segmento inicial sem mielina; bipolar sem mielina e pseudounipolar com o corpo no gânglio, onde o impulso não atravessa o corpo celular. No arco, a medula em H tem cornos dorsais finos e ventrais largos, a entrada é pela raiz dorsal com gânglio e a saída pela raiz ventral. No patelar, o receptor fica no próprio quadríceps (fuso muscular) e há uma sinapse só. Na glia: oligodendrócito em três axônios, Schwann em espiral com o núcleo por fora, astrócito com pés no capilar, ependimárias com cílios. Na corrida: 1 m/s contra até 120 m/s, nodos mais espaçados com mais mielina e trechos lentos na esclerose múltipla. No impulso: −70, −55 e +30 mV, pós-hiperpolarização em −77 mV, duração de cerca de 1 ms, Na⁺ fora e K⁺ dentro, bomba com 3 Na⁺ para fora e 2 K⁺ para dentro, frequência de 10 a 200 Hz com altura constante e trecho refratário atrás da onda. Na sinapse: Ca²⁺ amarelo, neurotransmissor verde e fenda de 20 nm. No organofosforado não há recaptação da acetilcolina, o que está correto: só a colina volta ao terminal.
+
+### Correção obrigatória (1)
+
+**1. `#nervoso/neuronio`, rótulos "bainha de mielina" e "nodo de Ranvier" trocados (`vNeuronio`, l. 124 e 126).**
+Os trechos de mielina do multipolar (`geoMulti`, l. 58) vão de `f` a `f + 0,09`, com `f = 0,12; 0,225; 0,33; 0,435; 0,54; 0,645...`.
+- `pth(r.ax, .43)`, usado no rótulo "bainha de mielina", cai no vão de 0,42 a 0,435, que é um **nodo**.
+- `pth(r.ax, .65)`, usado no rótulo "nodo de Ranvier", cai **dentro** de um trecho de mielina (de 0,645 a 0,735). A captura `iris-1280-nervoso-neuronio-0` mostra a linha do rótulo no meio de um trecho branco.
+- Correção: "bainha de mielina" em `pth(r.ax, .48)` (meio do trecho de 0,435 a 0,525) e "nodo de Ranvier" em `pth(r.ax, .7425)` (vão de 0,735 a 0,75). O melhor é calcular a partir de `GM.my`: `(GM.my[3][0] + GM.my[3][1]) / 2` e `(GM.my[5][1] + GM.my[6][0]) / 2`.
+
+### Recomendadas (3)
+
+**R1. `#nervoso/neuronio`, nome do evento da dor (`TW.br`, l. 148).** "dor chega ao encéfalo: 115 ms" deveria ser "dor percebida: ≈ 115 ms". O texto do tópico já diz "antes mesmo de o cérebro **perceber** a dor", e o número combina com a percepção, não com a chegada do sinal. O ≈ evita que o aluno decore os números. Pela mesma razão, no patelar pode ficar "toque chega ao encéfalo: ≈ 40 ms".
+
+**R2. `#nervoso/neuronio`, motor da retirada (`TW.mot`, l. 148).** De 45 a 57 ms são 12 ms para cerca de 0,3 m, ou seja, 25 m/s, uma velocidade baixa para um neurônio motor (60 a 100 m/s). Para ficar coerente com o patelar, use `mot: [45, 50]` e contração em cerca de 55 ms. Se preferir manter 60 ms, sem problema: a ordem dos acontecimentos não muda.
+
+**R3. `#nervoso/sinapse`, sinapse elétrica (`vEletrica`, l. 724).** Os íons só descem do neurônio para a célula seguinte. A maioria das sinapses elétricas conduz nos **dois sentidos**, e essa é uma diferença em relação à química, que é unidirecional. Sugestão: fazer alguns íons subirem e acrescentar "e nos dois sentidos" à legenda (l. 767).
+
+## cenas-a (Aurelius)
+
+Revisados: `#tecidos/visao`, `#epitelial/revestimento` e `#epitelial/glandular` (🔬 Taxon), nos textos e nos desenhos, com as capturas `aurelius_*` em 1280 e 390 px e uma captura nova com a tela pausada (`rev-glandular-pausado.png`).
+
+**Textos:** conferem com o roteiro (T1, E1 e E2), inclusive os quadros, a origem nos folhetos (com a exceção da micróglia), a renovação do epitélio e os modos de secreção.
+
+**Desenhos que conferem:**
+- **Intestino:** epitélio prismático com microvilosidades e células caliciformes, membrana basal, conjuntivo com capilares e as duas camadas de músculo liso com o plexo entre elas. A interna aparece alongada e a externa em círculos, como num corte transversal (circular por dentro, longitudinal por fora).
+- **Pele:** epiderme queratinizada, derme com folículo, músculo eretor do pelo e corpúsculo sensitivo, e hipoderme adiposa.
+- **Revestimento:** os sete tipos estão corretos. O pseudoestratificado tem todas as células na membrana basal, núcleos em três alturas e células basais. Nas células em guarda-chuva da bexiga, algumas têm 2 núcleos. No fumante, a metaplasia leva a estratificado. O capilar fica só no conjuntivo.
+- **Glandular:** brotamento, ducto, cordões endócrinos com capilares, ilhota pálida entre os ácinos e holócrina com núcleo que encolhe.
+
+### Correção obrigatória (1)
+
+**1. `#epitelial/glandular`, tela vazia quando pausada ou com movimento reduzido (l. 528 e 529).**
+`const el = t - (S.tm || 0)` começa em 0 quando o modo é escolhido. Com a tela pausada (`still: 7`), `S.tm` recebe o próprio `t`, então `el = 0` e nada cresce. A captura `rev-glandular-pausado.png` (pausar, depois `ir('epitelial/glandular')`) mostra o pâncreas sem ácinos, sem ilhota e sem ducto. Sobra só um anel solto (l. 565, desenhado sem o `fa`), enquanto a legenda fala de ácinos e ilhotas. O mesmo vale para a exócrina e a endócrina quando o aluno troca de posição na faixa com a tela pausada. A ciência não está errada, mas o conteúdo some para quem usa movimento reduzido.
+- Correção: com a tela pausada, considerar a animação já terminada (por exemplo, `const el = S.paused ? 99 : t - (S.tm || 0)`) e desenhar o anel da l. 565 com `globalAlpha = fa`.
+
+### Recomendadas (2)
+
+**R1. `#epitelial/glandular`, valor do meio da faixa (`MODO`, l. 404).** "parcial" dá a ideia de uma glândula com o ducto pela metade. O pâncreas não é isso: tem ducto nos ácinos e não tem nas ilhotas. Troque por `'mista'`, como pede o roteiro ("a posição do meio mostrando a glândula mista").
+
+**R2. `#tecidos/visao`, barra "células e matriz" (`DENS`, l. 115).** O nervoso aparece com 0,9 de células, quase igual ao epitelial (0,92). É coerente com "pouquíssima matriz", mas o conjuntivo (0,25) é o único contraste. Sugestão: manter os valores e acrescentar, na legenda do nervoso, "neurônios e glia muito juntos, quase sem matriz", para o aluno não achar que o nervoso é um epitélio. Opcional.

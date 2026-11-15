@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Dioramas das 9 matérias para a roda da página inicial (estilo Campo escuro).
+Dioramas das 10 matérias para a roda da página inicial (estilo Campo escuro).
 
 Mesmo estilo e mesmo setup do piloto (diorama_bio_molecular.py, de onde vêm a plataforma, os
 materiais, a luz, a câmera isométrica e o render EEVEE): ilha escura flutuante, no máximo 3 ou 4
@@ -9,7 +9,7 @@ Tudo procedural, feito do zero: nenhum modelo, textura, imagem ou fonte de terce
 usam a fonte embutida do próprio Blender). Sem bandeiras de países.
 
 Uso:
-  python3 dioramas_materias.py                      # gera os 9 na ordem (os mais simples primeiro)
+  python3 dioramas_materias.py                      # gera os 10 na ordem (os mais simples primeiro)
   python3 dioramas_materias.py historia fisica      # só alguns
   python3 dioramas_materias.py --amostras 48 --saida /tmp/x --sem-folha
 Saídas (cada uma gravada assim que fica pronta):
@@ -47,9 +47,10 @@ C = {
 NOMES = {
     "historia": "História", "fisica": "Física", "quimica": "Química", "geografia": "Geografia",
     "portugues": "Português", "literatura": "Literatura", "ingles": "Inglês", "espanhol": "Espanhol",
-    "biologia": "Biologia",
+    "biologia": "Biologia", "matematica": "Matemática",
 }
-ORDEM = ["historia", "fisica", "quimica", "geografia", "portugues", "literatura", "ingles", "espanhol", "biologia"]
+ORDEM = ["historia", "fisica", "quimica", "geografia", "portugues", "literatura", "ingles", "espanhol", "biologia",
+         "matematica"]
 
 R90 = math.radians(90)
 VISTA = Vector((1, -1, 1)).normalized()   # direção da câmera isométrica
@@ -445,10 +446,25 @@ def biologia():
     cilindro_entre(fo + eixo * 0.33, fo + eixo * 1.62, 0.022, mat("nervura", C["grana"], 0.7), 8)
 
 
+def matematica():
+    # sólidos geométricos: cubo âmbar, pirâmide azul e esfera rosa, com o π flutuando acima
+    cubo = mat("cubo", C["amber"], 0.55)
+    c = pos(-0.65, -0.15)
+    caixa(c + Vector((0, 0, 0.42)), (0.84, 0.84, 0.84), cubo, bev=0.05)
+    # pirâmide de base quadrada (cone de 4 lados), virada de quina para a câmera
+    cone(pos(0.7, -0.6, 0.6), 0.72, 0.0, 1.2, mat("piramide", C["azul"], 0.55), lados=4,
+         rot=(0, 0, R45), liso=False)
+    esfera(pos(0.35, 0.8, 0.34), 0.34, mat("esfera", C["membrana"], 0.45))
+    # π de frente para a câmera, aceso de leve
+    g = grupo("pi", pos(-0.65, -0.15, 1.75))
+    t = em(g, texto("\u03c0", 0.95, mat("pi", C["ouro"], 0.45, emis=0.6), ext=0.09))
+    t.location = (0, 0, 0)
+
+
 CENAS = {
     "historia": historia, "fisica": fisica, "quimica": quimica, "geografia": geografia,
     "portugues": portugues, "literatura": literatura, "ingles": ingles, "espanhol": espanhol,
-    "biologia": biologia,
+    "biologia": biologia, "matematica": matematica,
 }
 
 

@@ -56,7 +56,7 @@
   const PAI = { mon: 'pro', fun: 'veg', pro: null };
   function nomeR(k, s) {
     if (k === 'mon') return 'Monera'; if (k === 'fun') return 'Fungi';
-    if (k === 'pro') return s >= 4 ? 'Protoctista' : 'Protista';
+    if (k === 'pro') return s === 2 || s >= 4 ? 'Protoctista' : 'Protista';   // Copeland (1956) cunhou Protoctista; Whittaker (1969) usou Protista
     if (k === 'veg') return s === 0 ? 'Vegetais' : 'Plantae';
     return s === 0 ? 'Animais' : 'Animalia';
   }
@@ -65,15 +65,15 @@
     ['bact', [null, 'pro', 'mon', 'mon', 'mon']],
     ['ameba', [null, 'pro', 'pro', 'pro', 'pro']],
     ['alga', ['veg', 'veg', 'veg', 'veg', 'pro']],
-    ['cogu', ['veg', 'veg', 'veg', 'fun', 'fun']],
+    ['cogu', ['veg', 'veg', 'pro', 'fun', 'fun']],
     ['sama', ['veg', 'veg', 'veg', 'veg', 'veg']],
     ['peixe', ['ani', 'ani', 'ani', 'ani', 'ani']]
   ];
   const ETAPA = [
     { ano: '1735', q: 'Lineu: dois reinos', cap: 'Lineu dividia os seres vivos em <b>dois reinos</b>: animais e vegetais. Os cogumelos e as algas ficavam entre os vegetais.' },
     { ano: '1866', q: 'Haeckel: três reinos', cap: 'Com o microscópio, <b>Haeckel</b> criou o reino <b>Protista</b> para os seres microscópicos, bactérias incluídas.' },
-    { ano: '1956', q: 'Copeland: quatro reinos', cap: '<b>Copeland</b> separou as bactérias, de célula <b>procarionte</b>, no reino <b>Monera</b>.' },
-    { ano: '1969', q: 'Whittaker: cinco reinos', cap: '<b>Whittaker</b> tirou os fungos de Plantae. Célula, número de células e nutrição separam os <b>cinco reinos</b>.' },
+    { ano: '1956', q: 'Copeland: quatro reinos', cap: '<b>Copeland</b> separou as bactérias, de célula <b>procarionte</b>, no reino <b>Monera</b>, e chamou de <b>Protoctista</b> o reino dos eucariontes simples, fungos incluídos.' },
+    { ano: '1969', q: 'Whittaker: cinco reinos', cap: '<b>Whittaker</b> deu aos fungos um reino próprio, <b>Fungi</b>. Célula, número de células e nutrição separam os <b>cinco reinos</b>.' },
     { ano: '1982', q: 'Margulis e Schwartz: Protoctista', cap: '<b>Margulis e Schwartz</b> levaram todas as algas para <b>Protoctista</b>; Plantae ficou com os seres que têm <b>embrião</b>.' }
   ];
   const ctlS1 = { l: 'Linha do tempo', min: 0, max: 4, step: 1, v: 0, f: v => ETAPA[cl(Math.round(v), 0, 4)].ano, rate: () => 1 };
@@ -81,13 +81,13 @@
   // ---------- "Em que reino?": três critérios de Whittaker, em perguntas ----------
   const SERES = [
     { n: 'bactéria', ic: 'bact', f: 'Uma célula só, sem núcleo organizado: o DNA fica solto no citoplasma.', nuc: 0, pl: 0, nut: 1, r: 'mon', nota: 'Toda célula sem núcleo organizado (procarionte) vai para Monera, sem precisar das outras perguntas.' },
-    { n: 'levedura', ic: 'lev', f: 'O fungo do pão e da cerveja: uma célula só, com núcleo; absorve açúcares do meio.', nuc: 1, pl: 0, nut: 1, r: 'fun', nota: 'Fungo pode ser unicelular. O que o põe em Fungi é a nutrição por absorção (e a parede de quitina).' },
-    { n: 'cogumelo', ic: 'cogu', f: 'Corpo de muitos filamentos, as hifas, com núcleo; não faz fotossíntese e absorve o alimento do solo ou da madeira.', nuc: 1, pl: 1, nut: 1, r: 'fun', nota: 'Fungo não é planta: não faz fotossíntese, tem quitina na parede e guarda glicogênio, como os animais.' },
-    { n: 'ameba', ic: 'ameba', f: 'Uma célula só, com núcleo; engloba o alimento com pseudópodes.', nuc: 1, pl: 0, nut: 2, r: 'pro', nota: 'Eucarionte unicelular que ingere o alimento: um protozoário, do reino Protoctista.' },
-    { n: 'alga verde', ic: 'algau', f: 'Alga verde unicelular: uma célula só, com núcleo e cloroplasto; faz fotossíntese.', nuc: 1, pl: 0, nut: 0, r: 'pro', nota: 'Eucarionte unicelular que faz fotossíntese: uma alga, do reino Protoctista.' },
-    { n: 'samambaia', ic: 'sama', f: 'Muitas células, com núcleo; faz fotossíntese e se desenvolve a partir de um embrião.', nuc: 1, pl: 1, nut: 0, r: 'veg', nota: 'Pluricelular, faz fotossíntese e tem embrião: reino Plantae.' },
-    { n: 'esponja', ic: 'esponja', f: 'Muitas células, com núcleo, mas sem tecidos verdadeiros; filtra a água e ingere partículas de alimento.', nuc: 1, pl: 1, nut: 2, r: 'ani', nota: 'Mesmo sem tecidos verdadeiros, a esponja é pluricelular e ingere o alimento: reino Animalia.' },
-    { n: 'onça', ic: 'onca', f: 'Muitas células, com núcleo; caça e ingere outros animais.', nuc: 1, pl: 1, nut: 2, r: 'ani', nota: 'Pluricelular que ingere o alimento: reino Animalia.' }
+    { n: 'levedura', ic: 'lev', f: 'O fungo do pão e da cerveja: uma célula só, com núcleo; vive no açúcar do suco de uva e o tira do meio pela superfície da célula.', nuc: 1, pl: 0, nut: 1, r: 'fun', nota: 'Fungo pode ser unicelular. O que o põe em Fungi é a nutrição por absorção (e a parede de quitina).' },
+    { n: 'cogumelo', ic: 'cogu', f: 'Corpo de muitos filamentos, as hifas, com núcleo; cresce na madeira podre, solta enzimas sobre ela e aproveita o que se dissolve.', nuc: 1, pl: 1, nut: 1, r: 'fun', nota: 'Fungo não é planta: não faz fotossíntese, tem quitina na parede e guarda glicogênio, como os animais.' },
+    { n: 'ameba', ic: 'ameba', f: 'Uma célula só, com núcleo; estende pseudópodes, envolve outros seres e os digere.', nuc: 1, pl: 0, nut: 2, r: 'pro', nota: 'Eucarionte unicelular que ingere o alimento: um protozoário, do reino Protoctista.' },
+    { n: 'alga verde', ic: 'algau', f: 'Alga verde unicelular: uma célula só, com núcleo e cloroplasto; vive na água iluminada e cresce só com luz, água, gás carbônico e sais.', nuc: 1, pl: 0, nut: 0, r: 'pro', nota: 'Eucarionte unicelular que faz fotossíntese: uma alga, do reino Protoctista.' },
+    { n: 'samambaia', ic: 'sama', f: 'Muitas células, com núcleo; folhas verdes, cheias de cloroplastos; cresce só com luz, água, gás carbônico e sais, e se desenvolve a partir de um embrião.', nuc: 1, pl: 1, nut: 0, r: 'veg', nota: 'Pluricelular, faz fotossíntese e tem embrião: reino Plantae.' },
+    { n: 'esponja', ic: 'esponja', f: 'Muitas células, com núcleo, mas sem tecidos verdadeiros; fica presa na rocha e retém partículas da água que passa pelos poros.', nuc: 1, pl: 1, nut: 2, r: 'ani', nota: 'Mesmo sem tecidos verdadeiros, a esponja é pluricelular e ingere o alimento: reino Animalia.' },
+    { n: 'onça', ic: 'onca', f: 'Muitas células, com núcleo; caça capivaras e outros animais e os come.', nuc: 1, pl: 1, nut: 2, r: 'ani', nota: 'Pluricelular que ingere o alimento: reino Animalia.' }
   ];
   const PERG = [
     { q: 'Tem núcleo organizado?', op: ['sim', 'não'], dica: 'veja se o DNA fica dentro de um núcleo' },
@@ -190,7 +190,7 @@
     circ(R.x, R.y, 5, K('txt'));
     if (e > .05) {
       X.save(); X.globalAlpha *= e; line(R.x, R.y, N1.x, N1.y, rgba(K('txt'), .7), 3); circ(N1.x, N1.y, 5, K('txt')); X.restore();
-      if (e > .9) { const mp = qpt(R.x, R.y, P.mon.x, R.y, P.mon.x, P.mon.y + bh, .35); lab(N1.x, N1.y, N1.x + (NAR ? 30 : 70), N1.y + 22, 'célula eucarionte'); lab(mp[0], mp[1], mp[0] + (NAR ? 14 : 40), mp[1] - (NAR ? 40 : 10), 'célula procarionte'); }
+      if (e > .9) { const mp = qpt(R.x, R.y, P.mon.x, R.y, P.mon.x, P.mon.y + bh, .35); lab(N1.x, N1.y, N1.x + (NAR ? 30 : 70), N1.y + 22, NAR ? 'eucarionte' : 'célula eucarionte'); lab(mp[0], mp[1], mp[0] + (NAR ? 14 : 40), mp[1] - (NAR ? 40 : 10), NAR ? 'procarionte' : 'célula procarionte'); }
     }
     // blocos dos reinos
     for (const k of RE) {
@@ -262,6 +262,7 @@
   ];
   const CRIT = { mon: ['procarionte', 'unicelular', 'autótrofa ou heterótrofa'], pro: ['eucarionte', 'uni ou pluricelular simples', 'autótrofa ou heterótrofa'],
     fun: ['eucarionte', 'uni ou pluricelular', 'absorção'], veg: ['eucarionte', 'pluricelular, com embrião', 'fotossíntese'], ani: ['eucarionte', 'pluricelular', 'ingestão'] };
+  const CRITD = [['procarionte', 'peptidoglicano na parede', 'RNA polimerase simples'], ['procarionte', 'sem peptidoglicano', 'RNA polimerase complexa'], ['eucarionte', 'núcleo e organelas com membrana', 'três RNA polimerases complexas']];
   const EXR = { mon: 'bactérias', pro: 'protozoários e algas', fun: 'fungos', veg: 'plantas', ani: 'animais' };
   const NOMR = { mon: 'Monera', pro: 'Protoctista', fun: 'Fungi', veg: 'Plantae', ani: 'Animalia' };
   // trecho de RNA ribossômico: sequências fictícias e didáticas (rodapé na tela)
@@ -419,6 +420,12 @@
         X.restore();
         if (i === 1) S.hitArq = r;
       });
+      // critérios de Woese embaixo de cada domínio (só no computador, onde sobra espaço)
+      if (!NAR && !S.arq && a > .5 && b < .5) {
+        X.save(); X.globalAlpha *= seg(a, .5, 1) * (1 - 2 * b);
+        CRITD.forEach((ls, i) => { const r = L.fr[i]; ls.forEach((l, j) => tx(l, r.x + r.w / 2, r.y + r.h + 24 + j * 20, { s: 13, c: j ? K('dim') : '#D3DAEA', bg: false })); });
+        X.restore();
+      }
       // os quatro reinos eucariontes: deslizam para dentro de Eukarya e somem na árvore
       ['pro', 'fun', 'veg', 'ani'].forEach((k, i) => {
         const r0 = L.k5[i + 1], r1 = L.e4[i], r = lerpR(lerpR(r0, r1, a), L.tip[2], b);

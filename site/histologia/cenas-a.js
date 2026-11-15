@@ -117,7 +117,7 @@
     '<b>Epitelial:</b> células coladas, quase sem matriz e sem vasos; reveste superfícies e forma glândulas',
     '<b>Conjuntivo:</b> células afastadas em muita matriz, com vasos; sustenta, liga, preenche, defende e transporta',
     '<b>Muscular:</b> células alongadas (fibras) que se contraem e movem o órgão',
-    '<b>Nervoso:</b> neurônios e glia, que recebem, conduzem e integram sinais',
+    '<b>Nervoso:</b> neurônios e glia muito juntos, quase sem matriz; recebem, conduzem e integram sinais',
     '<b>Órgão:</b> vários tecidos juntos, cada um com sua função'
   ];
   const INT = [
@@ -401,7 +401,7 @@
   // =====================================================================================
   // EPITELIAL: glandular
   // =====================================================================================
-  const MODO = ['mantida', 'parcial', 'desfeita'];
+  const MODO = ['mantida', 'mista', 'desfeita'];
   const TITG = ['Glândula exócrina: tem ducto', 'Glândula mista: o pâncreas', 'Glândula endócrina: sem ducto'];
   // tubo revestido de células (ducto), de (x1, y1) a (x2, y2); dw = largura da luz, cs = altura das células; cheio = cordão maciço
   function tubo(x1, y1, x2, y2, dw, cs, a, cheio) {
@@ -526,6 +526,8 @@
       const A = area();
       if (S.modos) { modos(A, t); cap('<b>Modos de secreção</b> das glândulas exócrinas: merócrina, apócrina e holócrina'); return; }
       const m = Math.round(S.v); if (S.m !== m) { S.m = m; S.tm = t; }
+      // pausado (ou movimento reduzido): mostra a animação já terminada, e ela continua terminada ao reproduzir
+      if (S.paused) S.tm = Math.min(S.tm, t - 99);
       const el = t - (S.tm || 0), x0 = A.x0, x1 = A.x1, w = A.w;
       title(TITG[m], A.cx, A.y0 + 10, w - 8, C.epit);
       const eh = NAR ? 24 : 26, ys = A.y0 + 46, yc = ys + eh, D = A.y1 - yc;
@@ -562,7 +564,7 @@
         tubo(mx, yc - eh * .5, mx, jy, dw, cs, fa);
         for (const [ax, ay] of ac) { const d = Math.hypot(ax - mx, ay - jy), k = (d - ra2 * .9) / d; tubo(mx, jy, mx + (ax - mx) * k, jy + (ay - jy) * k, dw * .8, cs * .9, fa); }
         for (const [ax, ay] of ac) acino(ax, ay, ra2, fa, 1, false);
-        circ(mx, jy, dw * .5 + cs, tint(C.epit, .45)); circ(mx, jy, dw * .5, LUZ);
+        X.save(); X.globalAlpha *= fa; circ(mx, jy, dw * .5 + cs, tint(C.epit, .45)); circ(mx, jy, dw * .5, LUZ); X.restore();
         const ix = x0 + w * (NAR ? .79 : .72), iy = yc + D * .5, ri = ra * (NAR ? .52 : 1);
         circ(ix, iy, ri * 1.75, rgba(C.he_rosa, .12 * fa), rgba(C.epit, .5 * fa), 1.5);
         const tubes = cordoes(ix, iy, ri, fa, t, true);

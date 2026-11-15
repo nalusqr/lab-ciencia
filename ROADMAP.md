@@ -16,9 +16,11 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 | 🔬 **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 | 🧬 **Sapien**, professor sênior de Biologia (entrou em 2026-11-15) | Divide com o Taxon os roteiros e as revisões científicas; cada um revisa o trabalho do outro | `docs/revisao-biologia/` |
 
+Matemática: ver docs/matematica/TIME.md. Módulos prontos: 1 Conjuntos e números, 2 Plano cartesiano e proporção.
+
 ## Regras de trabalho
 
-- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, 🧬 Sapien, ✨ Leo.
+- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, 🧬 Sapien, ✨ Leo; time de Matemática: 📐 Tales, 🌀 Hipátia, ⚙ Arquimedes, 🔭 Galileo.
 
 - Todos os agentes também são programadores fullstack sênior (decisão da Nalu, 2026-11-14). Quem ficar livre ajuda outra frente, pegando do PM uma tarefa com arquivos próprios, sem editar o arquivo que outro agente está editando.
 
@@ -99,10 +101,14 @@ Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N
 4. Bioenergética (respiração, fermentação, fotossíntese e quimiossíntese): o módulo já existe; o 🔬 Taxon confere o que falta para o ENEM.
 5. Embriologia: tipos de ovos quanto à quantidade e à distribuição do vitelo; segmentação, mórula, blástula, gástrula, nêurula e organogênese; anexos embrionários (vesícula vitelínica, alantoide, córion e âmnio); gametogênese (ovulogênese e espermatogênese); embriologia humana. É um módulo novo (site/embriologia/), que reaproveita a gametogênese da Citogenética.
 6. Histologia: características gerais e fisiologia dos tecidos epiteliais, conjuntivos, musculares e nervoso. Módulo novo (site/histologia/).
-7. Taxonomia e nomenclatura. Módulo novo (site/taxonomia/).
-8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); já existe o tópico #teoria/virus na Morfofisiologia.
+7. Taxonomia e nomenclatura: publicada (site/taxonomia/, 12 tópicos, 2026-11-15).
+8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); roteiro pronto (docs/revisao-biologia/virus-roteiro.md, 13 tópicos, no branch WIP); já existe o tópico #teoria/virus na Morfofisiologia.
 9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Provavelmente um módulo por reino, ou um módulo com uma seção por reino.
 10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor.
 11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
 12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo.
 13. Ecologia: conceitos; cadeias e teias; fluxo de energia; pirâmides; ciclos biogeoquímicos; dinâmica populacional; relações ecológicas; sucessão; biomas; desequilíbrios. O módulo site/ecologia/ está pausado em cerca de 90% (fora do main, no WIP); retomar e completar.
+
+## Lembretes da Nalu
+
+- 2026-11-15: melhorar o design da Embriologia (e dos módulos 2D que usam o mesmo motor) numa rodada de polimento visual, depois dos próximos tópicos.

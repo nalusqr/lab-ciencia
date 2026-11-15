@@ -20,7 +20,7 @@
   const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
   // (lampreia, (tubarão, (sapo, (ser humano, (lagarto, (crocodilo, ave))))))
   const VERT = { root: 'n0', k: { n0: ['lam', 'n1'], n1: ['tub', 'n2'], n2: ['sap', 'n3'], n3: ['hum', 'n4'], n4: ['lag', 'n5'], n5: ['cro', 'ave'] } };
-  const CLADO = { n0: 'vertebrados', n1: 'vertebrados com mandíbula', n2: 'tetrápodes', n3: 'amniotas', n4: 'répteis (com as aves)', n5: 'arcossauros' };
+  const CLADO = { n0: 'vertebrados', n1: 'vertebrados com mandíbula', n2: 'tetrápodes', n3: 'amniotas', n4: 'répteis (com as aves)', n5: 'arcossauros (crocodilos e aves)' };
   // sinapomorfias, de baixo para cima; em = ramo que chega a esse nó ou ponta (n0 = haste da raiz)
   const NOV = [
     { n: 'crânio', em: 'n0' }, { n: 'mandíbula', em: 'n1' }, { n: 'quatro membros', em: 'n2' }, { n: 'ovo amniótico', em: 'n3' },
@@ -128,8 +128,8 @@
     X.restore();
   }
   // onde cabe a caixa (legenda ou veredito): no triângulo vazio à direita da raiz ou embaixo do cladograma
-  function planta(A, T, F, idx, bw, bh) {
-    const top = A.y0 + F.h + 6, R = { x0: A.x0, x1: A.x1, top, bot: A.y1 - 2, haste: 22, smax: NAR ? 2 : 1.25 };
+  function planta(A, T, F, idx, bw, bh, folga = 2) {
+    const top = A.y0 + F.h + 6, R = { x0: A.x0, x1: A.x1, top, bot: A.y1 - folga, haste: 22, smax: NAR ? 2 : 1.25 };
     if (!NAR) {
       const L = lay(T, idx, R), n = desc(T, T.root).length, xr = R.x0 + L.sp * (n - .5), bx = R.x1 - bw, by = R.bot - bh;
       const yl = R.top + (xr - bx) * L.s;
@@ -213,7 +213,7 @@
       links: [['Monofilético, parafilético, polifilético', '#cladistica/grupos'], ['Homologia e analogia', '#cladistica/homologia'], ['Blastóporo na Embriologia', '../embriologia/index.html#desenvolvimento/blastoporo']],
       extra: ['Novidades', 'Ancestral comum', 'Gire o nó', 'O mesmo cladograma?'].map((t, i) => ({
         t, pressed: S => (S.mode || 0) === i,
-        on(S) { S.mode = i; S.user = false; S.tk = 0; S.sel = []; S.prev = null; S.q = []; S.last = null; if (i) setV(K1, S, 7); else setV(K1, S, 0); }
+        on(S) { S.mode = i; S.user = false; S.tk = 0; S.sel = []; S.prev = null; S.q = []; S.last = null; if (i) setV(K1, S, 7); else setV(K1, S, 0); const cr = document.getElementById('ctlR'); if (cr) cr.parentNode.hidden = i === 3; }
       })),
       init(S) { if (S.mode == null) { S.mode = 0; S.sel = []; S.q = []; S.flip = {}; S.tk = 0; } },
       draw(t, S) {
@@ -257,11 +257,6 @@
             circ(x, y, 9, ag ? AMB : '#1A2236', AMB, 2.5); circ(x, y, 3, ag ? '#1A1206' : AMB);
           }
         } else for (const k of nos) circ(P[k][0], P[k][1], k === m ? 7 : 3.5, k === m ? AMB : TXT, k === m ? '#fff' : null, 2);
-        if (m) {
-          const [x, y] = P[m]; circ(x, y, 14 + 3 * Math.sin(t * 4), null, rgba(AMB, .55), 2);
-          const s = 'ancestral comum', w = tw(s, 12, 700) + 14, lx = cl(x + 14, A.x0, A.x1 - w);
-          rr(lx, y + 10, w, 22, 999, FUNDO, AMB, 1); tx(s, lx + w / 2, y + 21.5, { s: 12, w: 700, c: AMB, bg: false });
-        }
         const hits = rotulos(T, L, F, idx, tsty, null, S.mode === 1);
         // legenda das novidades
         if (S.mode !== 2) {
@@ -275,6 +270,13 @@
           tx(q.n, box.x + 38, y, { s: NAR ? 12 : 13, w: now2 ? 700 : 600, c: now2 ? AMB : TXT, a: 'left', bg: false });
           X.restore();
         });
+        }
+        if (m) {
+          const [x, y] = P[m]; circ(x, y, 14 + 3 * Math.sin(t * 4), null, rgba(AMB, .55), 2);
+          const s = 'ancestral comum', w = tw(s, 12, 700) + 14;
+          let lx = cl(x + 14, A.x0, A.x1 - w);
+          if (S.mode !== 2 && lx + w > box.x && y + 32 > box.y && y + 10 < box.y + box.h) lx = Math.max(A.x0, x - 14 - w);
+          rr(lx, y + 10, w, 22, 999, FUNDO, AMB, 1); tx(s, lx + w / 2, y + 21.5, { s: 12, w: 700, c: AMB, bg: false });
         }
         // toques
         const tipAt = (x, y) => { const h = hits.find(q => x >= q[1] && x <= q[1] + q[3] && y >= q[2] && y <= q[2] + q[4]); return h ? h[0] : null; };
@@ -319,7 +321,7 @@
     const PRE = [
       { t: 'Mamíferos', sel: ['hum'], cap: '<b>Mamíferos</b> (aqui, o ser humano): grupo <b>monofilético</b>. Reúne o ancestral que já tinha pelos e glândulas mamárias e todos os seus descendentes.' },
       { t: 'Répteis tradicionais', sel: ['lag', 'cro'], cap: '<b>Répteis tradicionais</b> (lagarto e crocodilo): grupo <b>parafilético</b>. O ancestral comum deles também deu origem à ave, que fica de fora (ramo tracejado). O crocodilo é mais aparentado com a ave do que com o lagarto.' },
-      { t: 'Répteis + aves', sel: ['lag', 'cro', 'ave'], cap: '<b>Répteis com as aves</b>: grupo <b>monofilético</b>, um clado. Tem o ancestral comum e todos os descendentes; por isso a cladística diz que as aves são répteis.' },
+      { t: 'Répteis com aves', sel: ['lag', 'cro', 'ave'], cap: '<b>Répteis com as aves</b>: grupo <b>monofilético</b>, um clado. Tem o ancestral comum e todos os descendentes; por isso a cladística diz que as aves são répteis.' },
       { t: 'Peixes', sel: ['lam', 'tub'], cap: '<b>Peixes</b> (lampreia e tubarão): grupo <b>parafilético</b> no contexto dos vertebrados. O ancestral comum deles também originou os tetrápodes, que ficam de fora.' },
       { t: 'Sangue quente', sel: ['hum', 'ave'], cap: '<b>Animais de sangue quente</b> (ser humano e ave): grupo <b>polifilético</b>. São ramos separados, a homeotermia surgiu de forma independente em cada um, e o ancestral comum deles fica de fora.' }
     ];
@@ -363,7 +365,7 @@
         const idx = anima(S, T, null), F = faixa(T, A.w), bw = NAR ? A.w : 270;
         let nl = 1, cur0 = ''; for (const w of ln.split(' ')) { const t2 = cur0 ? cur0 + ' ' + w : w; if (cur0 && tw(t2, 13, 600) > bw - 28) { nl++; cur0 = w; } else cur0 = t2; }
         const bh = 50 + nl * 16;
-        const { L, box } = planta(A, T, F, idx, bw, bh), P = L.P;
+        const { L, box } = planta(A, T, F, idx, bw, bh, NAR ? 2 : 28), P = L.P;
 
         let sty, tsty, off = null;
         if (S.tes) {

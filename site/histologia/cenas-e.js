@@ -121,9 +121,9 @@
     lab(dp[0], dp[1], dp[0] - 30, dp[1] - 40, 'dendritos');
     lab(r.c[0], r.c[1] - r.r * .9, r.c[0] + 30, r.c[1] - r.r - 50, 'corpo celular');
     const ap = pth(r.ax, .07); lab(ap[0], ap[1], ap[0] + 10, ap[1] + 58, 'axônio');
-    const mpnt = pth(r.ax, .43); lab(mpnt[0], mpnt[1] - k * .012, mpnt[0] + 10, mpnt[1] - 62, 'bainha de mielina');
+    const mpnt = pth(r.ax, (GM.my[3][0] + GM.my[3][1]) / 2); lab(mpnt[0], mpnt[1] - k * .012, mpnt[0] + 10, mpnt[1] - 62, 'bainha de mielina');
     const tp = mp(GM.term[0][2][0], GM.term[0][2][1]); lab(tp[0], tp[1], tp[0] - 40, tp[1] - 48, 'terminais do axônio');
-    if (!NAR) { lab(r.c[0], r.c[1], r.c[0] - 20, r.c[1] + r.r + 56, 'núcleo'); const np = pth(r.ax, .65); lab(np[0], np[1], np[0] + 10, np[1] + 56, 'nodo de Ranvier'); }
+    if (!NAR) { lab(r.c[0], r.c[1], r.c[0] - 20, r.c[1] + r.r + 56, 'núcleo'); const np = pth(r.ax, (GM.my[5][1] + GM.my[6][0]) / 2); lab(np[0], np[1], np[0] + 10, np[1] + 56, 'nodo de Ranvier'); }
     cap('O impulso segue sempre no mesmo sentido: dos <b>dendritos</b> ao <b>corpo celular</b> e, pelo <b>axônio</b>, até os <b>terminais</b>.');
   }
 
@@ -145,7 +145,7 @@
   }
 
   // vista 2: arco reflexo (retirada da mão ou patelar)
-  const TW = { sens: [0, 38], inter: [40, 43], mot: [45, 57], contr: 60, brain: [40, 115], mov: 'braço se afasta', br: 'dor chega ao encéfalo', mus: 'bíceps' };
+  const TW = { sens: [0, 38], inter: [40, 43], mot: [45, 50], contr: 55, brain: [40, 115], mov: 'braço se afasta', br: 'dor percebida', mus: 'bíceps' };
   const TP = { sens: [0, 8], mot: [9, 17], contr: 20, brain: [9, 40], mov: 'perna chuta', br: 'toque chega ao encéfalo', mus: 'quadríceps' };
   function medula(cx, cy, R) {
     ell(cx, cy, R, R * .8, 0, rgba(N.miel, .82), 'rgba(11,15,28,.6)', 1.4);
@@ -236,7 +236,7 @@
     const ty = A.y1 - 12, t0 = A.x0 + 8, t1 = A.x1 - 8, fx = v => t0 + v / 200 * (t1 - t0);
     rr(t0, ty - 3, t1 - t0, 6, 3, 'rgba(91,108,153,.35)'); rr(t0, ty - 3, Math.max(6, fx(tm) - t0), 6, 3, rgba(N.na, .85));
     for (let v = 0; v <= 200; v += 50) { const s = v === 0 ? '0' : v === 200 ? '200 ms' : String(v), w = tw(s, 12, 500) / 2; tx(s, cl(fx(v), t0 + w, t1 - w), ty + 14, { s: 12, w: 500, c: N.dim, bg: false }); }
-    const ev = [[T.contr, T.mov + ': ' + ms(T.contr), N.musc, 22], [T.brain[1], T.br + ': ' + ms(T.brain[1]), N.na, 42]];
+    const ev = [[T.contr, T.mov + ': ≈ ' + ms(T.contr), N.musc, 22], [T.brain[1], T.br + ': ≈ ' + ms(T.brain[1]), N.na, 42]];
     for (const [v, s, c, dy] of ev) {
       const x = fx(v), on = tm >= v, w = tw(s, 12, 600) + 16;
       line(x, ty - 5, x, ty - dy + 9, rgba(c, on ? .9 : .4), 1.4);
@@ -247,7 +247,7 @@
     marker(fx(tm), ty, N.na);
     cap(pat
       ? 'Reflexo patelar: o neurônio sensitivo se liga <b>direto</b> ao motor, na medula, sem interneurônio. A perna chuta antes de o sinal chegar ao encéfalo.'
-      : 'Reflexo de retirada: sensitivo, interneurônio e motor. A resposta sai da <b>medula espinal</b>, e o braço se afasta antes de a dor chegar ao encéfalo.');
+      : 'Reflexo de retirada: sensitivo, interneurônio e motor. A resposta sai da <b>medula espinal</b>, e o braço se afasta antes de a dor ser percebida.');
   }
 
   def('nervoso', 'neuronio', {
@@ -721,12 +721,12 @@
     const nc = 5;
     for (let i = 0; i < nc; i++) {
       const x = cx + (i - 2) * tw2 * .16; rr(x - 8, yPre - 14, 16, 14 + gp + 14, 5, '#7C8BB8', 'rgba(11,15,28,.6)', 1); rr(x - 2.5, yPre - 14, 5, 28 + gp, 2, '#1A2440');
-      if (on) for (let j = 0; j < 2; j++) { const f = fr((ph - .35) * 1.5 + j * .5 + i * .13); circ(x, lerp(yPre - 30, yPost + 24, f), 3, j ? N.k : N.na); }
+      if (on) for (let j = 0; j < 2; j++) { const f = fr((ph - .35) * 1.5 + j * .5 + i * .13), up = (i + j) % 3 === 0; circ(x, up ? lerp(yPost + 24, yPre - 30, f) : lerp(yPre - 30, yPost + 24, f), 3, j ? N.k : N.na); }
     }
     lab(cx + tw2 * .32, yPre, cx + tw2 * .32 + 30, yPre - 44, 'junções comunicantes');
     lab(cx - tw2 * .3, SA.y0 + 30, cx - tw2 * .3 - 40, SA.y0 + 30, 'neurônio');
     lab(cx - tw2 * .3, SA.y1 - 20, cx - tw2 * .3 - 40, SA.y1 - 20, 'célula seguinte');
-    if (LB) tx('os íons passam direto, sem vesículas e sem fenda', cx, SA.y1 - 50, { s: 12, w: 600, c: N.txt });
+    if (LB) tx('os íons passam direto, nos dois sentidos', cx, SA.y1 - 50, { s: 12, w: 600, c: N.txt });
     return g;
   }
   function medidores(A, S, sub, ele) {
@@ -764,7 +764,7 @@
       const A = area(), sub = SUBS[S.sub || 0];
       if (S.ele) vEletrica(A, t, S); else vQuimica(A, t, S);
       medidores(A, S, sub, !!S.ele);
-      if (S.ele) cap('<b>Sinapse elétrica</b>: as membranas quase se encostam e as junções comunicantes deixam os íons passarem direto; é mais rápida.');
+      if (S.ele) cap('<b>Sinapse elétrica</b>: as membranas quase se encostam e as junções comunicantes deixam os íons passarem direto, e nos dois sentidos; é mais rápida.');
       else if (S.inib && !S.sub) cap('<b>Sinapse inibitória</b>: o neurotransmissor abre canais que afastam a célula seguinte do limiar, e ela fica menos excitável.');
       else cap(sub.f);
     }

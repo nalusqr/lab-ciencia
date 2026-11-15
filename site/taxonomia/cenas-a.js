@@ -45,7 +45,7 @@
     return x0 + w * (a + gap + (1 - a - gap) * seg(v, 1480, 1760));
   }
   function layA(A) {
-    const g = NAR ? 5 : 8, tlH = NAR ? 66 : 58, hd = NAR ? 30 : 40, ext = NAR ? 0 : 24;
+    const g = NAR ? 5 : 8, tlH = NAR ? 66 : 58, hd = NAR ? 30 : 40, ext = 0;
     const sc = NAR ? 4 : 8, sr = NAR ? 4 : 2, bc = 4, br = 2, stack = NAR;
     const tly = A.y1 + ext - tlH, cw = (A.w - (sc - 1) * g) / sc;
     const rows = sr + (stack ? 2 * br : br), hh = stack ? 2 * hd : hd;
@@ -70,8 +70,8 @@
       S.msg = left ? `Isso: Aristóteles poria ${art(c)} entre os <b>${k ? 'sem sangue' : 'com sangue'}</b>.${c.s ? ` Dentro do grupo, ele ainda separava os ${c.rep === 'vivíparo' ? '<b>vivíparos</b> (parem filhotes)' : '<b>ovíparos</b> (põem ovos)'}.` : ''} Faltam ${left}.`
         : 'Pronto, como Aristóteles. Agora toque em "Ver hoje" para comparar com a classificação atual.';
     } else {
-      S.bounce[i] = 1;
-      S.msg = `Olhe de novo: ${art(c)} ${c.s ? 'tem sangue vermelho' : 'não tem sangue vermelho'}. Aristóteles poria esse animal entre os <b>${c.s ? 'com sangue' : 'sem sangue'}</b>.`;
+      S.bounce[i] = c.n === 'minhoca' ? 0 : 1;
+      S.msg = c.n === 'minhoca' ? 'Aristóteles poria a minhoca entre os <b>sem sangue</b>. Mas ela tem sangue vermelho: o critério dele falha aqui, como você vai ver em "Ver hoje".' : `Olhe de novo: ${art(c)} ${c.s ? 'tem sangue vermelho' : 'não tem sangue vermelho'}. Aristóteles poria esse animal entre os <b>${c.s ? 'com sangue' : 'sem sangue'}</b>.`;
     }
   }
   const art = c => ({ 'onça': 'a onça', 'polvo': 'o polvo', 'sapo': 'o sapo', 'abelha': 'a abelha', 'peixe': 'o peixe', 'caranguejo': 'o caranguejo', 'pássaro': 'o pássaro', 'minhoca': 'a minhoca', 'cobra': 'a cobra', 'aranha': 'a aranha', 'baleia': 'a baleia', 'estrela-do-mar': 'a estrela-do-mar', 'cavalo': 'o cavalo', 'borboleta': 'a borboleta', 'lagarto': 'o lagarto', 'caramujo': 'o caramujo' }[c.n]);
@@ -159,7 +159,7 @@
       tx('1500', nav0, ly + 15, { s: 12, f: FD, w: 500, c: C.dim, bg: false });
       // fim da faixa: segue em Lineu (tocável)
       const lt = 'Lineu', lw = tw(lt, 12, 600) + 22, lx = T.x + T.w - lw;
-      rr(lx, ly + 7, lw, 18, 9, rgba(HIST, yr >= 1735 ? .95 : .25), null); tx(lt + ' ›', lx + lw / 2, ly + 16, { s: 12, w: 600, c: yr >= 1735 ? '#0B0F1C' : C.txt, bg: false }); hitR(lx, ly + 4, lw, 24, 'lineu');
+      rr(lx, ly + 7, lw, 18, 9, rgba(HIST, yr >= 1735 ? .95 : .25), null); tx(lt, lx + lw / 2, ly + 16, { s: 12, w: 600, c: yr >= 1735 ? '#0B0F1C' : C.txt, bg: false }); hitR(lx, ly + 4, lw, 24, 'lineu');
       const mx = tl(cl(yr, -380, 1760), T.x, T.w); X.beginPath(); X.moveTo(mx, ly - 7); X.lineTo(mx - 6, ly - 15); X.lineTo(mx + 6, ly - 15); X.closePath(); X.fillStyle = C.amber; X.fill();
       const txt = `<b>${cur[1]}:</b> ${cur[2]}`;
       if (NAR) wrapTx(txt, T.x, T.y + 4, T.w, { s: 12, a: 'left', c: C.txt, lh: 14 }); else mtx(txt, T.x, T.y + 10, { s: 13, a: 'left', c: C.txt, bg: false });
@@ -180,7 +180,7 @@
       gav: [['Reino', 'Vegetal'], ['Classe', 'Pentandria', 'cinco estames'], ['Ordem', 'Monogynia', 'um pistilo'], ['Gênero', '<i>Solanum</i>'], ['Espécie', '<i>Solanum lycopersicum</i>']],
       nota: 'Nas plantas, a classe de Lineu dependia do número de estames da flor: um critério artificial.' },
     { b: 'Ser humano', ic: 'humano', g: 'Homo', e: 'sapiens', obra: '<i>Systema Naturae</i>, 10ª edição, 1758',
-      fr: 'animal de dois pés, sem pelos no corpo, que fala, raciocina e fabrica ferramentas',
+      fr: 'animal de dois pés, quase sem pelos no corpo, que fala, raciocina e fabrica ferramentas',
       gav: [['Reino', 'Animal'], ['Classe', 'Mammalia'], ['Ordem', 'Primates'], ['Gênero', '<i>Homo</i>'], ['Espécie', '<i>Homo sapiens</i>']],
       nota: '<i>Homo sapiens</i> quer dizer "homem sábio". Lineu nos pôs entre os primatas, ao lado dos macacos.' },
     { b: 'Onça-pintada', ic: 'onca', g: 'Felis', e: 'onca', obra: '<i>Systema Naturae</i>, 10ª edição, 1758',
@@ -193,7 +193,7 @@
   def('historia', 'lineu', {
     t: 'Lineu e o <i>Systema Naturae</i>', s: 'duas palavras para cada ser vivo', c: HIST,
     loc: 'Lineu, 1735 a 1758', alt: 'página de rosto do Systema Naturae que se abre em gavetas encaixadas, reino, classe, ordem, gênero e espécie, e uma frase-nome longa que encolhe até virar duas palavras',
-    still: 9.5,
+    still: 9.5, ctl: false,
     extra: [
       ...LIN.map((s, i) => ({ t: s.b, on: S => { S.esp = i; S.t0 = S.ph; }, pressed: S => (S.esp || 0) === i })),
       { t: 'Frase ou binômio', on: S => { S.man = S.man === 'bin' ? 'frase' : 'bin'; }, pressed: S => S.man === 'bin' }
@@ -226,7 +226,7 @@
       tx('NATURAE', bx + pw / 2, by + ph * .3 + (stack ? 16 : 22), { s: stack ? 13 : 18, w: 700, c: tc, bg: false, f: FH });
       const ey = by + ph * .62; for (let i = 0; i < 3; i++) line(bx + pw * .3, ey + i * 7, bx + pw * .7, ey + i * 7, rgba(tc, .45), 1.2);
       circ(bx + pw / 2, by + ph * .8, Math.min(pw, ph) * .07, null, rgba(tc, .6), 1.2);
-      tx('1735', bx + pw / 2, by + ph * .92, { s: 12, f: FD, w: 500, c: tc, bg: false });
+      tx(sp.obra.match(/\d{4}/)[0], bx + pw / 2, by + ph * .92, { s: 12, f: FD, w: 500, c: tc, bg: false });
       X.restore();
       tx('desenho próprio', bx + pw / 2, by + ph + 12, { s: 12, c: C.dim, bg: false });
       // ---- gavetas encaixadas ----
@@ -289,8 +289,8 @@
   // =====================================================================================
   const NOMES8 = ['Domínio', 'Reino', 'Filo', 'Classe', 'Ordem', 'Família', 'Gênero', 'Espécie'];
   const CAIXA = [
-    ['Eukarya', 'células com núcleo'], ['Animalia', 'pluricelulares que comem outros seres'], ['Chordata', 'notocorda (nos vertebrados, coluna vertebral)'],
-    ['Mammalia', 'pelos e glândulas mamárias'], ['Carnivora', 'dentes próprios para cortar carne'], ['Felidae', 'garras que se recolhem'],
+    ['Eukarya', 'células com núcleo'], ['Animalia', 'pluricelulares que ingerem o alimento'], ['Chordata', 'notocorda (nos vertebrados, coluna vertebral)'],
+    ['Mammalia', 'pelos e glândulas mamárias'], ['Carnivora', 'dentes caninos e carniceiros, próprios para cortar carne'], ['Felidae', 'garras retráteis, que se recolhem'],
     ['<i>Felis</i>', 'gatos de pequeno porte'], ['<i>Felis catus</i>', 'o gato doméstico']
   ];
   // anel de cada ícone: -1 fora do domínio; i = está na caixa i mas não na i+1
@@ -304,7 +304,7 @@
     ['gato', 'gato', ['Eukarya', 'Animalia', 'Chordata', 'Mammalia', 'Carnivora', 'Felidae', '<i>Felis</i>', '<i>Felis catus</i>']],
     ['onça-pintada', 'onca', ['Eukarya', 'Animalia', 'Chordata', 'Mammalia', 'Carnivora', 'Felidae', '<i>Panthera</i>', '<i>Panthera onca</i>']],
     ['galinha', 'galinha', ['Eukarya', 'Animalia', 'Chordata', 'Aves', 'Galliformes', 'Phasianidae', '<i>Gallus</i>', '<i>Gallus gallus</i>']],
-    ['sapo-cururu', 'sapo', ['Eukarya', 'Animalia', 'Chordata', 'Amphibia', 'Anura', 'Bufonidae', '<i>Rhinella</i>', '<i>Rhinella</i> sp.']],
+    ['sapo-cururu', 'sapo', ['Eukarya', 'Animalia', 'Chordata', 'Amphibia', 'Anura', 'Bufonidae', '<i>Rhinella</i>', '<i>Rhinella diptycha</i>']],
     ['abelha', 'abelha', ['Eukarya', 'Animalia', 'Arthropoda', 'Insecta', 'Hymenoptera', 'Apidae', '<i>Apis</i>', '<i>Apis mellifera</i>']],
     ['milho', 'milho', ['Eukarya', 'Plantae', 'Magnoliophyta', 'Liliopsida', 'Poales', 'Poaceae', '<i>Zea</i>', '<i>Zea mays</i>']]
   ];
@@ -388,7 +388,7 @@
         list.forEach((a, j) => {
           const cx = (rx0 + rx1) / 2, cy = ry0 + (j + .5) * sh2 / list.length - (LB && s > 20 ? 6 : 0);
           bicho(a[0], cx, cy, s, { c: i === 7 ? C.esp : C.txt, a: al });
-          if (LB && s > 20 && sw2 > 44) { X.save(); X.globalAlpha *= al; tx(a[2], cx, cy + s / 2 + 10, { s: 12, c: C.dim }); X.restore(); }
+          if (LB && s > 20 && sw2 > 44 && cx - tw(a[2], 12) / 2 >= A.x0 && cx + tw(a[2], 12) / 2 <= A.x1) { X.save(); X.globalAlpha *= al; tx(a[2], cx, cy + s / 2 + 10, { s: 12, c: C.dim }); X.restore(); }
         });
       }
       X.restore();
@@ -406,14 +406,15 @@
 
   function drawCmp(A, S) {
     // lista de seres (tocáveis)
-    const cols = NAR ? 5 : 10, cg = 6, chw = (A.w - (cols - 1) * cg) / cols, chh = NAR ? 54 : 66;
+    const cols = NAR ? 5 : 10, cg = NAR ? 4 : 6, chw = (A.w - (cols - 1) * cg) / cols, chh = NAR ? 58 : 66;
     SERES.forEach((s, i) => {
       const x = A.x0 + (i % cols) * (chw + cg), y = A.y0 + Math.floor(i / cols) * (chh + cg), on = i === S.a || i === S.b;
       const c = i === S.a ? C.filo : i === S.b ? C.gen : 'rgba(157,169,196,.4)';
       rr(x, y, chw, chh, 8, on ? rgba(c, .14) : 'rgba(19,26,43,.85)', c, on ? 2 : 1); hitR(x, y, chw, chh, 's' + i);
-      bicho(s[1], x + chw / 2, y + chh * .38, Math.min(chh * .48, chw * .6), { c: C.txt });
-      let fs = 12; while (fs > 10 && tw(s[0], fs, 600) > chw - 4) fs -= .5;
-      X.font = `600 ${fs}px ${FT}`; X.fillStyle = C.txt; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(s[0], x + chw / 2, y + chh - 10);
+      bicho(s[1], x + chw / 2, y + chh * (NAR ? .3 : .38), Math.min(chh * (NAR ? .36 : .48), chw * .6), { c: C.txt });
+      const nm = s[0], cut = Math.max(nm.indexOf('-') + 1, nm.indexOf(' ')), two = tw(nm, 12, 600) > chw - 4 && cut > 0;
+      const ls = two ? [nm.slice(0, cut).trim(), nm.slice(cut)] : [nm];
+      ls.forEach((q, j) => tx(q, x + chw / 2, y + chh - 10 - (ls.length - 1 - j) * 13, { s: 12, w: 600, c: C.txt, bg: false }));
     });
     const ty0 = A.y0 + Math.ceil(SERES.length / cols) * (chh + cg) + 8;
     const k = comum(S.a, S.b), rows = 8, rh = Math.min(NAR ? 34 : 34, (A.y1 - ty0 - 30) / (rows + 1)), lc = NAR ? 74 : 150;
@@ -425,15 +426,18 @@
       const y = ty0 + (i + 1) * rh, shown = i <= rev || S.paused, same = i <= k, c = CATC[i];
       circ(A.x0 + 6, y + rh / 2, 4.5, c);
       tx(NOMES8[i], A.x0 + 16, y + rh / 2, { s: NAR ? 12 : 13, w: 600, a: 'left', c: C.txt, bg: false });
+      if (i === k + 1 && shown) { if (NAR) tx(NOMES8[i], A.x0 + 16, y + rh / 2, { s: 12, w: 600, a: 'left', c: C.amber, bg: false }); else tx('separam-se', A.x0 + 16 + tw(NOMES8[i], 13, 600) + 8, y + rh / 2, { s: 12, w: 600, a: 'left', c: C.amber, bg: false }); }
       if (!shown) { line(A.x0 + lc, y + rh, A.x1, y + rh, 'rgba(91,108,153,.25)', 1); continue; }
       if (same) rr(A.x0 + lc + 2, y + 3, A.w - lc - 4, rh - 6, 8, rgba(c, .2), rgba(c, .75), 1.5);
       else { rr(A.x0 + lc + 2, y + 3, colW - 6, rh - 6, 8, 'rgba(19,26,43,.6)', 'rgba(157,169,196,.35)', 1); rr(A.x0 + lc + colW + 4, y + 3, colW - 6, rh - 6, 8, 'rgba(19,26,43,.6)', 'rgba(157,169,196,.35)', 1); }
       [S.a, S.b].forEach((s, j) => {
-        const v = SERES[s][2][i], x = A.x0 + lc + j * colW + colW / 2; let fs = NAR ? 12 : 14; while (fs > 10 && mtw(v, fs, 600) > colW - 10) fs -= .5;
+        const v = SERES[s][2][i], x = A.x0 + lc + j * colW + colW / 2; let fs = NAR ? 12 : 14; while (fs > 12 && mtw(v, fs, 600) > colW - 10) fs -= .5;
         if (same && j === 1) return;
-        mtx(v, same ? A.x0 + lc + colW : x, y + rh / 2, { s: fs, w: 600, c: same ? C.txt : C.dim, bg: false });
+        X.save(); if (!same && i > k + 1) X.globalAlpha *= .5;
+        if (mtw(v, fs, 600) > colW - 10) wrapTx(v, x, y + rh / 2 - 7, colW - 10, { s: 12, w: 600, c: C.dim, lh: 13 });
+        else mtx(v, same ? A.x0 + lc + colW : x, y + rh / 2, { s: fs, w: 600, c: same ? C.txt : C.dim, bg: false });
+        X.restore();
       });
-      if (i === k + 1 && !NAR) tx('separam-se aqui', A.x1 - 4, y - 1, { s: 12, w: 600, a: 'right', c: C.amber, bg: false });
       line(A.x0 + lc, y + rh, A.x1, y + rh, 'rgba(91,108,153,.25)', 1);
     }
     const done = rev >= Math.min(7, k + 1) || S.paused;

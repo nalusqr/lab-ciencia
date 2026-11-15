@@ -211,12 +211,24 @@
     desenhaMembro(MEMB.bal, 'bal', null); X.restore();
   }
 
+  // baleia (jubarte) de corpo inteiro, com a nadadeira peitoral longa mostrando os ossos
+  function baleiaCorpo(dest) {
+    X.lineJoin = 'round';
+    X.beginPath(); X.moveTo(1, .02); X.quadraticCurveTo(.95, -.2, .6, -.22); X.quadraticCurveTo(0, -.26, -.7, -.06); X.lineTo(-.84, -.02); X.lineTo(-1, -.2); X.lineTo(-.93, .01); X.lineTo(-1, .22); X.lineTo(-.84, .04); X.lineTo(-.7, .07); X.quadraticCurveTo(0, .3, .7, .2); X.quadraticCurveTo(.95, .14, 1, .02); X.closePath();
+    X.fillStyle = rgba(P.golfinho, .42); X.fill(); X.strokeStyle = P.golfinho; X.lineWidth = .02; X.stroke();
+    X.beginPath(); X.moveTo(-.25, -.2); X.lineTo(-.33, -.3); X.lineTo(-.4, -.17); X.closePath(); X.fillStyle = rgba(P.golfinho, .42); X.fill(); X.stroke();
+    for (let i = 0; i < 4; i++) line(.82 - i * .1, .12 + i * .012, .5 - i * .1, .2 + i * .01, 'rgba(11,15,28,.35)', .012);
+    disco(.78, -.04, .025, '#0B0F1C');
+    X.save(); X.translate(.42, .12); X.rotate(.55); X.scale(.62, .62);
+    if (dest) { X.beginPath(); X.ellipse(0, .55, .24, .66, 0, 0, TAU); X.fillStyle = rgba(P.amber, .16); X.fill(); }
+    desenhaMembro(MEMB.bal, 'bal', null); X.restore();
+  }
   // ---------- dados de K3 ----------
   const NOME = {
     hum: ['ser humano', 'braço'], bal: ['baleia', 'nadadeira'], mor: ['morcego', 'asa'], ave: ['ave', 'asa'], cao: ['cão', 'pata'],
-    bor: ['borboleta', 'asa, sem ossos'], tub: ['tubarão', 'nadadeira (peixe)'], gol: ['golfinho', 'nadadeira (mamífero)']
+    bor: ['borboleta', 'asa, sem ossos'], balc: ['baleia', 'nadadeira (mamífero)'], tub: ['tubarão', 'nadadeira (peixe)'], gol: ['golfinho', 'nadadeira (mamífero)']
   };
-  const SILH = { tub: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => tubarao(d) }, gol: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => golfinho(d) } };
+  const SILH = { balc: { bb: { x0: -1.02, y0: -.4, x1: 1.02, y1: .78 }, f: d => baleiaCorpo(d) }, tub: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => tubarao(d) }, gol: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => golfinho(d) } };
   function figura(k, x, y, w, h, hl, dest) {
     if (MEMB[k]) return encaixa(MEMB[k].bb, x, y, w, h, () => desenhaMembro(MEMB[k], k, hl));
     if (k === 'bor') return encaixa(BORB.bb, x, y, w, h, desenhaBorb);
@@ -234,12 +246,12 @@
     [null, 'Mesmos ossos, na mesma ordem, funções diferentes: são <b>estruturas homólogas</b> (divergência).']
   ];
   const QUIZ = [
-    { a: 'hum', b: 'bal', t: 'Braço humano e nadadeira da baleia', r: 0, e: 'Homólogos: os mesmos ossos na mesma ordem. A origem é a mesma; a função mudou (divergência).' },
+    { a: 'hum', b: 'bal', t: 'Braço humano e nadadeira da baleia', r: 0, e: 'Homólogas: os mesmos ossos na mesma ordem. A origem é a mesma; a função mudou (divergência).' },
     { a: 'ave', b: 'bor', t: 'Asa da ave e asa da borboleta', r: 1, e: 'Análogas: as duas servem para voar, mas a da borboleta não tem ossos. Origens diferentes, mesma função (convergência).' },
     { a: 'tub', b: 'gol', t: 'Nadadeira do tubarão e do golfinho', r: 1, e: 'Análogas: o tubarão é peixe e o golfinho é mamífero. A nadadeira do golfinho tem úmero, rádio, ulna e dedos; a do tubarão, não.' },
     { a: 'ave', b: 'mor', t: 'Asa da ave e asa do morcego', r: 2, e: 'As duas coisas: homólogas como membros anteriores (os mesmos ossos) e análogas como asas, porque o voo surgiu separadamente (penas na ave, pele entre os dedos no morcego).' }
   ];
-  const RESP = ['homólogos', 'análogos', 'as duas coisas'];
+  const RESP = ['homólogas', 'análogas', 'as duas coisas'];
 
   function k3Origem(t, S, A) {
     const ks = ['hum', 'bal', 'mor', 'ave', 'cao'].concat(S.bor ? ['bor'] : []);
@@ -269,7 +281,7 @@
   function k3Funcao(t, S, A) {
     const G = [
       { t: 'voar', ks: ['ave', 'mor', 'bor'], p: ['ave e morcego: homólogas como membros, análogas como asas', 'ave e borboleta: análogas (convergência)'] },
-      { t: 'nadar', ks: ['bal', 'tub', 'gol'], p: ['tubarão e golfinho: análogas (convergência)', 'golfinho e baleia: homólogas (os dois são mamíferos)'] }
+      { t: 'nadar', ks: ['balc', 'tub', 'gol'], p: ['tubarão e golfinho: análogas (convergência)', 'golfinho e baleia: homólogas (mesmos ossos; os dois são cetáceos)'] }
     ];
     const gap = 16, gw = NAR ? A.w : (A.w - gap) / 2, gh = NAR ? (A.y1 - A.y0 - gap - 22) / 2 : A.h - 22;
     G.forEach((g, gi) => {
@@ -321,7 +333,7 @@
       else { const w3 = (bw - 16) / 3; RESP.forEach((s, i) => botao(S, bx + i * (w3 + 8), y, w3, s, () => responde(S, i))); }
     } else {
       const ok = resp === q.r;
-      tx(ok ? 'Isso mesmo!' : `Ainda não: a resposta é "${RESP[q.r]}".`, bx + 12, y + 10, { s: 14, w: 700, a: 'left', c: ok ? P.ok : P.erro, bg: false });
+      tx(ok ? 'Isso mesmo.' : `Ainda não: a resposta é "${RESP[q.r]}".`, bx + 12, y + 10, { s: 14, w: 700, a: 'left', c: ok ? P.ok : P.erro, bg: false });
       fbL.forEach((l, i) => tx(l, bx + 12, y + 30 + i * 18, { s: 13, a: 'left', c: P.txt, bg: false }));
       const last = (S.qi || 0) >= QUIZ.length - 1;
       botao(S, bx + bw - Math.min(220, bw), y + 30 + fbL.length * 18 + 6, Math.min(220, bw), last ? 'recomeçar os pares' : 'próximo par', () => {
@@ -490,8 +502,9 @@
       const [x, y] = pos['L' + i], fim = alvoFim === i;
       const cor = fim ? (modo === 'id' && S.fimOk === false ? P.erro : modo === 'id' ? P.ok : P.amber) : 'rgba(141,156,199,.55)';
       circ(x, y, rL, fim ? 'rgba(27,36,64,1)' : 'rgba(19,26,43,.95)', cor, fim ? 2.5 : 1.2);
-      icone(AN[i].k, x, y, rL * .72);
-      if (!NAR) { const nm = AN[i].n.length > 14 ? AN[i].n.split('-')[0] : AN[i].n; tx(nm, x, y + rL + 12, { s: 12, w: fim ? 700 : 400, c: fim ? P.txt : P.dim }); }
+      const oculta = modo === 'id' && alvoFim !== i;
+      if (oculta) tx('?', x, y + .5, { s: NAR ? 14 : 16, w: 700, c: P.dim, bg: false }); else icone(AN[i].k, x, y, rL * .72);
+      if (!NAR && !oculta) { const nm = AN[i].n.length > 14 ? AN[i].n.split('-')[0] : AN[i].n; tx(nm, x, y + rL + 12, { s: 12, w: fim ? 700 : 400, c: fim ? P.txt : P.dim }); }
       if (modo === 'rev') hit(S, x - rL - 4, y - rL - 4, 2 * rL + 8, 2 * rL + 8, () => { S.rsel = i; S.ru = true; S.rt = S.tnow; });
     }
     return pos;
@@ -542,7 +555,7 @@
         tx(AN[S.fim].n, x, y + 10, { s: 18, w: 700, f: FH, a: 'left', c: P.txt, bg: false });
         mtx(AN[S.fim].sci, x, y + 34, { s: 15, a: 'left', c: P.txt, bg: false }); y += 54;
       }
-      tx('Confere com o desenho!', x, y + 8, { s: 14, w: 700, a: 'left', c: P.ok, bg: false }); y += 24;
+      tx('Confere com o desenho.', x, y + 8, { s: 14, w: 700, a: 'left', c: P.ok, bg: false }); y += 24;
       y += bloco(leitura(CAM[S.fim], S.fim), x, y, w, { s: 13, c: P.dim }) + 10;
       y += botao(S, x, y, Math.min(w, 220), 'Outro animal', () => novoAlvo(S));
       cap('Chegou ao nome seguindo os passos em ordem. Toque em <b>Outro animal</b> para tentar de novo.');

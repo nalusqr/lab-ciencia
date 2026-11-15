@@ -18,7 +18,7 @@
   var mNome = $('#m-nome'), mDesc = $('#m-desc'), mBtn = $('#m-btn'), mPos = $('#m-pos');
   var fTit = $('#f-titulo'), fSub = $('#f-sub'), fCorpo = $('#f-corpo');
   if (!roda || !N) return;
-  var PASSO = 2 * Math.PI / N;          // anel: 40 graus por matéria
+  var PASSO = 2 * Math.PI / N;          // anel: 360/N graus por matéria
   var NS = 'http://www.w3.org/2000/svg';
 
   /* ---------- anel em SVG (segmentos e retículo) ---------- */
@@ -37,11 +37,17 @@
   (function () {   // retículo fixo: marcas a cada 5 graus, maiores a cada 40, e um círculo interno
     var c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 204); ret.appendChild(c);
     for (var g = 0; g < 360; g += 5) {
-      var a = g * Math.PI / 180, m = g % 40 === 0, r0 = 350, r1 = m ? 360 : 355, l = document.createElementNS(NS, 'line');
+      var a = g * Math.PI / 180, m = false, r0 = 350, r1 = m ? 360 : 355, l = document.createElementNS(NS, 'line');
       l.setAttribute('x1', (r0 * Math.sin(a)).toFixed(1)); l.setAttribute('y1', (-r0 * Math.cos(a)).toFixed(1));
       l.setAttribute('x2', (r1 * Math.sin(a)).toFixed(1)); l.setAttribute('y2', (-r1 * Math.cos(a)).toFixed(1));
       if (m) l.setAttribute('class', 'm');
       ret.appendChild(l);
+    }
+    for (var k = 0; k < N; k++) {   // marcas maiores no centro de cada matéria
+      var ak = k * PASSO, lk = document.createElementNS(NS, 'line');
+      lk.setAttribute('x1', (350 * Math.sin(ak)).toFixed(1)); lk.setAttribute('y1', (-350 * Math.cos(ak)).toFixed(1));
+      lk.setAttribute('x2', (360 * Math.sin(ak)).toFixed(1)); lk.setAttribute('y2', (-360 * Math.cos(ak)).toFixed(1));
+      lk.setAttribute('class', 'm'); ret.appendChild(lk);
     }
   })();
 

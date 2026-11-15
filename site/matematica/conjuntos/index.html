@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conjuntos e números | LAB</title>
+<meta name="description" content="Módulo 1 de Matemática do LAB: linguagem dos conjuntos, subconjuntos, união, interseção, diferença e complementar, conjuntos numéricos de ℕ a ℝ, dízimas e fração geratriz, irracionais e intervalos reais, com telas interativas e questões no estilo do ENEM.">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../base.css">
+<link rel="stylesheet" href="../comum/estilo.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg; mod-conjuntos é novo (🔷 Escher) --><symbol id="mod-conjuntos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></g></symbol><symbol id="ui-rotulos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="8" rx="4"/><circle cx="7.2" cy="7.5" r="1.4" fill="currentColor" stroke="none"/><path d="M10.6 7.5h6.6M7.2 11.5v5.2"/><circle cx="7.2" cy="19.2" r="1.9" fill="currentColor" stroke="none"/></g></symbol><symbol id="ui-pausar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></g></symbol><symbol id="ui-continuar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.3v13.4a.9.9 0 0 0 1.4.75l10.2-6.7a.9.9 0 0 0 0-1.5L9.4 4.55A.9.9 0 0 0 8 5.3z"/></g></symbol><symbol id="ui-enem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3" width="15" height="18" rx="2"/><path d="m8.3 9.6 2 2 4.4-4.4M8.3 15.5h7.4"/></g></symbol><symbol id="ui-voltar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></g></symbol><symbol id="ui-avancar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></g></symbol><symbol id="ui-reiniciar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12A7.5 7.5 0 1 0 12 4.5"/><path d="M14.8 2 12 4.5l2.8 2.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></g></symbol></svg>
+<div class="wrap">
+  <a class="voltar" href="../../index.html#matematica"><svg aria-hidden="true"><use href="#ui-voltar"/></svg>Início</a>
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-conjuntos"/></svg>
+    <div>
+      <h1>Conjuntos e números</h1>
+      <div class="k">Matemática, etapa 1 <span class="badge">Linguagem dos conjuntos, conjuntos numéricos e intervalos</span></div>
+    </div>
+  </header>
+
+  <div class="seg scroll" id="secs" role="group" aria-label="Seções do módulo"></div>
+
+  <section class="stage-3d palco" aria-label="Tela interativa do tópico">
+    <div class="tela">
+      <canvas id="cv" role="img" aria-label="Tela interativa"></canvas>
+      <div class="hud tag fl"><i id="tagC"></i><span id="tagT">Carregando…</span></div>
+      <div class="hud leg"><p id="cap" aria-live="polite"></p></div>
+      <div class="quiz" id="quiz" hidden></div>
+    </div>
+    <div class="barra">
+      <button class="sq" id="prev" title="Tópico anterior" aria-label="Tópico anterior"><svg aria-hidden="true"><use href="#ui-voltar"/></svg></button>
+      <div id="ctls"></div>
+      <button id="reset" title="Recomeçar este tópico" aria-label="Recomeçar este tópico"><svg aria-hidden="true"><use href="#ui-reiniciar"/></svg><span class="tx">Recomeçar</span></button>
+      <button class="sq" id="next" title="Próximo tópico" aria-label="Próximo tópico"><svg aria-hidden="true"><use href="#ui-avancar"/></svg></button>
+    </div>
+  </section>
+
+  <div class="below">
+    <article class="box insp">
+      <div class="sub"><i id="iD"></i><span id="iS"></span></div>
+      <h2 id="iT"></h2>
+      <div id="desc"></div>
+      <div class="kv" id="kv"></div>
+      <div class="enem"><div class="eh"><svg aria-hidden="true"><use href="#ui-enem"/></svg>No ENEM</div><p id="enemT"></p></div>
+    </article>
+    <aside class="box">
+      <div class="lbl">Tópicos</div>
+      <div class="tops" id="tops"></div>
+    </aside>
+  </div>
+
+  <footer class="foot">Roteiro do 📐 Tales e da 🌀 Hipátia; telas do ⚙️ Arquimedes e do 🔭 Galileo. Notação brasileira: vírgula decimal e ponto e vírgula entre os extremos dos intervalos. Conceitos conferidos em: Iezzi &amp; Murakami, <i>Fundamentos de Matemática Elementar, v. 1: Conjuntos e Funções</i> (Atual); Lima et al., <i>A Matemática do Ensino Médio, v. 1</i> (SBM); Dante, <i>Matemática: contexto e aplicações</i> (Ática); Matriz de Referência do ENEM (INEP).</footer>
+</div>
+<script src="../comum/motor.js"></script>
+<script src="conjuntos.js"></script>
+<script>LAB_MAT_iniciar();</script>
+</body>
+</html>
