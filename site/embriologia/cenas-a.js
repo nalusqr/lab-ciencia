@@ -48,13 +48,16 @@
         line(A.cx, top, A.cx, A.y1, 'rgba(91,108,153,.35)', 1, [4, 6]);
         tx('meiose I', A.cx, (ys[0] + ys[1]) / 2, { s: 12, w: 600, c: C.dim }); tx('meiose II', A.cx, (ys[1] + ys[2]) / 2 - 8, { s: 12, w: 600, c: C.dim }); tx('(no ovócito, só se', A.cx, (ys[1] + ys[2]) / 2 + 9, { s: 12, c: C.dim }); tx('houver fecundação)', A.cx, (ys[1] + ys[2]) / 2 + 25, { s: 12, c: C.dim });
       }
+      if (NAR) for (const [s, y] of [['meiose I', ys[1] - rowH * .25], ['meiose II', ys[2] - rowH * .25]]) {
+        const w = tw(s, 12, 600) + 12; rr(A.cx - 8 - w / 2, y - 10, w, 20, 999, 'rgba(11,15,28,.84)', 'rgba(255,255,255,.14)', 1); tx(s, A.cx - 8, y + .5, { s: 12, w: 600, c: C.txt, bg: false });
+      }
       const sub = (s, x, y) => wrapTx(s, x, y, lw, { s: ls, c: C.txt, w: 600, lh: ls + 3 });
       // espermatogênese: 1 → 2 → 4, divisões iguais (rótulos primeiro: as linhas saem de baixo deles)
       const r0 = u * .1, r1 = u * .08, r2 = u * .045, sp1 = Math.min(pw * .28, u * .3), sp2 = Math.min(pw * .22, u * .2);
       const x1 = [lx - sp1, lx + sp1], x2 = [-1.5, -.5, .5, 1.5].map(k => lx + k * sp2);
       const b0 = ys[0] + r0 + 8 + sub('espermatócito primário (2n)', lx, ys[0] + r0 + 14);
       const b1 = ys[1] + r1 + 8 + sub('2 espermatócitos secundários (n)', lx, ys[1] + r1 + 14);
-      sub('4 espermatozoides (n)', lx, ys[2] + r2 * 4.4 + 8);
+      sub('4 espermátides viram 4 espermatozoides (espermiogênese)', lx, ys[2] + r2 * 4.4 + 8);
       x1.forEach(x => link(lx, b0, x, ys[1] - r1)); x2.forEach((x, i) => link(x1[i < 2 ? 0 : 1], b1, x, ys[2] - r2 * 1.2));
       cell(lx, ys[0], r0, C.esperma, { n: .42 }); x1.forEach(x => cell(x, ys[1], r1, C.esperma, { n: .4 }));
       x2.forEach((x, i) => sperm(x - r2 * .6, ys[2], r2, PI / 2 + .25, t + i * .7));

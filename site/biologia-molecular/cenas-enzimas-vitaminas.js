@@ -86,7 +86,7 @@
   def('enz', 'ativacao', {
     t: 'Energia de ativação', s: 'o "morro" que a enzima rebaixa', c: ENZ, loc: 'gráfico de energia',
     alt: 'Gráfico de energia ao longo da reação: a curva com enzima tem um pico mais baixo; reagentes e produtos ficam no mesmo nível nas duas curvas',
-    d: `<p>Mesmo uma reação que libera energia precisa de um empurrão para começar: a <b>energia de ativação</b>. É como empurrar uma pedra morro acima antes que ela role para baixo.</p><p>A enzima oferece um <b>caminho diferente</b> para a reação, com um morro mais baixo. Assim, muito mais moléculas conseguem reagir a 37 °C, e a reação fica milhares ou milhões de vezes mais rápida. A enzima <b>não muda</b> a energia dos reagentes nem a dos produtos: a energia liberada pela reação (<span class="q">ΔG</span>) continua a mesma.</p>`,
+    d: `<p>Mesmo uma reação que libera energia precisa de um empurrão para começar: a <b>energia de ativação</b>. É como empurrar uma pedra morro acima antes que ela role para baixo.</p><p>A enzima oferece um <b>caminho diferente</b> para a reação, com um morro mais baixo. Assim, muito mais moléculas conseguem reagir a 37 °C, e a reação fica milhões de vezes mais rápida, ou mais. A enzima <b>não muda</b> a energia dos reagentes nem a dos produtos: a energia liberada pela reação (<span class="q">ΔG</span>) continua a mesma.</p>`,
     kv: [['Energia de ativação', 'diminui'], ['Energia de reagentes e produtos', 'não muda'], ['ΔG da reação', 'não muda'], ['Velocidade', 'aumenta muito']],
     enem: `Em gráficos de energia × caminho da reação, a curva <b>com enzima</b> é a de pico mais <b>baixo</b>; o começo e o fim das duas curvas são <b>iguais</b>. Pegadinhas comuns: "a enzima fornece energia à reação" (errado) e "a enzima torna a reação mais exotérmica" (errado). Ela só <b>diminui a energia de ativação</b>.`,
     links: [LK.bioen, L_ENZ],
@@ -110,7 +110,7 @@
   });
 
   // temperatura: duas enzimas (humana e de bactéria de fonte termal) no mesmo gráfico
-  const TEMP = [{ n: 'enzima humana', o: 37, w: 13, d: 8.5, c: ENZ }, { n: 'enzima de bactéria termófila', o: 72, w: 20, d: 7, c: AMB }];
+  const TEMP = [{ n: 'enzima humana', o: 37, w: 19, d: 8.5, c: ENZ }, { n: 'enzima de bactéria termófila', o: 72, w: 20, d: 7, c: AMB }];
   const tAct = (e, x) => 100 * Math.exp(-(((x - e.o) / (x <= e.o ? e.w : e.d)) ** 2) * (x <= e.o ? 1.2 : 1.3));
   def('enz', 'temperatura', {
     t: 'Temperatura', s: 'temperatura ótima e desnaturação', c: ENZ, loc: 'atividade × temperatura',
@@ -139,7 +139,7 @@
         tx(den > .5 ? 'desnaturada' : T0 < e.o - 15 ? 'lenta (frio)' : Math.abs(T0 - e.o) <= 4 ? 'no ótimo' : 'ativa', ex, ey + s * 1.4, { s: 14, w: 700, f: FH, c: den > .5 ? INI : C.txt });
       }
       const h = Math.round(tAct(TEMP[0], T0)), b = Math.round(tAct(TEMP[1], T0));
-      cap(`<b>${T0} °C</b>: enzima humana com <b>${h}%</b> da atividade máxima; termófila com <b>${b}%</b>. ${T0 > 45 && T0 < 80 ? 'A humana já <b>desnaturou</b>; a termófila está no seu melhor.' : T0 >= 80 ? 'As duas estão desnaturando.' : T0 < 25 ? 'Frio: as reações ficam <b>lentas</b>, mas as enzimas continuam inteiras.' : ''} Arraste no gráfico.`);
+      cap(`<b>${T0} °C</b>: enzima humana com <b>${h}%</b> da atividade máxima; termófila com <b>${b}%</b>. ${T0 >= 80 ? 'As duas estão desnaturando.' : T0 > 45 ? (b >= 80 ? 'A humana já <b>desnaturou</b>; a termófila está perto do seu ótimo.' : 'A humana já <b>desnaturou</b>; a termófila ainda está abaixo do seu ótimo.') : T0 < 25 ? 'Frio: as reações ficam <b>lentas</b>, mas as enzimas continuam inteiras.' : ''} Arraste no gráfico.`);
     }
   });
 
@@ -175,7 +175,7 @@
     alt: 'Gráfico da velocidade da reação conforme a quantidade de substrato, sem inibidor, com inibidor competitivo e com inibidor não competitivo, ao lado da enzima com o inibidor ligado',
     d: `<p><b>Inibidores</b> são moléculas que diminuem a atividade de uma enzima. O <b>inibidor competitivo</b> se parece com o substrato e ocupa o <b>sítio ativo</b>: os dois disputam o mesmo lugar. Aumentando a quantidade de substrato, ele ganha a disputa, e a reação volta a atingir a velocidade máxima.</p><p>O <b>inibidor não competitivo</b> se liga a <b>outro ponto</b> da enzima e altera a forma do sítio ativo. Aí não adianta pôr mais substrato: a velocidade máxima fica <b>menor</b>. Muitos remédios e venenos agem como inibidores de enzimas.</p>`,
     kv: [['Competitivo', 'disputa o sítio ativo'], ['Mais substrato', 'vence o competitivo'], ['Não competitivo', 'liga-se a outro sítio'], ['Velocidade máxima', 'cai só no não competitivo']],
-    enem: `Exemplo clássico: as <b>sulfas</b> (sulfonamidas) se parecem com o PABA, que as bactérias usam para fazer ácido fólico, e competem pelo sítio ativo da enzima bacteriana: <b>inibição competitiva</b>. Metais pesados, como mercúrio e chumbo, se ligam a outras partes das enzimas e mudam sua forma. Pista no gráfico: se a curva com inibidor <b>alcança</b> a mesma velocidade máxima com muito substrato, é competitivo.`,
+    enem: `Exemplo clássico: as <b>sulfas</b> (sulfonamidas) se parecem com o PABA, que as bactérias usam para fazer ácido fólico, e competem pelo sítio ativo da enzima bacteriana: <b>inibição competitiva</b>. Nós não fabricamos ácido fólico (ele vem da dieta), por isso a sulfa atinge a bactéria e não as nossas células. Metais pesados, como mercúrio e chumbo, se ligam a grupos –SH (enxofre) fora do sítio ativo e mudam a forma da enzima: agem como inibidores <b>não competitivos</b> e, muitas vezes, <b>irreversíveis</b>. Pista no gráfico: se a curva com inibidor <b>alcança</b> a mesma velocidade máxima com muito substrato, é competitivo.`,
     links: [L_ENZ, LK.amino],
     ctl: escolha('Inibidor', ['nenhum', 'competitivo', 'não competitivo'], 7),
     draw(t, S) {
@@ -249,7 +249,7 @@
     links: [['Enzimas', '#enz/encaixe'], LK.tri],
     ctl: escolha('Vitamina', VK.map(k => 'vitamina ' + VIT[k].n), 4),
     draw(t, S) {
-      const A = area(), v = VIT[VK[Math.round(S.v)]], key = VK[Math.round(S.v)];
+      const A = area(), vi = Math.max(0, Math.min(VK.length - 1, Math.round(S.v) || 0)), key = VK[vi], v = VIT[key];
       const bw = NAR ? (A.w - 16) / 2 : Math.min(A.w * .32, 320), bh = Math.min(A.h - 60, NAR ? 250 : 340), y0 = A.y0 + (NAR ? 40 : 22);
       const xa = NAR ? A.x0 : A.cx - bw - 24, xb = NAR ? A.x0 + bw + 16 : A.cx + 24;
       [[xa, 'água', '#2A9FC9', 'hidrossolúveis', 'hidro'], [xb, 'óleo', '#F2D24B', 'lipossolúveis', 'lipo']].forEach(([x, nome, cor, cat, sol]) => {
@@ -283,7 +283,7 @@
   def('vit', 'avitaminoses', {
     t: 'Avitaminoses', s: 'a doença, a vitamina que falta e onde encontrá-la', c: VITC, loc: 'carência de vitaminas',
     alt: 'Desenho do sinal de cada doença por falta de vitamina, a vitamina que falta e três alimentos que a contêm',
-    d: `<p><b>Avitaminose</b> é a doença causada pela falta de uma vitamina. Várias foram descobertas por observação: marinheiros em longas viagens tinham <b>escorbuto</b> até levarem frutas cítricas a bordo; o <b>beribéri</b> se espalhou na Ásia quando o arroz passou a ser comido polido, sem a película rica em vitamina B1.</p><p>Na <b>anemia perniciosa</b>, a causa mais comum nem é a dieta: o estômago deixa de produzir o <b>fator intrínseco</b>, proteína necessária para absorver a vitamina B12 no intestino. Quem não come nenhum alimento de origem animal também precisa de B12 suplementada, porque as plantas não a fornecem.</p>`,
+    d: `<p><b>Avitaminose</b> é a doença causada pela falta de uma vitamina. Várias foram descobertas por observação: marinheiros em longas viagens tinham <b>escorbuto</b> até levarem frutas cítricas a bordo; o <b>beribéri</b> se espalhou na Ásia quando o arroz passou a ser comido polido, sem a película rica em vitamina B1.</p><p>Na <b>anemia perniciosa</b>, a B12 até chega pela comida, mas não é absorvida: o estômago deixa de produzir o <b>fator intrínseco</b>, proteína necessária para absorver a vitamina B12 no intestino (em geral por uma doença autoimune). A falta de B12 na dieta causa uma anemia parecida. Por isso, quem não come nenhum alimento de origem animal precisa de B12 suplementada: as plantas não a fornecem.</p>`,
     kv: [['Escorbuto', 'vitamina C'], ['Raquitismo', 'vitamina D'], ['Cegueira noturna', 'vitamina A'], ['Beribéri', 'vitamina B1'], ['Anemia perniciosa', 'vitamina B12']],
     enem: `A associação que mais cai: <b>escorbuto → C</b>, <b>raquitismo → D</b>, <b>cegueira noturna → A</b>, <b>beribéri → B1</b>, <b>anemia perniciosa → B12</b>. O raquitismo aparece ligado à falta de <b>sol</b> (crianças sem exposição à luz solar) e o escorbuto, à falta de alimentos frescos. Antes de a resposta aparecer, tente lembrar qual vitamina falta.`,
     links: [['Hidro e lipossolúveis', '#vit/tipos'], LK.biom],

@@ -38,7 +38,7 @@ def('atp', 'ciclo', {
     P.forEach((x, i) => { circ(x, cy, u * .45, C.p, 'rgba(11,15,28,.6)', 1.5); tx(i === 2 && s > .5 ? 'Pᵢ' : 'P', x, cy + .5, { s: Math.max(12, u * .38), w: 700, c: '#0B0F1C', bg: false }); });
     tx('adenina', x0 + u * .25, cy + u * 1.05, { c: C.dim }); tx('ribose', x0 + u * 2.2, cy + u * 1.05, { c: C.dim }); tx(s > .5 ? '2 fosfatos' : '3 fosfatos', (P[0] + P[1]) / 2 + (s > .5 ? 0 : u * .6), cy + u * 1.05, { c: C.dim });
     head(s > .5 ? 'ADP + Pᵢ' : 'ATP', cx, cy - u * 1.35, s > .5 ? C.txt : C.atp);
-    lab(gx, cy - 5, gx + u * .6, cy - u * 2.1, s > .5 ? 'fosfato solto' : 'ligação rica em energia');
+    lab(gx, cy - 5, gx + u * .6, cy - u * 2.1, s > .5 ? 'fosfato solto' : 'última ligação fosfato');
     cap(gasta ? 'Gasto: <span class="q">ATP + H₂O → ADP + Pᵢ</span> + energia para o trabalho da célula' : 'Recarga: <span class="q">ADP + Pᵢ</span> + energia dos alimentos ou da luz <span class="q">→ ATP</span>');
   }
 });

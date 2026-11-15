@@ -214,7 +214,7 @@
         });
       }
       const k = Math.floor(p + .001), un = ti === 3 && p < 4.45 ? 'núcleos' : 'blastômeros', fase = p >= 5 ? 'Fim desta sequência: 32 blastômeros' : p > k + .02 ? `Divisão ${k + 1} em andamento` : k ? `${2 ** k} ${un}` : 'Zigoto, antes da primeira divisão';
-      const nota = ['os blastômeros têm o mesmo tamanho', 'o vitelo embaixo deixa as células de baixo maiores e mais lentas para se dividir', 'só o disco do topo se divide; a gema fica inteira', p < 3.4 ? 'os núcleos se dividem no centro, ainda sem membranas' : p < 4.45 ? 'os núcleos migram para a borda' : 'as membranas separam as células em volta do vitelo'][ti];
+      const nota = ['os blastômeros têm o mesmo tamanho', 'o vitelo embaixo deixa as células de baixo maiores e mais lentas para se dividir', 'só o disco do topo se divide; a gema fica inteira (disco ampliado no desenho)', p < 3.4 ? 'os núcleos se dividem no centro, ainda sem membranas' : p < 4.45 ? 'os núcleos migram para a borda' : 'as membranas separam as células em volta do vitelo (no inseto real, os núcleos se dividem muito mais vezes antes disso)'][ti];
       cap(`${fase}: ${nota}`);
     }
   });
@@ -263,19 +263,31 @@
       // vista externa
       envelope(c1[0], c1[1], R);
       if (cp <= 0) for (const c of Q) blasto(c1[0] + c.x * R, c1[1] + c.y * R, c.r * R, c.y - c.r, c.y + c.r, false);
-      else for (const c of Q) blasto(c1[0] + c.x * R, c1[1] + c.y * R, c.r * R * (1 + .22 * cp), 0, 0, false, { c: mix(C.ovo, TROFO, cp) });
+      else {
+        // compactação: as esferas se achatam umas contra as outras; o contorno fica liso e os limites quase somem
+        const L2 = Q.filter(c => c.z > -.05).map(c => ({ x: c1[0] + c.x * R, y: c1[1] + c.y * R, r: c.r * R })), col = mix(C.ovo, TROFO, cp), sc = 1.5;
+        X.save(); X.beginPath(); X.arc(c1[0], c1[1], R * .985, 0, TAU); X.clip();
+        circ(c1[0], c1[1], R, col);
+        L2.forEach((c, i) => fillPoly(squash(L2, i, sc, 0), col, `rgba(11,15,28,${lerp(.5, .3, cp)})`, 1));
+        const sh = X.createRadialGradient(c1[0] - R * .35, c1[1] - R * .4, R * .1, c1[0], c1[1], R); sh.addColorStop(0, 'rgba(255,255,255,.22)'); sh.addColorStop(.6, 'rgba(255,255,255,0)'); sh.addColorStop(1, 'rgba(11,15,28,.32)'); circ(c1[0], c1[1], R, sh);
+        X.globalAlpha = 1 - cp; for (const c of Q) blasto(c1[0] + c.x * R, c1[1] + c.y * R, c.r * R, c.y - c.r, c.y + c.r, false);
+        X.globalAlpha = 1;
+        X.restore(); circ(c1[0], c1[1], R * .985, null, STROKE, 1.4);
+      }
       // corte: só as células cortadas pelo plano do meio, com o núcleo
       envelope(c2[0], c2[1], R);
-      const cut = Q.filter(c => Math.abs(c.z) < c.r * .97).map(c => { const r = Math.sqrt(c.r * c.r - c.z * c.z) * 1.12; return { x: c2[0] + c.x * R, y: c2[1] + c.y * R, z: 0, r: r * R, out: Math.hypot(c.x, c.y) + r > .9 }; });
+      const cut = Q.filter(c => Math.abs(c.z) < c.r * .97).map(c => { const r = Math.sqrt(c.r * c.r - c.z * c.z) * 1.12; return { x: c2[0] + c.x * R, y: c2[1] + c.y * R, z: 0, r: r * R, out: Math.hypot(c.x, c.y) > .45 }; });
       X.save(); X.beginPath(); X.arc(c2[0], c2[1], R, 0, TAU); X.clip();
-      cut.forEach((c, i) => { const P = squash(cut, i, 1 + .25 * cp, 0); fillPoly(P, tone(c), STROKE, 1.2); circ(c.x, c.y, Math.max(2, c.r * .26), C.nucleo, 'rgba(11,15,28,.5)', 1); });
+      // tecido contínuo atrás das células: a mórula é maciça, o centro do corte nunca fica vazio
+      if (p > .5) circ(c2[0], c2[1], R * .42, C.ovo);
+      cut.forEach((c, i) => { const P = squash(cut, i, 1.25 + .3 * cp, 0); fillPoly(P, tone(c), STROKE, 1.2); circ(c.x, c.y, Math.max(2, c.r * .26), C.nucleo, 'rgba(11,15,28,.5)', 1); });
       X.restore();
       const n = Math.floor(p + .5), by = stack ? c2[1] + R * 1.12 + 16 : c1[1] + R * 1.1 + 24;
       tx(`células: ${2 ** n}`, stack ? A.cx - 70 : c1[0], by, { s: 14, f: FD, w: 500, c: C.txt });
       tx(`ser humano: ${DIA[cp > .5 ? 6 : n]}`, stack ? A.cx + 60 : c2[0], by, { s: 12, c: C.dim, bg: false });
       if (!stack) tx('idade contada desde a fecundação', c2[0], by + 18, { s: 12, c: C.dim, bg: false });
       if (p >= 4 && cut.length) {
-        if (cp > .5) { const o = cut.find(c => c.out) || cut[0], ii = cut.find(c => !c.out) || cut[0]; lab(o.x, o.y, c2[0] + R * 1.2, c2[1] - R * .8, 'trofoblasto (fora)'); lab(ii.x, ii.y, c2[0] + R * 1.2, c2[1] + R * .6, 'massa celular interna'); }
+        if (cp > .5) { const dc = c => Math.hypot(c.x - c2[0], c.y - c2[1]), o = cut.filter(c => c.out).sort((a, b) => dc(b) - dc(a))[0] || cut[0], ii = cut.slice().sort((a, b) => dc(a) - dc(b))[0]; lab(o.x, o.y, c2[0] + R * 1.2, c2[1] - R * .8, 'trofoblasto (fora)'); lab(ii.x, ii.y, c2[0] + R * 1.2, c2[1] + R * .6, 'massa celular interna'); }
         else lab(c2[0], c2[1], c2[0] + R * 1.25, c2[1] + R * .55, 'sem cavidade');
       }
       cap(cp > .5 ? 'Compactação: as células se achatam umas contra as outras; as de fora formarão o trofoblasto, as de dentro a massa celular interna' : p >= 4 ? 'Mórula: uma bolinha maciça de células, parecida com uma amora, sem cavidade' : n ? `${2 ** n} blastômeros, todos ainda equivalentes` : 'Zigoto: a primeira célula do novo indivíduo');
@@ -302,7 +314,7 @@
     return { c: [cx, cy], d };
   }
   const roundR = (x, y, r) => ({ c: [x, y], d: Array(KR).fill(r) });
-  const morph = (a, b, f) => { const cx = lerp(a.c[0], b.c[0], f), cy = lerp(a.c[1], b.c[1], f); return a.d.map((_, k) => { const an = k / KR * TAU, r = lerp(a.d[k], b.d[k], f); return [cx + Math.cos(an) * r, cy + Math.sin(an) * r]; }); };
+  const morph = (a, b, f) => { const cx = lerp(a.c[0], b.c[0], f), cy = lerp(a.c[1], b.c[1], f), sw = 1 + .3 * Math.sin(PI * f); return a.d.map((_, k) => { const an = k / KR * TAU, r = lerp(a.d[k], b.d[k], f) * sw; return [cx + Math.cos(an) * r, cy + Math.sin(an) * r]; }); };
   function sector(cx, cy, r1, r2, a1, a2) { const P = []; for (let i = 0; i <= 5; i++) { const a = lerp(a1, a2, i / 5); P.push([cx + Math.cos(a) * r2, cy + Math.sin(a) * r2]); } for (let i = 5; i >= 0; i--) { const a = lerp(a1, a2, i / 5); P.push([cx + Math.cos(a) * r1, cy + Math.sin(a) * r1]); } return P; }
   // mórula em corte: N células num disco de raio 1
   function hexDisc(N) {
@@ -323,7 +335,7 @@
       const D = a => { const ux = Math.cos(a), uy = Math.sin(a), b = cc[0] * ux + cc[1] * uy, c = cc[0] ** 2 + cc[1] ** 2 - 1; return -b + Math.sqrt(b * b - c); };
       const pt = (a, f) => { const r = rc + f * (D(a) - rc); return [cc[0] + Math.cos(a) * r, cc[1] + Math.sin(a) * r]; };
       for (let i = 0; i < nW; i++) {
-        const a1 = -PI / 2 + i * TAU / nW, a2 = a1 + TAU / nW, am = (a1 + a2) / 2, veg = ss((Math.sin(am) + .3) / 1.3), th = lerp(.17, .3, veg), Ly = Math.max(1, Math.round((D(am) - rc) / th));
+        const a1 = -PI / 2 + i * TAU / nW, a2 = a1 + TAU / nW, am = (a1 + a2) / 2, veg = ss((Math.sin(am) + .3) / 1.3), th = lerp(.16, .42, veg), Ly = Math.max(1, Math.round((D(am) - rc) / th));
         for (let l = 0; l < Ly; l++) { const P = []; for (let s = 0; s <= 4; s++) P.push(pt(lerp(a1, a2, s / 4) + .003, (l + 1) / Ly - .004)); for (let s = 4; s >= 0; s--) P.push(pt(lerp(a1, a2, s / 4) + .003, l / Ly + .004)); T.push(P); }
       }
       const N = T.length, M = hexDisc(N), R2 = T.map(radial), used = new Set(), cells = [];
@@ -341,7 +353,7 @@
       const cells = oo.map((mi, j) => ({ a: roundR(M[mi].x, M[mi].y, M[mi].r), b: radial(T[j]), kind: 't' }));
       const ii = inner.slice().sort((a, b) => M[a].x - M[b].x), ics = ic.slice().sort((a, b) => a[0] - b[0]);
       ii.forEach((mi, j) => cells.push({ a: roundR(M[mi].x, M[mi].y, M[mi].r), b: roundR(ics[j][0], ics[j][1], .135), kind: 'i' }));
-      void M0; out.mamifero = { cells, cav: [0, .12, .76] }; }
+      void M0; out.mamifero = { cells, cav: [0, 0, .89] }; }
     return out;
   })();
   const ORG = [
@@ -402,19 +414,24 @@
         if (oi === 3) circ(cx, cy, R * 1.07, 'rgba(201,207,220,.04)', 'rgba(201,207,220,.4)', 2.5);
         else envelope(cx, cy, R);
         if (k > .02) liquid(cx + cav[0] * R, cy + cav[1] * R, cav[2] * R * k);
+        const ms = [];
         for (const c of B.cells) {
           const P = morph(c.a, c.b, k).map(z => [cx + z[0] * R, cy + z[1] * R]);
           let col = C.ovo;
           if (oi === 1) col = mix(C.ovo, C.vitelo, ss((lerp(c.y0, c.y, k) + .2) / .9));
           if (oi === 3) col = mix(C.ovo, c.kind === 't' ? TROFO : EMB, k);
           fillPoly(P, col, STROKE, 1.1);
-          const m = [cx + lerp(c.a.c[0], c.b.c[0], k) * R, cy + lerp(c.a.c[1], c.b.c[1], k) * R]; circ(m[0], m[1], Math.max(1.8, R * .028), C.nucleo);
+          const m = [cx + lerp(c.a.c[0], c.b.c[0], k) * R, cy + lerp(c.a.c[1], c.b.c[1], k) * R]; circ(m[0], m[1], Math.max(1.8, R * .028), C.nucleo); ms.push({ m, c });
         }
         const cvx = cx + cav[0] * R, cvy = cy + cav[1] * R;
-        if (q > .4) lab(cvx + cav[2] * R * .2, cvy + cav[2] * R * .25, cx + R * 1.3, cvy + R * .5, 'blastocele');
+        if (q > .4) lab(cvx, cvy + (oi === 3 ? cav[2] * R * .3 : 0), cx + R * 1.3, cvy + R * .5, 'blastocele');
         if (oi === 0) lab(cx - R * .9 * .7, cy - R * .9 * .7, cx - R * 1.3, cy - R * .95, q > .5 ? 'blastoderme' : 'blastômeros');
         if (oi === 1) { lab(cx, cy + R * .65, cx - R * 1.3, cy + R * .9, 'células com vitelo'); { const px = NAR ? A.x1 : cx + R * 1.1, al = NAR ? 'right' : 'left'; tx('polo animal', px, cy - R * (NAR ? 1.12 : .95), { s: 12, c: C.dim, a: al }); tx('polo vegetativo', px, cy + R * (NAR ? 1.12 : .95), { s: 12, c: C.dim, a: al }); } }
-        if (oi === 3 && q > .4) { lab(cx - R * .97, cy + R * .2, cx - R * 1.3, cy + R * .7, 'trofoblasto'); lab(cx, cy - R * .62, cx - R * 1.3, cy - R * 1.0, 'massa celular interna'); }
+        if (oi === 3 && q > .4) {
+          const tl = ms.filter(z => z.c.kind === 't').sort((a, b) => a.m[0] - b.m[0])[0], ic = ms.filter(z => z.c.kind === 'i'), icm = ic.reduce((a, z) => [a[0] + z.m[0] / ic.length, a[1] + z.m[1] / ic.length], [0, 0]);
+          lab(tl.m[0], tl.m[1], cx - R * 1.3, cy + R * .7, 'trofoblasto'); lab(icm[0], icm[1], cx - R * 1.3, cy - R * 1.0, 'massa celular interna');
+          if (q > .9 && !NAR) lab(cx + R * .76, cy - R * .76, cx + R * 1.3, cy - R * .95, 'zona pelúcida');
+        }
       }
       if (oi === 3) tx(q > .5 ? 'ser humano: dia 4 a 5, blastocisto' : 'ser humano: dia 3 a 4, mórula', cx, A.y1 - 14, { s: 12, c: C.dim, bg: false });
       if (oi === 3 && !NAR) tx('(dias desde a fecundação)', cx, A.y1 + 4, { s: 12, c: C.dim, bg: false });
@@ -494,6 +511,7 @@
       else lab(ecto[0], ecto[1], cx + R * 1.2, cy - R * .85, 'blastoderme');
       if (m > .3) { { const rm = (Ro - wo / 2 + Ri + wi / 2) / 2 * R, am = PI * .85; lab(cx + Math.cos(am) * rm, cy + Math.sin(am) * rm, cx - R * 1.25, cy + R * .45, 'mesoderme'); } lab(cx, cy - (Ro - wo / 2 - gap / 2) * R, cx - R * 1.2, cy - R * .95, 'notocorda'); }
       if (e > .45) { lab(bot[0], bot[1] - 4, cx + R * 1.2, bot[1] + 10, 'blastóporo'); tx('arquêntero', ac[0], ac[1], { s: 13, w: 600, c: C.txt }); }
+      if (m > .5 && !NAR) { const a = PI / 2 - be - .12, rm = (Ro - wo / 2 + Ri + wi / 2) / 2 * R; lab(cx + Math.cos(a) * rm, cy + Math.sin(a) * rm, cx + R * 1.25, cy + R * .5, 'restos da blastocele'); }
       if (m < .3) { const bi = Math.round(.06 * M), bq = [lerp(P2[bi][0], cx, .12), lerp(P2[bi][1], cy, .12)]; lab(bq[0], bq[1] + 6, cx + R * 1.25, cy - R * .45, e > .5 ? 'blastocele (encolhe)' : 'blastocele'); }
       cap(g < .05 ? 'Blástula de anfioxo: uma camada de células em volta da blastocele' : e < .98 ? 'Invaginação: o polo vegetativo afunda, como uma bola apertada com o dedo; a blastocele encolhe e o arquêntero cresce' : m < .5 ? 'Gástrula: ectoderme por fora, endoderme revestindo o arquêntero, que se abre pelo blastóporo' : 'Surgem a mesoderme, entre as duas camadas, e a notocorda, em cima do arquêntero');
     }

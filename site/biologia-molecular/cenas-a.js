@@ -20,7 +20,7 @@ function ionB(x, y, r, c, s) { circ(x, y, r, c, 'rgba(11,15,28,.6)', 1.5); if (r
 // =====================================================================================
 {
   const CL = [['água', C.aguaM], ['proteínas', C.prot], ['lipídios', C.lip], ['carboidratos', C.carb], ['ácidos nucleicos', C.na], ['sais e íons', C.sal], ['outras moléculas pequenas', '#6F7A96']];
-  const DADOS = [[70, 18, 5, 2, 1, 1, 3], [70, 15, 2, 3, 7, 1, 2], [0, 60, 17, 7, 3, 3, 10]];
+  const DADOS = [[70, 18, 5, 2, 1, 1, 3], [70, 15, 2, 3, 7, 1, 2], [0, 60, 16, 7, 5, 3, 9]];
   def('comp', 'celula', {
     t: 'Do que a célula é feita', s: 'água, proteínas, lipídios e o resto', c: C.dim, loc: 'Porcentagem da massa', still: 4,
     ctl: escolha('Célula', ['animal', 'bactéria', 'animal sem água'], 7),
@@ -283,7 +283,7 @@ def('agua', 'solvente', {
     ctl: escolha('Mineral', MIN.map(m => m.n), 6),
     alt: 'Ficha de cada sal mineral com uma ilustração da sua função, as fontes na dieta e a doença causada pela carência',
     d: `<p><b>Os sais minerais são substâncias inorgânicas que, no corpo, aparecem principalmente como íons dissolvidos</b> (Na⁺, K⁺, Ca²⁺, Cl⁻) ou presos a moléculas e estruturas (o ferro na hemoglobina, o cálcio no osso). Não fornecem energia, mas sem eles nervos, músculos, enzimas e ossos param de funcionar.</p>
-<p>Eles chegam pela alimentação e pela água e saem na urina, nas fezes e no suor. As carências mais comuns no Brasil são de <b>ferro</b> (anemia), de <b>cálcio</b> e de <b>iodo</b>. Políticas públicas combatem as carências: o sal de cozinha é iodado por lei, e as farinhas de trigo e de milho são enriquecidas com ferro e ácido fólico.</p>
+<p>Eles chegam pela alimentação e pela água e saem na urina, nas fezes e no suor. As carências mais comuns no Brasil são de <b>ferro</b> (anemia) e de <b>cálcio</b>. A de <b>iodo</b>, que causava bócio, era comum e foi controlada pela iodação do sal, obrigatória por lei desde 1974. As farinhas de trigo e de milho são enriquecidas com ferro e ácido fólico.</p>
 <p>O controle passa por sete minerais; escolha um para ver a ficha.</p>`,
     kv: MIN.map(m => [m.n + ' (' + m.ion + ')', m.ca.split(';')[0].split('.')[0]]),
     enem: 'As carências mais cobradas: ferro e anemia, iodo e bócio, cálcio e osteoporose (com a vitamina D). A prova também gosta das políticas públicas: sal iodado e farinhas fortificadas. Na fisiologia, Na⁺ e K⁺ aparecem no impulso nervoso, e o Ca²⁺, na contração muscular e na coagulação.',
@@ -309,7 +309,7 @@ def('sais', 'osmose', {
   alt: 'Hemácias em soluções com diferentes concentrações de sal: incham e estouram em pouca concentração, murcham em muita e ficam normais em 0,9 por cento',
   d: `<p><b>Os sais dissolvidos controlam para onde a água vai.</b> A água atravessa a membrana por <b>osmose</b>, do lado com menos solutos para o lado com mais solutos. Por isso a concentração de sais no sangue precisa ficar estável.</p>
 <p>Uma hemácia num meio com a mesma concentração que ela (<b>isotônico</b>, cerca de 0,9% de NaCl) não muda. Num meio com menos sal (<b>hipotônico</b>), a água entra, a célula incha e pode estourar (<b>hemólise</b>). Num meio com mais sal (<b>hipertônico</b>), a água sai e a célula murcha. Mude a concentração no controle.</p>
-<p>É por isso que o <b>soro fisiológico</b> tem 0,9% de NaCl, e que o soro caseiro leva sal e açúcar: repõe a água e os sais perdidos na diarreia. Salgar carnes e fazer doces muito açucarados conserva os alimentos, porque o meio hipertônico tira a água dos microrganismos.</p>`,
+<p>É por isso que o <b>soro fisiológico</b> tem 0,9% de NaCl, e que o soro caseiro leva sal e açúcar: repõe a água e os sais perdidos na diarreia, e o açúcar ajuda o intestino a absorver o sódio, e a água vai junto. Salgar carnes e fazer doces muito açucarados conserva os alimentos, porque o meio hipertônico tira a água dos microrganismos.</p>`,
   kv: [['Isotônico para a hemácia', 'cerca de 0,9% de NaCl'], ['Hipotônico', 'a água entra; a célula incha'], ['Hipertônico', 'a água sai; a célula murcha'], ['Soro caseiro', 'água, sal e açúcar']],
   enem: 'Tema muito frequente: soro caseiro e desidratação, conservação de alimentos com sal ou açúcar, por que não beber água do mar e por que não injetar água pura na veia. Pense sempre para que lado a água vai: para onde há mais solutos.',
   links: [['Teor de água', '#agua/teor'], ['Membranas (Morfofisiologia)', '../morfofisiologia/index.html']],
@@ -391,7 +391,7 @@ def('sais', 'osmose', {
       rr(D.x0, D.y0, D.w, D.h, 14, 'rgba(242,193,78,.06)', C.line, 1);
       if (i === 0) { const n = Math.floor(D.w / sp) - 2; for (let j = 0; j < n; j++) { const x = D.x0 + sp * 1.2 + j * sp, y = cy + Math.sin(j * .7 + t * .3) * D.h * .18; u(x, y); if (j % 9 === 4) for (let b = 1; b < 4; b++) u(x + b * sp * .5, y - b * sp * .9 * Math.sign(Math.sin(j)) - (Math.sin(j) === 0 ? b * sp * .9 : 0)); } tx('amilose em hélice (vista de lado) e poucas ramificações', cx, D.y0 + D.h - 14, { s: 12, c: C.dim }); }
       else if (i === 1) { const tree = (x, y, a, d) => { if (d > (NAR ? 3 : 4)) return; let px = x, py = y; for (let s2 = 0; s2 < 3; s2++) { px += Math.cos(a) * sp; py += Math.sin(a) * sp; u(px, py); } tree(px, py, a - .5, d + 1); tree(px, py, a + .5, d + 1); }; u(cx, cy); for (let b = 0; b < 4; b++) tree(cx, cy, b / 4 * TAU + .4 + t * .05, 1); circ(cx, cy, r * 1.2, null, '#fff', 2); tx('muitas pontas: a glicose sai depressa', cx, D.y0 + D.h - 14, { s: 12, c: C.dim }); }
-      else { const rows = NAR ? 4 : 5, n = Math.floor(D.w / sp) - 2; for (let rw = 0; rw < rows; rw++) { const y = cy + (rw - (rows - 1) / 2) * r * 3.4; for (let j = 0; j < n; j++) u(D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5, y, i === 3); if (rw < rows - 1) for (let j = 1; j < n; j += 2) line(D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5, y + r, D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5 + sp * .25, y + r * 2.4, rgba(C.focus, .4 + .3 * k), 1.5, [2, 3]); }
+      else { const rows = NAR ? 4 : 5, n = Math.floor(D.w / sp) - 2; for (let rw = 0; rw < rows; rw++) { const y = cy + (rw - (rows - 1) / 2) * r * 3.4; for (let j = 0; j < n; j++) u(D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5, y, i === 3); if (rw < rows - 1) for (let j = 1; j < n; j += 2) line(D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5, y + r, D.x0 + sp * 1.2 + j * sp + (rw % 2) * sp * .5 + sp * .25, y + r * 2.4, rgba(C.agua, .4 + .3 * k), 1.5, [2, 3]); }
         tx(i === 2 ? 'cadeias retas lado a lado: fibras resistentes' : 'cadeias retas com nitrogênio (N azul)', cx, D.y0 + D.h - 14, { s: 12, c: C.dim }); if (LB) lab(D.x0 + sp * 2.2, cy + r * 1.7 + (rows % 2 ? 0 : -r * 1.7), D.x0 + sp * 4, D.y0 + 24, 'ligações de hidrogênio entre cadeias'); }
       const qx = NAR ? A.x0 + 6 : A.x0 + A.w * .64, qw = NAR ? A.w - 12 : A.w * .34; let y = NAR ? D.y0 + D.h + 22 : A.y0 + 30;
       tx(POL[i], qx, y, { a: 'left', f: FH, s: NAR ? 18 : 24, w: 700, c: C.carb, bg: false }); y += NAR ? 26 : 36;

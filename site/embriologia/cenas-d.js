@@ -151,7 +151,7 @@
         const f = fr(t * .35 + i / 3), a = -PI / 2 + (i - 1) * .45, px = cx + Math.cos(a) * rx, py = cy + Math.sin(a) * ry;
         const nx = Math.cos(a) / rx, ny = Math.sin(a) / ry, L = Math.hypot(nx, ny), ux = nx / L, uy = ny / L;
         const ent = i % 2 === 0, k = ent ? lerp(26, -18, f) : lerp(-18, 26, f);
-        X.save(); X.globalAlpha = Math.sin(f * PI); tok(px + ux * k, py + uy * k, ent ? 'O₂' : 'CO₂', ent ? C.o : C.c); X.restore();
+        X.save(); X.globalAlpha = Math.sin(f * PI); tok(px + ux * k, py + uy * k, ent ? 'O₂' : 'CO₂', ent ? C.o : '#D5DBE6'); X.restore();
       }
     }
     // pontos de rótulo
@@ -167,7 +167,7 @@
     // parede do útero e endométrio
     ell(cx, cy, R * 1.12, R, 0, rgba(C.mae, .28), rgba(C.mae, .8), 2);
     X.save(); ell(cx, cy, R * 1.12, R, 0); X.clip(); grains(cx - R * 1.12, cy - R, R * 2.24, R * 2, C.mae, .25, 3); X.restore();
-    const Rc = R * lerp(.42, .76, g), ccx = cx, ccy = cy + R * .04;
+    const Rc = R * lerp(.55, .76, g), ccx = cx, ccy = cy + R * .04;
     // placenta: as vilosidades do córion se concentram de um lado a partir da 8ª semana
     const pf = seg(w, 6, 10), pa = -PI / 2;
     if (pf > 0) {
@@ -189,6 +189,20 @@
     }
     X.restore();
     if (o.hits) o.hits.push({ k: 'cor', f: (x, y) => { const r = Math.hypot(x - ccx, y - ccy); return r > Rc - 6 && r < Rc + R * .25; } });
+    const top = [ccx, ccy - Rc];
+    if (w < 2.5) {
+      // 2ª semana: disco bilaminar entre a cavidade amniótica (em cima) e a vesícula vitelínica (embaixo),
+      // as duas encostadas nele; tudo preso ao córion pelo pedículo de conexão. A alantoide ainda não existe (surge no 16º dia)
+      const ra = Rc * .4, rv = Rc * .43, dy = ccy + Rc * .08, acy2 = dy - ra * .75, vy2 = dy + rv * .75, hw = ra * .66;
+      line(ccx, acy2 - ra + 2, top[0], top[1] + 2, 'rgba(201,207,220,.75)', Math.max(5, R * .05));
+      X.save(); X.globalAlpha = al('vit'); circ(ccx, vy2, rv, rgba(C.vitelo, .55), hi('vit') ? '#fff' : C.vitelo, hi('vit') ? 3 : 2); X.restore();
+      X.save(); X.globalAlpha = al('amn'); circ(ccx, acy2, ra, rgba(C.amnio, .25), hi('amn') ? '#fff' : C.amnio, hi('amn') ? 3 : 2); X.restore();
+      const dh = Math.max(4, ra * .12);
+      rr(ccx - hw, dy - dh, hw * 2, dh, dh / 2, C.ecto); rr(ccx - hw, dy, hw * 2, dh * .8, dh / 2, C.endo);
+      if (o.hits) { o.hits.unshift({ k: 'vit', f: (x, y) => Math.hypot(x - ccx, y - vy2) < rv && y > dy }); o.hits.unshift({ k: 'amn', f: (x, y) => Math.hypot(x - ccx, y - acy2) < ra && y <= dy }); }
+      o.ala = null;
+      return { ex: ccx, ey: dy, es: hw, vx: ccx + rv * .7, vy: vy2 + rv * .5, vr: rv * .3, acx: ccx, acy: acy2, Ra: ra, ccx, ccy, Rc, top, disco: [ccx + hw * .8, dy] };
+    }
     // âmnio cresce até encher o córion
     const Ra = Rc * lerp(.34, .93, g), acx = ccx + (Rc - Ra) * .25, acy = ccy + (Rc - Ra) * .35;
     // vesícula vitelínica: bolinha âmbar entre o âmnio e o córion, ligada ao embrião
@@ -198,7 +212,7 @@
     const es = w < 3.5 ? Ra * .4 : Ra * lerp(.38, .5, seg(w, 4, 12));
     const ex = acx + Ra * .05, ey = acy + Ra * .05;
     // cordão: do embrião até a placenta (no alto), com a alantoide dentro
-    const top = [ccx, ccy - Rc];
+    let pedV = null;
     X.save(); X.globalAlpha = al('amn');
     circ(acx, acy, Ra, rgba(C.amnio, .22), hi('amn') ? '#fff' : C.amnio, hi('amn') ? 3 : 2);
     X.restore();
@@ -209,17 +223,18 @@
       X.save(); X.globalAlpha = al('ala');
       X.beginPath(); X.moveTo(ex + es * .2, ey); X.quadraticCurveTo(qx, qy, lerp(ex, top[0], .62), lerp(ey, top[1], .62)); X.strokeStyle = hi('ala') ? '#fff' : C.alant; X.lineWidth = hi('ala') ? 3 : 2; X.stroke();
       X.restore();
-      o.ala = qpt(ex + es * .2, ey, qx, qy, top[0], top[1], .45);
+      o.ala = qpt(ex + es * .2, ey, qx, qy, top[0], top[1], .45); pedV = qpt(ex + es * .2, ey, qx, qy, top[0], top[1], .22);
       if (o.hits) { const A = o.ala; o.hits.unshift({ k: 'ala', f: (x, y) => Math.hypot(x - A[0], y - A[1]) < Math.max(14, R * .12) }); }
     } else {
-      // 2ª semana: disco embrionário com pedículo de conexão (alantoide brota dele)
+      // 3ª semana: disco embrionário com pedículo de conexão (a alantoide brota no 16º dia)
       X.save(); X.globalAlpha = al('ala'); line(ex, ey - es * .2, ex + es * .2, acy - Ra - 4, C.alant, 2); X.restore();
       o.ala = [ex + es * .1, acy - Ra];
       if (o.hits) { const A = o.ala; o.hits.unshift({ k: 'ala', f: (x, y) => Math.hypot(x - A[0], y - A[1]) < 14 }); }
     }
     // pedículo vitelínico e vesícula
     X.save(); X.globalAlpha = al('vit');
-    line(ex - es * .2, ey + es * .2, vx, vy, rgba(C.vitelo, .8), 2);
+    if (pedV) { X.beginPath(); X.moveTo(ex + es * .2, ey); X.lineTo(pedV[0], pedV[1]); X.quadraticCurveTo(pedV[0] - Ra * .4, lerp(pedV[1], vy, .2), vx, vy); X.strokeStyle = rgba(C.vitelo, .85); X.lineWidth = 2; X.stroke(); }
+    else line(ex - es * .2, ey + es * .2, vx, vy, rgba(C.vitelo, .8), 2);
     circ(vx, vy, vr, C.vitelo, hi('vit') ? '#fff' : 'rgba(11,15,28,.55)', hi('vit') ? 2.5 : 1);
     X.restore();
     if (o.hits) o.hits.unshift({ k: 'vit', f: (x, y) => Math.hypot(x - vx, y - vy) < vr + 8 });
@@ -260,9 +275,10 @@
             : d < 11 ? 'Dias 4 a 10: a <b>alantoide</b> cresce como um balão até encostar no <b>córion</b>, sob a casca; O₂ entra e CO₂ sai pelos poros'
               : d < 19 ? 'A alantoide acumula <b>ácido úrico</b> (cristais brancos); a clara é consumida e a gema diminui'
                 : 'Dias 19 a 21: o resto da gema entra no abdome do pintinho, a clara acabou e ele bica a casca',
-      hum: w => w < 3.5 ? `${semC(Math.round(w))}: disco embrionário entre o <b>âmnio</b> e a <b>vesícula vitelínica</b>, tudo dentro do <b>córion</b>`
+      hum: w => w < 2.5 ? `${semC(2)}: o disco embrionário fica entre o <b>âmnio</b> (em cima) e a <b>vesícula vitelínica</b> (embaixo), tudo dentro do <b>córion</b>`
+        : w < 3.5 ? `${semC(3)}: o disco ganha três folhetos; a <b>alantoide</b> brota da vesícula vitelínica (16º dia)`
         : w < 8 ? `${semC(Math.round(w))}: o âmnio cresce; a vesícula vitelínica, sem vitelo, fica fora dele; a alantoide é um tubinho no pedículo`
-          : `${semC(Math.round(w))}: o córion vira a parte fetal da <b>placenta</b>; o âmnio enche o córion e os vasos da alantoide viram os vasos umbilicais`
+          : `${semC(Math.round(w))}: o córion vira a parte fetal da <b>placenta</b>; o âmnio cresce e, por volta da 12ª semana, encosta no córion`
     };
     def('anexos', 'funcoes', {
       t: 'Os quatro anexos', s: 'vesícula vitelínica, âmnio, córion e alantoide', c: C.amnio, loc: 'Ovo de galinha em incubação, em corte', still: 3,
@@ -325,7 +341,7 @@
             ['vit', G.vx, G.vy, G.vx - G.vr - 40, G.vy + 30, 'vesícula vitelínica', true],
             ['amn', G.acx + G.Ra * .7, G.acy + G.Ra * .7, G.acx + G.Ra + 40, G.acy + G.Ra, 'âmnio', true],
             ['cor', G.ccx + G.Rc * .97, G.ccy - G.Rc * .25, G.ccx + G.Rc + 30, G.ccy - G.Rc * .3, w >= 8 ? 'córion (placenta)' : 'córion', true],
-            ['ala', oo.ala[0], oo.ala[1], oo.ala[0] - 50, oo.ala[1] - 30, 'alantoide', true]
+            ['ala', oo.ala && oo.ala[0], oo.ala && oo.ala[1], oo.ala && oo.ala[0] - 50, oo.ala && oo.ala[1] - 30, 'alantoide', !!oo.ala]
           ];
           S._endo = [bcx - R * 1.05, bcy + R * .3, bcx - R * 1.2 - 20, bcy + R * .75];
           cp = caps.hum(w);
@@ -333,7 +349,7 @@
         for (const r of rot) if (r[6] && r[1] != null && (!S.sel || S.sel === r[0])) lab(r[1], r[2], r[3], r[4], r[5]);
         if (S.modo === 'hum' && !S.sel && !NAR && S._endo) lab(...S._endo, 'endométrio');
         if (S._selK !== S.sel) { S._selK = S.sel; marcaKV(S.sel); }
-        cap(S.sel ? `<b>${KV[S.sel][0]}</b>: ${KV[S.sel][1].split('. ')[0]}` : cp);
+        cap(S.sel === 'ala' && S.modo === 'hum' && sem(S.v) < 2.5 ? '<b>Alantoide</b>: a alantoide surge na 3ª semana, a partir da vesícula vitelínica' : S.sel ? `<b>${KV[S.sel][0]}</b>: ${KV[S.sel][1].split('. ')[0]}` : cp);
       }
     });
     // destaque também pela lista do painel (teclado): clicar numa linha da tabela kv
@@ -559,7 +575,7 @@
           const k = ss(seg(h, 14, 21)), pr = r * .2;
           const fem = [lerp(x + r * .45, x + pr * .5, k), lerp(y - r * .2, y, k)], mas = [lerp(x + Math.cos(aw) * r * .55, x - pr * .5, k), lerp(y + Math.sin(aw) * r * .55, y, k)];
           if (h < 21.5) { circ(fem[0], fem[1], pr, rgba(C.nucleo, .55), C.nucleo, 1.5); circ(mas[0], mas[1], pr, rgba(C.esperma, .45), C.esperma, 1.5); }
-          else { circ(x, y, pr * 1.35, rgba(C.nucleo, .7), C.nucleo, 2); }
+          else { const k2 = seg(h, 21.5, 23); for (let i = 0; i < 10; i++) { const a = i / 10 * TAU, dd = pr * 1.1 * (1 - k2 * .45); X.save(); X.translate(x + Math.cos(a) * dd, y + Math.sin(a) * dd * .6); X.rotate(a + .4); rr(-pr * .35, -2.5, pr * .7, 5, 2.5, i % 2 ? C.nucleo : C.esperma); X.restore(); } }
           if (h >= 12 && h < 21.5 && !NAR) { lab(fem[0], fem[1], x + r * 1.7, y - r * .9, 'pronúcleo do ovócito (n)'); lab(mas[0], mas[1], x - r * 1.9, y + r * 1.1, 'pronúcleo do espermatozoide (n)'); }
         }
         if (F <= 1 && !NAR) { lab(x + r * .9, y - r * .9, x + r * 1.7, y - r * 1.5, 'zona pelúcida'); lab(x + r * 1.45, y + r * .5, x + r * 1.9, y + r * .9, 'corona radiata'); }
@@ -588,7 +604,7 @@
   // TÓPICO · #humano/nidacao
   // =================================================================================
   {
-    const hcg = (d, k = 1) => d < 6.5 ? 0 : Math.max(1, 1.6 * k * Math.pow(2, (d - 6.5) / 1.9));
+    const hcg = (d, k = 1) => d < 6.5 ? 0 : Math.max(1, 2.4 * k * Math.pow(2, (d - 6.5) / 2.2));
     const cels = d => d < 1.25 ? 1 : d < 2 ? 2 : d < 2.5 ? 4 : d < 3 ? 8 : 16;
     // embrião jovem: zigoto, 2, 4, 8 células, mórula, blastocisto
     function embJovem(x, y, r, d, t) {
@@ -678,7 +694,7 @@
         // marcador do embrião no mapa
         if (!sem) {
           const caminho = [m.ampola, m.tubaD[2], m.tubaD[1], m.corno, m.implante];
-          const f = ect ? Math.min(seg(d, 0, 3) * .45, .45) : seg(d, 0, 3) * .78 + seg(d, 3, 6) * .22;
+          const f = ect ? Math.min(seg(d, 0, 3) * .3, .3) : seg(d, 0, 3) * .78 + seg(d, 3, 6) * .22;
           const p = pth(caminho, f); marker(p[0], p[1], ect && d >= 6 ? '#FF6B7D' : C.ovo);
           if (!NAR) lab(m.ampola[0], m.ampola[1], m.ampola[0] + 6, m.ampola[1] - 30, 'ampola');
         }
@@ -696,7 +712,7 @@
         } else if (d < 6) {
           rr(Z.x, Z.y, Z.w, Z.h, 10, 'rgba(19,26,43,.55)', C.line, 1);
           const r = Math.min(Z.w, Z.h) * .24; embJovem(Z.x + Z.w / 2, Z.y + Z.h / 2 + 6, r, d, t);
-          tx(d < 3 ? 'descendo pela tuba' : 'no útero', Z.x + Z.w / 2, Z.y + 16, { s: 12, c: C.dim });
+          tx(ect && d >= 3 ? 'parado na tuba' : d < 3 ? 'descendo pela tuba' : 'no útero', Z.x + Z.w / 2, Z.y + 16, { s: 12, c: C.dim });
           if (d >= 4 && !NAR) { lab(Z.x + Z.w / 2 - r * .3, Z.y + Z.h / 2 + 6 - r * .5, Z.x + Z.w * .15, Z.y + Z.h - 20, 'embrioblasto'); lab(Z.x + Z.w / 2 + r * .9, Z.y + Z.h / 2 + 6 + r * .3, Z.x + Z.w * .9, Z.y + Z.h - 46, 'trofoblasto'); }
           else if (d >= 4) lab(Z.x + Z.w / 2 - r * .3, Z.y + Z.h / 2 + 6 - r * .5, Z.x + Z.w * .1, Z.y + Z.h - 18, 'embrioblasto');
           if (d >= 5 && d < 6) tx('saindo da zona pelúcida', Z.x + Z.w / 2, Z.y + Z.h - 14, { s: 12, c: C.txt });
@@ -714,16 +730,16 @@
         const gr = graph(G, { x0: 0, x1: 28, y0: 0, y1: 4, xl: '', yl: NAR ? 'hCG' : 'hCG (escala log)', xt: [[0, '0'], [7, '7'], [14, '14'], [21, '21'], [28, '28 d']],
           curves: sem ? [] : [{ f: v => L(hcg(Math.min(v, d), k)) * (v <= d ? 1 : NaN), c: '#F5D547', lw: 3 }] });
         const ty = gr.fy(L(25)); line(G.x0, ty, G.x1, ty, 'rgba(232,237,247,.6)', 1, [5, 4]);
-        tx('limiar do teste ≈ 25 mUI/mL', G.x0 + 6, ty - 10, { a: 'left', s: 12, c: C.dim });
+        tx(NAR ? 'limiar do teste de urina' : 'limiar do teste de farmácia (urina) ≈ 25 mUI/mL', G.x0 + 6, ty - 10, { a: 'left', s: 12, c: C.dim });
         const mx = gr.fx(14); line(mx, G.y0, mx, G.y1, rgba('#FF6B7D', .6), 1.5, [3, 3]);
         tx('menstruação esperada', cl(mx, G.x0 + 70, G.x1 - 70), G.y0 + 12, { s: 12, c: '#FF9AA8' });
         if (!sem) marker(gr.fx(d), gr.fy(L(hcg(d, k))), '#F5D547');
         // fita de teste
         const pos = !sem && hcg(d, k) >= 25;
-        const sx = NAR ? G.x1 + 18 : P.x + 44, sy = NAR ? G.y0 : G.y1 + 48, sw = NAR ? stripW : Math.min(P.w - 52, 150), sh = NAR ? G.h : 40;
+        const sx = NAR ? G.x1 + 18 : P.x + 44, sy = NAR ? G.y0 : G.y1 + 48, sw = NAR ? stripW : Math.min(P.w - 52, 190), sh = NAR ? G.h : 40;
         rr(sx, sy, sw, sh, 6, '#ECEFF5', 'rgba(11,15,28,.6)', 1);
         if (NAR) { line(sx + 8, sy + sh * .3, sx + sw - 8, sy + sh * .3, '#C2185B', 4); if (pos) line(sx + 8, sy + sh * .62, sx + sw - 8, sy + sh * .62, '#C2185B', 4); tx('C', sx + sw / 2, sy + sh * .3 - 12, { s: 12, w: 700, c: '#1A1206', bg: false }); tx('T', sx + sw / 2, sy + sh * .62 - 12, { s: 12, w: 700, c: '#1A1206', bg: false }); }
-        else { line(sx + sw * .55, sy + 8, sx + sw * .55, sy + sh - 8, '#C2185B', 4); if (pos) line(sx + sw * .78, sy + 8, sx + sw * .78, sy + sh - 8, '#C2185B', 4); tx('C', sx + sw * .55, sy + sh + 12, { s: 12, w: 700, c: C.dim, bg: false }); tx('T', sx + sw * .78, sy + sh + 12, { s: 12, w: 700, c: C.dim, bg: false }); tx('teste', sx + 8, sy + sh / 2, { a: 'left', s: 12, w: 600, c: '#1A1206', bg: false }); }
+        else { line(sx + sw * .55, sy + 8, sx + sw * .55, sy + sh - 8, '#C2185B', 4); if (pos) line(sx + sw * .78, sy + 8, sx + sw * .78, sy + sh - 8, '#C2185B', 4); tx('C', sx + sw * .55, sy + sh + 12, { s: 12, w: 700, c: C.dim, bg: false }); tx('T', sx + sw * .78, sy + sh + 12, { s: 12, w: 700, c: C.dim, bg: false }); tx('teste de urina', sx + 8, sy + sh / 2, { a: 'left', s: 12, w: 600, c: '#1A1206', bg: false }); }
         tx(NAR ? (pos ? 'positivo' : 'negativo') : pos ? 'teste positivo' : 'teste negativo', NAR ? sx + sw / 2 : sx + sw + 10, NAR ? sy + sh + 14 : sy + sh / 2, { a: NAR ? 'center' : 'left', s: 12, w: 600, c: pos ? C.txt : C.dim, bg: false });
         if (!NAR) {
           // corpo-lúteo e progesterona
@@ -731,13 +747,14 @@
           hbar(P.x + 44, by, P.w - 52, 12, lut, '#F5D547', 'Corpo-lúteo (progesterona)', lut > .5 ? 'ativo' : lut > .05 ? 'regredindo' : 'degenerado');
         }
         cap(sem ? (d < 12 ? 'Sem gravidez: não há embrião nem hCG; o corpo-lúteo funciona só por cerca de 14 dias' : d < 14 ? 'Sem hCG, o <b>corpo-lúteo</b> começa a degenerar e a <b>progesterona</b> cai' : 'Progesterona baixa: o <b>endométrio descama</b> e vem a menstruação. O teste dá negativo')
+          : ect && d >= 3 && d < 6 ? 'O embrião não consegue descer: continua na tuba, onde vai se implantar'
           : ect && d >= 6 ? 'O blastocisto parou na tuba e se implantou ali: <b>gravidez ectópica</b> (≈ 95% dos casos ectópicos são na tuba). A hCG é produzida mesmo assim'
             : d < 3 ? `O zigoto desce pela tuba e se divide: ${cels(d)} ${cels(d) === 1 ? 'célula' : 'células'}`
               : d < 4 ? '3º dia: a <b>mórula</b> chega ao útero'
                 : d < 5 ? '4º dia: a mórula ganha uma cavidade e vira <b>blastocisto</b>, com embrioblasto e trofoblasto'
                   : d < 6 ? '5º dia: o blastocisto sai da zona pelúcida'
                     : d < 10 ? '6º ao 10º dia: o blastocisto gruda pelo lado do embrioblasto e se enterra no endométrio. O trofoblasto começa a soltar <b>hCG</b>'
-                      : d < 14 ? 'Nidação completa. A <b>hCG</b> mantém o corpo-lúteo, que segue produzindo progesterona; no sangue, ela já pode ser detectada no fim da 2ª semana'
+                      : d < 14 ? 'Nidação completa. A <b>hCG</b> mantém o corpo-lúteo, que segue produzindo progesterona; no sangue, ela já pode ser detectada no fim da 2ª semana após a fecundação (≈ 4ª pela DUM)'
                         : 'A hCG passou do limiar dos testes de farmácia perto do dia do atraso menstrual: o <b>teste dá positivo</b> e a menstruação não vem');
       }
     });

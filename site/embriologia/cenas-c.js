@@ -51,6 +51,7 @@
     ell(cx, cy, rx - e - m, ry - e - m, 0, '#1C1830');   // cavidade do corpo (celoma), revestida pela mesoderme
     const f = ss(seg(p, 0, .85)), xL = cx - rx - gh, xR = p < .85 ? lerp(cx - rx * .15, cx + rx - e * 1.3, f) : lerp(cx + rx - e * 1.3, cx + rx + gh, seg(p, .85, 1));
     X.save(); ell(cx, cy, rx, ry, 0); X.clip();
+    rr(xL, cy - gh / 2 - m, xR - xL + m, gh + m * 2, gh / 2 + m, K('meso'));   // mesoderme da parede do intestino: celoma verdadeiro
     rr(xL, cy - gh / 2, xR - xL, gh, gh / 2, K('endo'));
     rr(xL, cy - gh / 2 + ew, xR - xL - ew, gh - ew * 2, (gh - ew * 2) / 2, FUNDO);
     X.restore();
@@ -89,11 +90,15 @@
         const g = gastrula(cx, cy, rx, ry, p);
         // aberturas: nome embaixo de cada ponta
         const yN = cy + ry + (NAR ? 13 : 18);
-        tx(p < .3 ? 'blastóporo' : q.a1, g.left + rx * .12, yN, { s: 13, w: 700, c: C.txt, a: 'center' });
-        if (!NAR) tx(p < .3 ? '1ª abertura' : 'era o blastóporo', g.left + rx * .12, yN + 17, { s: 12, c: C.dim, bg: false });
+        const fim = p >= .9;
+        if (NAR) tx(fim ? q.a1 + ' (era o blastóporo)' : 'blastóporo', px + 12, yN, { s: 13, w: 700, c: C.txt, a: 'left' });
+        else {
+          tx(fim ? q.a1 : 'blastóporo', g.left + rx * .12, yN, { s: 13, w: 700, c: C.txt, a: 'center' });
+          tx(fim ? 'era o blastóporo' : '1ª abertura', g.left + rx * .12, yN + 17, { s: 12, c: C.dim, bg: false });
+        }
         if (g.open2) {
           const al = seg(p, .9, 1); X.save(); X.globalAlpha = al;
-          tx(q.a2, g.right - rx * .12, yN, { s: 13, w: 700, c: C.txt });
+          tx(q.a2, NAR ? px + pw - 12 : g.right - rx * .12, yN, { s: 13, w: 700, c: C.txt, a: NAR ? 'right' : 'center' });
           if (!NAR) tx('abre depois', g.right - rx * .12, yN + 17, { s: 12, c: C.dim, bg: false });
           X.restore();
         }
@@ -104,7 +109,7 @@
         if (!NAR && i === 1) lab(Math.min(g.xR - 20, cx + rx * .2), cy - ry * .28, cx + rx + 12, cy - ry * .95, 'endoderme');
         if (NAR) {
           tx(q.ex.join(', '), cx, py + ph - 14, { s: 12, c: C.dim, bg: false });
-        } else chips(q.ex, cx, py + ph - 30, pw - 24, i ? K('endo') : light(K('ecto'), .35));
+        } else chips(q.ex, cx, py + ph - 30, pw - 24, '#C9D1E3');
       });
       cap(p < .1 ? 'O blastóporo é a primeira abertura do arquêntero, o intestino primitivo. Mova a faixa e veja o que ele vira'
         : p < .9 ? 'O arquêntero cresce até o outro lado do embrião, onde vai abrir a segunda abertura'
@@ -144,7 +149,8 @@
       ['endo', 'intestino', (P, s, f, st) => { const [x, y] = P(0, .5); X.beginPath(); for (let i = 0; i <= 40; i++) { const a = i / 40 * TAU * 2.2, r = (.025 + .045 * i / 40) * s; const px = x + Math.cos(a) * r * 1.4, py = y + Math.sin(a) * r * .7; i ? X.lineTo(px, py) : X.moveTo(px, py); } X.strokeStyle = f === 'transparent' ? st : f; X.lineWidth = Math.max(2, .012 * s); X.stroke(); return [x + .08 * s, y + .02 * s]; }],
       ['endo', 'tireoide', (P, s, f, st) => { const [x, y] = P(0, .175); ell(x, y, .024 * s, .011 * s, 0, f, st, 1.2); return [x, y]; }],
       ['meso', 'rins', (P, s, f, st) => { for (const k of [-1, 1]) { const [x, y] = P(k * .09, .45); ell(x, y, .018 * s, .03 * s, k * .2, f, st, 1.2); } return P(.09, .45); }],
-      ['meso', 'ossos', (P, s, f, st, t, sel) => { const c = sel === 'meso' ? '#F7E9D8' : st, w = sel === 'meso' ? 3 : 1.2; for (const [a, b, c2, d] of [[-.08, .6, -.085, .76], [.08, .6, .085, .76], [-.087, .79, -.09, .95], [.087, .79, .09, .95], [-.16, .24, -.19, .37], [.16, .24, .19, .37]]) { const [x1, y1] = P(a, b), [x2, y2] = P(c2, d); line(x1, y1, x2, y2, c, w); } return P(-.087, .87); }],
+      ['meso', 'ossos', (P, s, f, st, t, sel) => { const c = sel === 'meso' ? light(K('meso'), .25) : st, w = sel === 'meso' ? 3 : 1.2; for (const [a, b, c2, d] of [[-.08, .6, -.085, .76], [.08, .6, .085, .76], [-.087, .79, -.09, .95], [.087, .79, .09, .95], [-.16, .24, -.19, .37], [.16, .24, .19, .37]]) { const [x1, y1] = P(a, b), [x2, y2] = P(c2, d); line(x1, y1, x2, y2, c, w); } return P(-.087, .87); }],
+      ['meso', 'vasos e sangue', (P, s, f, st, t, sel) => { const [x1, y1] = P(-.15, .23), [x2, y2] = P(-.225, .5), [x3, y3] = P(-.02, .27); const c = sel === 'meso' ? K('meso') : 'rgba(157,169,196,.25)', w = sel === 'meso' ? 2.2 : 1; line(x3, y3, x1, y1, c, w); line(x1, y1, x2, y2, c, w); return P(-.19, .37); }],
       ['meso', 'músculos', (P, s, f, st) => { for (const k of [-1, 1]) { const [x, y] = P(k * .077, .67); ell(x, y, .03 * s, .075 * s, 0, f, st, 1.2); } return P(.077, .67); }],
       ['ecto', 'encéfalo', (P, s, f, st) => { const [x, y] = P(0, .07); ell(x, y, .05 * s, .042 * s, 0, f, st, 1.5); return [x, y - .01 * s]; }],
       ['ecto', 'medula espinal', (P, s, f, st, t, sel) => { const [x1, y1] = P(0, .13), [x2, y2] = P(0, .55); line(x1, y1, x2, y2, sel === 'ecto' ? K('ecto') : st, sel === 'ecto' ? 4 : 1.2); for (const [a, b, c, d] of [[0, .24, -.17, .33], [0, .24, .17, .33], [0, .54, -.075, .78], [0, .54, .075, .78]]) { const [p1, q1] = P(a, b), [p2, q2] = P(c, d); line(p1, q1, p2, q2, sel === 'ecto' ? rgba(K('ecto'), .9) : 'rgba(157,169,196,.25)', sel === 'ecto' ? 1.8 : 1); } return P(0, .2); }],
@@ -177,6 +183,7 @@
           circ(ex, ey, er * .84, FUNDO);
           X.save(); X.globalAlpha = on('meso'); circ(ex, ey + er * .1, er * .7, K('meso')); X.restore();
           circ(ex, ey + er * .1, er * .56, '#1C1830');
+          X.save(); X.globalAlpha = on('meso'); circ(ex, ey + er * .28, er * .4, K('meso')); X.restore(); circ(ex, ey + er * .28, er * .36, '#1C1830');
           X.save(); X.globalAlpha = on('endo'); circ(ex, ey + er * .28, er * .32, K('endo')); X.restore();
           circ(ex, ey + er * .28, er * .17, FUNDO);
           X.save(); X.globalAlpha = on('ecto'); circ(ex, ey - er * .6, er * .16, K('ecto')); X.restore(); circ(ex, ey - er * .6, er * .06, FUNDO);
@@ -215,7 +222,15 @@
         }
         if (sel === 'ecto') pts.push([P(-.2, .45), 'pele (epiderme)']);
         // rótulos alternando lados
-        pts.forEach(([pt, n], i) => { const L = pt[0] < ox || (pt[0] === ox && i % 2 === 0); lab(pt[0], pt[1], L ? ox - s * .3 : ox + s * .3, pt[1] + (i % 2 ? 8 : -8), n); });
+        // rótulos: lado e altura fixos por órgão (em unidades da silhueta), para não disputarem lugar
+        const POS = { 'tireoide': [1, .15], 'pulmões': [-1, .24], 'fígado': [-1, .35], 'pâncreas': [-1, .46], 'estômago': [1, .37], 'intestino': [1, .5],
+          'coração': [1, .26], 'rins': [-1, .47], 'ossos': [-1, .86], 'músculos': [1, .66], 'vasos e sangue': [-1, .32],
+          'encéfalo': [1, .05], 'cristalino': [-1, .1], 'medula espinal': [1, .22], 'pele (epiderme)': [-1, .45] };
+        const nomeDe = n => n === 'estômago' ? (sel === 'endo' ? 'epitélio do estômago' : sel === 'meso' ? 'músculo do estômago' : 'estômago')
+          : (sel === 'endo' && !NAR && (n === 'pulmões' || n === 'intestino')) ? n + ' (revestimento)' : n;
+        const ORDEM = ['coração', 'rins', 'ossos', 'músculos', 'vasos e sangue', 'pulmões', 'fígado', 'pâncreas', 'intestino', 'estômago', 'tireoide'];
+        pts.sort((a, b) => (ORDEM.indexOf(a[1]) + 1 || 99) - (ORDEM.indexOf(b[1]) + 1 || 99));
+        for (const [pt, n] of pts) { const q = POS[n] || [pt[0] < ox ? -1 : 1, (pt[1] - oy) / s]; lab(pt[0], pt[1], ox + q[0] * s * .3, oy + q[1] * s, nomeDe(n)); }
         if (!NAR) tx(NOMES[S.v | 0], ex, A.y0 + 14, { f: FH, s: 17, w: 600, c: cor });
         cap(LISTA[S.v | 0]);
       }
@@ -273,12 +288,14 @@
       const w = h * .34, z = seg(p, .55, 1), nS = Math.round(lerp(0, 9, seg(p, .35, 1)));
       ell(cx, cy, w / 2, h / 2, 0, 'rgba(244,201,176,.12)', 'rgba(157,169,196,.5)', 1.5);
       const top = cy - h * .42, bot = cy + h * .42, gap = y => { const u = (y - top) / (bot - top); return lerp(w * .17, w * .08, u) + (u < .25 ? (.25 - u) * w * .5 : 0); };
-      const mid = lerp(top, bot, .45), half = (bot - top) * .55, c0 = mid - z * half, c1 = mid + z * half;
+      const mid = lerp(top, bot, .45), half = (bot - top) * .55, c0 = Math.max(top + 4, mid - z * half), c1 = Math.min(bot - 4, mid + z * half);
       const fold = sd => { X.beginPath(); for (let i = 0; i <= 50; i++) { const y = lerp(top, bot, i / 50), closed = y >= c0 && y <= c1 && z > 0, gg = closed ? 2 : gap(y) * (1 - ss(seg(p, .1, .6)) * .6); const x = cx + sd * gg; i ? X.lineTo(x, y) : X.moveTo(x, y); } X.strokeStyle = light(K('ecto'), .3); X.lineWidth = 4; X.lineJoin = 'round'; X.stroke(); };
       // placa neural (área entre as pregas)
       X.beginPath(); for (let i = 0; i <= 50; i++) { const y = lerp(top, bot, i / 50); X.lineTo(cx - gap(y) - 3, y); } for (let i = 50; i >= 0; i--) { const y = lerp(top, bot, i / 50); X.lineTo(cx + gap(y) + 3, y); } X.closePath(); X.fillStyle = rgba(K('ecto'), .22); X.fill();
       fold(-1); fold(1);
       if (z > 0) line(cx, c0, cx, c1, K('ecto'), 5);
+      const ves = seg(p, .9, 1);   // vesículas do encéfalo na ponta da frente
+      if (ves > 0) for (let i = 0; i < 3; i++) ell(cx, top + h * (.04 + i * .06), w * (.11 - i * .015) * ves, h * .03, 0, K('ecto'), light(K('ecto'), .3), 1.5);
       for (let i = 0; i < nS; i++) { const y = lerp(mid - h * .12, mid + h * .3, i / 8); for (const sd of [-1, 1]) rr(cx + sd * (w * .2) - (sd < 0 ? w * .12 : 0), y - h * .018, w * .12, h * .036, 3, K('meso')); }
       return { top, bot, mid, c0, c1, z, nS, w };
     }
@@ -320,6 +337,7 @@
           if (p > .9) { tx('encéfalo', vx + V.w * .62, V.top + vh * .06, { s: 12, w: 600, c: C.txt, a: 'left' }); tx('medula espinal', vx + V.w * .62, V.mid + vh * .18, { s: 12, w: 600, c: C.txt, a: 'left' }); }
           else if (V.z > 0) tx('fecha como zíper', vx + V.w * .62, V.mid, { s: 12, c: C.dim, a: 'left', bg: false });
           if (V.nS) tx(`${V.nS} pares de somitos`, vx + V.w * .62, V.mid + vh * .36, { s: 12, c: C.dim, a: 'left', bg: false });
+          tx('cabeça', vx - V.w * .62, V.top + 4, { s: 12, c: C.dim, a: 'right', bg: false }); tx('cauda', vx - V.w * .62, V.bot - 4, { s: 12, c: C.dim, a: 'right', bg: false });
         }
         cap(p < .2 ? 'A notocorda (verde) induz a ectoderme logo acima a engrossar: é a <b>placa neural</b>'
           : p < .5 ? 'A placa se dobra para dentro e forma o <b>sulco neural</b>. Dos lados, a mesoderme começa a formar os somitos'
@@ -375,12 +393,18 @@
       if (sa > 0) for (let i = 0; i < 16; i++) { const u = .12 + i / 16 * .7 * uEnd, [x, y, a] = Pc(u), r = rB(u); circ(x + Math.cos(a) * r * .72, y + Math.sin(a) * r * .72, Math.max(1.5, r * .16), rgba(K('meso'), .55 * sa)); }
       // arcos faríngeos (somem até a 7ª semana)
       const fa = 1 - seg(d, 38, 49);
-      if (fa > 0) for (let i = 0; i < 3; i++) { X.beginPath(); X.arc(hx + hr * .1, hy + hr * (.75 + i * .16), hr * .3, .2, 1.3); X.strokeStyle = rgba(dark(pele, .45), .9 * fa); X.lineWidth = 2; X.stroke(); }
-      const out = { coracao: null, braco: MB[0] && [MB[0].ex, MB[0].ey], perna: MB[1] && [MB[1].ex, MB[1].ey], olho: null, orelha: null, hx, hy, hr };
+      let arcos = null;
+      if (fa > 0) for (let i = 0; i < 3; i++) {
+        const u = .1 + i * .045, [x, y, a] = Pc(u), r = rB(u), nx = -Math.cos(a), ny = -Math.sin(a);   // sulcos na face ventral do pescoço
+        const qx = x + nx * r * .78, qy = y + ny * r * .78, L = r * .32;
+        line(qx - nx * L, qy - ny * L, qx + nx * L * .35, qy + ny * L * .35, rgba(dark(pele, .3), .95 * fa), 2.2);
+        if (i === 1) arcos = [qx, qy];
+      }
+      const out = { arcos: fa > .5 ? arcos : null, coracao: null, braco: MB[0] && [MB[0].ex, MB[0].ey], perna: MB[1] && [MB[1].ex, MB[1].ey], olho: null, orelha: null, hx, hy, hr };
       if (d >= 28) { const ex = hx + hr * .45, ey = hy + hr * .05, ea = seg(d, 28, 34); circ(ex, ey, hr * .17, rgba(dark(pele, .5), ea), dark(pele, .6), 1.2); if (d >= 40) circ(ex, ey, hr * .1, '#1A1020'); out.olho = [ex, ey]; }
-      if (d >= 30) { const ox2 = hx - hr * .25, oy2 = hy + hr * .5; X.beginPath(); X.arc(ox2, oy2, hr * .14, -1.2, 2.2); X.strokeStyle = dark(pele, .5); X.lineWidth = 2; X.stroke(); out.orelha = [ox2, oy2]; }
+      if (d >= 30) { const ox2 = hx - hr * .05, oy2 = hy + hr * .35; X.beginPath(); X.arc(ox2, oy2, hr * .14, -1.2, 2.2); X.strokeStyle = dark(pele, .5); X.lineWidth = 2; X.stroke(); out.orelha = [ox2, oy2]; }
       // coração: saliência na frente do corpo, logo abaixo da cabeça, batendo
-      { const [x, y, a] = Pc(.24), r = rB(.24), cx = x - Math.cos(a) * r * .8, cy = y - Math.sin(a) * r * .8, b = 1 + .1 * Math.max(0, Math.sin(t * TAU * 1.6)); ell(cx, cy, r * .5 * b, r * .44 * b, 0, C.sangueF || K('sangue'), dark(C.sangueF || K('sangue'), .4), 1.5); out.coracao = [cx, cy]; }
+      { const [x, y, a] = Pc(.27), r = rB(.27), cx = x - Math.cos(a) * r * .95, cy = y - Math.sin(a) * r * .95, b = 1 + .1 * Math.max(0, Math.sin(t * TAU * 1.6)), k = lerp(.5, .32, g); ell(cx, cy, r * k * b, r * k * .88 * b, 0, C.sangueF || K('sangue'), dark(C.sangueF || K('sangue'), .4), 1.5); out.coracao = [cx, cy]; }
       return out;
     }
     def('desenvolvimento', 'organogenese', {
@@ -412,10 +436,11 @@
         const s = Math.min(eh * .95, NAR ? A.w * .75 : A.w * .42), ox = NAR ? A.x0 + A.w * .5 : A.x0 + A.w * .36, oy = top + eh * .54;
         const E = embriao(ox, oy, s, d, t);
         lab(E.coracao[0], E.coracao[1], E.coracao[0] + s * .45, E.coracao[1] + s * .05, 'coração');
-        if (E.braco) lab(E.braco[0], E.braco[1], E.braco[0] + s * .45, E.braco[1] + 14, d >= 42 ? 'mão' : 'broto do braço');
+        if (E.braco) lab(E.braco[0], E.braco[1], E.braco[0] + s * .45, E.braco[1] + (NAR ? 44 : 14), d >= 42 ? 'mão' : 'broto do braço');
         if (E.perna) lab(E.perna[0], E.perna[1], E.perna[0] + s * .4, E.perna[1] + 30, d >= 42 ? 'pé' : 'broto da perna');
         if (E.olho) lab(E.olho[0], E.olho[1], E.olho[0] + s * .4, E.olho[1] - 26, 'olho');
-        if (E.orelha && !NAR) lab(E.orelha[0], E.orelha[1], E.orelha[0] - s * .5, E.orelha[1] - 30, 'orelha');
+        if (E.arcos) lab(E.arcos[0], E.arcos[1], NAR ? E.arcos[0] - s * .6 : E.arcos[0] + s * .5, NAR ? E.arcos[1] + 30 : E.arcos[1] - 4, 'arcos faríngeos');
+        if (E.orelha) lab(E.orelha[0], E.orelha[1], E.orelha[0] - s * .5, E.orelha[1] - 30, 'orelha');
         // painel de dados e marcos (computador) ou resumo curto (celular)
         if (!NAR) {
           const px = A.x0 + A.w * .7, pw = A.w * .3 - 4;

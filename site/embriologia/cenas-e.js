@@ -146,7 +146,7 @@
     lab(px + s * .1, py - s * .05, A.x1 - (NAR ? 4 : 40), A.y0 + 20, 'placenta');
     lab(pl[0] - s * .25, pl[1] + s * .05, NAR ? A.x0 + 4 : A.x0 + 20, A.y0 + 30, 'cordão umbilical');
     lab(cx + s * .5, cy + s * .25, A.x1 - (NAR ? 4 : 30), cy + s * .38, NAR ? 'âmnio' : 'âmnio com líquido amniótico');
-    lab(cx - s * .86, cy - s * .2, NAR ? A.x0 + 4 : A.x0 + 10, cy + s * .55, NAR ? 'parede do útero' : 'parede do útero (endométrio)');
+    lab(cx - s * .68, cy - s * .2, NAR ? A.x0 + 4 : A.x0 + 10, cy + s * .55, NAR ? 'parede do útero' : 'parede do útero (endométrio)');
     lab(cx - s * .1, cy + s * .2, NAR ? A.x0 + 4 : A.x0 + 30, cy - s * .2, 'feto');
     return 'O feto fica dentro do <b>âmnio</b>, ligado à <b>placenta</b> pelo <b>cordão umbilical</b>. Aumente o zoom para ver a placenta por dentro';
   }
@@ -270,7 +270,7 @@
     const h1 = wrapE(NAR ? 'artérias: sangue pobre em O₂' : 'artérias: sangue pobre em O₂, do feto para a placenta', (xa + xb) / 2, ya - 18 - (nLin(NAR ? 'artérias: sangue pobre em O₂' : 'artérias: sangue pobre em O₂, do feto para a placenta', mw, sz, 600) - 1) * (sz + 4), mw, { s: sz, w: 600, c: light(E.art, .35) });
     void h1;
     wrapE(NAR ? 'veia: sangue rico em O₂' : 'veia: sangue rico em O₂, da placenta para o feto', (xa + xb) / 2, yv + 18, mw, { s: sz, w: 600, c: light(E.veia, .2) });
-    const nota = 'Aqui a artéria leva sangue pobre em O₂: ela sai do coração do feto';
+    const nota = 'Artéria é o vaso que leva o sangue para longe do coração. As umbilicais levam sangue pobre em O₂ do feto para a placenta';
     wrapE(nota, bx0 + bw / 2, by + 34 + 84, Math.min(bw, 360), { s: 12, c: E.dim });
     return 'Cordão umbilical: <b>2 artérias</b> levam sangue <b>pobre em O₂</b> do feto para a placenta; <b>1 veia</b> traz sangue <b>rico em O₂</b> para o feto';
   }
@@ -301,7 +301,7 @@
   // =====================================================================================
   // GÊMEOS
   // =====================================================================================
-  const TIPO = d => d <= 3 ? 0 : d <= 7 ? 1 : d <= 12 ? 2 : 3;
+  const TIPO = d => d <= 3 ? 0 : d <= 8 ? 1 : d <= 12 ? 2 : 3;
   const MONO = [
     { n: '2 córions + 2 âmnios', f: 'cerca de 1/3 dos monozigóticos', e: 'separação de 2 células a mórula' },
     { n: '1 córion + 2 âmnios', f: 'cerca de 2/3: o caso mais comum', e: 'separação da massa celular interna' },
@@ -330,7 +330,7 @@
       if (tipo === 1) { for (const s of [-1, 1]) { circ(x + s * r * .4, y + r * .12, r * .36, rgba(E.amnio, .2), E.amnio, 2); embMini(x + s * r * .4, y + r * .14, r * .2, s < 0 ? cA : cB, s > 0); } out = { cor: [x - r * .7, y - r * .7], amn: [x + r * .7, y + r * .3], pla: [x, y - r + 3] }; }
       else { circ(x, y + r * .1, r * .74, rgba(E.amnio, .2), E.amnio, 2); if (tipo === 2) { embMini(x - r * .3, y + r * .14, r * .26, cA, false); embMini(x + r * .3, y + r * .14, r * .26, cB, true); } else { embMini(x - r * .14, y + r * .14, r * .28, cA, false); embMini(x + r * .14, y + r * .14, r * .28, cB, true); } out = { cor: [x - r * .7, y - r * .7], amn: [x + r * .65, y + r * .4], pla: [x, y - r + 3] }; }
     }
-    if (labs) { lab(out.cor[0], out.cor[1], x - r - 40, y - r * .9, 'córion'); lab(out.amn[0], out.amn[1], x + r + 40, y + r * .6, 'âmnio'); if (!NAR) lab(out.pla[0], out.pla[1], x + r + 30, y - r * 1.05, 'placenta'); }
+    if (labs) { lab(out.cor[0], out.cor[1], x - r - 40, y - r * .3, 'córion'); lab(out.amn[0], out.amn[1], x + r + 40, y + r * .6, 'âmnio'); if (!NAR) lab(out.pla[0], out.pla[1], x + r + 30, y - r * .45, 'placenta'); }
   }
   // estágio em que o embrião monozigótico se separa
   function estagio(x, y, r, d, sep) {
@@ -364,23 +364,23 @@
     return an[1] + rA + 34;
   }
   function linhaDias(x0, x1, y, d) {
-    const fx = v => x0 + v / 14 * (x1 - x0), cs = ['#6C5A9E', '#8A6FD0', '#5E7FC8', '#8C6A52'], segs = [[0, 3.5], [3.5, 7.5], [7.5, 12.5], [12.5, 14]];
-    const nomes = NAR ? ['0 a 3', '4 a 8', '8 a 12', '13+'] : ['até o 3º dia', '4º ao 8º', '8º ao 12º', '13º +'];
-    segs.forEach((s, i) => { rr(fx(s[0]) + 1, y - 10, fx(s[1]) - fx(s[0]) - 2, 20, 5, rgba(cs[i], TIPO(d) === i ? .95 : .4)); const w = fx(s[1]) - fx(s[0]); if (tw(nomes[i], 12, 600) < w - 4) tx(nomes[i], (fx(s[0]) + fx(s[1])) / 2, y + .5, { s: 12, w: 600, c: E.txt, bg: false }); });
+    const fx = v => x0 + v / 14 * (x1 - x0), cs = ['#6C5A9E', '#8A6FD0', '#5E7FC8', '#8C6A52'], segs = [[0, 3.5], [3.5, 8.5], [8.5, 12.5], [12.5, 14]];
+    const nomes = NAR ? ['0 a 3', '4 a 8', '9 a 12', '13+'] : ['até o 3º dia', '4º ao 8º', '9º ao 12º', '13º em diante'];
+    segs.forEach((s, i) => { rr(fx(s[0]) + 1, y - 10, fx(s[1]) - fx(s[0]) - 2, 20, 5, rgba(cs[i], TIPO(d) === i ? .95 : .4)); const w = fx(s[1]) - fx(s[0]); const nm = tw(nomes[i], 12, 600) < w - 4 ? nomes[i] : ['0 a 3', '4 a 8', '9 a 12', '13+'][i]; if (tw(nm, 12, 600) < w - 4) tx(nm, (fx(s[0]) + fx(s[1])) / 2, y + .5, { s: 12, w: 600, c: E.txt, bg: false }); });
     const mx = fx(cl(d + .5, .25, 13.75)); X.beginPath(); X.moveTo(mx, y - 12); X.lineTo(mx - 6, y - 20); X.lineTo(mx + 6, y - 20); X.closePath(); X.fillStyle = E.alerta; X.fill();
     tx('dia da separação (após a fecundação)', (x0 + x1) / 2, y + 22, { s: 12, c: E.dim, bg: false });
   }
 
   def('humano', 'gemeos', {
     t: 'Gêmeos', s: 'um zigoto que se divide ou dois zigotos', c: C.amnio, loc: 'Primeiras duas semanas após a fecundação', still: 6, stillV: 5, auto: .7,
-    ctl: { l: 'Dia da separação', min: 0, max: 14, step: 1, v: 0, f: v => 'dia ' + Math.round(v), rate: () => 1 },
+    ctl: { l: 'Dia da separação', min: 1, max: 14, step: 1, v: 1, f: v => 'dia ' + Math.round(v), rate: () => 1 },
     alt: 'Duas colunas: gêmeos dizigóticos, de dois ovócitos e dois espermatozoides, cada um com córion e âmnio próprios; e gêmeos monozigóticos, de um zigoto que se divide, com anexos que mudam conforme o dia da separação: dois córions e dois âmnios, um córion e dois âmnios, um córion e um âmnio, ou gêmeos unidos',
     d: `<p>Os <b>gêmeos dizigóticos</b> (ou fraternos, "bivitelinos") surgem quando <b>dois ovócitos</b> são liberados no mesmo ciclo e cada um é fecundado por um espermatozoide diferente. São dois zigotos, e por isso os irmãos são tão parecidos quanto quaisquer irmãos: podem ter sexos e tipos sanguíneos diferentes. Cada um tem o seu <b>âmnio</b> e o seu <b>córion</b> (e às vezes as placentas se fundem, mas os córions continuam separados). São cerca de <b>2/3</b> dos gêmeos, e a frequência varia muito: aumenta com a idade da mãe, com a história na família materna e com tratamentos de fertilidade (Moore).</p>
 <p>Os <b>gêmeos monozigóticos</b> ("idênticos", "univitelinos") vêm de <b>um só zigoto</b>, que se divide em dois embriões. Têm o mesmo material genético, o <b>mesmo sexo</b> e o mesmo tipo sanguíneo. A frequência é parecida no mundo todo, cerca de <b>3 a 4 por 1.000 nascimentos</b>. Os anexos que eles dividem dependem de <b>quando</b> o embrião se separa (Moore; Gilbert), contando os dias após a fecundação:</p>
 <div class="tab"><table><thead><tr><th>Separação</th><th>Estágio</th><th>Anexos</th><th>Casos</th></tr></thead><tbody>
 <tr><td>até o 3º dia</td><td>2 células a <a href="#desenvolvimento/morula">mórula</a></td><td>2 córions e 2 âmnios</td><td>cerca de 1/3</td></tr>
 <tr><td>4º ao 8º dia</td><td>massa celular interna do <a href="#humano/nidacao">blastocisto</a></td><td>1 córion (e 1 placenta), 2 âmnios</td><td>cerca de 2/3</td></tr>
-<tr><td>8º ao 12º dia</td><td>disco embrionário</td><td>1 córion e 1 âmnio</td><td>cerca de 1%</td></tr>
+<tr><td>9º ao 12º dia (o âmnio já se formou)</td><td>disco embrionário</td><td>1 córion e 1 âmnio</td><td>cerca de 1%</td></tr>
 <tr><td>após cerca de 13 dias</td><td>separação incompleta</td><td>gêmeos unidos (siameses)</td><td>raros</td></tr>
 </tbody></table></div>
 <p>Mova a faixa para escolher o dia em que o embrião monozigótico se separa. Córion em lilás, âmnio em azul-claro (ver <a href="#anexos/funcoes">anexos</a>).</p>`,
@@ -398,13 +398,13 @@
       linhaDias(bM.x + (NAR ? 0 : 10), bM.x + bM.w - (NAR ? 0 : 10), ly, d);
       // selos
       const sy = A.y1 - 10;
-      if (NAR) { pill(A.x0, sy, 'dizigóticos: sexo pode diferir; ~50% do DNA', { a: 'left', s: 12 }); }
+      if (NAR) { pill(A.x0, sy, 'dizigóticos: sexo pode diferir; genes como irmãos', { a: 'left', s: 12 }); }
       else {
-        pill(bD.x + bD.w / 2, sy - 30, 'mesmo sexo: pode não ser', { s: 13 }); pill(bD.x + bD.w / 2, sy, 'mesmo DNA: ~50% em comum, como irmãos', { s: 13 });
-        pill(bM.x + bM.w / 2, sy, 'mesmo sexo: sim     mesmo DNA: sim', { s: 13, bd: rgba(E.alerta, .5) });
+        pill(bD.x + bD.w / 2, sy - 30, 'mesmo sexo: pode não ser', { s: 13 }); pill(bD.x + bD.w / 2, sy, 'material genético: como irmãos comuns', { s: 13 });
+        pill(bM.x + bM.w / 2, sy, 'mesmo sexo: sim     material genético: igual', { s: 13, bd: rgba(E.alerta, .5) });
       }
       const tp = TIPO(d);
-      cap(NAR ? `Monozigóticos: mesmo sexo e mesmo DNA. Separação no dia ${d}: <b>${MONO[tp].n}</b> (${MONO[tp].f})`
+      cap(NAR ? `Monozigóticos: mesmo sexo e mesmo material genético. Separação no dia ${d}: <b>${MONO[tp].n}</b> (${MONO[tp].f})`
         : `Separação no <b>dia ${d}</b> após a fecundação: ${MONO[tp].e}. Resultado: <b>${MONO[tp].n}</b>, ${MONO[tp].f}`);
     }
   });
@@ -460,6 +460,9 @@
     for (const m of [22, 24]) line(fx(m), y - 3, fx(m), y2 + sh + 3, 'rgba(232,237,247,.8)', 1.5, [3, 3]);
     // semana atual: célula entre m-1 e m (pela DUM)
     const m = w + 2; rr(fx(m - 1) - 1, y - 4, fx(m) - fx(m - 1) + 2, sh * 2 + 12, 3, null, '#fff', 2);
+    // rótulos por cima do quadro da semana atual
+    if (emb) tx(emb, (fx(2) + fx(10)) / 2, y2 + sh / 2 + .5, { s: 12, w: 600, c: E.txt });
+    T.forEach(([a, b, n, m2]) => { const s = tw(n, 12, 600) < fx(b) - fx(a) - 6 ? n : m2; tx(s, (fx(a) + fx(b)) / 2, y + sh / 2 + .5, { s: 12, w: 600, c: E.txt }); });
     X.beginPath(); X.moveTo(fx(m - .5), y - 6); X.lineTo(fx(m - .5) - 6, y - 14); X.lineTo(fx(m - .5) + 6, y - 14); X.closePath(); X.fillStyle = E.alerta; X.fill();
     // escalas
     const yT = y - 26, yB = y2 + sh + 16;
@@ -468,7 +471,7 @@
     for (const f of tf) tx(String(f), fx(f + 2), yT, { s: 12, f: FD, c: E.dim, bg: false });
     for (const d of td) tx(String(d), fx(d), yB, { s: 12, f: FD, c: E.dim, bg: false });
     tx('semanas pela DUM (idade gestacional)', x0, yB + 16, { a: 'left', s: 12, w: 600, c: E.txt, bg: false });
-    if (!NAR) tx('listras: maior sensibilidade a teratógenos (3ª a 8ª)    tracejado: limite de viabilidade (22 a 24 pela DUM)', x1, yB + 16, { a: 'right', s: 12, c: E.dim, bg: false });
+    if (!NAR) tx('listras: maior sensibilidade a teratógenos (3ª a 8ª semana após a fecundação)    tracejado: viabilidade (22 a 24 pela DUM)', x1, yB + 16, { a: 'right', s: 12, c: E.dim, bg: false });
     return yB + 16;
   }
 
@@ -501,7 +504,7 @@
     draw(t, S) {
       const A = area(), w = cl(Math.round(S.v), 1, 38), mm = interp(TAM, w), mk = MARCO[w];
       // barra embaixo
-      const by = A.y1 - 74;
+      const by = A.y1 - (NAR ? 86 : 74);
       barra(A.x0 + 2, A.x1 - 2, by, w);
       // informações
       const ix = NAR ? A.x0 + 2 : A.x0 + A.w * .6, iy = A.y0 + 8;
@@ -547,7 +550,10 @@
         if (NAR) tx(rT, A.x0, byy1 + 4, { a: 'left', s: 12, c: E.dim }); else tx(rT, fx, Math.min(byy1 + 4, fy + L * .55 + 16), { s: 12, c: E.dim });
       }
       // objeto para comparar, na mesma escala do desenho
-      const ok2 = lupa ? PPM : pxmm, ox = bx0 + bw * (lupa ? .8 : .82), oy = fy;
+      const ok2 = lupa ? PPM : pxmm; let ox = bx0 + bw * (lupa ? .8 : .82);
+      const oy = fy;
+      const hw = { 'grão de arroz': 4, uva: 10, 'limão': 35, banana: 46, 'melancia pequena': 121 }[ob.n] * ok2;
+      ox = Math.min(ox, A.x1 - 4 - hw);
       ob.d(ox, oy, ok2);
       const oN = `para comparar: ${ob.n}`, oW = tw(oN, 12) / 2;
       if (NAR && !lupa) tx(oN, A.x1, byy1 - 14, { a: 'right', s: 12, c: E.dim });
@@ -558,7 +564,9 @@
       if (mk) m = mk[0];
       else if (w <= 11) m = 'início do período fetal: o embrião passa a se chamar feto; agora é sobretudo crescimento e amadurecimento dos órgãos';
       else { const nx = MW.find(x => x > w); m = `período fetal: crescimento e amadurecimento dos órgãos. Próximo marco na semana ${nx} (${nx + 2}ª pela DUM)`; }
-      cap(`<b>Semana ${w} após a fecundação (${pd}ª pela DUM)</b>: ${m}${NAR && w >= 3 && w <= 8 ? '. <b>Maior sensibilidade a teratógenos</b>' : ''}`);
+      if (NAR && !mk && w > 11) m = `crescimento e amadurecimento dos órgãos; próximo marco na semana ${MW.find(x => x > w)}`;
+      const via = w >= 20 && w <= 22 ? (NAR ? '. Tracejado na barra: viabilidade (22 a 24 pela DUM)' : '. O tracejado na barra marca o limite de viabilidade, 22 a 24 semanas pela DUM') : '';
+      cap(`<b>Semana ${w}${NAR ? '' : ' após a fecundação'} (${pd}ª pela DUM)</b>: ${m}${w >= 3 && w <= 8 ? '. <b>Maior sensibilidade a teratógenos</b> (listras na barra)' : ''}${via}`);
     }
   });
 }

@@ -44,7 +44,7 @@ function Lights(){return LUZ?html`<primitive object=${LUZ}/>`:html`<ambientLight
 // livre (entre o topo ocupado pela etiqueta e pelo cartão e a barra de ferramentas) e ocupa até ~74% do lado
 // menor e ~85% do maior. No celular em pé, a célula larga é girada 90° em torno do eixo da câmera, para usar a altura.
 const TAN=Math.tan(17*Math.PI/180),_cv=new THREE.Vector3(),_m4=new THREE.Matrix4();
-const livre=(w,h)=>{if(EMB)return{x0:8,x1:w-8,y0:8,y1:h-8};const m=w<700;return{x0:16,x1:w-16,y0:m?88:64,y1:h-BAR()-(m?6:0)}};
+const livre=(w,h)=>{if(EMB){const m=Math.round(Math.min(w,h)*.05);return{x0:m,x1:w-m,y0:m,y1:h-m}}const m=w<700;return{x0:16,x1:w-16,y0:m?88:64,y1:h-BAR()-(m?6:0)}};
 function ext(sc){if(sc.ext)return sc.ext;sc.g.updateMatrixWorld(true);const n=sc.cam.clone().normalize(),r=V3(0,1,0).cross(n).normalize(),u=n.clone().cross(r);
   let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;const box=new THREE.Box3();
   const add=(p,rad)=>{const x=p.dot(r),y=p.dot(u);x0=Math.min(x0,x-rad);x1=Math.max(x1,x+rad);y0=Math.min(y0,y-rad);y1=Math.max(y1,y+rad);box.expandByPoint(p)};
