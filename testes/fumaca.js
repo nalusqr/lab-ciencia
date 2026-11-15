@@ -31,6 +31,8 @@ const PAGINAS = [
   ['microrganismos', 'site/microrganismos/index.html'],   // canvas 2D, mesmo motor; window.LAB_MICRO
   ['plantas-animais', 'site/plantas-animais/index.html'],
   ['anatomia', 'site/anatomia/index.html'],   // canvas 2D, mesmo motor; window.LAB_ANATOMIA
+  ['evolucao', 'site/evolucao/index.html'],   // canvas 2D, mesmo motor; window.LAB_EVOLUCAO
+  ['ecologia', 'site/ecologia/index.html'],
 ];
 // módulos novos: entram sozinhos quando estiverem marcados como prontos em scripts/modulos.json (ver scripts/abas.py)
 try {
@@ -80,7 +82,7 @@ async function paginaSimples(nome, rel) {
 
 // módulos de canvas 2D com rotas por hash (motor da Bioenergética): abre e percorre cada rota pela API da página
 // (window[api].rotas e .ir), conferindo que não surgiu erro e que o canvas desenhou algo em cada uma
-const ROTAS_2D = { embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO', 'plantas-animais': 'LAB_PLANTAS', anatomia: 'LAB_ANATOMIA' };
+const ROTAS_2D = { embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO', 'plantas-animais': 'LAB_PLANTAS', anatomia: 'LAB_ANATOMIA', evolucao: 'LAB_EVOLUCAO' };
 async function paginaRotas(nome, rel, api) {
   const t0 = Date.now(); const { ctx, page } = await abrir();
   let rotas = [];
