@@ -71,12 +71,13 @@
   }
   function desenhar() {
     for (var i = 0; i < N; i++) {
-      var d = difs(i, pos), it = itens[i], x, y, op = 1;
+      var d = difs(i, pos), it = itens[i], x, y, op = 1, vis = 999;
       if (geo.arco) {
         var a = d * geo.passoA;
         x = geo.lw / 2 + geo.RA * Math.sin(a) - 52;          // 52 = metade da largura do item
         y = 60 + geo.RA * (1 - Math.cos(a)) - 48;            // centro do diorama (80 px) sobre a linha do arco, a 60 px do topo
         op = Math.max(0, Math.min(1, 1.9 - Math.abs(d) * 0.55));
+        vis = Math.min(x + 104, geo.lw) - Math.max(x, 0);   // largura do item à vista no arco (104 = largura do item)
         it.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
       } else {
         var b = d * PASSO;
@@ -84,7 +85,9 @@
         it.style.transform = 'translate(calc(-50% + ' + x.toFixed(1) + 'px), calc(-50% + ' + y.toFixed(1) + 'px))';
       }
       it.style.opacity = op < 1 ? op.toFixed(2) : '';
-      it.style.pointerEvents = op <= 0 ? 'none' : '';   // sem visibility:hidden, para o foco nunca se perder no meio do giro
+      // sem toque nas sobras da borda do arco (menos de 44 px à vista); o teclado e o leitor de tela seguem ativando a aba.
+      // Sem visibility:hidden, para o foco nunca se perder no meio do giro.
+      it.style.pointerEvents = (op <= 0 || vis < 44) ? 'none' : '';
     }
     segs.setAttribute('transform', 'rotate(' + (-pos * 360 / N).toFixed(2) + ')');
     var sel = mod(Math.round(pos));
@@ -122,9 +125,10 @@
       var box = document.createElement('div');
       box.className = 'preparo';
       box.innerHTML = '<p>Os módulos de ' + nome + ' estão sendo preparados, com 3D e animações como os de Biologia. ' +
-        'Enquanto isso, você pode estudar Biologia e Química.</p><div class="acoes-p">' +
+        'Enquanto isso, você pode estudar Biologia, Química e Matemática.</p><div class="acoes-p">' +
         '<button type="button" class="btn" data-ir="biologia">Ver Biologia</button>' +
-        '<button type="button" class="btn" data-ir="quimica">Ver Química</button></div>';
+        '<button type="button" class="btn" data-ir="quimica">Ver Química</button>' +
+        '<button type="button" class="btn" data-ir="matematica">Ver Matemática</button></div>';
       fCorpo.appendChild(box);
     }
     if (!prim && !reduz.matches) {
