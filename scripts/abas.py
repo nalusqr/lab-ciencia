@@ -5,6 +5,9 @@ O que faz:
   - Reescreve a barra de abas (<nav class="tabs">) em todas as páginas de módulo, com a aba da página atual
     marcada como ativa (class="on" e aria-current="page").
   - Gera os cards "Módulo NN" e o contador de módulos em site/index.html.
+  - Abas e cards seguem o campo "ordem" (a ordem do curso). O rótulo "Módulo NN" dos cards e do cabeçalho de
+    cada página segue "numeracao" no JSON: "pasta" (número histórico) ou "ordem" (posição no curso; os módulos
+    de apoio mostram "rotulo_apoio").
   - Entra só módulo com "pronto": true no JSON e cuja pasta existe em site/. Os outros ficam de fora das abas e
     dos cards, e as páginas deles não são tocadas.
   - A Célula é montada: o script edita site/celula/fonte/head.html e depois roda o build.sh.
@@ -47,7 +50,27 @@ def pagina(m):
 
 
 def ativos(mods):
-    return sorted((m for m in mods if m.get('pronto') and os.path.isfile(pagina(m))), key=lambda m: m['numero'])
+    return sorted((m for m in mods if m.get('pronto') and os.path.isfile(pagina(m))), key=lambda m: m['ordem'])
+
+
+CFG = {}   # numeracao e rotulo_apoio, lidos do JSON em main()
+
+
+def rotulo(m):
+    """O que o card e o cabeçalho da página mostram: "Módulo N" (número histórico ou ordem do curso) ou o rótulo de apoio."""
+    if CFG.get('numeracao') == 'ordem':
+        if m.get('apoio') and CFG.get('rotulo_apoio'):
+            return CFG['rotulo_apoio']
+        return f'Módulo {m["ordem"]}'
+    return f'Módulo {m["numero"]}'
+
+
+def cabecalho(t, m):
+    """Atualiza "Módulo N" no cabeçalho da página (<div class="k">) e na descrição ("Módulo N do LAB")."""
+    r = esc(rotulo(m))
+    ant = r'Módulo \d+' + (('|' + re.escape(esc(CFG['rotulo_apoio']))) if CFG.get('rotulo_apoio') else '')
+    t = re.sub(r'(<div class="k">)(?:%s)(?= <span class="badge">)' % ant, lambda x: x.group(1) + r, t, count=1)
+    return re.sub(r'(content="(?:%s))(?= do LAB)' % ant, lambda x: 'content="' + r, t, count=1)
 
 
 def simbolos(mods):
@@ -107,7 +130,7 @@ def pagina_modulo(m, lista, simb, sprite_ids):
     # mantém a tag de abertura da página (algumas têm id="tabs" usado pelo próprio script delas)
     ab = re.search(r'<nav class="tabs"[^>]*>', t)
     novo = nav(lista, m, ab.group(0) if ab else '<nav class="tabs" aria-label="Módulos">') + icones_faltando(FORA(t, 'abas'), lista, simb, ja)
-    return trocar(t, 'abas', novo, NAV)
+    return cabecalho(trocar(t, 'abas', novo, NAV), m)
 
 
 def card(m):
@@ -118,7 +141,7 @@ def card(m):
     return (f'    <a class="card{" feat" if m.get("destaque") else ""}" href="{m["pasta"]}/index.html">\n'
             f'      {arte}\n'
             f'      <div class="body">\n'
-            f'        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>Módulo {m["numero"]} {" ".join(selos)}</div>\n'
+            f'        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>{esc(rotulo(m))} {" ".join(selos)}</div>\n'
             f'        <h3>{esc(m["card"])}</h3>\n'
             f'        <p>{esc(m["frase"])}</p>\n'
             f'      </div>\n'
@@ -133,8 +156,7 @@ CSS_ARTE = ('    <style>.card .art{display:flex;align-items:center;justify-conte
 def pagina_inicial(lista, simb):
     p = os.path.join(SITE, 'index.html')
     t = ler(p)
-    ordem = sorted(lista, key=lambda m: (not m.get('destaque'), m['numero']))
-    corpo = ''.join(card(m) for m in ordem)
+    corpo = ''.join(card(m) for m in lista)   # já na ordem do curso
     if any(not m.get('canvas') for m in lista):
         corpo = CSS_ARTE + corpo
     ic = icones_faltando(FORA(t, 'cards'), lista, simb)
@@ -169,7 +191,11 @@ def main():
         if a.verificar:
             raise SystemExit('ERRO: --incluir e --verificar não combinam')
         incluir([x.strip() for x in a.incluir.split(',') if x.strip()])
-    mods = json.loads(ler(JSON))['modulos']
+    dados = json.loads(ler(JSON))
+    CFG.update(numeracao=dados.get('numeracao', 'pasta'), rotulo_apoio=dados.get('rotulo_apoio', ''))
+    if CFG['numeracao'] not in ('pasta', 'ordem'):
+        raise SystemExit('ERRO: numeracao deve ser "pasta" ou "ordem"')
+    mods = dados['modulos']
     lista = ativos(mods)
     for m in mods:
         if m.get('pronto') and m not in lista:
