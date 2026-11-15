@@ -1,0 +1,122 @@
+/* LAB · base comum, estilo "Campo escuro" (docs/GUIA-DE-ESTILO.md)
+   Fontes (carregar no <head> de cada página, link único do guia):
+   https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap */
+:root{
+  /* Interface (guia 2.1). Nomes antigos mantidos: --bg --panel --line --dim --txt --amber --ice --red --violet */
+  --bg:#0B0F1C;--panel:#131A2B;--panel-2:#1B2440;--line:#2C3757;--line-strong:#5B6C99;
+  --txt:#E8EDF7;--dim:#9DA9C4;--amber:#FFB347;--on-amber:#1A1206;--focus:#8FD8FF;--red:#FF6B7D;
+  --ice:var(--txt);          /* legado: o guia troca --ice por --txt e --focus */
+  --violet:#9A6BFF;          /* legado: o violeta agora é o do núcleo (--sci-nucleo) */
+  --stage-in:#161D33;        /* centro do degradê do palco */
+  --float:rgba(19,26,43,.78);--float-line:rgba(255,255,255,.08);--float-shadow:0 8px 24px rgba(0,0,0,.45);
+  --pill:rgba(11,15,28,.82);
+  /* Paleta científica (guia 2.3) */
+  --sci-nucleo:#9A6BFF;--sci-nucleolo:#6A45D8;--sci-membrana:#F06AAE;--sci-parede:#A9C54A;--sci-energia:#F25C3B;
+  --sci-fotossintese:#3FBF6A;--sci-grana:#2A9450;--sci-reticulo:#4B7BFF;--sci-golgi:#F7C13B;--sci-ribossomo:#FFE1A6;
+  --sci-lisossomo:#2FCFBF;--sci-vacuolo:#2A9FC9;--sci-citoesqueleto:#CFE0FF;--sci-citoplasma:#2A1E3D;
+  --sci-hemacia:#D7303B;--sci-virus:#B9C2D3;
+  --cpk-c:#9AA3B2;--cpk-h:#F2F4F8;--cpk-o:#FF4D4D;--cpk-n:#4D7DFF;--cpk-s:#F2D24B;--cpk-p:#FF9A3C;
+  --base-a:#39E58C;--base-t:#FF4F6D;--base-g:#FFC53D;--base-c:#3FA9FF;--base-u:#C77DFF;
+  /* Tipografia */
+  --f-txt:'Atkinson Hyperlegible Next',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-title:'Space Grotesk','Atkinson Hyperlegible Next',system-ui,sans-serif;
+  --f-data:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--f-txt);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(120% 60% at 50% 20%,var(--stage-in) 0%,var(--bg) 70%) fixed;min-height:100vh;overflow-x:hidden}
+a{color:inherit}
+b,strong{font-weight:700}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1100px;margin:0 auto;padding:24px}
+@media(max-width:699px){.wrap{padding:16px}}
+.ico{width:20px;height:20px;flex:none}
+.num,.data{font-family:var(--f-data);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* Abas de navegação entre módulos */
+.tabs{display:flex;gap:4px;margin-bottom:24px;overflow-x:auto;scrollbar-width:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;text-decoration:none;font-size:14px;font-weight:600;line-height:1.3;padding:8px 12px;border-radius:8px;color:var(--dim);white-space:nowrap;transition:background .15s,color .15s}
+.tabs a:hover{background:var(--panel-2);color:var(--txt)}
+.tabs a.on,.tabs a[aria-current="page"]{color:var(--txt);background:var(--panel-2);box-shadow:inset 0 -2px 0 var(--amber)}
+.tabs .nm-s{display:none}
+@media(max-width:699px){
+  .tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);padding-right:32px}
+  .tabs a{flex:none;padding:8px 12px}
+  .tabs .nm-l{display:none}.tabs .nm-s{display:inline}
+}
+
+/* Cabeçalho do módulo: ícone, título, "Módulo N" + selo */
+.top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.top>.ico-big{width:44px;height:44px;flex:none;color:var(--txt)}
+.top h1{font-family:var(--f-title);font-size:32px;font-weight:700;line-height:1.1;color:var(--txt)}
+.top .k{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:4px}
+.top .meta{margin-left:auto;text-align:right}
+.lead{font-size:16px;line-height:1.6;color:var(--dim);max-width:68ch;margin-top:8px}
+@media(max-width:699px){.top h1{font-size:26px}.top{gap:12px}.lead{font-size:15px}}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:2px 8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);color:var(--txt);font-size:13px;font-weight:400;line-height:1.5}
+.badge i{width:8px;height:8px;border-radius:50%;flex:none}
+
+/* Cartão / painel plano (nível 1) */
+.box{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:24px;margin-bottom:24px;position:relative}
+@media(max-width:699px){.box{padding:16px;margin-bottom:16px}}
+.k{color:var(--dim);font-size:13px;line-height:1.5}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.head h1{font-family:var(--f-title);font-size:32px;font-weight:700;line-height:1.1;color:var(--txt);margin:4px 0}
+.head .sub{color:var(--dim);font-size:16px;line-height:1.6;max-width:68ch}
+@media(max-width:699px){.head h1{font-size:26px}.head .sub{font-size:15px}}
+h2{font-family:var(--f-title);font-size:18px;font-weight:600;line-height:1.3;color:var(--txt);margin-bottom:8px}
+h2 em{font-style:normal;color:var(--dim);margin-right:8px}
+@media(max-width:699px){h2{font-size:17px}}
+.cap{color:var(--dim);font-size:13px;line-height:1.5;margin-bottom:12px}
+.txt{font-size:16px;line-height:1.6;color:#D3DAEA;max-width:68ch;margin-bottom:16px}
+.txt b{color:#fff}
+@media(max-width:699px){.txt{font-size:15px}}
+.note{font-size:16px;line-height:1.6;color:#D3DAEA}
+.note b{color:#fff}
+.note.bad{border-color:var(--red)}
+@media(max-width:699px){.note{font-size:15px}}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:14px;line-height:1.4}
+.kv>div:nth-child(odd){color:var(--dim)}
+.kv>div:nth-child(even){color:var(--txt);text-align:right;font-family:var(--f-data);font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
+.foot{color:var(--dim);font-size:13px;line-height:1.5;text-align:left;padding:8px 0 32px;max-width:90ch}
+.foot a{color:var(--dim)}
+
+/* Navegação simples (fichas dos elementos) */
+.nav{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.nav a{flex:1;min-width:96px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;text-align:center;text-decoration:none;font-size:14px;font-weight:600;padding:8px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--panel);color:var(--txt);transition:background .15s}
+.nav a:hover{background:var(--panel-2)}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid var(--line-strong);background:var(--panel);color:var(--txt);font-family:var(--f-txt);font-size:14px;font-weight:600;line-height:1.3;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--panel-2)}
+.btn:active{filter:brightness(.96)}
+.btn.on,.btn[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--panel-2)}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--on-amber)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Abas de tipo (seletor de molécula etc.): trilho, sem âmbar */
+.seg{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow-x:auto;scrollbar-width:none;max-width:100%}
+.seg::-webkit-scrollbar{display:none}
+.seg>button,.seg>a{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:8px;border:0;background:transparent;color:var(--dim);font-family:var(--f-txt);font-size:14px;font-weight:600;line-height:1.3;white-space:nowrap;text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+.seg>button:hover,.seg>a:hover{color:var(--txt);background:rgba(255,255,255,.03)}
+.seg>.on{background:var(--panel-2);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.seg.scroll{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);padding-right:40px}
+
+/* Palco e camadas flutuantes (nível 2) */
+.stage-3d{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%)}
+.fl{background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);box-shadow:var(--float-shadow)}
+.pill{position:absolute;pointer-events:none;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);border-radius:12px;padding:8px 12px;font-size:13px;line-height:1.5;color:var(--dim)}
+.pill b{color:var(--txt);font-weight:600}
+.pill.tl{top:16px;left:16px}.pill.tr{top:16px;right:16px;text-align:right}.pill.bl{bottom:16px;left:16px}.pill.br{bottom:16px;right:16px;text-align:right}
+@media(max-width:699px){.pill{padding:6px 10px;font-size:12.5px}.pill.tl,.pill.tr{top:8px}.pill.tl,.pill.bl{left:8px}.pill.tr,.pill.br{right:8px}.pill.bl,.pill.br{bottom:8px}}
+
+/* Legado: o ponto vermelho "ao vivo" sai (guia, seção 1) */
+.dot{display:none}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}

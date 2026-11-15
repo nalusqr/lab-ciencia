@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAB · Ciência em movimento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+.hero{padding:32px 0 24px}
+.hero .k{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hero h1{font-family:var(--f-title);font-size:48px;font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--txt);margin:12px 0 16px}
+.hero h1 span{color:var(--amber)}
+.hero p{color:var(--dim);font-size:18px;line-height:1.6;max-width:62ch}
+@media(max-width:699px){.hero{padding:16px 0}.hero h1{font-size:34px}.hero p{font-size:16px}}
+.runbar{display:flex;gap:8px;margin:0 0 32px}
+.rb{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--panel)}
+.rb b{display:block;font-family:var(--f-title);font-size:24px;font-weight:600;color:var(--txt);margin-top:4px;font-variant-numeric:tabular-nums}
+@media(max-width:699px){.rb{padding:8px 12px}.rb b{font-size:21px}}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media(min-width:700px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card.feat{grid-column:span 2}.card:last-child{grid-column:span 2}}
+@media(min-width:1000px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.card.feat{grid-column:span 2;grid-row:span 2}.card:last-child{grid-column:auto}}
+@media(max-width:699px){.cards{gap:16px}}
+.card{display:flex;flex-direction:column;text-decoration:none;color:var(--txt);border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;transition:border-color .15s,background .15s}
+.card:hover{border-color:var(--line-strong);background:var(--panel-2)}
+.card:active{filter:brightness(.96)}
+.card canvas{display:block;width:100%;height:180px;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%);border-bottom:1px solid var(--line)}
+.card.feat canvas{flex:1;min-height:260px;height:auto}
+.card .body{padding:16px 24px 24px}
+@media(max-width:699px){.card .body{padding:16px}}
+.card .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)}
+.card .meta .ico{width:24px;height:24px;color:var(--txt)}
+.card h3{font-family:var(--f-title);font-size:18px;font-weight:600;line-height:1.3;color:var(--txt);margin:8px 0}
+.card.feat h3{font-size:24px}
+.card p{font-size:15px;color:var(--dim);line-height:1.6;max-width:68ch}
+.badge.new{border-color:var(--amber);color:var(--amber);background:transparent}
+.foot{padding-top:32px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol></svg>
+<div class="wrap">
+  <header class="hero">
+    <div class="k"><b style="color:var(--txt)">LAB</b> <span class="badge">Série visual de ciência</span></div>
+    <h1>Ciência <span>em movimento.</span></h1>
+    <p>Visualizações animadas feitas só com dados reais: sequências genéticas verdadeiras, geometria medida em laboratório e as propriedades oficiais dos elementos.</p>
+  </header>
+
+  <div class="runbar">
+    <div class="rb"><div class="k">Módulos</div><b>6</b></div>
+    <div class="rb"><div class="k">Elementos</div><b>118</b></div>
+    <div class="rb"><div class="k">Estruturas 3D</div><b>44</b></div>
+  </div>
+
+  <div class="cards">
+    <a class="card feat" href="morfofisiologia/index.html">
+      <canvas id="cMOR" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg>Módulo 6 <span class="badge new">Novo</span> <span class="badge">Biologia celular</span></div>
+        <h3>Morfofisiologia celular</h3>
+        <p>Procarionte e eucarionte lado a lado, a membrana em detalhe (mosaico fluido, composição, fluidez, difusão, osmose, bomba de sódio e potássio, endocitose, junções), a origem das organelas por invaginação e endossimbiose, e o núcleo: carioteca, poros, cromatina, nucléolo e cromossomos.</p>
+      </div>
+    </a>
+    <a class="card" href="dna/index.html">
+      <canvas id="cDNA" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg>Módulo 1 <span class="badge">Biologia molecular</span></div>
+        <h3>Dupla hélice do DNA</h3>
+        <p>O gene da hemoglobina humana (HBB) em 3D, a forma B do DNA medida em ångströms, a tradução códon por códon e a mutação da anemia falciforme.</p>
+      </div>
+    </a>
+    <a class="card" href="tabela-periodica/index.html">
+      <canvas id="cPT" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg>Módulo 2 <span class="badge">Química</span> <span class="badge">118 fichas</span></div>
+        <h3>Tabela periódica</h3>
+        <p>Os 118 elementos com mapas de calor (eletronegatividade, densidade, fusão, estado físico) e uma ficha para cada um: átomo animado, camadas, configuração eletrônica e diagrama de orbitais.</p>
+      </div>
+    </a>
+    <a class="card" href="moleculas/index.html">
+      <canvas id="cMOL" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg>Módulo 3 <span class="badge">Química estrutural</span></div>
+        <h3>Moléculas em 3D</h3>
+        <p>Água, CO₂, amônia, benzeno, sal, diamante e mais, com ângulos e ligações medidos. Três modos de visualização, polaridade com dipolo e as vibrações reais das moléculas.</p>
+      </div>
+    </a>
+    <a class="card" href="biomoleculas/index.html">
+      <canvas id="cBIO" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg>Módulo 4 <span class="badge">Bioquímica</span></div>
+        <h3>Moléculas da vida</h3>
+        <p>Os 20 aminoácidos, gorduras saturadas, cis e trans, fosfolipídios e a membrana, a ligação peptídica, a α-hélice e a folha β com ligações de hidrogênio, e a sequência real da hemoglobina.</p>
+      </div>
+    </a>
+    <a class="card" href="celula/index.html">
+      <canvas id="cCEL" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg>Módulo 5 <span class="badge">Biologia celular</span></div>
+        <h3>A célula por dentro</h3>
+        <p>Células animal e vegetal vivas, com zoom em 12 organelas: mitocôndria com ATP sintase girando, cloroplasto, núcleo com poros, ribossomo traduzindo a β-globina, membrana, cinesina andando nos microtúbulos.</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="foot">As fontes estão nos rodapés de cada módulo: NCBI RefSeq, PDB e IUPAC, entre outras.</div>
+</div>
+<script src="tabela-periodica/dados.js"></script>
+<script src="tabela-periodica/comum.js"></script>
+<script>
+(()=>{
+function setup(c){const d=Math.min(2,devicePixelRatio||1),r=c.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');
+  // cartão em destaque: mesmo desenho, ampliado para ocupar o espaço maior
+  const k=c.closest('.feat')?Math.max(1,Math.min(r.width/420,r.height/240)):1;x.setTransform(d*k,0,0,d*k,0,0);return{x,w:r.width/k,h:r.height/k}}
+let dn,pt,ml,bi,ce,mo;function rs(){dn=setup(document.getElementById('cDNA'));pt=setup(document.getElementById('cPT'));ml=setup(document.getElementById('cMOL'));bi=setup(document.getElementById('cBIO'));ce=setup(document.getElementById('cCEL'));mo=setup(document.getElementById('cMOR'))}
+addEventListener('resize',()=>{rs();if(RM.matches)requestAnimationFrame(frame)});
+const RM=matchMedia('(prefers-reduced-motion: reduce)');rs();
+const COL=['#39e58c','#ff4f6d','#ffc53d','#3fa9ff'];
+const seq='ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCC';const ci={A:0,T:1,G:2,C:3},cp={A:'T',T:'A',G:'C',C:'G'};
+function frame(t){
+  if(RM.matches)t=2600; // movimento reduzido: um quadro parado
+  // horizontal helix preview
+  {const{x,w,h}=dn;x.clearRect(0,0,w,h);const n=30,sp=w/(n+1),A=h*0.28,cy=h/2,ph=t/900;
+    const pts=[];for(let i=0;i<n;i++){const a=i*0.6+ph;const b=seq[i%seq.length];pts.push({X:sp*(i+1),y1:cy+A*Math.sin(a),y2:cy+A*Math.sin(a+2.2),z1:Math.cos(a),z2:Math.cos(a+2.2),b})}
+    for(const p of pts){x.lineWidth=3;x.globalAlpha=.85;const my=(p.y1+p.y2)/2;x.strokeStyle=COL[ci[p.b]];x.beginPath();x.moveTo(p.X,p.y1);x.lineTo(p.X,my);x.stroke();x.strokeStyle=COL[ci[cp[p.b]]];x.beginPath();x.moveTo(p.X,my);x.lineTo(p.X,p.y2);x.stroke()}
+    for(const [k,col] of [['1','255,179,71'],['2','232,241,255']]){for(let i=0;i<n;i++){const p=pts[i],z=p['z'+k];x.globalAlpha=.45+.55*(z+1)/2;x.fillStyle=`rgb(${col})`;x.beginPath();x.arc(p.X,p['y'+k],2.2+1.6*(z+1)/2,0,7);x.fill()}}
+    x.shadowBlur=0;x.globalAlpha=1}
+  // periodic table preview with a scanning wave
+  {const{x,w,h}=pt;x.clearRect(0,0,w,h);const cw=Math.min((w-24)/18,(h-24)/9.6),ox=(w-cw*18)/2,oy=(h-cw*9.6)/2;const wave=(t/80)%140-10;
+    for(const e of ELS){const p=pos(e);const rr=p.r>8?p.r-0.4:p.r;const X=ox+(p.c-1)*cw,Y=oy+(rr-1)*cw;const near=Math.max(0,1-Math.abs(e.z-wave)/6);
+      x.fillStyle=CATS[e.c].c;x.globalAlpha=.25+.75*near;x.fillRect(X+1,Y+1,cw-2,cw-2);
+      if(near>.5&&cw>12){x.globalAlpha=1;x.fillStyle='#000';x.font=`700 ${cw*.45}px Space Grotesk, sans-serif`;x.textAlign='center';x.fillText(e.s,X+cw/2,Y+cw*.68)}}
+    x.globalAlpha=1;x.textAlign='left'}
+  // water molecule preview
+  {const{x,w,h}=ml;x.clearRect(0,0,w,h);const a=t/1400,s=Math.min(w,h)*0.32,ang=0.9121;
+    const P=[[0,0,0,[255,60,60],0.5],[Math.sin(ang),-Math.cos(ang),0,[240,244,250],0.32],[-Math.sin(ang),-Math.cos(ang),0,[240,244,250],0.32]].map(p=>{const X=p[0]*Math.cos(a)+p[2]*Math.sin(a),Z=-p[0]*Math.sin(a)+p[2]*Math.cos(a);return{X:w/2+X*s,Y:h/2+20-p[1]*s*1.0-s*0.35,z:Z,c:p[3],r:p[4]*s}});
+    x.lineWidth=s*0.12;x.lineCap='round';x.strokeStyle='#666e7a';for(const i of [1,2]){x.beginPath();x.moveTo(P[0].X,P[0].Y);x.lineTo(P[i].X,P[i].Y);x.stroke()}
+    for(const p of [...P].sort((a,b)=>a.z-b.z)){const g=x.createRadialGradient(p.X-p.r*.38,p.Y-p.r*.38,p.r*.06,p.X,p.Y,p.r);g.addColorStop(0,'#fff');g.addColorStop(.35,`rgb(${p.c})`);g.addColorStop(1,`rgb(${p.c.map(v=>v*.25|0)})`);x.fillStyle=g;x.beginPath();x.arc(p.X,p.Y,p.r,0,7);x.fill()}
+    x.fillStyle='#9DA9C4';x.font='12px Atkinson Hyperlegible Next, system-ui, sans-serif';x.textAlign='center';x.fillText('H₂O: ângulo de 104,5°',w/2,h-14);x.textAlign='left'}
+  // alpha-helix ribbon preview
+  {const{x,w,h}=bi;x.clearRect(0,0,w,h);const a=t/1600,n=120,R=h*0.18,L=w*0.7;let prev=null;
+    const pts=[...Array(n)].map((_,i)=>{const u=i/(n-1),th=u*3.6*6.283+a*3;const X=w/2-L/2+u*L,y=h/2+R*Math.sin(th),z=Math.cos(th);return{X,y,z,u}});
+    const segs=[];for(let i=0;i<n-1;i++)segs.push([pts[i],pts[i+1]]);segs.sort((p,q)=>(p[0].z+p[1].z)-(q[0].z+q[1].z));
+    for(const [p,q] of segs){const hue=240-240*p.u;x.lineCap='round';x.strokeStyle=`hsla(${hue},70%,22%,1)`;x.lineWidth=11+p.z*3;x.beginPath();x.moveTo(p.X,p.y);x.lineTo(q.X,q.y);x.stroke();
+      x.strokeStyle=`hsla(${hue},85%,${50+p.z*10}%,1)`;x.lineWidth=8+p.z*3;x.beginPath();x.moveTo(p.X,p.y);x.lineTo(q.X,q.y);x.stroke()}
+    x.fillStyle='#9DA9C4';x.font='12px Atkinson Hyperlegible Next, system-ui, sans-serif';x.textAlign='center';x.fillText('α-hélice: 3,6 resíduos por volta',w/2,h-14);x.textAlign='left'}
+  // cell preview
+  {const{x,w,h}=ce;x.clearRect(0,0,w,h);const cx=w/2,cy=h/2,R=Math.min(w,h)*0.4;x.save();x.globalCompositeOperation='lighter';
+    const gl=(fn,c,lw)=>{x.strokeStyle=c.replace('A','.12');x.lineWidth=lw*3;fn();x.stroke();x.strokeStyle=c.replace('A','.9');x.lineWidth=lw;fn();x.stroke()};
+    gl(()=>{x.beginPath();for(let i=0;i<=80;i++){const a=i/80*6.283,r=R*(1+0.03*Math.sin(a*3+t/700));i?x.lineTo(cx+Math.cos(a)*r*1.25,cy+Math.sin(a)*r):x.moveTo(cx+Math.cos(a)*r*1.25,cy+Math.sin(a)*r)}x.closePath()},'rgba(240,106,174,A)',1.5); /* membrana */
+    const g=x.createRadialGradient(cx-R*0.25,cy,0,cx-R*0.25,cy,R*0.38);g.addColorStop(0,'rgba(154,107,255,.45)');g.addColorStop(1,'rgba(154,107,255,0)');x.fillStyle=g;x.beginPath();x.arc(cx-R*0.25,cy,R*0.38,0,6.283);x.fill();
+    gl(()=>{x.beginPath();x.arc(cx-R*0.25,cy,R*0.34,0,6.283)},'rgba(154,107,255,A)',1.3); /* núcleo */
+    for(let i=0;i<6;i++){const a=i*1.1+t/4000,px=cx+R*0.55*Math.cos(a)*1.1+R*0.15,py=cy+R*0.6*Math.sin(a);x.save();x.translate(px,py);x.rotate(a*2);gl(()=>{x.beginPath();x.ellipse(0,0,R*0.12,R*0.045,0,0,6.283)},'rgba(242,92,59,A)',1.1); /* mitocôndria */x.restore()}
+    for(let k=0;k<4;k++)gl(()=>{x.beginPath();x.arc(cx+R*0.55,cy-R*0.35+k*5,R*0.18,0.6*3.14,0.9*3.14)},'rgba(247,193,59,A)',1.2); /* Golgi */
+    x.restore();x.fillStyle='#9DA9C4';x.font='12px Atkinson Hyperlegible Next, system-ui, sans-serif';x.textAlign='center';x.lineWidth=4;x.lineJoin='round';x.strokeStyle='rgba(11,15,28,.9)';x.strokeText('Célula animal, cerca de 20\u00a0µm',w/2,h-14);x.fillText('Célula animal, cerca de 20\u00a0µm',w/2,h-14);x.textAlign='left'}
+  // membrane preview: pink lipid bilayer with a cream channel protein letting ions through
+  {const{x,w,h}=mo;x.clearRect(0,0,w,h);const tt=RM.matches?2600:t,cx=w/2,cy=h/2-8,hh=22,tl=17,sp=11,cw=17,pore=6;
+    x.lineCap='round';
+    for(const sd of [-1,1]){for(let X=sp/2;X<w;X+=sp){if(Math.abs(X-cx)<cw+pore+3)continue;const wb=1.4*Math.sin(X*0.21+tt/650+sd),Y=cy+sd*(hh+wb);
+      x.strokeStyle='rgba(240,106,174,.55)';x.lineWidth=1.4;for(const o of [-2,2]){x.beginPath();x.moveTo(X+o,Y);x.quadraticCurveTo(X+o+1.2*Math.sin(tt/500+X),Y-sd*tl*0.5,X+o*0.6,Y-sd*tl);x.stroke()}
+      x.fillStyle='#F06AAE';x.beginPath();x.arc(X,Y,4.3,0,6.283);x.fill()}}
+    // channel protein: two cream subunits around a pore
+    x.fillStyle='rgba(255,225,166,.92)';for(const sd of [-1,1]){const X0=sd<0?cx-pore-cw:cx+pore;x.beginPath();x.roundRect?x.roundRect(X0,cy-hh-9,cw,2*hh+18,7):x.rect(X0,cy-hh-9,cw,2*hh+18);x.fill()}
+    x.fillStyle='rgba(120,90,40,.35)';x.fillRect(cx-pore,cy-hh-9,2*pore,2*hh+18);
+    // ions: approach from above, cross the pore, spread below
+    const top=cy-hh-9,bot=cy+hh+9;
+    for(let i=0;i<7;i++){const p=((tt/4200)+i/7)%1,x0=cx+(i%2?1:-1)*(20+i*13)%(w*0.42),x1=cx+((i*37)%90-45)*1.6;let X,Y;
+      if(p<0.4){const u=p/0.4;X=x0+(cx-x0)*u*u;Y=12+(top-12)*u}else if(p<0.6){const u=(p-0.4)/0.2;X=cx;Y=top+(bot-top)*u}else{const u=(p-0.6)/0.4;X=cx+(x1-cx)*u;Y=bot+(h-34-bot)*u}
+      const a=Math.min(1,p*8,(1-p)*8);x.globalAlpha=a;x.fillStyle='#E8EDF7';x.beginPath();x.arc(X,Y,2.6,0,6.283);x.fill()}
+    x.globalAlpha=1;x.fillStyle='#9DA9C4';x.font='12px Atkinson Hyperlegible Next, system-ui, sans-serif';x.textAlign='center';x.fillText('Bicamada lipídica com canal iônico',w/2,h-14);x.textAlign='left'}
+  if(!RM.matches)requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+RM.addEventListener&&RM.addEventListener('change',()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabela periódica · LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+#modes{margin-bottom:16px}
+.tw{overflow-x:auto;padding:16px;scrollbar-width:thin}
+.pt{display:grid;grid-template-columns:repeat(18,minmax(52px,1fr));grid-template-rows:repeat(7,auto) 12px auto auto;gap:4px;min-width:1000px}
+.el{position:relative;aspect-ratio:1/1.1;border-radius:4px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff;padding:2px 4px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:transform .15s;background:var(--panel)}
+.el:hover{transform:scale(1.08);z-index:3}
+.el:focus-visible{z-index:4;outline:2px solid var(--focus);outline-offset:2px}
+.el .z{font-family:var(--f-data);font-size:12px;font-weight:500;line-height:1.2;color:rgba(255,255,255,.85)}
+.el .s{font-family:var(--f-title);font-weight:700;font-size:18px;line-height:1;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.el .v{font-family:var(--f-data);font-size:12px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;color:rgba(255,255,255,.9)}
+.el.dim{opacity:.45}
+.el.pred .v{font-style:italic}
+.flabel{grid-column:1/3;align-self:center;font-size:13px;color:var(--dim);text-align:right;padding-right:8px}
+.glab{font-size:12px;color:var(--dim);text-align:center;align-self:end}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;margin-top:12px}
+.legend span{display:inline-flex;align-items:center}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:8px;flex:none}
+.grad{height:12px;border-radius:4px;margin:12px 0 4px}
+.gl{display:flex;justify-content:space-between;font-family:var(--f-data);font-size:13px;color:var(--dim)}
+.search{display:flex;gap:8px;margin-bottom:8px}
+.search label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--dim)}
+.search input{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--txt)}
+.search input::placeholder{color:var(--dim)}
+.hint{font-size:13px;color:var(--dim);margin:0 0 24px}
+@media(min-width:1100px){.hint{display:none}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--panel)}
+.stat b{display:block;font-family:var(--f-title);font-size:24px;font-weight:600;color:var(--txt);margin-top:4px;font-variant-numeric:tabular-nums}
+@media(max-width:699px){.stats{grid-template-columns:repeat(2,1fr)}.stat b{font-size:21px}}
+#sugg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+#sugg:empty{display:none}
+#sugg a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line-strong);border-left-width:4px;border-radius:8px;background:var(--panel);text-decoration:none;font-size:14px}
+#sugg a:hover{background:var(--panel-2)}
+#sugg .cap{margin:0}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol></svg>
+  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a></nav>
+
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg>
+    <div>
+      <h1>Os 118 elementos</h1>
+      <div class="k">Módulo 2 <span class="badge">Química</span> <span class="badge">118 fichas</span></div>
+    </div>
+  </header>
+  <p class="lead" style="margin:-8px 0 24px">Ordenados pelo número de prótons (Z). Toque num elemento para abrir a ficha dele.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Naturais</div><b id="sNat">—</b></div>
+    <div class="stat"><div class="k">Sintéticos</div><b id="sSin">—</b></div>
+    <div class="stat"><div class="k">Gases</div><b id="sGas">—</b></div>
+    <div class="stat"><div class="k">Líquidos</div><b id="sLiq">—</b></div>
+  </div>
+
+  <div class="search"><label for="q">Buscar elemento<input id="q" type="search" placeholder="ferro, Au ou 79" autocomplete="off"></label></div>
+  <div id="sugg" aria-live="polite"></div>
+
+  <div class="seg scroll" id="modes" role="group" aria-label="O que a cor mostra"></div>
+
+  <div class="box" style="padding:0;margin-bottom:16px">
+    <div class="tw"><div class="pt" id="pt"></div></div>
+  </div>
+  <div class="hint">Deslize a tabela para os lados para ver todas as colunas.</div>
+
+  <div class="box">
+    <h2 id="lt">—</h2>
+    <div class="txt" id="ld"></div>
+    <div id="legend"></div>
+  </div>
+
+  <div class="foot">
+    Dados: Wikipedia, "List of chemical elements" (massas atômicas padrão IUPAC, densidade, fusão, ebulição, eletronegatividade de Pauling, origem e estado a 25 °C).<br>
+    Valores entre parênteses são previsões teóricas. Massa entre colchetes = número de massa do isótopo mais estável.<br>
+    Lu e Lr no grupo 3, conforme o projeto da IUPAC (2021).
+  </div>
+</div>
+<script>(()=>{const t=document.querySelector(".tabs"),a=t&&t.querySelector(".on");if(a&&t.scrollWidth>t.clientWidth)t.scrollLeft=a.offsetLeft-(t.clientWidth-a.offsetWidth)/2})();</script>
+<script src="dados.js"></script>
+<script src="comum.js"></script>
+<script>
+(()=>{
+const pt=document.getElementById('pt');
+const MODES={
+  cat:{t:'Família química',d:'As cores mostram tipos de elemento. Nos grupos 1, 2 e 13 a 17, elementos da mesma coluna têm o mesmo número de elétrons na camada de valência, por isso reagem de forma parecida (o hélio, com 2, é a exceção dos gases nobres).'},
+  fase:{t:'Estado físico a 25 °C',d:'Só 2 elementos são líquidos em temperatura ambiente: bromo e mercúrio. Gálio (fusão 29,8 °C) derrete na palma da mão. O césio (28,4 °C) também derreteria, mas nunca se toca nele: reage de forma explosiva com a água, até com o suor da pele.'},
+  en:{t:'Eletronegatividade (Pauling)',d:'Força com que o átomo puxa elétrons numa ligação. Cresce para a direita e para cima; o flúor é o máximo (3,98). Gases nobres leves não têm valor.'},
+  dens:{t:'Densidade (escala logarítmica)',d:'Do hidrogênio (0,00009 g/cm³) ao ósmio (22,59 g/cm³), o mais denso já medido. Itálico = previsto.'},
+  mp:{t:'Ponto de fusão (K)',d:'Carbono e tungstênio estão entre os mais altos; o hélio não solidifica à pressão normal.'},
+  bloco:{t:'Bloco eletrônico',d:'Qual subnível (s, p, d ou f) recebe o último elétron. É isso que dá o formato da tabela.'},
+  orig:{t:'Origem',d:'Primordial = já existia quando a Terra se formou. Decaimento = surge de outros elementos radioativos. Sintético = só existe porque foi criado em laboratório.'}
+};
+let mode='cat';
+const modesEl=document.getElementById('modes');
+modesEl.innerHTML=Object.entries({cat:'Família',fase:'Estado físico',en:'Eletronegatividade',dens:'Densidade',mp:'Fusão',bloco:'Bloco',orig:'Origem'}).map(([k,v])=>`<button data-m="${k}">${v}</button>`).join('');
+modesEl.onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.m;render();};
+
+const BLOCO={s:'#ff6b6b',p:'#4dabf7',d:'#ffd43b',f:'#f783ac'};
+const FASEC={solid:'#5c7cfa',liquid:'#22b8cf',gas:'#ffd43b',unknown:'#495057'};
+const ORIGC={primordial:'#51cf66','from decay':'#ffa94d',synthetic:'#e599f7'};
+function range(f){const v=ELS.map(f).filter(x=>x!=null);return[Math.min(...v),Math.max(...v)]}
+const R={en:range(e=>num(e.en)),dens:range(e=>num(e.d)&&Math.log10(num(e.d))),mp:range(e=>num(e.mp))};
+function color(e){
+  switch(mode){
+    case 'cat':return CATS[e.c].c;
+    case 'bloco':return BLOCO[e.b];
+    case 'fase':return FASEC[e.ph];
+    case 'orig':return ORIGC[e.o];
+    case 'en':{const v=num(e.en);return v==null?null:ramp((v-R.en[0])/(R.en[1]-R.en[0]))}
+    case 'dens':{const v=num(e.d);return v==null?null:ramp((Math.log10(v)-R.dens[0])/(R.dens[1]-R.dens[0]))}
+    case 'mp':{const v=num(e.mp);return v==null?null:ramp((v-R.mp[0])/(R.mp[1]-R.mp[0]))}
+  }
+}
+function val(e){
+  switch(mode){
+    case 'en':return e.en==='-'?'—':br(String(num(e.en)));
+    case 'dens':return e.d==='-'?'—':br(String(num(e.d)));
+    case 'mp':return e.mp==='-'?'—':Math.round(num(e.mp))+'K';
+    case 'fase':return FASE[e.ph];
+    case 'orig':return ORIGEM_CURTA[e.o];
+    case 'bloco':return 'bloco '+e.b;
+    default:return br(e.m);
+  }
+}
+function predicted(e){return (mode==='dens'&&isPred(e.d))||(mode==='mp'&&isPred(e.mp))}
+function render(){
+  [...modesEl.children].forEach(b=>{b.classList.toggle('on',b.dataset.m===mode);b.setAttribute('aria-pressed',b.dataset.m===mode)});
+  let h='';
+  for(let g=1;g<=18;g++)h+=`<div class="glab" style="grid-column:${g};grid-row:1;align-self:start;transform:translateY(-1px)"></div>`;
+  h+=`<div class="flabel" style="grid-row:9">La–Yb ↘</div><div class="flabel" style="grid-row:10">Ac–No ↘</div>`;
+  for(const e of ELS){
+    const p=pos(e),c=color(e);
+    const bg=c?`linear-gradient(160deg, ${c}55, ${c}1a)`:'var(--panel)';
+    h+=`<a class="el${c?'':' dim'}${predicted(e)?' pred':''}" href="elementos/${e.slug}.html" style="grid-column:${p.c};grid-row:${p.r};background:${bg};border-color:${c||'#2C3757'}aa" title="${e.n}" aria-label="${e.n}, Z ${e.z}">
+      <span class="z">${e.z}</span><span class="s">${e.s}</span><span class="v">${val(e)}</span></a>`;
+  }
+  pt.innerHTML=h;
+  const M=MODES[mode];document.getElementById('lt').textContent=M.t;document.getElementById('ld').textContent=M.d;
+  const lg=document.getElementById('legend');
+  const sw=(o)=>'<div class="legend">'+o.map(([n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')+'</div>';
+  if(mode==='cat')lg.innerHTML=sw(Object.entries(CATS).map(([k,x])=>[k==='semimetal'?'Semimetal (ou metaloide): classificação intermediária que nem todos os livros usam':x.n,x.c]));
+  else if(mode==='bloco')lg.innerHTML=sw(Object.entries(BLOCO).map(([k,c])=>['bloco '+k,c]));
+  else if(mode==='fase')lg.innerHTML=sw(Object.entries(FASEC).map(([k,c])=>[FASE[k],c]));
+  else if(mode==='orig')lg.innerHTML=sw(Object.entries(ORIGC).map(([k,c])=>[ORIGEM_CURTA[k],c]));
+  else{const r=R[mode];const lo=mode==='dens'?br(Math.pow(10,r[0]).toPrecision(2))+' g/cm³':br(String(r[0])),hi=mode==='dens'?br(Math.pow(10,r[1]).toFixed(2))+' g/cm³':br(String(r[1]))+(mode==='mp'?' K':'');
+    lg.innerHTML=`<div class="grad" style="background:linear-gradient(90deg,${[0,.33,.66,1].map(ramp).join(',')})"></div><div class="gl"><span>${lo}${mode==='mp'?' K':''}</span><span>${hi}</span></div><div class="cap" style="margin-top:8px;margin-bottom:0">Cinza: sem dado medido.</div>`;}
+}
+render();
+// stats
+const c=f=>ELS.filter(f).length;
+document.getElementById('sNat').textContent=c(e=>e.o!=='synthetic');document.getElementById('sSin').textContent=c(e=>e.o==='synthetic');
+document.getElementById('sGas').textContent=c(e=>e.ph==='gas');document.getElementById('sLiq').textContent=c(e=>e.ph==='liquid');
+// search
+const strip=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+document.getElementById('q').addEventListener('input',ev=>{const q=strip(ev.target.value.trim());const out=document.getElementById('sugg');
+  if(!q){out.innerHTML='';return}
+  const r=ELS.filter(e=>strip(e.n).startsWith(q)||e.s.toLowerCase()===q||String(e.z)===q).slice(0,8);
+  out.innerHTML=r.map(e=>`<a href="elementos/${e.slug}.html" style="border-left-color:${CATS[e.c].c}"><b>${e.s}</b> ${e.n} <span class="num">Z ${e.z}</span></a>`).join('')||'<span class="cap">Nenhum elemento encontrado. Tente o nome, o símbolo ou o número atômico.</span>';});
+})();
+</script>
+</body>
+</html>

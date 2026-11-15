@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Célula 3D · LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+/* Célula: estilo Campo escuro (docs/GUIA-DE-ESTILO.md). Tokens em ../base.css */
+.wrap{max-width:1320px}
+.types{margin-bottom:16px}
+.types svg{width:24px;height:24px;flex:none}
+#view{position:relative;height:clamp(460px,72svh,820px);border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%)}
+@media(max-width:699px){#view{height:66svh;min-height:420px}}
+#stage{position:absolute;inset:0}#stage canvas{display:block;touch-action:none}
+#view.fade #stage{animation:fadein .25s ease-out}@keyframes fadein{from{opacity:0}to{opacity:1}}
+.nogl{padding:40px;color:var(--dim);max-width:46ch;line-height:1.6}
+/* pontos clicáveis: 22 px de desenho, 44 px de toque */
+.hs{position:relative;width:0;height:0}
+.hs button{position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;border:0;padding:0;background:transparent;cursor:pointer;pointer-events:auto}
+.hs button::before{content:'';position:absolute;inset:15px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px rgba(255,255,255,.94),0 2px 8px 4px rgba(0,0,0,.55);transition:transform .15s}
+.hs button::after{content:'';position:absolute;inset:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);opacity:0;animation:ping 1.6s ease-out 2}
+.hs button:focus-visible{outline:2px solid var(--focus);outline-offset:-6px}
+.hs.on button::before{transform:scale(1.18)}
+.hs span{position:absolute;left:18px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt);pointer-events:none}
+.hs.on span{border-color:var(--amber)}
+.hs.r span{left:auto;right:18px}
+.hs.t span{left:0;top:-46px;transform:translateX(-50%)}
+.hs.b span{left:0;top:18px;transform:translateX(-50%)}
+.hs.hid span{visibility:hidden}
+@keyframes ping{from{transform:scale(.8);opacity:1}to{transform:scale(1.9);opacity:0}}
+/* rótulos das telas de detalhe */
+.dl{position:relative;width:0;height:0;pointer-events:none}
+.dl i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(11,15,28,.7)}
+.dl span{position:absolute;left:12px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt)}
+.dl.r span{left:auto;right:12px}
+.dl.t span{left:0;top:-40px;transform:translateX(-50%)}
+.dl.b span{left:0;top:12px;transform:translateX(-50%)}
+.dl.hid{visibility:hidden}
+.dl b{position:absolute;left:0;top:0;height:1px;width:0;background:rgba(255,255,255,.6);transform-origin:0 0}
+@media(prefers-reduced-motion:reduce){.hs button::after{animation:none}#view.fade #stage{animation:none}}
+/* camadas flutuantes sobre o palco (nível 2) */
+.hud{position:absolute}
+.tag{top:16px;left:16px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--txt);pointer-events:none;padding:6px 12px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);max-width:calc(100% - 32px)}
+.tag i{width:10px;height:10px;border-radius:50%;flex:none}
+.tag small{color:var(--dim);font-size:13px;font-weight:400}
+.mag{top:16px;right:16px;width:auto;min-width:min(300px,42%);max-width:60%;padding:12px 16px;border-radius:12px;background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);box-shadow:var(--float-shadow);text-align:right;pointer-events:none}
+.mag b{font-family:var(--f-title);font-size:16px;color:var(--txt);font-weight:600}
+.mag .sb{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:8px 0 4px;font:500 13px/1.4 var(--f-data);color:var(--txt)}
+.mag .sb em{font-style:normal;white-space:nowrap}
+#magBar{display:block;height:3px;border-radius:2px;background:var(--txt);flex:none;max-width:60%}
+.mag .n{font-size:12px;line-height:1.5;color:var(--dim)}
+.tool{bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:12px;background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);box-shadow:var(--float-shadow)}
+.tool button{display:flex;align-items:center;gap:8px;height:44px;min-width:44px;justify-content:center;padding:0 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer;transition:background .15s}
+.tool button:hover{background:var(--panel-2)}
+.tool button.on,.tool button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--panel-2)}
+.tool button.sq{padding:0;width:44px}
+.tool svg{width:20px;height:20px;flex:none}
+#back{top:64px;left:16px;display:none;align-items:center;gap:8px;min-height:44px;padding:8px 14px 8px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer}
+#back:hover{background:var(--panel-2)}
+#back svg{width:20px;height:20px}
+/* painel e lista */
+.below{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:24px}
+@media(min-width:1100px){.below{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:24px}
+@media(max-width:699px){.card{padding:16px}.below{gap:16px;margin-top:16px}}
+.insp h2{font-family:var(--f-title);font-size:24px;font-weight:600;line-height:1.2;color:var(--txt);margin:12px 0 4px}
+.insp .sub{color:var(--dim);font-size:14px;margin-bottom:12px}
+@media(max-width:699px){.insp h2{font-size:21px}}
+#desc{font-size:16px;line-height:1.6;color:#D3DAEA;max-width:68ch}
+#desc b{color:#fff}
+@media(max-width:699px){#desc{font-size:15px}}
+.insp .kv{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}
+.enem{margin-top:16px;padding:16px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-strong);font-size:15px;line-height:1.55;color:#D3DAEA;max-width:68ch}
+.enem .eh{display:flex;align-items:center;gap:8px;font-family:var(--f-title);font-weight:600;font-size:16px;color:var(--txt);margin-bottom:8px}
+.enem svg{width:20px;height:20px}
+.links{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.links .btn.primary{width:100%;justify-content:flex-start}
+.lbl{color:var(--dim);font-size:13px;margin:0 0 12px}
+.orgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.orgs button{text-align:left;display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font:600 14px/1.3 var(--f-txt);cursor:pointer;transition:background .15s,border-color .15s}
+.orgs button:hover{border-color:var(--line-strong);background:var(--panel-2)}
+.orgs button.on{border-color:var(--amber);background:var(--panel-2)}
+.orgs button i{flex:none;width:12px;height:12px;border-radius:50%}
+.orgs button span{min-width:0}
+.orgs button.all{grid-column:1/-1;justify-content:center;color:var(--txt)}
+.foot{margin-top:24px}
+@media(max-width:699px){
+  .mag .n,.tool .tx{display:none}
+  .mag{min-width:0;max-width:calc(100% - 80px);padding:8px 12px}.mag b{font-size:14px}.mag .pre,.mag .vw{display:none}.mag .sb{margin:6px 0 0}
+  #back{top:16px;left:12px;padding:6px 10px}#back .tx{display:none}
+  .tag{top:auto;bottom:76px;left:12px;font-size:13px}.tag small{display:none}
+  .tool{bottom:12px}.tool button{padding:0 10px}
+}
+/* revisão visual v5 (Apolo): A cartão compacto, B palco na primeira dobra */
+.mag .vw{color:var(--dim);font:500 12px/1.4 var(--f-data)}
+.mag [hidden]{display:none}
+@media (min-width:700px){
+  .mag{min-width:0;max-width:280px;padding:12px}
+  .mag b{display:block;font-size:15px;line-height:1.3}
+  .mag .sb{flex-direction:column;align-items:flex-end;gap:4px;margin:8px 0 2px}
+  .mag .sb em{white-space:normal;text-align:right}
+  #magBar{max-width:100%}
+  .mag .n{max-width:256px;margin-left:auto;margin-top:6px}
+  #view{height:clamp(460px,calc(100svh - 286px),820px)}
+}
+</style>
+</head>
+<body>
+<!--SPRITE-->
+<div class="wrap">
+  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a></nav>
+
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-celula"/></svg>
+    <div>
+      <h1>A célula por dentro</h1>
+      <div class="k">Módulo 5 <span class="badge">Biologia celular</span></div>
+    </div>
+  </header>
+
+  <div class="seg scroll types" id="types" role="tablist" aria-label="Tipo de célula"></div>
+
+  <div id="view">
+    <div id="stage"></div>
+    <div class="hud tag" id="tag"><i id="tagC"></i><span id="tagT">—</span></div>
+    <button class="hud" id="back"><svg aria-hidden="true"><use href="#ui-voltar"/></svg><span class="tx">Voltar à célula inteira</span></button>
+    <div class="hud mag" id="mag"><b id="magX">—</b><div class="sb"><span id="magBar"></span><em id="magL">—</em></div><div class="vw" id="magV"></div><div class="n" id="magN">Ilustração com cores adicionadas.<br><span id="magU">1 µm é um milésimo de milímetro.</span></div></div>
+    <div class="hud tool" role="toolbar" aria-label="Controles do 3D">
+      <button id="lbls" title="Mostrar ou esconder os nomes" aria-pressed="true"><svg aria-hidden="true"><use href="#ui-rotulos"/></svg><span class="tx">Nomes</span></button>
+      <button class="sq" id="zout" title="Afastar" aria-label="Afastar"><svg aria-hidden="true"><use href="#ui-afastar"/></svg></button>
+      <button class="sq" id="zin" title="Aproximar" aria-label="Aproximar"><svg aria-hidden="true"><use href="#ui-aproximar"/></svg></button>
+      <button class="sq" id="reset" title="Voltar à vista inicial" aria-label="Voltar à vista inicial"><svg aria-hidden="true"><use href="#ui-reiniciar"/></svg></button>
+      <button class="sq" id="pause" title="Pausar animação" aria-label="Pausar animação"><svg aria-hidden="true"><use href="#ui-pausar"/></svg></button>
+      <button id="tour" title="Começar o passeio guiado"><svg aria-hidden="true"><use href="#ui-tour"/></svg><span class="tx">Passeio</span></button>
+    </div>
+  </div>
+
+  <div class="below">
+    <section class="card insp" aria-live="polite">
+      <span class="badge" id="iS"><i id="iC"></i><span id="iF">—</span></span>
+      <h2 id="iT">—</h2>
+      <div class="sub" id="iSub">—</div>
+      <div id="desc"></div>
+      <div class="kv" id="kv"></div>
+      <div class="enem" id="enem"><div class="eh"><svg aria-hidden="true"><use href="#ui-enem"/></svg>No ENEM</div><div id="enemT"></div></div>
+      <div class="links" id="links"></div>
+    </section>
+    <section class="card">
+      <p class="lbl">Partes da célula: toque para localizar</p>
+      <div class="orgs" id="orgs"></div>
+    </section>
+  </div>
+
+  <p class="foot">Ilustração esquemática com cores adicionadas: organelas não têm essas cores de verdade. Valores típicos de livros-texto de biologia celular (ex.: Alberts, <i>Molecular Biology of the Cell</i>); proporções aproximadas e indicadas pela barra de escala. Modelos 3D feitos pela equipe com geometria procedural; as animações mostram processos reais em câmera lenta.</p>
+</div>

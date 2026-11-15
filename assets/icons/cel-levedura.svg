@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img">
+  <title>Levedura</title>
+  <ellipse cx="10" cy="13.6" rx="7" ry="6.4" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/>
+  <circle cx="18" cy="6.5" r="3" fill="#A9C54A" fill-opacity=".1" stroke="#A9C54A"/>
+  <circle cx="11.6" cy="14.6" r="2.6" fill="#2A9FC9" fill-opacity=".45" stroke="#2A9FC9" stroke-width="1.25"/>
+  <circle cx="7.3" cy="11.6" r="1.6" fill="#9A6BFF"/>
+</svg>

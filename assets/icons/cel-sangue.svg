@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" role="img">
+  <title>Células do sangue</title>
+  <circle cx="9" cy="9.2" r="6.1" fill="#D7303B"/>
+  <circle cx="9" cy="9.2" r="2.5" fill="#8E1A24"/>
+  <circle cx="17.1" cy="16.7" r="4.1" fill="#F06AAE" fill-opacity=".14" stroke="#F06AAE"/>
+  <path d="M15.4 17.6c-.3-1.2.5-2.2 1.5-2.1.6-.9 2.1-.7 2.3.5.4 1.1-.6 1.9-1.4 1.6-.6.8-2 .9-2.4 0z" fill="#9A6BFF"/>
+  <ellipse cx="5.2" cy="18.8" rx="1.9" ry="1.1" fill="#FFE1A6"/>
+</svg>

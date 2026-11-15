@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dupla hélice do DNA · LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+/* DNA: cores das bases (guia 2.3, iguais ao desenho) */
+:root{--A:#39e58c;--T:#ff4f6d;--G:#ffc53d;--C:#3fa9ff;--U:#c77dff}
+.top .meta b{display:block;font-family:var(--f-data);font-weight:500;font-size:24px;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.2}
+.top .meta span{font-size:13px;color:var(--dim)}
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.stage{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--panel);transition:background .15s,border-color .15s}
+.stage .k{font-size:13px}
+.stage b{display:block;font-family:var(--f-data);font-weight:500;font-size:18px;color:var(--txt);margin-top:4px}
+.stage.on{border-color:var(--amber);background:var(--panel-2)}
+.stage.on b{color:var(--amber)}
+@media(max-width:699px){.stages{gap:4px}.stage{padding:8px}.stage b{font-size:15px}}
+#stage{height:min(68vh,620px);min-height:440px;margin-bottom:16px}
+canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+.leg span{display:inline-flex;align-items:center;gap:4px;margin-right:12px;white-space:nowrap}.leg i{display:inline-block;width:12px;height:4px;border-radius:2px}
+.leg .sw{font-weight:700}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.ctrl .seg{flex:1 1 auto}
+.btn.mut.on{border-color:var(--red);color:var(--red)}
+.seg>#bMut.on{color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+@media(max-width:699px){.grid{gap:16px}}
+.grid .box{margin:0;min-width:0}
+.seq{overflow-x:auto;white-space:nowrap;padding-bottom:8px;scrollbar-width:thin}
+.row{display:flex;align-items:center;gap:0;margin:4px 0}
+.row .lab{position:sticky;left:0;background:var(--panel);z-index:2;width:104px;flex:none;color:var(--dim);font-size:12px;padding-right:8px;font-family:var(--f-data)}
+.cod{display:inline-flex;padding:2px 4px;margin-right:4px;border-radius:4px;border:1px solid transparent;font-family:var(--f-data);font-size:14px;font-weight:500}
+.cod.cur{border-color:var(--amber);background:rgba(255,179,71,.1)}
+.cod .x{background:var(--red);color:#1A0A0D;border-radius:2px}
+.aa{display:flex;flex-wrap:wrap;gap:4px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 6px;min-width:48px;text-align:center;background:var(--panel)}
+.chip b{display:block;font-size:14px;font-weight:600}.chip small{font-family:var(--f-data);font-size:12px;color:var(--dim)}
+.chip.cur{border-color:var(--amber);background:var(--panel-2)}
+.chip.mutated{border-color:var(--red);background:rgba(255,107,125,.12)}
+.chip.hyd b{color:#9fe870}.chip.pol b{color:#7fd3ff}.chip.aci b{color:#ff8a8a}.chip.bas b{color:#c5a3ff}
+.cls{display:flex;flex-wrap:wrap;gap:4px 16px;margin:-4px 0 12px;font-size:13px}
+.cls span{display:inline-flex;align-items:center;gap:6px}.cls i{width:8px;height:8px;border-radius:50%}
+.bars .b{display:grid;grid-template-columns:20px 1fr 40px;align-items:center;gap:8px;margin:4px 0;font-family:var(--f-data);font-size:13px}
+.bars .t{height:8px;background:#0F1524;border-radius:4px;overflow:hidden}.bars .t i{display:block;height:100%}
+.bars .tag{font-size:13px;color:var(--dim);margin-top:4px}
+.box .kv{margin-top:16px}
+.note{margin-bottom:24px}
+@media(max-width:699px){#stage{height:auto;min-height:0}#stage canvas{height:min(60svh,480px)}#stage .pill.bl,#stage .pill.br{position:static;display:block;margin:0 8px 8px;text-align:left}#stage .pill.br br,#stage .pill.bl br{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol><symbol id="ui-pausar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></g></symbol><symbol id="ui-continuar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.3v13.4a.9.9 0 0 0 1.4.75l10.2-6.7a.9.9 0 0 0 0-1.5L9.4 4.55A.9.9 0 0 0 8 5.3z"/></g></symbol></svg>
+  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a></nav>
+
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-dna"/></svg>
+    <div>
+      <h1>Dupla hélice, forma B</h1>
+      <div class="k">Módulo 1 <span class="badge">Biologia molecular</span> <span class="badge">Gene HBB, da β-globina</span></div>
+    </div>
+    <div class="meta" aria-live="off"><span>Voltas</span><b id="turns">0.00</b><span id="pbread">0 pb lidos</span></div>
+  </header>
+  <p class="lead" style="margin:-8px 0 24px"><i>Homo sapiens</i>, cromossomo 11p15.4, NM_000518, éxon 1, região codificante c.1–60.</p>
+
+  <div class="stages">
+    <div class="stage" id="st0"><div class="k">DNA</div><b id="v0">—</b></div>
+    <div class="stage" id="st1"><div class="k">mRNA</div><b id="v1">—</b></div>
+    <div class="stage" id="st2"><div class="k">Códon</div><b id="v2">—</b></div>
+    <div class="stage" id="st3"><div class="k">Aminoácido</div><b id="v3">—</b></div>
+  </div>
+
+  <div class="stage-3d" id="stage">
+    <canvas id="c"></canvas>
+    <div class="pill tl"><b>B-DNA</b><br>Arraste para girar</div>
+    <div class="pill tr"><b id="runst">Girando</b><br>Escala: 1&nbsp;Å = <span class="num" id="sc">—</span>&nbsp;px</div>
+    <div class="pill bl leg">
+      <span><i style="background:var(--A)"></i><b class="sw">A</b> adenina</span><span><i style="background:var(--T)"></i><b class="sw">T</b> timina</span><br>
+      <span><i style="background:var(--G)"></i><b class="sw">G</b> guanina</span><span><i style="background:var(--C)"></i><b class="sw">C</b> citosina</span>
+    </div>
+    <div class="pill br leg"><span><i style="background:#ffb347"></i>fita codificante 5'→3' ↑</span><br><span><i style="background:#e8f1ff"></i>fita molde 3'→5' ↓</span><br><span><i style="background:#b18cff;width:8px;height:8px;border-radius:50%"></i>íons Na⁺</span></div>
+  </div>
+
+  <div class="ctrl">
+    <div class="seg" role="group" aria-label="Versão do gene">
+      <button class="on" id="bNorm" aria-pressed="true">Normal (HbA)</button>
+      <button id="bMut" aria-pressed="false">Falciforme (HbS)</button>
+    </div>
+    <button class="btn" id="bPause" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#ui-pausar"/></svg><span>Pausar</span></button>
+  </div>
+
+  <div class="box note" id="mutNote"></div>
+
+  <div class="grid">
+    <div class="box full">
+      <h2>Sequência e transcrição</h2>
+      <div class="txt">No núcleo, a RNA polimerase lê a fita molde (3'→5') e monta o RNA de 5' para 3'. O RNA tem a mesma sequência da fita codificante, com U no lugar de T. O gene HBB tem 3 éxons e 2 íntrons; os íntrons são cortados (splicing) antes de o mRNA ir para o citoplasma. O trecho mostrado fica todo no éxon 1.</div>
+      <div class="seq" id="seq"></div>
+    </div>
+
+    <div class="box full">
+      <h2>Tradução pelo código genético padrão</h2>
+      <div class="txt">Cada códon (3 bases do mRNA) corresponde a 1 aminoácido ou a um sinal de parada. A Met inicial é removida na proteína madura, por isso a numeração começa no 0.</div>
+      <div class="cls" aria-label="Classes de aminoácido"><span><i style="background:#9fe870"></i>hidrofóbico</span><span><i style="background:#7fd3ff"></i>polar</span><span><i style="background:#ff8a8a"></i>ácido</span><span><i style="background:#c5a3ff"></i>básico</span></div>
+      <div class="aa" id="aa"></div>
+    </div>
+
+    <div class="box">
+      <h2>Composição do trecho</h2>
+      <div class="cap">Calculada sobre os 60 pb mostrados.</div>
+      <div class="bars" id="bars"></div>
+      <div class="kv">
+        <div>Conteúdo GC</div><div id="gc">—</div>
+        <div>Ligações de hidrogênio</div><div id="hb">—</div>
+        <div>Tm estimada*</div><div id="tmv">—</div>
+        <div>Massa (dupla fita)</div><div id="mw">—</div>
+      </div>
+      <div class="cap" style="margin-top:16px;margin-bottom:0">*Tm = 64,9 + 41·(GC − 16,4)/N — fórmula básica, Na⁺ 50 mM. A·T faz 2 ligações de hidrogênio e G·C faz 3. Mais GC deixa o DNA mais estável: em parte por essas ligações, mas principalmente porque os pares G·C se empilham com mais força.</div>
+    </div>
+
+    <div class="box">
+      <h2>Geometria da hélice B</h2>
+      <div class="cap">Valores usados para desenhar o modelo acima.</div>
+      <div class="kv">
+        <div>Sentido do giro</div><div>destro</div>
+        <div>Subida por par de bases</div><div>3,38 Å</div>
+        <div>Pares por volta</div><div>10,5</div>
+        <div>Giro por par</div><div>34,3°</div>
+        <div>Passo (1 volta)</div><div>35,5 Å</div>
+        <div>Diâmetro</div><div>≈ 20 Å</div>
+        <div>Raio dos fosfatos</div><div>8,9 Å</div>
+        <div>Sulco maior / menor</div><div>≈ 22 Å / 12 Å</div>
+        <div>Fitas</div><div>antiparalelas</div>
+      </div>
+      <div class="cap" style="margin-top:16px;margin-bottom:0">1&nbsp;Å (ångström) = 0,1 nanômetro. O sulco menor existe porque os dois açúcares de cada par ficam do mesmo lado (~125° entre eles), e não opostos. Sulcos medidos ao longo do eixo da hélice; a abertura real, descontando os átomos, é de ~12 Å e ~6 Å.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Um gene real e a física real. A animação é só o jeito de ver.<br>
+    Fontes: sequência NCBI RefSeq NM_000518 (HBB); geometria B-DNA: Arnott &amp; Hukins (1972); Dickerson-Drew, PDB 1BNA; mutação HbS: c.20A&gt;T (p.Glu7Val na nomenclatura HGVS; tradicionalmente chamada Glu6Val, sem contar a Met inicial) (Ingram, 1957)
+  </div>
+</div>
+<script>(()=>{const t=document.querySelector(".tabs"),a=t&&t.querySelector(".on");if(a&&t.scrollWidth>t.clientWidth)t.scrollLeft=a.offsetLeft-(t.clientWidth-a.offsetWidth)/2})();</script>
+<script>
+(()=>{
+const SEQ0="ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAAC";
+const N=SEQ0.length, MUT=19;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let seq=SEQ0.split(''), mutant=false, paused=RM;
+const COMP={A:'T',T:'A',G:'C',C:'G'};
+const COL={A:'#39e58c',T:'#ff4f6d',G:'#ffc53d',C:'#3fa9ff'};
+const AAS="FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+const BI={T:0,C:1,A:2,G:3};
+const AAI={A:['Ala','Alanina','hyd'],R:['Arg','Arginina','bas'],N:['Asn','Asparagina','pol'],D:['Asp','Aspartato','aci'],C:['Cys','Cisteína','pol'],Q:['Gln','Glutamina','pol'],E:['Glu','Glutamato','aci'],G:['Gly','Glicina','hyd'],H:['His','Histidina','bas'],I:['Ile','Isoleucina','hyd'],L:['Leu','Leucina','hyd'],K:['Lys','Lisina','bas'],M:['Met','Metionina','hyd'],F:['Phe','Fenilalanina','hyd'],P:['Pro','Prolina','hyd'],S:['Ser','Serina','pol'],T:['Thr','Treonina','pol'],W:['Trp','Triptofano','hyd'],Y:['Tyr','Tirosina','pol'],V:['Val','Valina','hyd'],'*':['Stop','Parada','pol']};
+const tr=c=>AAS[16*BI[c[0]]+4*BI[c[1]]+BI[c[2]]];
+const codons=()=>{const o=[];for(let i=0;i<N;i+=3)o.push(seq.slice(i,i+3).join(''));return o};
+
+// ---------- geometry (Å) ----------
+const RISE=3.38, TW=2*Math.PI/10.5, RP=8.9, RS=5.9, OFF=125*Math.PI/180, TILT=0.2, DIST=140;
+const HALF=8.5;
+
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1,SC=8,CX=0,CY=0;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+  SC=Math.min((H-60)/(2*HALF*RISE+6),(W-150)/(2*RP+6));CX=W/2+ (W>600?0:-8);CY=H/2;document.getElementById('sc').textContent=SC.toFixed(1);}
+addEventListener('resize',resize);resize();
+
+// right-handed helix, axis vertical: x = r sin t, z = r cos t
+function P(r,t,y){const x=r*Math.sin(t),z=r*Math.cos(t);const yy=y*Math.cos(TILT)-z*Math.sin(TILT),zz=y*Math.sin(TILT)+z*Math.cos(TILT);const f=DIST/(DIST-zz);return{X:CX+x*SC*f,Y:CY-yy*SC*f,z:zz,f,x,y,zr:z}}
+
+let s=0, spin=0, spinV=0.32, dragV=0, total=0;
+const mod=(a,n)=>((a%n)+n)%n;
+
+// counter-ions
+const ions=[];for(let i=0;i<16;i++)ions.push({i:(Math.random()*2-1)*HALF,a:Math.random()*6.28,r:11+Math.random()*3,ph:Math.random()*6.28});
+
+function fade(y){const e=HALF*RISE, d=Math.abs(y);return d>e?0:Math.min(1,(e-d)/(RISE*2.2))}
+function shade(z){return 0.38+0.62*Math.max(0,Math.min(1,(z+RP)/(2*RP)))}
+
+function frame(now){
+  const dt=Math.min(0.05,(now-(frame.l||now))/1000);frame.l=now;
+  if(!paused){s+=dt*0.85;total+=dt*0.85;}
+  spin+=dt*(paused?(RM?0:0.12):spinV)+dragV;dragV*=0.92;
+  ctx.clearRect(0,0,W,H);
+  const prims=[];
+  const center=mod(Math.round(s),N), curCod=Math.floor(center/3);
+  const i0=Math.floor(s-HALF)-1,i1=Math.ceil(s+HALF)+1;
+  const pulse=0.5+0.5*Math.sin(now/180);
+
+  for(let i=i0;i<=i1;i++){
+    const k=mod(i,N), y=(i-s)*RISE, t=i*TW+spin, a=fade(y);
+    if(a<=0)continue;
+    const b1=seq[k], b2=COMP[b1], hl=Math.floor(k/3)===curCod, mut=mutant&&k===MUT;
+    // backbones (interpolated along the helix)
+    if(i<i1){
+      for(const [o,col] of [[0,'255,179,71'],[OFF,'232,241,255']]){
+        for(let q=0;q<4;q++){
+          const f0=q/4,f1=(q+1)/4;
+          const p0=P(RP,t+o+f0*TW,y+f0*RISE),p1=P(RP,t+o+f1*TW,y+f1*RISE);
+          const aa=Math.min(a,fade(y+RISE));
+          prims.push({z:(p0.z+p1.z)/2,d(){const sh=shade((p0.zr+p1.zr)/2);
+            ctx.lineCap='round';ctx.strokeStyle=`rgba(${col},${0.12*aa*sh})`;ctx.lineWidth=2.6*SC*p0.f;ctx.beginPath();ctx.moveTo(p0.X,p0.Y);ctx.lineTo(p1.X,p1.Y);ctx.stroke();
+            ctx.strokeStyle=`rgba(${col},${0.9*aa*sh})`;ctx.lineWidth=0.75*SC*p0.f;ctx.stroke();}});
+        }
+      }
+    }
+    // nucleotide: phosphate → sugar → base half
+    const p1=P(RP,t,y),s1=P(RS,t+0.2,y),p2=P(RP,t+OFF,y),s2=P(RS,t+OFF-0.2,y);
+    const mx=(s1.x+s2.x)/2,mz=(s1.zr+s2.zr)/2;
+    const g=0.55; // gap for H-bonds
+    const r1=Math.hypot(mx,mz), ang=Math.atan2(mx,mz);
+    const ux=(s2.x-s1.x),uz=(s2.zr-s1.zr),ul=Math.hypot(ux,uz);
+    const m1=raw(mx-ux/ul*g,y,mz-uz/ul*g), m2=raw(mx+ux/ul*g,y,mz+uz/ul*g), mm=raw(mx,y,mz);
+    for(const [ss,mmx,b,pp,col] of [[s1,m1,b1,p1,'255,179,71'],[s2,m2,b2,p2,'232,241,255']]){
+      prims.push({z:(ss.z+mmx.z)/2-0.4,d(){const sh=shade((ss.zr+mmx.zr)/2);
+        ctx.globalAlpha=a*sh;ctx.lineCap='round';
+        ctx.strokeStyle=`rgba(${col},.55)`;ctx.lineWidth=0.35*SC*pp.f;ctx.beginPath();ctx.moveTo(pp.X,pp.Y);ctx.lineTo(ss.X,ss.Y);ctx.stroke();
+        if(hl||mut){ctx.shadowColor=mut?'#ff3b5c':COL[b];ctx.shadowBlur=mut?18*pulse+6:12;}
+        ctx.strokeStyle=COL[b];ctx.lineWidth=(hl?1.25:0.95)*SC*ss.f;ctx.beginPath();ctx.moveTo(ss.X,ss.Y);ctx.lineTo(mmx.X,mmx.Y);ctx.stroke();
+        ctx.shadowBlur=0;
+        ctx.fillStyle='rgba(255,255,255,.75)';ctx.beginPath();ctx.arc(ss.X,ss.Y,0.42*SC*ss.f,0,7);ctx.fill();
+        ctx.globalAlpha=1;}});
+      prims.push({z:pp.z,d(){const sh=shade(pp.zr),R=1.25*SC*pp.f;
+        const gr=ctx.createRadialGradient(pp.X-R*.35,pp.Y-R*.35,R*.1,pp.X,pp.Y,R);
+        gr.addColorStop(0,'#fff');gr.addColorStop(.45,`rgba(${col},1)`);gr.addColorStop(1,`rgba(${col},.15)`);
+        ctx.globalAlpha=a*sh;ctx.fillStyle=gr;ctx.beginPath();ctx.arc(pp.X,pp.Y,R,0,7);ctx.fill();ctx.globalAlpha=1;}});
+    }
+    // hydrogen bonds: 2 (A·T) or 3 (G·C)
+    const nh=(b1==='G'||b1==='C')?3:2;
+    prims.push({z:mm.z,d(){ctx.globalAlpha=a*shade(mm.zr)*(hl?1:.7);ctx.strokeStyle='#fff';ctx.lineWidth=1;
+      const dx=m2.X-m1.X,dy=m2.Y-m1.Y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,sp=0.35*SC*mm.f;
+      for(let h=0;h<nh;h++){const o=(h-(nh-1)/2)*sp;ctx.setLineDash([1.5,1.5]);ctx.beginPath();ctx.moveTo(m1.X+nx*o,m1.Y+ny*o);ctx.lineTo(m2.X+nx*o,m2.Y+ny*o);ctx.stroke();}
+      ctx.setLineDash([]);
+      if(mut){ctx.strokeStyle=`rgba(255,59,92,${.5+.5*pulse})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(mm.X,mm.Y,(3.2+pulse)*SC*mm.f,0,7);ctx.stroke();}
+      ctx.globalAlpha=1;}});
+  }
+  // ions
+  for(const io of ions){
+    if(!paused)io.a+=dt*0.15;
+    let yy=(io.i)*RISE; const a=fade(yy); if(a<=0)continue;
+    const p=P(io.r,io.a+spin*0.3,yy+Math.sin(now/900+io.ph)*0.8);
+    prims.push({z:p.z,d(){ctx.globalAlpha=a*shade(p.zr)*.9;ctx.fillStyle='#b18cff';ctx.shadowColor='#b18cff';ctx.shadowBlur=8;ctx.beginPath();ctx.arc(p.X,p.Y,0.7*SC*p.f,0,7);ctx.fill();ctx.shadowBlur=0;
+      if(p.zr>4){ctx.fillStyle='rgba(197,163,255,.8)';ctx.font='12px JetBrains Mono, monospace';ctx.fillText('Na⁺',p.X+5,p.Y-4);}ctx.globalAlpha=1;}});
+  }
+  prims.sort((a,b)=>a.z-b.z);for(const p of prims)p.d();
+
+  drawAnnotations(curCod);
+  updateHUD(curCod);
+  requestAnimationFrame(frame);
+}
+function raw(x,y,z){const yy=y*Math.cos(TILT)-z*Math.sin(TILT),zz=y*Math.sin(TILT)+z*Math.cos(TILT);const f=DIST/(DIST-zz);return{X:CX+x*SC*f,Y:CY-yy*SC*f,z:zz,f,zr:z}}
+
+function drawAnnotations(curCod){
+  ctx.font='600 12px Atkinson Hyperlegible Next, system-ui, sans-serif';
+  // codon bracket on the right
+  const ys=[];for(let i=Math.floor(s-HALF);i<=Math.ceil(s+HALF);i++){if(Math.floor(mod(i,N)/3)===curCod&&Math.abs(i-s)<HALF-0.5)ys.push(P(0,0,(i-s)*RISE).Y)}
+  if(ys.length){const x=CX+(RP+3.5)*SC,y0=Math.min(...ys)-6,y1=Math.max(...ys)+6;
+    ctx.strokeStyle='rgba(255,179,71,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x-5,y0);ctx.lineTo(x,y0);ctx.lineTo(x,y1);ctx.lineTo(x-5,y1);ctx.stroke();
+    const c=codons()[curCod],aa=tr(c);ctx.fillStyle='#ffb347';ctx.fillText(`Códon ${curCod+1}`,x+6,(y0+y1)/2-6);ctx.fillStyle='#fff';ctx.fillText(`${c} → ${AAI[aa][0]}${curCod}`,x+6,(y0+y1)/2+7);}
+  // grooves: find the facing groove centre near the middle
+  groove(OFF+(2*Math.PI-OFF)/2,[1,13],'Sulco maior','≈22 Å');
+  groove(OFF/2,[-13,-1],'Sulco menor','≈12 Å');
+}
+function groove(ang,[ya,yb],name,w){
+  let best=null;for(let i=Math.floor(s-HALF);i<=Math.ceil(s+HALF);i++){const y=(i-s)*RISE;if(y<ya||y>yb)continue;
+    for(let f=0;f<1;f+=0.25){const p=P(RP*0.85,i*TW+spin+ang+f*TW,y+f*RISE);if(!best||p.zr>best.zr)best=p;}}
+  if(!best||best.zr<RP*0.5)return;
+  const lx=Math.max(CX-(RP+4)*SC,Math.max(ctx.measureText(name).width,ctx.measureText(w).width)+10);ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(best.X,best.Y);ctx.lineTo(lx,best.Y);ctx.stroke();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(best.X,best.Y,2,0,7);ctx.fill();
+  ctx.textAlign='right';ctx.fillStyle='#d9e2f5';ctx.fillText(name,lx-4,best.Y-3);ctx.fillStyle='#9DA9C4';ctx.fillText(w,lx-4,best.Y+11);ctx.textAlign='left';
+}
+
+// ---------- panels ----------
+let lastCod=-1;
+const $=id=>document.getElementById(id);
+function updateHUD(cc){
+  $('turns').textContent=(total/10.5).toFixed(2);$('pbread').textContent=Math.floor(total)+' pb lidos';
+  const ph=Math.floor((now2()/1400))%4;for(let i=0;i<4;i++)$('st'+i).classList.toggle('on',i===ph);
+  if(cc!==lastCod){lastCod=cc;renderPanels(cc);}
+}
+const now2=()=>performance.now();
+function renderPanels(cc){
+  const cs=codons(),c=cs[cc],aa=tr(c);
+  $('v0').textContent=c;$('v1').textContent=c.replace(/T/g,'U');$('v2').textContent=(cc+1)+'/20';$('v3').textContent=AAI[aa][0];
+  // sequence rows
+  const mk=(f,lab)=>`<div class="row"><span class="lab">${lab}</span>`+cs.map((x,j)=>`<span class="cod${j===cc?' cur':''}">`+x.split('').map((b,q)=>{const B=f(b);const isM=mutant&&j*3+q===MUT;return`<span class="${isM?'x':''}" style="color:${isM?'':(B==='U'?'var(--U)':COL[B])}">${B}</span>`}).join('')+'</span>').join('')+'</div>';
+  $('seq').innerHTML=mk(b=>b,"5' codif. 3'")+mk(b=>COMP[b],"3' molde 5'")+mk(b=>b==='T'?'U':b,"5' mRNA 3'");
+  const cur=$('seq').querySelector('.cod.cur');if(cur){const box=$('seq');box.scrollLeft=cur.offsetLeft-box.clientWidth/2+30;}
+  $('aa').innerHTML=cs.map((x,j)=>{const a=tr(x),I=AAI[a];return`<div class="chip ${I[2]}${j===cc?' cur':''}${mutant&&j===6?' mutated':''}"><b>${I[0]}</b><small>${j===0?'início':j}</small></div>`}).join('');
+}
+function composition(){
+  const n={A:0,T:0,G:0,C:0};seq.forEach(b=>n[b]++);
+  // both strands
+  const ds={A:n.A+n.T,T:n.T+n.A,G:n.G+n.C,C:n.C+n.G};
+  $('bars').innerHTML=['A','T','G','C'].map(b=>`<div class="b"><span style="color:${COL[b]};font-weight:800">${b}</span><div class="t"><i style="width:${n[b]/N*100*2.2}%;background:${COL[b]}"></i></div><span>${n[b]}</span></div>`).join('')+'<div class="tag">contagem na fita codificante</div>';
+  const gc=n.G+n.C;$('gc').textContent=(gc/N*100).toFixed(1)+' %';
+  $('hb').textContent=((n.A+n.T)*2+gc*3)+' ('+(n.A+n.T)+'×2 + '+gc+'×3)';
+  $('tmv').textContent=(64.9+41*(gc-16.4)/N).toFixed(1)+' °C';
+  const strand=x=>x.A*313.2+x.T*304.2+x.G*329.2+x.C*289.2+79.0;
+  const s2={A:n.T,T:n.A,G:n.C,C:n.G};
+  $('mw').textContent=((strand(n)+strand(s2))/1000).toFixed(1)+' kDa';
+}
+function note(){
+  const el=$('mutNote');
+  if(!mutant){el.className='box note';el.innerHTML=`<b>Hemoglobina normal (HbA).</b> O códon 7 do gene é <b style="color:var(--G)">GAG</b>, que vira <b>Glu6</b> (glutamato), um aminoácido com carga negativa que fica na superfície da proteína, voltado para a água. Toque em <b>Falciforme (HbS)</b> para trocar uma única base.`;}
+  else{el.className='box note bad';el.innerHTML=`<b style="color:var(--red)">Anemia falciforme (HbS), c.20A&gt;T.</b> Uma só letra muda: <b>GAG → GTG</b>. O A vira T (e o par A·T vira T·A, ainda com 2 ligações de hidrogênio). Na proteína, <b>Glu6 → Val6</b>: entra uma valina hidrofóbica na superfície. Quando a hemoglobina solta o oxigênio (nos capilares dos tecidos), essa valina gruda numa "bolsa" hidrofóbica de outra hemoglobina, as moléculas formam fibras longas e a hemácia se deforma em foice. Os outros 59 pares continuam iguais.<br><br>Cada pessoa tem duas cópias do gene HBB, uma de cada pai. Quem herda o alelo HbS dos dois (SS) tem a anemia falciforme. Quem herda só um (AS) tem o traço falciforme e quase nunca tem sintomas. Na África, onde a malária é comum, o traço protege contra a forma grave da malária, e por isso o alelo ficou frequente. No Brasil, a doença é detectada no teste do pezinho.`;}
+}
+function setMut(m){mutant=m;seq=SEQ0.split('');if(m)seq[MUT]='T';$('bMut').classList.toggle('on',m);$('bNorm').classList.toggle('on',!m);$('bMut').setAttribute('aria-pressed',m);$('bNorm').setAttribute('aria-pressed',!m);
+  if(m){const target=MUT;s=target+Math.floor(s/N)*N;} // jump to the mutation
+  lastCod=-1;composition();note();}
+$('bNorm').onclick=()=>setMut(false);$('bMut').onclick=()=>setMut(true);
+function setPause(){$('bPause').innerHTML=`<svg class="ico" aria-hidden="true"><use href="#ui-${paused?'continuar':'pausar'}"/></svg><span>${paused?'Continuar':'Pausar'}</span>`;$('bPause').setAttribute('aria-pressed',paused);$('runst').textContent=paused?'Pausado':'Girando';}
+$('bPause').onclick=()=>{paused=!paused;setPause();};setPause();
+
+// drag to rotate
+let dragging=false,lx=0;
+cv.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;});
+addEventListener('pointermove',e=>{if(!dragging)return;const d=e.clientX-lx;lx=e.clientX;spin+=d*0.012;dragV=d*0.0015;});
+addEventListener('pointerup',()=>dragging=false);addEventListener('pointercancel',()=>dragging=false);
+
+composition();note();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
