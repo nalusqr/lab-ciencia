@@ -1,7 +1,7 @@
 // Teste de fumaça do LAB (dono: Prometeu). Abre cada página por file://, como a usuária abre (duplo clique),
 // e falha se aparecer erro de console ou exceção na página. Na Célula, percorre as 8 células e os 12 detalhes
 // pelo hash e confere que o canvas 3D e os pontos/rótulos aparecem. Também valida a página de teste de modelos.
-// Na Embriologia (canvas 2D), percorre todas as rotas por window.LAB_EMBRIO e confere que cada uma desenha sem erro.
+// Na Embriologia e na Histologia (canvas 2D), percorre todas as rotas por window.LAB_EMBRIO / window.LAB_HISTO e confere que cada uma desenha sem erro.
 // Uso: ver testes/LEIA-ME.md.   node testes/fumaca.js [filtro]   (filtro: parte do nome da página, ex.: celula)
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -25,6 +25,7 @@ const PAGINAS = [
   ['celula', 'site/celula/index.html'],
   ['morfofisiologia', 'site/morfofisiologia/index.html'],
   ['embriologia', 'site/embriologia/index.html'],   // canvas 2D; percorre todas as rotas por window.LAB_EMBRIO
+  ['histologia', 'site/histologia/index.html'],     // canvas 2D, mesmo motor; percorre todas as rotas por window.LAB_HISTO
 ];
 // módulos novos: entram sozinhos quando estiverem marcados como prontos em scripts/modulos.json (ver scripts/abas.py)
 try {
@@ -74,7 +75,7 @@ async function paginaSimples(nome, rel) {
 
 // módulos de canvas 2D com rotas por hash (motor da Bioenergética): abre e percorre cada rota pela API da página
 // (window[api].rotas e .ir), conferindo que não surgiu erro e que o canvas desenhou algo em cada uma
-const ROTAS_2D = { embriologia: 'LAB_EMBRIO' };
+const ROTAS_2D = { embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO' };
 async function paginaRotas(nome, rel, api) {
   const t0 = Date.now(); const { ctx, page } = await abrir();
   let rotas = [];
