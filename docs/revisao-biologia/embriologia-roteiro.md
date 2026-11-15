@@ -27,7 +27,7 @@ Item 5 da ementa: "Embriologia – classificação dos óvulos quanto à quantid
 **Texto do aluno:**
 > O **vitelo** é a reserva de nutrientes (proteínas e lipídios) que alimenta o embrião até ele conseguir se nutrir de outro jeito. A quantidade e a posição do vitelo dividem os ovos em quatro tipos. O **oligolécito**, ou **isolécito**, tem pouco vitelo, espalhado por igual: ouriço-do-mar, anfioxo e mamíferos placentários (o embrião logo passa a ser nutrido pela mãe). O **heterolécito** tem vitelo em quantidade média, concentrado num dos polos, o **polo vegetativo**; no outro, o **polo animal**, ficam o núcleo e a maior parte do citoplasma. É o ovo dos anfíbios. O **telolécito** tem tanto vitelo que o citoplasma e o núcleo ficam num pequeno disco no polo animal, a **cicatrícula** (disco germinativo): aves, répteis, a maioria dos peixes e os moluscos cefalópodes (polvo, lula). O **centrolécito** tem o vitelo no centro e o citoplasma em volta: é o ovo dos insetos e de outros artrópodes.
 >
-> Na galinha, a "gema" é a célula-ovo, com cerca de 3 cm; a clara e a casca são camadas acrescentadas no caminho pelo oviduto (o que acontece com a gema durante o desenvolvimento está em `#anexos`, vesícula vitelínica). O ovócito humano mede cerca de 0,1 mm, quase no limite do que se vê a olho nu. Quanto mais longo é o desenvolvimento sem ajuda da mãe, mais vitelo o ovo tem.
+> Na galinha, a "gema" é a célula-ovo, com cerca de 3 cm; a clara e a casca são camadas acrescentadas no caminho pelo oviduto (o que acontece com a gema durante o desenvolvimento está em `#anexos/funcoes`, vesícula vitelínica). O ovócito humano mede cerca de 0,1 mm, quase no limite do que se vê a olho nu. Quanto mais longo é o desenvolvimento sem ajuda da mãe, mais vitelo o ovo tem.
 
 **Quadro:**
 
@@ -64,7 +64,7 @@ Item 5 da ementa: "Embriologia – classificação dos óvulos quanto à quantid
 - **Subtítulo:** "holoblástica e meroblástica"
 
 **Texto do aluno:**
-> Depois da fecundação, o zigoto passa por uma série de mitoses rápidas, a **segmentação** (ou clivagem). As células formadas, os **blastômeros**, ficam cada vez menores, porque quase não há crescimento entre uma divisão e outra: o embrião continua do tamanho do ovo. O vitelo atrapalha a divisão. Por isso, o tipo de ovo decide o tipo de segmentação. Na **holoblástica** (total), o ovo inteiro se divide. Ela é **igual** no oligolécito, com blastômeros do mesmo tamanho, e **desigual** no heterolécito: no polo animal ficam células pequenas (**micrômeros**) e no polo vegetativo, cheio de vitelo, células grandes (**macrômeros**).
+> Depois da fecundação, o zigoto passa por uma série de mitoses rápidas, a **segmentação** (ou clivagem). As células formadas, os **blastômeros**, ficam cada vez menores, porque quase não há crescimento entre uma divisão e outra: o embrião continua do tamanho do ovo. O vitelo atrapalha a divisão. Por isso, o tipo de ovo decide o tipo de segmentação. Na **holoblástica** (total), o ovo inteiro se divide. Ela é **igual** no oligolécito, com blastômeros do mesmo tamanho (nos mamíferos, quase igual e lenta), e **desigual** no heterolécito: no polo animal ficam células pequenas (**micrômeros**) e no polo vegetativo, cheio de vitelo, células grandes (**macrômeros**).
 >
 > Na **meroblástica** (parcial), só a parte sem vitelo se divide. No telolécito ela é **discoidal**: só o disco da cicatrícula se divide, formando um disco de células sobre a gema. No centrolécito ela é **superficial**: o núcleo se divide várias vezes no centro, os núcleos migram para a periferia e só então as membranas separam as células, numa camada em volta do vitelo.
 
@@ -80,7 +80,7 @@ Item 5 da ementa: "Embriologia – classificação dos óvulos quanto à quantid
 - **Subtítulo:** "uma bolinha maciça de células"
 
 **Texto do aluno:**
-> Com cerca de **16 a 32 células**, o embrião é uma bolinha maciça, parecida com uma amora, e por isso se chama **mórula** (do latim *morum*, amora). Ainda não há cavidade dentro dela. Até essa fase, os blastômeros dos mamíferos e de muitos outros animais são equivalentes: se um embrião bem jovem se separa em dois, cada metade pode formar um indivíduo completo. É assim que surgem os gêmeos univitelinos (ver `#humano/gemeos`). No ser humano, a mórula se forma por volta do **3º dia** depois da fecundação, ainda dentro da tuba uterina, e chega ao útero entre o 3º e o 4º dia.
+> Com cerca de **12 a 32 células** (Moore), o embrião é uma bolinha maciça, parecida com uma amora, e por isso se chama **mórula** (do latim *morum*, amora). Ainda não há cavidade dentro dela. Até essa fase, os blastômeros dos mamíferos e de muitos outros animais são equivalentes: se um embrião bem jovem se separa em dois, cada metade pode formar um indivíduo completo. Cerca de 1/3 dos gêmeos univitelinos (monozigóticos) surge assim; os outros 2/3, em geral, da divisão da massa celular interna do blastocisto, um pouco depois (ver `#humano/gemeos`). No ser humano, a mórula se forma por volta do **3º dia** depois da fecundação, ainda dentro da tuba uterina, e chega ao útero entre o 3º e o 4º dia.
 >
 > Na mórula dos mamíferos, as células se apertam umas contra as outras (compactação) e começam a se separar em dois grupos: as de fora darão o trofoblasto, e as de dentro, a massa celular interna. É o primeiro passo de diferenciação do embrião.
 
@@ -88,7 +88,7 @@ Item 5 da ementa: "Embriologia – classificação dos óvulos quanto à quantid
 **Faixa "Divisões":** de 0 a 5, com o contador de células e, no modo humano, o rótulo "dia 1 a 3".
 
 **Cartão "No ENEM":**
-> Mórula é **maciça**: ainda não tem cavidade. A sequência que a prova cobra é **zigoto → mórula → blástula → gástrula → nêurula**. Como as células da mórula ainda podem formar qualquer parte do embrião, a separação nessa fase origina **gêmeos univitelinos**.
+> Mórula é **maciça**: ainda não tem cavidade. A sequência que a prova cobra é **zigoto → mórula → blástula → gástrula → nêurula**. Como as células da mórula ainda podem formar qualquer parte do embrião, a separação nessa fase, ou um pouco depois, na massa celular interna do blastocisto (o caso mais comum), origina **gêmeos univitelinos** (monozigóticos).
 
 ### D3 `#desenvolvimento/blastula` · "Blástula"
 - **Subtítulo:** "a bola fica oca"
@@ -169,7 +169,7 @@ Opcional: alternância "folhetos e celoma", com os cortes transversais de um dib
 **Faixa "Neurulação":** de placa neural a tubo fechado, com um rótulo de dia no modo humano (cerca do dia 18 → dia 28).
 
 **Cartão "No ENEM":**
-> Nêurula = formação do **tubo neural** a partir da **ectoderme**, induzida pela **notocorda**. Os cordados têm tubo nervoso **dorsal**; os invertebrados, quando têm cordão nervoso, ele é ventral. Liga-se à saúde: o **ácido fólico** antes e no início da gestação previne defeitos do tubo neural, e por isso a farinha de trigo e de milho é enriquecida com ele no Brasil.
+> Nêurula = formação do **tubo neural** a partir da **ectoderme**, induzida pela **notocorda**. Os cordados têm tubo nervoso **dorsal**; nos anelídeos e artrópodes, o cordão nervoso é **ventral**. Liga-se à saúde: o **ácido fólico** antes e no início da gestação previne defeitos do tubo neural, e por isso a farinha de trigo e de milho é enriquecida com ele no Brasil.
 
 ### D8 `#desenvolvimento/organogenese` · "Organogênese"
 - **Subtítulo:** "os órgãos se formam"
@@ -189,7 +189,8 @@ Opcional: alternância "folhetos e celoma", com os cortes transversais de um dib
 
 ## Notas para a implementação
 - **Ordem do módulo (combinada com o 🧬 Sapien):** Gametas → Ovos → Desenvolvimento → Anexos → Humano. Este arquivo: `ovos` (2 tópicos) e `desenvolvimento` (8 tópicos). Arquivo B: `gametas`, `anexos` e `humano`.
-- **Links entre os arquivos:** D2 → `#humano/gemeos`; D3 → `#humano/nidacao`; O1 → `#anexos` (vesícula vitelínica); D8 pode apontar para `#humano/semanas` (calendário completo).
+- **Links entre os arquivos:** D2 → `#humano/gemeos`; D3 → `#humano/nidacao`; O1 → `#anexos/funcoes` (vesícula vitelínica); D8 pode apontar para `#humano/semanas` (calendário completo).
+- **Convenção de idades:** os dias e semanas deste arquivo (D2, D3, D7 e D8: dia 3, dia 22, dia 28, 3ª a 8ª semana) contam **desde a fecundação**, como no Moore. O pré-natal conta pela data da última menstruação (DUM, cerca de 2 semanas a mais). Vale a seção "Convenção de idades" do arquivo B: onde houver idade na tela, mostrar as duas contagens ou dizer qual é.
 - **Imagens do embrião humano:** desenho esquemático próprio, sem imitar fotos de livros. As proporções são aproximadas e devem ser indicadas no rodapé, como no módulo de Citogenética.
 - **Sensibilidade:** tratar malformações e teratógenos com linguagem neutra e informativa, sem imagens chocantes. No caso do zika, citar o fato histórico e a prevenção (repelente e combate ao *Aedes aegypti*).
 - **Fora do escopo:** desenvolvimento dos sistemas órgão a órgão, circulação fetal detalhada, determinação do sexo gonadal (SRY) e células-tronco além da menção em D3.

@@ -12,17 +12,17 @@ Ordem das seções: **Gametas → Ovos → Desenvolvimento → Anexos → Humano
 | Seção | Rotas | Dono do roteiro |
 |---|---|---|
 | Gametas | `#gametas/resumo` | 🧬 Sapien |
-| Ovos | `#ovos/...` | 🔬 Taxon |
-| Desenvolvimento | `#desenvolvimento/segmentacao`, `/morula`, `/blastula`, `/gastrula`, `/neurula`, `/organogenese` | 🔬 Taxon |
-| Anexos | `#anexos/vesicula`, `#anexos/amnio`, `#anexos/corion`, `#anexos/alantoide`, `#anexos/amniotico` | 🧬 Sapien |
-| Humano | `#humano/fecundacao`, `#humano/nidacao`, `#humano/placenta`, `#humano/hcg`, `#humano/gemeos`, `#humano/semanas` | 🧬 Sapien |
+| Ovos | `#ovos/tipos`, `#ovos/vitelo` | 🔬 Taxon |
+| Desenvolvimento | `#desenvolvimento/segmentacao`, `/morula`, `/blastula`, `/gastrula`, `/blastoporo`, `/folhetos`, `/neurula`, `/organogenese` | 🔬 Taxon |
+| Anexos | `#anexos/funcoes`, `#anexos/amniotico` | 🧬 Sapien |
+| Humano | `#humano/fecundacao`, `#humano/nidacao`, `#humano/placenta`, `#humano/gemeos`, `#humano/semanas` | 🧬 Sapien |
 
 Fronteiras, para não repetir conteúdo:
 1. A **fecundação humana** fica em `#humano/fecundacao`; o desenvolvimento do 🔬 Taxon começa no zigoto e aponta para cá.
 2. **Blástula e blastocele** em geral ficam com o 🔬 Taxon; aqui o **blastocisto** (trofoblasto e embrioblasto) aparece só na nidação, com link para `#desenvolvimento/blastula`.
 3. **Folhetos germinativos** e seus derivados ficam com o 🔬 Taxon; em `#humano/semanas` só há uma linha com link.
 4. O **tipo de ovo humano** fica com o 🔬 Taxon; aqui ele aparece em uma linha, com link.
-5. Os **anexos** ficam todos aqui; quando o texto do 🔬 Taxon citar a gema do ovo de galinha, aponta para `#anexos/vesicula`.
+5. Os **anexos** ficam todos aqui; quando o texto do 🔬 Taxon citar a gema do ovo de galinha, aponta para `#anexos/funcoes`.
 
 ## Convenção de idades (importante para todo o módulo)
 
@@ -37,7 +37,7 @@ Fronteiras, para não repetir conteúdo:
 - LOPES, S.; ROSSO, S. *Bio*. São Paulo: Saraiva, 2016. Vol. 1, capítulos de reprodução e embriologia; vol. 2 (vertebrados).
 - GILBERT, S. F.; BARRESI, M. J. F. *Biologia do Desenvolvimento*. 11. ed. Porto Alegre: Artmed, 2019. Capítulos de desenvolvimento das aves e dos mamíferos (membranas extraembrionárias, gêmeos).
 
-Cores sugeridas (o 🎨 Apolo decide no guia): uma cor fixa por anexo, a mesma em todo o módulo. Proposta: vesícula vitelínica = amarelo-gema, âmnio = azul-claro, córion = lilás, alantoide = verde. Sangue materno em vermelho-escuro e sangue fetal em vermelho-vivo, sem nunca se misturar no desenho.
+Cores sugeridas (o 🎨 Apolo decide no guia): uma cor fixa por anexo, a mesma em todo o módulo. Proposta: vesícula vitelínica = âmbar (a mesma cor do vitelo no arquivo do 🔬 Taxon), âmnio = azul-claro, córion = lilás, alantoide = verde-água (diferente do verde da notocorda). Os folhetos, quando aparecerem, seguem as cores do 🔬 Taxon: ectoderme azul, mesoderme vermelha, endoderme amarela. Sangue materno em vermelho-escuro e sangue fetal em vermelho-vivo, sem nunca se misturar no desenho.
 
 ---
 
@@ -50,7 +50,7 @@ Seção `{id:'gametas', t:'Gametas'}`. Um tópico só, de resumo. A gametogênes
 - **Subtítulo:** "espermatogênese e ovogênese em uma tabela"
 
 **Texto para o aluno:**
-> Todo embrião começa com dois **gametas**: o **espermatozoide** e o **ovócito**. Eles são haploides (**n = 23** na espécie humana) e se formam por **meiose**, num processo chamado **gametogênese**. Nos dois sexos as etapas são as mesmas: **multiplicação** por mitoses, **crescimento** e **maturação** pela meiose. A diferença está no resultado. No testículo, cada espermatócito primário forma **4 espermatozoides** pequenos e móveis, de forma contínua a partir da puberdade. No ovário, cada ovócito primário forma **1 só gameta** grande, rico em citoplasma, e dois ou três **corpúsculos polares** que degeneram; a menina já nasce com todos os ovócitos que terá.
+> Todo embrião começa com dois **gametas**: o **espermatozoide** e o **ovócito**. Eles são haploides (**n = 23** na espécie humana) e se formam por **meiose**, num processo chamado **gametogênese**: **espermatogênese** no homem e **ovogênese** (ou ovulogênese) na mulher. Nos dois sexos as etapas são as mesmas: **multiplicação** por mitoses, **crescimento** e **maturação** pela meiose. A diferença está no resultado. No testículo, cada espermatócito primário forma **4 espermatozoides** pequenos e móveis, de forma contínua a partir da puberdade. No ovário, cada ovócito primário forma **1 só gameta** grande, rico em citoplasma, e dois ou três **corpúsculos polares** que degeneram; a menina já nasce com todos os ovócitos que terá.
 >
 > Atenção: a célula liberada na ovulação é o **ovócito secundário**, parado na metáfase II. A meiose só termina se um espermatozoide entrar nele, e é por isso que este módulo começa a história do embrião na fecundação (ver `#humano/fecundacao`).
 
@@ -74,11 +74,9 @@ Seção `{id:'gametas', t:'Gametas'}`. Um tópico só, de resumo. A gametogênes
 
 ## (b) Seção Anexos embrionários
 
-Seção `{id:'anexos', t:'Anexos'}`. Cinco tópicos. **Anexos embrionários** (ou membranas extraembrionárias) são estruturas formadas pelo próprio embrião, mas que **não fazem parte do corpo** dele: protegem, nutrem, fazem trocas e guardam excretas, e são descartados no nascimento ou na eclosão.
+Seção `{id:'anexos', t:'Anexos'}`. Dois tópicos. **Anexos embrionários** (ou membranas extraembrionárias) são estruturas formadas pelo próprio embrião, mas que **não fazem parte do corpo** dele: protegem, nutrem, fazem trocas e guardam excretas, e são descartados no nascimento ou na eclosão.
 
-**Base visual comum aos quatro primeiros tópicos:** um corte de **ovo de galinha** em incubação (casca, membranas da casca, câmara de ar, clara, embrião e os anexos) ao lado de um corte de **útero humano** com o embrião. A faixa controla o **dia de incubação** (0 a 21, na galinha) ou a **semana** (1 a 12, no humano); um botão alterna "ave / humano". Em cada tópico, o anexo do tópico fica aceso na sua cor e os outros ficam em cinza translúcido. Assim o aluno vê os quatro anexos sempre no mesmo lugar e na mesma cor.
-
-Dados para o desenho da ave (Gilbert; Amabis & Martho): a incubação da galinha dura **21 dias**; a gema é o próprio ovócito, uma célula gigante; a clara (albúmen) **não faz parte da célula**: é água e proteína (principalmente ovoalbumina) secretadas pelo oviduto, e a casca de carbonato de cálcio tem milhares de poros por onde passam O₂, CO₂ e vapor d'água.
+Os quatro anexos ficam num tópico só (`#anexos/funcoes`), com uma animação do ovo de galinha em incubação, e o quadro por grupo fica em `#anexos/amniotico`. Assim o módulo fica com 18 tópicos (8 aqui, 10 no arquivo do 🔬 Taxon), o teto pedido pelo 🧭 Atlas.
 
 **Quadro "quem tem o quê"** (usar em `#anexos/amniotico` e como resumo em todos):
 
@@ -126,7 +124,7 @@ Botão "ave / humano": o mesmo esquema no útero humano (semana 2 a 12), com âm
 
 ---
 
-### Tópico 6 · `#anexos/amniotico`
+### Tópico 3 · `#anexos/amniotico`
 - **Título:** "O ovo amniótico"
 - **Subtítulo:** "como os vertebrados saíram da água"
 
@@ -149,13 +147,13 @@ Botão "ave / humano": o mesmo esquema no útero humano (semana 2 a 12), com âm
 
 ## (c) Seção Embriologia humana
 
-Seção `{id:'humano', t:'Humano'}`. Seis tópicos.
+Seção `{id:'humano', t:'Humano'}`. Cinco tópicos.
 
-**Base visual comum:** um corte frontal simplificado do sistema genital feminino (ovário, tuba uterina com infundíbulo e ampola, útero com endométrio), já usado como mapa nos três primeiros tópicos. Um marcador mostra onde está o embrião em cada momento.
+**Base visual comum:** um corte frontal simplificado do sistema genital feminino (ovário, tuba uterina com infundíbulo e ampola, útero com endométrio), já usado como mapa nos dois primeiros tópicos. Um marcador mostra onde está o embrião em cada momento.
 
 ---
 
-### Tópico 7 · `#humano/fecundacao`
+### Tópico 4 · `#humano/fecundacao`
 - **Título:** "Fecundação"
 - **Subtítulo:** "o encontro, na tuba uterina"
 
@@ -177,37 +175,37 @@ Seção `{id:'humano', t:'Humano'}`. Seis tópicos.
 
 ---
 
-### Tópico 8 · `#humano/nidacao`
-- **Título:** "Nidação"
-- **Subtítulo:** "da tuba ao útero, em uma semana"
+### Tópico 5 · `#humano/nidacao`
+- **Título:** "Nidação e hCG"
+- **Subtítulo:** "da tuba ao útero, e o sinal que o teste de gravidez lê"
 
 **Texto para o aluno:**
-> Enquanto desce pela tuba, empurrado pelos cílios e pelas contrações da parede, o zigoto se divide por mitoses (**segmentação**, ver `#desenvolvimento/segmentacao`): 2 células por volta de 30 horas, uma **mórula** de 12 a 32 células por volta do **3º dia**, quando chega ao útero. No **4º dia** ela se enche de líquido e vira o **blastocisto** (a blástula dos mamíferos, ver `#desenvolvimento/blastula`), com duas partes: o **embrioblasto** (massa celular interna), que formará o embrião, e o **trofoblasto**, a camada externa, que formará a parte fetal da placenta.
+> Enquanto desce pela tuba, o zigoto se divide por mitoses (**segmentação**, ver `#desenvolvimento/segmentacao`): 2 células por volta de 30 horas e uma **mórula** de 12 a 32 células por volta do **3º dia**, quando chega ao útero. No **4º dia** ela vira o **blastocisto** (a blástula dos mamíferos, ver `#desenvolvimento/blastula`), com o **embrioblasto**, que formará o embrião, e o **trofoblasto**, que formará a parte fetal da placenta. No 5º dia ele sai da zona pelúcida e, por volta do **6º ao 7º dia**, gruda no **endométrio** e começa a se enterrar nele: é a **nidação** (implantação), completa por volta do **10º dia**. Se o blastocisto se implantar fora do útero, temos uma **gravidez ectópica**, em cerca de 95% dos casos na tuba (Moore), que pode romper e sangrar muito.
 >
-> No 5º dia o blastocisto sai da zona pelúcida ("eclosão"), e por volta do **6º ao 7º dia** gruda no **endométrio**, em geral na parede de trás da parte alta do útero, e começa a se enterrar nele: é a **nidação** (ou implantação). O trofoblasto invade o endométrio, que está espesso e cheio de vasos por causa da progesterona. Por volta do **10º dia** o embrião já está totalmente coberto pelo endométrio. Se o blastocisto se implantar fora do útero, temos uma **gravidez ectópica**, que em cerca de 95% dos casos ocorre na tuba (Moore) e pode romper a tuba e causar hemorragia grave.
+> Já na nidação, a camada externa do trofoblasto (o **sinciciotrofoblasto**, que depois faz parte do córion) começa a produzir a **gonadotrofina coriônica humana**, a **hCG**. Ela mantém vivo o **corpo-lúteo** do ovário, que continua produzindo **progesterona**; a progesterona mantém o endométrio, e a **menstruação não vem**. Sem gravidez, o corpo-lúteo degenera depois de cerca de 14 dias, a progesterona cai e o endométrio descama. A hCG passa para o sangue e a urina da mãe, e é ela que o **teste de gravidez** detecta, com anticorpos: no sangue, a partir do **fim da 2ª semana** após a fecundação (Moore); na urina, nos testes de farmácia, de forma confiável a partir do **dia do atraso menstrual**. A concentração dobra a cada 2 a 3 dias, chega ao pico entre a **8ª e a 11ª semana de gestação** e cai; por volta da 8ª a 10ª semana, a própria placenta já produz progesterona suficiente.
 
 **O que a animação mostra:**
 1. Mapa com marcador: dia 0 na ampola, descendo pela tuba; o embrião se divide (2, 4, 8, mórula) enquanto anda.
-2. Dia 4, no útero: a mórula ganha uma cavidade e vira blastocisto; rótulos "embrioblasto" e "trofoblasto".
-3. Dia 5: a zona pelúcida se abre e o blastocisto sai.
-4. Dias 6 a 10: zoom no endométrio; o blastocisto encosta pelo lado do embrioblasto e afunda, o trofoblasto se espalha entre os vasos maternos, e o endométrio se fecha por cima.
-5. Botão "e se...": o marcador para na tuba e aparece um alerta "gravidez ectópica".
+2. Dia 4, no útero: a mórula ganha uma cavidade e vira blastocisto; rótulos "embrioblasto" e "trofoblasto". Dia 5: a zona pelúcida se abre e ele sai.
+3. Dias 6 a 10: zoom no endométrio; o blastocisto encosta pelo lado do embrioblasto e afunda, o trofoblasto invade entre os vasos maternos e o endométrio se fecha por cima. Pontinhos de hCG começam a sair para os vasos da mãe.
+4. Painel lateral, dias 10 a 28: o ovário com o corpo-lúteo (aceso enquanto há hCG), uma curva de hCG subindo e uma fita de teste. A linha C aparece sempre; a linha T aparece quando a hCG passa do limiar típico dos testes de farmácia (cerca de 25 mUI/mL na urina), perto do dia 14.
+5. Botões "e se...": "sem gravidez" (sem hCG, o corpo-lúteo murcha no 14º dia, a progesterona cai e o endométrio descama) e "gravidez ectópica" (o marcador para na tuba, com alerta).
 
-**A faixa controla:** os dias 0 a 10 após a fecundação, com o dia escrito grande no canto e o número de células no começo.
+**A faixa controla:** os dias após a fecundação, de 0 a 28. O dia fica escrito grande no canto, com o número de células no começo, e um marco "menstruação esperada" no ≈ 14º dia. Um "Saiba mais" pode mostrar a curva inteira da hCG até a 20ª semana, com o pico.
 
 **Cartão "No ENEM":**
-> Sequência para não errar: **zigoto → mórula (3º dia, chega ao útero) → blastocisto (4º-5º dia) → nidação (6º-7º dia)**. A nidação é no **endométrio** do útero; a fecundação foi na **tuba**. As questões sobre **pílula do dia seguinte** e **DIU** cobram isso: elas agem antes da nidação, impedindo a ovulação, a fecundação ou a implantação.
+> Sequência para não errar: **zigoto → mórula (3º dia, chega ao útero) → blastocisto (4º-5º dia) → nidação (6º-7º dia)**; a fecundação foi na **tuba**, a nidação é no **endométrio**. E a pergunta clássica: **por que não há menstruação na gravidez?** Porque a **hCG** do embrião mantém o **corpo-lúteo**, que segue produzindo **progesterona**. O **teste de gravidez detecta hCG**; não confunda com **LH** e **FSH**, que vêm da hipófise. Questões sobre **métodos contraceptivos** usam essa sequência: a **pílula do dia seguinte** age sobretudo adiando a ovulação, e o **DIU de cobre** dificulta a fecundação.
 
-Nota para o 🧭 Atlas: o cartão menciona contracepção de forma factual, como o ENEM faz. Se a Nalu preferir, a segunda frase sai.
+Nota para o 🧭 Atlas: o cartão menciona contracepção de forma factual, como o ENEM faz. Se a Nalu preferir, a última frase sai.
 
 ---
 
-### Tópico 9 · `#humano/placenta`
+### Tópico 6 · `#humano/placenta`
 - **Título:** "Placenta e cordão umbilical"
 - **Subtítulo:** "dois sangues que não se misturam"
 
 **Texto para o aluno:**
-> A **placenta** é o órgão de trocas entre a mãe e o feto, formada por **duas partes**: uma **fetal**, o **córion viloso** (as vilosidades coriônicas, ver `#anexos/corion`), e uma **materna**, a **decídua basal**, a parte do endométrio onde o embrião se implantou. As vilosidades ficam mergulhadas em lagos de **sangue materno**, mas o sangue do feto corre **dentro** delas, separado do da mãe por uma membrana fina, a membrana placentária. **Os dois sangues não se misturam**: as substâncias passam por essa membrana. No fim da gestação a placenta é um disco de **15 a 25 cm** de diâmetro, cerca de **3 cm** de espessura e **500 a 600 g** (Moore).
+> A **placenta** é o órgão de trocas entre a mãe e o feto, formada por **duas partes**: uma **fetal**, o **córion viloso** (as vilosidades coriônicas, ver `#anexos/funcoes`), e uma **materna**, a **decídua basal**, a parte do endométrio onde o embrião se implantou. As vilosidades ficam mergulhadas em lagos de **sangue materno**, mas o sangue do feto corre **dentro** delas, separado do da mãe por uma membrana fina, a membrana placentária. **Os dois sangues não se misturam**: as substâncias passam por essa membrana. No fim da gestação a placenta é um disco de **15 a 25 cm** de diâmetro, cerca de **3 cm** de espessura e **500 a 600 g** (Moore).
 >
 > Pela placenta passam **oxigênio, glicose, aminoácidos, água, sais** e **anticorpos IgG** da mãe para o feto, e **gás carbônico e ureia** do feto para a mãe. Ela também é uma glândula: produz **hCG**, **progesterona** e **estrogênios**. Mas a barreira não é perfeita: **álcool, nicotina, muitos medicamentos, drogas** e alguns agentes de doença (os vírus da **rubéola**, do **Zika** e o **HIV**, o protozoário da **toxoplasmose** e a bactéria da **sífilis**) também atravessam. O feto se liga à placenta pelo **cordão umbilical**, com cerca de **55 cm** em média (de 30 a 90 cm), que tem **duas artérias** e **uma veia**, envoltas numa geleia protetora (geleia de Wharton). Atenção ao sentido: as **artérias umbilicais levam sangue pobre em O₂** do feto para a placenta, e a **veia umbilical traz sangue rico em O₂** da placenta para o feto.
 
@@ -226,29 +224,7 @@ Cuidado visual: a cor das artérias umbilicais é a exceção à regra "artéria
 
 ---
 
-### Tópico 10 · `#humano/hcg`
-- **Título:** "hCG e o teste de gravidez"
-- **Subtítulo:** "o hormônio que segura a gravidez"
-
-**Texto para o aluno:**
-> Logo na nidação, o **sinciciotrofoblasto**, camada externa do trofoblasto (que depois forma o córion), começa a produzir a **gonadotrofina coriônica humana**, a **hCG**. A função dela é manter vivo o **corpo-lúteo** no ovário. Sem gravidez, o corpo-lúteo degenera depois de cerca de 14 dias, a progesterona cai e o endométrio descama: é a menstruação. Com a hCG, o corpo-lúteo continua produzindo **progesterona**, o endométrio se mantém e a menstruação não vem. Por volta da **8ª a 10ª semana**, a própria placenta passa a produzir progesterona suficiente, e o corpo-lúteo deixa de ser essencial.
->
-> A hCG só existe em quantidade quando há um embrião implantado, e passa para o sangue e a urina da mãe. É ela que os **testes de gravidez** detectam, com anticorpos que reconhecem a hCG. No sangue, ela já pode ser detectada no **fim da 2ª semana** após a fecundação (Moore); os testes de farmácia, na urina, ficam confiáveis a partir do **dia em que a menstruação atrasa**. No começo, a concentração dobra a cada 2 a 3 dias, chega ao **pico entre a 8ª e a 11ª semana de gestação** e depois cai e se estabiliza. Na fita do teste, uma linha de controle aparece sempre; a segunda linha só aparece se houver hCG.
-
-**O que a animação mostra:**
-1. Um gráfico de duas curvas ao longo das semanas: **hCG** (sobe rápido, pico, cai) e **progesterona** (sobe sempre), com uma faixa vertical marcando a troca "corpo-lúteo → placenta".
-2. Ao lado, um ovário com o corpo-lúteo (amarelo), que fica aceso enquanto a hCG está alta.
-3. Uma fita de teste: a linha C sempre visível; a linha T aparece quando a hCG passa do limiar do teste (cerca de 25 mUI/mL na urina, valor típico dos testes de farmácia).
-4. Esquema do teste em zoom: moléculas de hCG (bolinhas) presas entre dois anticorpos (formato de Y), formando a linha colorida.
-
-**A faixa controla:** o tempo em dias desde a fecundação (0 a 20 semanas, com escala mais detalhada nas primeiras 4). Mostrar o dia da "menstruação esperada" (≈ 14 dias após a fecundação) como marco. Um botão "sem gravidez" mostra o outro caminho: sem hCG, o corpo-lúteo murcha no 14º dia e a progesterona cai.
-
-**Cartão "No ENEM":**
-> A pergunta típica: **por que a menstruação não ocorre na gravidez?** Porque a **hCG** do embrião (córion) mantém o **corpo-lúteo**, que continua produzindo **progesterona**, e a progesterona mantém o endométrio. E o **teste de gravidez detecta hCG**, um hormônio que só o embrião implantado produz. Cuidado com a confusão entre hCG e **LH** ou **FSH**, que vêm da hipófise.
-
----
-
-### Tópico 11 · `#humano/gemeos`
+### Tópico 7 · `#humano/gemeos`
 - **Título:** "Gêmeos"
 - **Subtítulo:** "um zigoto que se divide ou dois zigotos"
 
@@ -269,14 +245,14 @@ Cuidado visual: a cor das artérias umbilicais é a exceção à regra "artéria
 
 ---
 
-### Tópico 12 · `#humano/semanas`
+### Tópico 8 · `#humano/semanas`
 - **Título:** "Semana a semana"
 - **Subtítulo:** "do zigoto ao recém-nascido"
 
 **Texto para o aluno:**
-> O desenvolvimento humano tem dois períodos. O **período embrionário** vai da fecundação ao fim da **8ª semana**: nele se formam os folhetos (gastrulação na **3ª semana**, ver `#desenvolvimento/gastrula`), o tubo neural (fecha na **4ª semana**, ver `#desenvolvimento/neurula`) e todos os órgãos principais (organogênese). O coração começa a bater por volta do **22º dia**. No fim da 8ª semana, o embrião tem cerca de **3 cm** e já tem aparência humana. Como tudo está se formando, é a fase de **maior sensibilidade** a agentes que causam malformações (os **teratógenos**: álcool, alguns medicamentos, radiação, rubéola e Zika), e muitas mulheres ainda nem sabem que estão grávidas.
+> O desenvolvimento humano tem dois períodos. O **período embrionário** vai da fecundação ao fim da **8ª semana**: nele se formam os folhetos (gastrulação na **3ª semana**, ver `#desenvolvimento/gastrula`), o tubo neural (fecha na **4ª semana**, ver `#desenvolvimento/neurula`) e todos os órgãos principais (organogênese). O coração começa a bater por volta do **22º dia**. No fim da 8ª semana, o embrião tem cerca de **3 cm** e já tem aparência humana. Como tudo está se formando, é a fase de **maior sensibilidade** a agentes que causam malformações (os **teratógenos**: álcool, alguns medicamentos, radiação, rubéola e Zika; ver `#desenvolvimento/organogenese`), e muitas mulheres ainda nem sabem que estão grávidas.
 >
-> A partir da **9ª semana**, o embrião passa a se chamar **feto**, e o **período fetal** é sobretudo de **crescimento** e amadurecimento dos órgãos já formados. Os órgãos genitais externos permitem ver o sexo no ultrassom por volta da 12ª a 14ª semana; a mãe sente os movimentos entre a **16ª e a 20ª semana**; os pulmões começam a produzir **surfactante** perto da 24ª semana, e é por isso que bebês prematuros com menos de cerca de 22 a 24 semanas raramente sobrevivem. O parto ocorre por volta de **38 semanas após a fecundação** (40 pela DUM), com cerca de **3,4 kg** e 50 cm. Os **trimestres** costumam ser contados pela DUM: 1º até a 13ª semana, 2º da 14ª à 27ª, 3º da 28ª até o parto.
+> A partir da **9ª semana**, o embrião passa a se chamar **feto**, e o **período fetal** é sobretudo de **crescimento** e amadurecimento dos órgãos já formados. Os órgãos genitais externos permitem ver o sexo no ultrassom por volta da 12ª a 14ª semana; a mãe sente os movimentos entre a **16ª e a 20ª semana**; os pulmões começam a produzir **surfactante** perto da 24ª semana, e é por isso que bebês nascidos antes de cerca de 22 a 24 semanas de gestação (pela DUM) raramente sobrevivem. O parto ocorre por volta de **38 semanas após a fecundação** (40 pela DUM), com cerca de **3,4 kg** e 50 cm. Os **trimestres** costumam ser contados pela DUM: 1º até a 13ª semana, 2º da 14ª à 27ª, 3º da 28ª até o parto.
 
 **Tabela de marcos** (idade após a fecundação; entre parênteses, pela DUM). Tamanhos e massas: Moore, cap. 6 e 7 (CCN = comprimento cabeça-nádega, que é o que o ultrassom mede no começo):
 
@@ -288,10 +264,10 @@ Cuidado visual: a cor das artérias umbilicais é a exceção à regra "artéria
 | 4 (6) | **coração bate (≈ 22º dia)**; tubo neural fecha; brotos dos braços e pernas | 4 a 6 mm |
 | 5 a 7 (7 a 9) | encéfalo cresce rápido; mãos e pés em forma de "pá", depois dedos | 7 a 22 mm |
 | 8 (10) | fim do período embrionário; todos os órgãos principais formados; aparência humana | ≈ 30 mm |
-| 12 (14) | fim do 1º trimestre; sexo distinguível pela genitália externa | ≈ 87 mm; ≈ 45 g |
+| 12 (14) | início do 2º trimestre; sexo distinguível pela genitália externa | ≈ 87 mm; ≈ 45 g |
 | 16 (18) | ossos visíveis no ultrassom; movimentos começam a ser sentidos (16 a 20 semanas) | ≈ 140 mm; ≈ 200 g |
-| 20 (22) | pele coberta de vérnix e lanugem; ultrassom morfológico | ≈ 190 mm; ≈ 460 g |
-| 24 (26) | surfactante começa a ser produzido; limite de viabilidade com UTI | ≈ 230 mm; ≈ 820 g |
+| 20 (22) | pele coberta de vérnix e lanugem; ultrassom morfológico; limite de viabilidade, com UTI | ≈ 190 mm; ≈ 460 g |
+| 24 (26) | surfactante começa a ser produzido; prematuros já têm boa chance de sobreviver com UTI | ≈ 230 mm; ≈ 820 g |
 | 28 (30) | olhos abrem; pulmões já conseguem respirar com ajuda | ≈ 270 mm; ≈ 1.300 g |
 | 32 (34) | acúmulo de gordura sob a pele | ≈ 300 mm; ≈ 2.100 g |
 | 38 (40) | a termo: parto | ≈ 360 mm (CCN); ≈ 3.400 g |
@@ -316,6 +292,6 @@ Os tamanhos a partir da 8ª semana são CCN (sentado), não o comprimento total;
 2. **Sangue materno e fetal nunca se misturam** no desenho da placenta; hemácias não atravessam a membrana.
 3. **Artérias umbilicais em azulado** (sangue pobre em O₂), com rótulo, porque contraria a regra de cor dos outros módulos.
 4. **Anfíbio sem anexos** no quadro, com a nota de rodapé sobre a divergência entre livros.
-5. **Mamífero tem vesícula vitelínica**: não apagar a bolinha amarela do desenho humano.
+5. **Mamífero tem vesícula vitelínica**: não apagar a bolinha âmbar do desenho humano.
 6. Tom do texto: a gravidez ectópica, os gêmeos unidos e os teratógenos aparecem de forma factual e curta, sem imagens chocantes; nada de fotos, só desenho esquemático.
 7. Nenhuma imagem de terceiros: todos os desenhos são feitos em canvas 2D pela equipe.

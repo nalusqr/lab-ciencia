@@ -1,6 +1,7 @@
 // Teste de fumaça do LAB (dono: Prometeu). Abre cada página por file://, como a usuária abre (duplo clique),
 // e falha se aparecer erro de console ou exceção na página. Na Célula, percorre as 8 células e os 12 detalhes
 // pelo hash e confere que o canvas 3D e os pontos/rótulos aparecem. Também valida a página de teste de modelos.
+// Na Embriologia (canvas 2D), percorre todas as rotas por window.LAB_EMBRIO e confere que cada uma desenha sem erro.
 // Uso: ver testes/LEIA-ME.md.   node testes/fumaca.js [filtro]   (filtro: parte do nome da página, ex.: celula)
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -16,12 +17,14 @@ const FILTRO = process.argv[2] || '';
 
 const PAGINAS = [
   ['início', 'site/index.html'],
+  ['biologia', 'site/biologia/index.html'],   // página da Biologia, com a trilha (a página inicial virou a roda de matérias)
   ['dna', 'site/dna/index.html'],
   ['tabela-periodica', 'site/tabela-periodica/index.html'],
   ['moleculas', 'site/moleculas/index.html'],
   ['biomoleculas', 'site/biomoleculas/index.html'],
   ['celula', 'site/celula/index.html'],
   ['morfofisiologia', 'site/morfofisiologia/index.html'],
+  ['embriologia', 'site/embriologia/index.html'],   // canvas 2D; percorre todas as rotas por window.LAB_EMBRIO
 ];
 // módulos novos: entram sozinhos quando estiverem marcados como prontos em scripts/modulos.json (ver scripts/abas.py)
 try {
@@ -66,6 +69,39 @@ async function paginaSimples(nome, rel) {
     const e = page.erros;
     registrar(nome, e.length === 0, e.slice(0, 5).join(' || '), Date.now() - t0);
   } catch (err) { registrar(nome, false, 'não abriu: ' + err.message.split('\n')[0] + (page.erros.length ? ' || ' + page.erros.slice(0, 3).join(' || ') : ''), Date.now() - t0); }
+  await ctx.close();
+}
+
+// módulos de canvas 2D com rotas por hash (motor da Bioenergética): abre e percorre cada rota pela API da página
+// (window[api].rotas e .ir), conferindo que não surgiu erro e que o canvas desenhou algo em cada uma
+const ROTAS_2D = { embriologia: 'LAB_EMBRIO' };
+async function paginaRotas(nome, rel, api) {
+  const t0 = Date.now(); const { ctx, page } = await abrir();
+  let rotas = [];
+  try {
+    await page.goto(url(rel), { waitUntil: 'commit', timeout: LENTO });
+    await page.waitForFunction(a => window[a] && window[a].rotas && window[a].rotas.length, api, { timeout: LENTO });
+    await page.waitForLoadState('load', { timeout: LENTO });
+    rotas = await page.evaluate(a => window[a].rotas.slice(), api);
+    registrar(`${nome}: abre (${rotas.length} rotas)`, page.erros.length === 0, page.erros.slice(0, 5).join(' || '), Date.now() - t0);
+  } catch (err) {
+    registrar(`${nome}: abre`, false, err.message.split('\n')[0] + ' || ' + page.erros.slice(0, 5).join(' || '), Date.now() - t0);
+    await ctx.close(); return;
+  }
+  for (const r of rotas) {
+    const t = Date.now(), desde = page.erros.length;
+    try {
+      await page.evaluate(([a, k]) => window[a].ir(k), [api, r]);
+      await quadros(page, 4);
+      const pintou = await page.evaluate(() => {
+        const c = document.getElementById('cv'); if (!c || !c.width || !c.height) return false;
+        const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        for (let i = 3; i < d.length; i += 4 * 97) if (d[i]) return true; return false;
+      });
+      const e = errosNovos(page, desde);
+      registrar(`${nome} #${r}`, e.length === 0 && pintou, (pintou ? '' : 'canvas vazio ') + e.slice(0, 5).join(' || '), Date.now() - t);
+    } catch (err) { registrar(`${nome} #${r}`, false, err.message.split('\n')[0] + ' || ' + errosNovos(page, desde).slice(0, 5).join(' || '), Date.now() - t); }
+  }
   await ctx.close();
 }
 
@@ -143,6 +179,7 @@ async function testeModelo() {
     for (const [nome, rel] of PAGINAS) {
       if (FILTRO && !nome.includes(FILTRO)) continue;
       if (nome === 'celula') { await celula(rel); await testeModelo(); }
+      else if (ROTAS_2D[nome]) await paginaRotas(nome, rel, ROTAS_2D[nome]);
       else await paginaSimples(nome, rel);
     }
   } finally { if (navegador) await navegador.close().catch(() => {}); }
