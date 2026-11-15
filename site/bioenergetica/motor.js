@@ -166,7 +166,7 @@ function leaf(x, y, s, rot, c) { X.save(); X.translate(x, y); X.rotate(rot || 0)
 function graph(G, o) {
   const fx = v => G.x0 + (v - o.x0) / (o.x1 - o.x0) * G.w, fy = v => G.y1 - (v - o.y0) / (o.y1 - o.y0) * G.h;
   rr(G.x0, G.y0, G.w, G.h, 8, 'rgba(19,26,43,.55)', C.line, 1);
-  for (const t of o.xt || []) { line(fx(t[0]), G.y0, fx(t[0]), G.y1, 'rgba(91,108,153,.22)', 1); tx(t[1], fx(t[0]), G.y1 + 12, { s: 12, f: FD, w: 500, c: C.dim, bg: false }); }
+  for (const t of o.xt || []) { line(fx(t[0]), G.y0, fx(t[0]), G.y1, 'rgba(91,108,153,.22)', 1); const hw = tw(t[1], 12, 500, FD) / 2 + 2; tx(t[1], cl(fx(t[0]), hw, W - hw), G.y1 + 12, { s: 12, f: FD, w: 500, c: C.dim, bg: false }); }
   if (o.y0 < 0) line(G.x0, fy(0), G.x1, fy(0), 'rgba(232,237,247,.6)', 1);
   tx(o.xl, G.x0 + G.w / 2, G.y1 + 30, { s: 13, w: 600, c: C.txt, bg: false });
   X.save(); X.translate(G.x0 - 14, G.y0 + G.h / 2); X.rotate(-PI / 2); tx(o.yl, 0, 0, { s: 13, w: 600, c: C.txt, bg: false }); X.restore();
@@ -189,7 +189,7 @@ const SEC = [
   { id: 'ferm', t: 'Fermentação', c: C.creme },
   { id: 'foto', t: 'Fotossíntese', c: C.cloro },
   { id: 'fatores', t: 'Fatores limitantes', c: C.luz },
-  { id: 'relacao', t: 'Fotossíntese × respiração', c: C.agua }
+  { id: 'relacao', t: 'Relações e quimiossíntese', c: C.agua }
 ];
 const SC = {}, ORDER = {};
 const RITMO = { l: 'Ritmo', min: .25, max: 2, step: .25, v: 1, f: v => nbr(v, 2) + '×', rate: v => v };

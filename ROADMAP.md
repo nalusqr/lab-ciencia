@@ -14,10 +14,11 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 | 🌈 **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
 | ✨ **Leo**, programador sênior de UI/UX front-end (entrou em 2026-11-15) | Dono da página inicial: layout, tipografia, botões, microinterações, hierarquia e acessibilidade, dentro do guia Campo escuro | `site/index.html`, `site/home.css`, `site/home.js` |
 | 🔬 **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
+| 🧬 **Sapien**, professor sênior de Biologia (entrou em 2026-11-15) | Divide com o Taxon os roteiros e as revisões científicas; cada um revisa o trabalho do outro | `docs/revisao-biologia/` |
 
 ## Regras de trabalho
 
-- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, ✨ Leo.
+- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, 🧬 Sapien, ✨ Leo.
 
 - Todos os agentes também são programadores fullstack sênior (decisão da Nalu, 2026-11-14). Quem ficar livre ajuda outra frente, pegando do PM uma tarefa com arquivos próprios, sem editar o arquivo que outro agente está editando.
 
@@ -89,6 +90,8 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente, sem rótulo "em breve" (pedido da Nalu); as que ainda não têm conteúdo só não terão módulos por enquanto. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
 
 ## Ementa da Nalu (fila de etapas, uma por vez)
+
+Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N, o 🔬 Taxon já escreve o roteiro do tópico N+1 em docs/revisao-biologia/<tema>-roteiro.md. A publicação continua sendo um tópico por vez.
 
 1. Biologia molecular: publicada.
 2. Teoria celular e morfofisiologia: publicada (módulo Morfofisiologia).
