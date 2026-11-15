@@ -1,7 +1,7 @@
 /* LAB, fundo animado da página inicial (dono: Leo). Código e desenho próprios, sem dependências; abre por file://.
    Ideia "campo escuro": como amostras sob a lente do microscópio, luzes azuladas grandes e difusas derivam devagar,
    dois feixes suaves descem do alto e partículas finas sobem, piscando de leve. Tudo com pouco contraste, atrás do texto.
-   - prefers-reduced-motion: desenha um quadro só e fica parado.
+   - prefers-reduced-motion: anda bem mais devagar (35% da velocidade), sem parar.
    - Aba oculta: o laço para (requestAnimationFrame cancelado) e volta quando a aba aparece.
    - Leve: no máximo cerca de 30 quadros por segundo, densidade de pixels até 1,5 e partículas contadas pela área. */
 (function () {
@@ -22,9 +22,9 @@
 
   // luzes difusas: posição base (fração da tela), raio (fração do lado maior), cor, alfa, frequências e amplitudes
   var LUZ = [
-    { x: .74, y: .18, r: .58, c: '70,104,200', a: .22, fx: .021, fy: .017, ax: .09, ay: .07, p: 0 },
-    { x: .16, y: .42, r: .46, c: '42,140,168', a: .10, fx: .016, fy: .024, ax: .08, ay: .10, p: 1.7 },
-    { x: .52, y: .86, r: .52, c: '104,84,196', a: .10, fx: .013, fy: .019, ax: .12, ay: .06, p: 3.1 }
+    { x: .74, y: .18, r: .58, c: '70,104,200', a: .30, fx: .085, fy: .068, ax: .16, ay: .12, p: 0 },
+    { x: .16, y: .42, r: .46, c: '42,140,168', a: .18, fx: .064, fy: .096, ax: .14, ay: .16, p: 1.7 },
+    { x: .52, y: .86, r: .52, c: '104,84,196', a: .18, fx: .052, fy: .076, ax: .18, ay: .10, p: 3.1 }
   ];
 
   // gerador simples e fixo, para o quadro parado ser sempre o mesmo
@@ -36,8 +36,8 @@
     return {
       x: rnd() * W, y: novo ? H + 10 : rnd() * H,
       r: grande ? 2.2 + rnd() * 2.6 : .5 + rnd() * 1.1,
-      v: 3 + rnd() * 9, dr: 6 + rnd() * 14, f: .05 + rnd() * .12, p: rnd() * TAU,
-      a: grande ? .06 + rnd() * .06 : .18 + rnd() * .32, tw: .4 + rnd() * 1.2, g: grande
+      v: 14 + rnd() * 30, dr: 8 + rnd() * 18, f: .12 + rnd() * .25, p: rnd() * TAU,
+      a: grande ? .06 + rnd() * .06 : .18 + rnd() * .32, tw: 1 + rnd() * 2.5, g: grande
     };
   }
 
@@ -60,7 +60,7 @@
       L = LUZ[i];
       cx = (L.x + Math.sin(t * L.fx * TAU + L.p) * L.ax) * W;
       cy = (L.y + Math.cos(t * L.fy * TAU + L.p) * L.ay) * H;
-      r = L.r * M * (1 + .06 * Math.sin(t * .05 * TAU + L.p));
+      r = L.r * M * (1 + .12 * Math.sin(t * .15 * TAU + L.p));
       g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
       g.addColorStop(0, 'rgba(' + L.c + ',' + L.a + ')');
       g.addColorStop(.45, 'rgba(' + L.c + ',' + (L.a * .4) + ')');
@@ -69,11 +69,11 @@
     }
     // 2. dois feixes suaves que descem do alto e balançam devagar
     for (i = 0; i < 2; i++) {
-      var ox = W * (i ? .64 : .38), ang = (i ? -.2 : .18) + Math.sin(t * .03 * TAU + i * 2) * .08;
+      var ox = W * (i ? .64 : .38), ang = (i ? -.2 : .18) + Math.sin(t * .1 * TAU + i * 2) * .14;
       var len = H * 1.1, wd = Math.max(140, W * .16);
       x.save(); x.translate(ox, -20); x.rotate(ang);
       g = x.createLinearGradient(0, 0, 0, len);
-      g.addColorStop(0, 'rgba(150,180,255,' + (i ? .05 : .06) + ')');
+      g.addColorStop(0, 'rgba(150,180,255,' + (i ? .08 : .10) + ')');
       g.addColorStop(1, 'rgba(150,180,255,0)');
       x.fillStyle = g;
       x.beginPath(); x.moveTo(-wd * .12, 0); x.lineTo(wd * .12, 0); x.lineTo(wd * .5, len); x.lineTo(-wd * .5, len); x.closePath(); x.fill();
@@ -103,17 +103,17 @@
 
   function quadro(now) {
     raf = 0;
-    if (document.hidden || reduz.matches) return;
+    if (document.hidden) return;
     var dt = last ? (now - last) / 1000 : 0;
     if (dt === 0 || dt >= 1 / 32) {          // até ~30 quadros por segundo
-      dt = Math.min(dt, .1); last = now; t += dt; desenha(dt);
+      dt = Math.min(dt, .1) * (reduz.matches ? .35 : 1); last = now; t += dt; desenha(dt);
     }
     raf = requestAnimationFrame(quadro);
   }
   function liga() {
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
     last = 0;
-    if (reduz.matches) { t = 40; desenha(0); return; }   // quadro parado, com as luzes já espalhadas
+    if (reduz.matches && !t) t = 40;   // movimento reduzido: começa com as luzes espalhadas e anda a 35% da velocidade
     if (!document.hidden) raf = requestAnimationFrame(quadro);
   }
 
@@ -121,7 +121,7 @@
   var espera = 0;
   addEventListener('resize', function () {
     clearTimeout(espera);
-    espera = setTimeout(function () { medir(); if (reduz.matches || !raf) desenha(0); }, 120);
+    espera = setTimeout(function () { medir(); if (!raf) desenha(0); }, 120);
   });
   document.addEventListener('visibilitychange', liga);
   if (reduz.addEventListener) reduz.addEventListener('change', liga); else if (reduz.addListener) reduz.addListener(liga);
