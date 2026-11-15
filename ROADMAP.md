@@ -91,6 +91,15 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 
 A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente. Desde 2026-11-15 (rodada de design aprovada pela Nalu), as que ainda não têm conteúdo mostram o selo "Em breve" no cartão do centro, e o botão leva ao aviso da faixa; as que têm conteúdo mostram quantos módulos já estão no ar. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
 
+## Melhoria das animações (aprovada pela Nalu em 2026-11-15)
+
+O padrão vale para todas as animações e está na seção 9 do `docs/GUIA-DE-ESTILO.md`. Ele usa figuras realistas por IA, motion graphics, pontos clicáveis e interação com zoom, ângulo e detalhe. 🎬 Martin lidera a parte visual.
+- [x] Triagem das 269 cenas da Biologia (`docs/visual/triagem-1.csv` e `triagem-2.csv`).
+- [x] Piloto aprovado: coração (anatomia), moluscos (plantas-animais), sangue (histologia) e cadeia respiratória (bioenergetica).
+- [ ] Tópico 1, Biologia molecular (28 cenas): 3D interativo das moléculas e 9 figuras de IA. Em andamento.
+- [ ] Tópicos 2 a 13: só com a autorização da Nalu, um por vez.
+- [ ] Ícones da página inicial (✨ Leo).
+
 ## Ementa da Nalu (fila de etapas, uma por vez)
 
 Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N, o 🔬 Taxon já escreve o roteiro do tópico N+1 em docs/revisao-biologia/<tema>-roteiro.md. A publicação continua sendo um tópico por vez.
