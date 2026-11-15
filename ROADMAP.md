@@ -16,7 +16,7 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 | 🔬 **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 | 🧬 **Sapien**, professor sênior de Biologia (entrou em 2026-11-15) | Divide com o Taxon os roteiros e as revisões científicas; cada um revisa o trabalho do outro | `docs/revisao-biologia/` |
 
-Matemática: ver docs/matematica/TIME.md
+Matemática: ver docs/matematica/TIME.md. Módulos prontos: 1 Conjuntos e números, 2 Plano cartesiano e proporção.
 
 ## Regras de trabalho
 
