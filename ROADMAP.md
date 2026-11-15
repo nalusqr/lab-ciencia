@@ -7,15 +7,17 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 
 | Papel | O que faz | Onde escreve |
 |---|---|---|
-| **Atlas**, líder de equipe / PM | Planeja, distribui, revisa, integra, publica as prévias, sobe para o GitHub, chama a Nalu só em bloqueio ou conflito grave | `ROADMAP.md` |
-| **Aurelius**, engenheiro sênior fullstack | Implementa módulos, 3D (three.js / React Three Fiber), testes com capturas | `site/<módulo>/` |
-| **Prometeu**, engenheiro fullstack sênior (18 anos; React, Node/Next, Java, APIs, CI) | Ajuda o Aurelius: bundle e infraestrutura do 3D, carregamento de modelos .glb, testes automáticos | `site/celula/fonte/entry.js`, `site/celula/fonte/src/e_modelos.js`, `site/celula/vendor/`, `site/assets/modelos/*.glb.js`, `site/assets/modelos/indice.js`, `scripts/glb2js.py`, `testes/` |
-| **Apolo**, diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
-| **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
-| **Leo**, programador sênior de UI/UX front-end (entrou em 2026-11-15) | Dono da página inicial: layout, tipografia, botões, microinterações, hierarquia e acessibilidade, dentro do guia Campo escuro | `site/index.html`, `site/home.css`, `site/home.js` |
-| **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
+| 🧭 **Atlas**, líder de equipe / PM | Planeja, distribui, revisa, integra, publica as prévias, sobe para o GitHub, chama a Nalu só em bloqueio ou conflito grave | `ROADMAP.md` |
+| 🏛️ **Aurelius**, engenheiro sênior fullstack | Implementa módulos, 3D (three.js / React Three Fiber), testes com capturas | `site/<módulo>/` |
+| 🔥 **Prometeu**, engenheiro fullstack sênior (18 anos; React, Node/Next, Java, APIs, CI) | Ajuda o Aurelius: bundle e infraestrutura do 3D, carregamento de modelos .glb, testes automáticos | `site/celula/fonte/entry.js`, `site/celula/fonte/src/e_modelos.js`, `site/celula/vendor/`, `site/assets/modelos/*.glb.js`, `site/assets/modelos/indice.js`, `scripts/glb2js.py`, `testes/` |
+| 🎨 **Apolo**, diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
+| 🌈 **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
+| ✨ **Leo**, programador sênior de UI/UX front-end (entrou em 2026-11-15) | Dono da página inicial: layout, tipografia, botões, microinterações, hierarquia e acessibilidade, dentro do guia Campo escuro | `site/index.html`, `site/home.css`, `site/home.js` |
+| 🔬 **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 
 ## Regras de trabalho
+
+- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, ✨ Leo.
 
 - Todos os agentes também são programadores fullstack sênior (decisão da Nalu, 2026-11-14). Quem ficar livre ajuda outra frente, pegando do PM uma tarefa com arquivos próprios, sem editar o arquivo que outro agente está editando.
 

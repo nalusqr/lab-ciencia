@@ -1,0 +1,110 @@
+/* LAB, roda de matérias (página inicial; dono: Leo). Estilo "Campo escuro", docs/GUIA-DE-ESTILO.md.
+   Usa base.css e home.css (barra, botões, .ref, rodapé). Visual de instrumento de laboratório: anel com
+   retículo fino, como a platina de um microscópio; o âmbar marca só a matéria escolhida. */
+
+.roda-pg{padding-bottom:0}
+.abre{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,640px);gap:48px;align-items:center;padding:32px 0 16px}
+.abre-txt{display:flex;flex-direction:column;align-items:flex-start}
+.abre h1{font-family:var(--f-title);font-size:48px;font-weight:700;line-height:1.05;letter-spacing:-.01em;text-wrap:balance;margin-bottom:24px}
+.abre .lead{font-size:18px;line-height:1.6;color:#C3CCE0;max-width:40ch;margin:0 0 24px}
+.dica{font-size:13px;line-height:1.5;color:var(--dim);display:none}
+html.js .dica{display:block}
+
+/* ---------- A roda (anel, no computador e no tablet) ---------- */
+.roda{position:relative;width:100%;max-width:640px;aspect-ratio:1;margin:0 auto;user-select:none;-webkit-user-select:none;touch-action:none;outline:none}
+.anel{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.anel .reticulo line{stroke:var(--line);stroke-width:1.5}
+.anel .reticulo line.m{stroke:var(--line-strong);stroke-width:2}
+.anel .reticulo circle{fill:none;stroke:var(--line);stroke-width:1.5}
+.anel .segs path{fill:var(--panel);stroke:var(--line);stroke-width:1.5;transition:fill var(--t-ui),stroke var(--t-ui)}
+.anel .segs path.on{fill:var(--panel-2);stroke:var(--line-strong)}
+.anel .segs path.hv{fill:#171F36}
+.anel .mira{fill:none;stroke:var(--amber);stroke-width:4;stroke-linecap:round}
+
+.itens{position:absolute;inset:0}
+.item{position:absolute;left:50%;top:50%;width:112px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 4px;border:0;border-radius:12px;background:transparent;color:var(--dim);font-family:var(--f-txt);font-size:14px;font-weight:600;line-height:1.3;cursor:pointer;transform:translate(-50%,-50%);will-change:transform;-webkit-tap-highlight-color:transparent;transition:color var(--t-ui)}
+.item:hover,.item.on{color:var(--txt)}
+.item:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.dio{position:relative;display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:radial-gradient(70% 70% at 50% 40%,var(--stage-in),var(--bg));border:1px solid var(--line);transition:border-color var(--t-ui),transform var(--t-ui) var(--ease-out)}
+.dio .ph{width:28px;height:28px;color:var(--dim);transition:color var(--t-ui)}
+.dio img{position:absolute;inset:-8px;width:calc(100% + 16px);height:calc(100% + 16px);object-fit:contain;opacity:0;transition:opacity 400ms var(--ease-out)}
+.dio.tem img{opacity:1}
+.dio.tem .ph{opacity:0}
+.item:hover .dio{border-color:var(--line-strong)}
+.item:hover .ph,.item.on .ph{color:var(--txt)}
+.item.on .dio{border-color:var(--amber);transform:scale(1.12)}
+.item.on .nm{color:var(--txt)}
+.nm{white-space:nowrap;padding:2px 8px;border-radius:999px}
+.item.on .nm{background:var(--pill)}
+.roda.arrastando,.roda.arrastando .item{cursor:grabbing}
+
+/* Cartão do centro (painel da aba) */
+.centro{position:absolute;left:50%;top:50%;width:48%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;z-index:2}
+.centro:focus{outline:none}
+.centro .pos{font-size:13px;line-height:1.5;color:var(--dim);font-variant-numeric:tabular-nums}
+.centro h2{font-family:var(--f-title);font-size:32px;font-weight:700;line-height:1.1;letter-spacing:-.01em;color:var(--txt)}
+.centro .desc{font-size:15px;line-height:1.5;color:#C3CCE0;max-width:30ch;margin-bottom:8px;min-height:4.5em}
+.centro .btn{white-space:nowrap}
+.centro.troca h2,.centro.troca .desc{animation:troca 260ms var(--ease-out)}
+@keyframes troca{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Sem JS: as matérias aparecem em grade, sem anel */
+html:not(.js) .roda{aspect-ratio:auto;max-width:none}
+html:not(.js) .anel{display:none}
+html:not(.js) .itens{position:static;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+html:not(.js) .item{position:static;transform:none;width:auto}
+html:not(.js) .centro{position:static;transform:none;width:auto;margin-top:24px}
+
+@media(max-width:1023px){
+  .abre{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:24px}
+  .abre-txt{align-items:center;text-align:center}
+  .abre h1{font-size:40px}
+  .abre .lead{max-width:52ch}
+}
+
+/* ---------- Celular: arco arrastável de lado, cartão embaixo ---------- */
+@media(max-width:699px){
+  .abre{padding:16px 0 0;gap:16px}
+  .abre h1{font-size:34px;margin-bottom:12px}
+  .abre .lead{font-size:16px;margin-bottom:12px}
+  .roda{aspect-ratio:auto;max-width:none;touch-action:pan-y;display:flex;flex-direction:column}
+  .anel{display:none}
+  .itens{position:relative;inset:auto;height:172px;margin:0 -16px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+  /* linha do arco e a marca da matéria escolhida */
+  .itens::before{content:'';position:absolute;left:50%;top:60px;width:900px;height:900px;margin-left:-450px;border-radius:50%;border:1.5px solid var(--line);pointer-events:none}
+  .itens::after{content:'';position:absolute;left:50%;top:4px;width:48px;height:4px;margin-left:-24px;border-radius:2px;background:var(--amber);pointer-events:none}
+  .item{left:0;top:0;width:104px}
+  .dio{width:80px;height:80px}
+  .centro{position:relative;left:auto;top:auto;transform:none;width:auto;padding:24px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+  .centro h2{font-size:26px}
+  .centro .desc{min-height:0}
+  .centro .btn{width:100%}
+}
+
+/* ---------- Faixa de módulos da matéria ---------- */
+.faixa{padding-top:48px}
+.faixa .grupo{font-family:var(--f-title);font-size:18px;font-weight:600;line-height:1.3;margin:0 0 16px}
+.faixa .grupo~.grupo{margin-top:32px}
+.mods{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.mods>li{display:flex}
+.mods .ref{flex:1;padding:16px 16px 24px}
+.mods .ref em{display:block;font-style:normal;font-size:13px;line-height:1.5;color:var(--dim);margin-bottom:4px}
+.mods .ref b{font-size:17px}
+.mods .ref>.ico{width:44px;height:44px;padding:10px}
+.preparo{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:24px;border:1px dashed var(--line-strong);border-radius:12px;background:rgba(19,26,43,.45);max-width:68ch}
+.preparo p{font-size:16px;line-height:1.6;color:#C3CCE0}
+.preparo .acoes-p{display:flex;flex-wrap:wrap;gap:12px}
+#f-corpo.troca{animation:troca 260ms var(--ease-out)}
+@media(max-width:1023px){.mods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:699px){
+  .mods{grid-template-columns:minmax(0,1fr);gap:8px}
+  .mods .ref{flex-direction:row;align-items:center;padding:16px}
+  .preparo{padding:16px}
+  .preparo .btn{width:100%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .centro.troca h2,.centro.troca .desc,#f-corpo.troca{animation:none}
+  .item.on .dio{transform:none}
+}

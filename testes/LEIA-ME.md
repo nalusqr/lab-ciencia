@@ -1,6 +1,6 @@
 # Testes do LAB
 
-`fumaca.js` é um teste de fumaça. Ele abre cada página por `file://`, como a usuária abre com duplo clique, e falha se aparecer erro de console, exceção na página ou arquivo que não carregou. Páginas testadas: início, dna, tabela-periodica, moleculas, biomoleculas, celula e morfofisiologia.
+`fumaca.js` é um teste de fumaça. Ele abre cada página por `file://`, como a usuária abre com duplo clique, e falha se aparecer erro de console, exceção na página ou arquivo que não carregou. Páginas testadas: início (a roda de matérias), biologia (a trilha), dna, tabela-periodica, moleculas, biomoleculas, celula e morfofisiologia.
 
 Na Célula, o teste percorre pelo hash as 8 células e os 12 detalhes. Em cada um, confere que o canvas existe e que os pontos (`.hs`) ou rótulos (`.dl`) apareceram. Também abre `site/celula/fonte/teste-modelo.html` para validar o modelo do Blender.
 

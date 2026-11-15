@@ -4,7 +4,7 @@
 O que faz:
   - Reescreve a barra de abas (<nav class="tabs">) em todas as páginas de módulo, com a aba da página atual
     marcada como ativa (class="on" e aria-current="page").
-  - Na página inicial (site/index.html, desenhada à mão pelo dono dela), preenche só o que está entre os
+  - Na página da Biologia (site/biologia/index.html, desenhada à mão pelo dono dela), preenche só o que está entre os
     marcadores que a página tiver: a trilha do curso (os módulos sem "apoio", como etapas numeradas 1, 2, 3...
     na ordem do campo "ordem"); e, se houver os marcadores, a faixa "Para consultar" (os módulos com
     "apoio": true) e o botão "Começar pela etapa N". Cada etapa mostra "card" (título), "resumo" (até 20 palavras) e "temas"
@@ -21,7 +21,7 @@ O que faz:
   - As fichas de site/tabela-periodica/elementos/ não têm barra de abas e não são tocadas.
 
 Marcadores: o script troca só o que está entre <!-- abas:inicio ... --> e <!-- abas:fim --> (e, na página
-inicial, entre trilha:inicio/fim e, se existirem, apoio:inicio/fim e comecar:inicio/fim; esses marcadores
+da Biologia, entre trilha:inicio/fim e, se existirem, apoio:inicio/fim e comecar:inicio/fim; esses marcadores
 quem põe é o dono da página, e o script não os cria). Na primeira vez, encontra o trecho e põe os marcadores.
 É idempotente: rodar de novo sem mudar o JSON não altera nenhum arquivo.
 
@@ -36,6 +36,8 @@ import argparse, html, json, os, re, subprocess, sys
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(RAIZ, 'site')
 JSON = os.path.join(RAIZ, 'scripts', 'modulos.json')
+TRILHA = os.path.join(SITE, 'biologia', 'index.html')   # página da Biologia (trilha); site/index.html é a roda de matérias e não é tocada
+INICIO = '../biologia/index.html'                        # aba "Início" das páginas de módulo
 SPRITE = os.path.join(SITE, 'assets', 'icons', 'sprite.svg')
 AVISO = 'gerado por scripts/abas.py a partir de scripts/modulos.json; não edite à mão'
 SVG0 = '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">'
@@ -114,7 +116,7 @@ def nav(lista, atual, abre='<nav class="tabs" aria-label="Módulos">'):
     barra rola, no celular e em telas médias) e dentro do menu "Apoio" (visível só no computador largo)."""
     curso = [m for m in lista if not m.get('apoio')]
     apoio = [m for m in lista if m.get('apoio')]
-    a = [abre + '<a href="../index.html"><span>Início</span></a>']
+    a = [abre + f'<a href="{INICIO}"><span>Início</span></a>']
     a += [_aba(m, atual, '') for m in curso]
     a += [_aba(m, atual, 'ap') for m in apoio]
     if apoio:
@@ -195,7 +197,7 @@ def etapa(m, n, pronto):
     selos = (' <span class="badge new">Novo</span>' if pronto and m.get('novo') else '') + \
             ('' if pronto else ' <span class="badge breve">Em breve</span>')
     temas = ''.join(f'<li>{esc(t)}</li>' for t in m.get('temas', []))
-    tag, attr = ('a', f' href="{m["pasta"]}/index.html"') if pronto else ('div', '')
+    tag, attr = ('a', f' href="../{m["pasta"]}/index.html"') if pronto else ('div', '')
     return (f'    <li class="etapa {"pronta" if pronto else "breve"}">\n'
             f'      <span class="no" aria-hidden="true">{n}</span>\n'
             f'      <{tag} class="passo"{attr}>\n'
@@ -208,22 +210,25 @@ def etapa(m, n, pronto):
 
 
 def consulta(m):
-    return (f'    <a class="ref" href="{m["pasta"]}/index.html"><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>'
+    return (f'    <a class="ref" href="../{m["pasta"]}/index.html"><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>'
             f'<span><b>{esc(m["card"])}</b><small>{esc(resumo(m))}</small></span></a>\n')
 
 
 def pagina_inicial(mods, lista, simb):
-    """Preenche, em site/index.html, só os trechos cujos marcadores a página já tem (quem desenha a página
+    """Preenche, em site/biologia/index.html (a página da Biologia), só os trechos cujos marcadores a página já tem (quem desenha a página
     inicial põe os marcadores e o CSS; o script não cria marcador nem mexe no resto):
       trilha:inicio/fim   as etapas do curso (<li class="etapa ...">), para ficar dentro de um <ol>
       apoio:inicio/fim    (opcional) os links da faixa "Para consultar"
       comecar:inicio/fim  (opcional) o botão "Começar pela etapa N", que leva à primeira etapa pronta
-    Sem o marcador da trilha, a página inicial fica como está (com um aviso)."""
-    p = os.path.join(SITE, 'index.html')
+    Sem o arquivo ou sem o marcador da trilha, a página fica como está (com um aviso)."""
+    p = TRILHA
+    if not os.path.isfile(p):
+        print(f'  aviso: {os.path.relpath(p, RAIZ)} ainda não existe; trilha não gerada', file=sys.stderr)
+        return None
     t = ler(p)
     tem = lambda nome: re.search(r'<!-- %s:inicio[^>]*-->.*?<!-- %s:fim -->' % (nome, nome), t, re.S)
     if not tem('trilha'):
-        print('  aviso: site/index.html ainda não tem os marcadores <!-- trilha:inicio --> e <!-- trilha:fim -->; página inicial não tocada', file=sys.stderr)
+        print(f'  aviso: {os.path.relpath(p, RAIZ)} ainda não tem os marcadores <!-- trilha:inicio --> e <!-- trilha:fim -->; página inicial não tocada', file=sys.stderr)
         return p, t
     curso = sorted((m for m in mods if not m.get('apoio')), key=lambda m: m['ordem'])   # a trilha inteira, pronta ou não
     apoio = [m for m in lista if m.get('apoio')]
@@ -240,7 +245,7 @@ def pagina_inicial(mods, lista, simb):
         t = trocar(t, 'apoio', '\n' + ''.join(consulta(m) for m in apoio) + '  ', None)
     if tem('comecar'):
         ini = next(((n, m) for n, m in enumerate(curso, 1) if m['id'] in prontos), None)
-        t = trocar(t, 'comecar', f'<a class="btn primary" href="{ini[1]["pasta"]}/index.html">Começar pela etapa {ini[0]}</a>' if ini else '', None, curto=True)
+        t = trocar(t, 'comecar', f'<a class="btn primary" href="../{ini[1]["pasta"]}/index.html">Começar pela etapa {ini[0]}</a>' if ini else '', None, curto=True)
     return p, t
 
 
@@ -281,7 +286,7 @@ def main():
     simb = simbolos(mods)
     sprite_ids = set(SIMB_ID.findall(ler(SPRITE)))
     pular = {x.strip() for x in a.pular.split(',') if x.strip()}
-    saidas = [(pagina(m), pagina_modulo(m, lista, simb, sprite_ids)) for m in lista if m['pasta'] not in pular] + [pagina_inicial(mods, lista, simb)]
+    saidas = [(pagina(m), pagina_modulo(m, lista, simb, sprite_ids)) for m in lista if m['pasta'] not in pular] + [x for x in [pagina_inicial(mods, lista, simb)] if x]
     for x in sorted(pular):
         print(f'  pulado (não gravado): site/{x}/')
     mudou = [p for p, t in saidas if ler(p) != t]

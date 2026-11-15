@@ -16,6 +16,7 @@ const FILTRO = process.argv[2] || '';
 
 const PAGINAS = [
   ['início', 'site/index.html'],
+  ['biologia', 'site/biologia/index.html'],   // página da Biologia, com a trilha (a página inicial virou a roda de matérias)
   ['dna', 'site/dna/index.html'],
   ['tabela-periodica', 'site/tabela-periodica/index.html'],
   ['moleculas', 'site/moleculas/index.html'],
