@@ -80,3 +80,8 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 - Duas frentes precisam do mesmo arquivo e não há acordo.
 - Uma escolha muda o objetivo do site (público, estilo, escopo).
 - Algo não pode ser desfeito.
+
+
+## Próxima etapa (decidida pela Nalu em 2026-11-15)
+
+A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente, sem rótulo "em breve" (pedido da Nalu); as que ainda não têm conteúdo só não terão módulos por enquanto. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).

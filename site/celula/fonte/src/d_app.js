@@ -10,7 +10,10 @@ const CELLS={
  fago:['Bacteriófago (vírus)',['capsideo','dna_fago','cauda_fago','fibras']]};
 DETB.nucleo_lev=DETB.nucleo;   // o núcleo da levedura usa a mesma tela em corte, com o texto próprio
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const S={ctype:'animal',view:'celula',sel:null,hv:null,labels:true,paused:RM,z:0,ver:0};
+// ?embed=1: só a cena, sem interface, girando devagar (é a vitrine da página inicial, num iframe). Sem toque, sem
+// pontos e sem nomes; com movimento reduzido, fica parada. Avisa a página de fora (postMessage) quando já desenhou.
+const EMB=/[?&]embed=1(&|$)/.test(location.search);
+const S={ctype:'animal',view:'celula',sel:null,hv:null,labels:!EMB,paused:RM,z:0,ver:0};
 const subs=new Set();
 function set(p){let ch=false;for(const k in p)if(S[k]!==p[k]){ch=true;break}if(!ch)return;Object.assign(S,p);S.ver++;subs.forEach(f=>f());ui()}
 const useS=()=>React.useSyncExternalStore(cb=>{subs.add(cb);return()=>subs.delete(cb)},()=>S.ver);
@@ -29,7 +32,8 @@ const BAR=()=>innerWidth<700?68:76;   // altura ocupada pela barra de ferramenta
 function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClippingEnabled=true;if(MAT)MAT.configurarRenderer(gl);gl.toneMappingExposure=.92;
   const pm=new THREE.PMREMGenerator(gl);const env=pm.fromScene(new RoomEnvironment(),.04).texture;scene.environment=env;scene.environmentIntensity=.38;pm.dispose();
   let bg=null,bt=null;
-  if(MAT){bg=MAT.fundoPalco(34);scene.add(bg)}   // degradê do palco (guia 2.1), da biblioteca de materiais
+  if(EMB){}   // na vitrine o fundo é transparente: aparece o fundo da página de fora
+  else if(MAT){bg=MAT.fundoPalco(34);scene.add(bg)}   // degradê do palco (guia 2.1), da biblioteca de materiais
   else{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,120,8,128,128,200);g.addColorStop(0,'#161D33');g.addColorStop(1,'#0B0F1C');x.fillStyle=g;x.fillRect(0,0,256,256);bt=new THREE.CanvasTexture(c);bt.colorSpace=THREE.SRGBColorSpace;scene.background=bt}
   return()=>{env.dispose();if(bg){scene.remove(bg);bg.geometry.dispose();bg.material.dispose()}if(bt)bt.dispose()}},[]);return null}
 // três luzes do "laboratório" (guia 5): principal morna de cima e da esquerda, preenchimento frio, contorno por trás
@@ -40,7 +44,7 @@ function Lights(){return LUZ?html`<primitive object=${LUZ}/>`:html`<ambientLight
 // livre (entre o topo ocupado pela etiqueta e pelo cartão e a barra de ferramentas) e ocupa até ~74% do lado
 // menor e ~85% do maior. No celular em pé, a célula larga é girada 90° em torno do eixo da câmera, para usar a altura.
 const TAN=Math.tan(17*Math.PI/180),_cv=new THREE.Vector3(),_m4=new THREE.Matrix4();
-const livre=(w,h)=>{const m=w<700;return{x0:16,x1:w-16,y0:m?88:64,y1:h-BAR()-(m?6:0)}};
+const livre=(w,h)=>{if(EMB){const m=Math.round(Math.min(w,h)*.05);return{x0:m,x1:w-m,y0:m,y1:h-m}}const m=w<700;return{x0:16,x1:w-16,y0:m?88:64,y1:h-BAR()-(m?6:0)}};
 function ext(sc){if(sc.ext)return sc.ext;sc.g.updateMatrixWorld(true);const n=sc.cam.clone().normalize(),r=V3(0,1,0).cross(n).normalize(),u=n.clone().cross(r);
   let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;const box=new THREE.Box3();
   const add=(p,rad)=>{const x=p.dot(r),y=p.dot(u);x0=Math.min(x0,x-rad);x1=Math.max(x1,x+rad);y0=Math.min(y0,y-rad);y1=Math.max(y1,y+rad);box.expandByPoint(p)};
@@ -63,7 +67,7 @@ function Rig({sc}){const ctl=React.useRef();const {camera,size}=useThree();
     const F=livre(size.width,size.height),oy=Math.round(size.height/2-(F.y0+F.y1)/2);if(!camera.view||camera.view.offsetY!==oy||camera.view.fullWidth!==size.width||camera.view.fullHeight!==size.height)camera.setViewOffset(size.width,size.height,0,oy,size.width,size.height);
     c.target.lerp(tgt,Math.min(1,dt*3));const want=fitD(sc,size.width,size.height)*f*Math.pow(1.3,-S.z);const off=camera.position.clone().sub(c.target);const cur=off.length();off.setLength(cur+(want-cur)*Math.min(1,dt*4));camera.position.copy(c.target).add(off);c.update();
     const vis=2*off.length()*Math.tan(camera.fov*Math.PI/360)*size.width/size.height;updMag(size.width/(vis*sc.upu),vis*sc.upu,size.width)});
-  return html`<${OrbitControls} ref=${ctl} makeDefault enablePan=${false} enableZoom=${false} enableDamping=${true} dampingFactor=${.08} rotateSpeed=${.55} minPolarAngle=${.12} maxPolarAngle=${Math.PI-.12}/>`}
+  return html`<${OrbitControls} ref=${ctl} makeDefault enableRotate=${!EMB} autoRotate=${EMB&&!RM} autoRotateSpeed=${.5} enablePan=${false} enableZoom=${false} enableDamping=${true} dampingFactor=${.08} rotateSpeed=${.55} minPolarAngle=${.12} maxPolarAngle=${Math.PI-.12}/>`}
 // ---------- rótulos sem sobreposição (guia 5, "Rótulos") ----------
 // Célula inteira: cada nome tenta ficar ao lado do seu ponto (direita, esquerda, acima, abaixo), do mais importante
 // para o menos; não toca em outro nome, no cartão, na etiqueta, na barra nem em outro ponto. No computador todos os
@@ -120,7 +124,7 @@ function Lab({l,i}){const g=React.useRef(),d=React.useRef(),lr=React.useRef(l);l
   useFrame(()=>{if(g.current)g.current.position.copy(l.live?l.live():l[1])});
   return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className="dl hid"><b></b><i></i><span>${l[0]}</span></div><//></group>`}
 // seleção: a organela escolhida ganha um realce; as outras perdem 40% da saturação (guia 5, "Brilho")
-const _hsl={},_c=new THREE.Color();
+const _hsl={},_c=new THREE.Color();let avisou=false,quadrosEmb=0;
 function World({sc}){useS();DESEMPENHO.simplificar(sc.mats);const kg=React.useRef();const size=useThree(st=>st.size);const pe=emPe(sc,size.width,size.height);
   const [rq,ro]=React.useMemo(()=>[new THREE.Quaternion().setFromAxisAngle(ext(sc).n,pe?-Math.PI/2:0),fitOff(sc,pe)],[sc,pe]);
   useFrame((st,dt)=>{dt=Math.min(dt,.05);if(!S.paused){T+=dt;if(sc.tick)sc.tick(T,dt)}
@@ -129,12 +133,13 @@ function World({sc}){useS();DESEMPENHO.simplificar(sc.mats);const kg=React.useRe
     for(const m of sc.mats){const k=m.userData.k;const on=k&&k===focus;const t=on?.22+.08*Math.sin(now*4):m.userData.e0;m.emissiveIntensity+=(t-m.emissiveIntensity)*Math.min(1,dt*8);
       const c0=m.userData.c0;if(!c0)continue;const dim=focus&&!on&&k!=='membrana'?1:0;m.userData.dz=(m.userData.dz||0)+(dim-(m.userData.dz||0))*Math.min(1,dt*6);
       const q=m.userData.dz;_c.copy(c0);if(q>.002){_c.getHSL(_hsl);_c.setHSL(_hsl.h,_hsl.s*(1-.4*q),_hsl.l*(1-.25*q))}m.color.copy(_c)}
+    if(EMB&&!avisou&&++quadrosEmb>3){avisou=true;document.documentElement.classList.add('pronta');try{if(parent!==window)parent.postMessage({lab:'celula-pronta'},'*')}catch(e){}}
     layoutLabels(st.camera,st.size,sc)});
   const kOf=e=>{let o=e.object;while(o&&!o.userData.k)o=o.parent;return o&&o.userData.k};
-  const cell=S.view==='celula';
+  const cell=S.view==='celula'&&!EMB;
   const ev=cell?{onPointerMove:e=>{e.stopPropagation();const k=kOf(e);const v=k&&inList(k)?k:null;if(v!==S.hv)set({hv:v});document.body.style.cursor=v?'pointer':''},
     onPointerOut:()=>{if(S.hv)set({hv:null});document.body.style.cursor=''},onClick:e=>{e.stopPropagation();const k=kOf(e);if(k&&inList(k))choose(k)}}:{};
-  const kids=cell?CELLS[S.ctype][1].filter(k=>sc.anch[k]).map((k,i)=>html`<${Hot} key=${k} k=${k} i=${i} p=${sc.anch[k]}/>`):sc.labels.map((l,i)=>html`<${Lab} key=${i} i=${i} l=${l}/>`);
+  const kids=EMB?[]:cell?CELLS[S.ctype][1].filter(k=>sc.anch[k]).map((k,i)=>html`<${Hot} key=${k} k=${k} i=${i} p=${sc.anch[k]}/>`):sc.labels.map((l,i)=>html`<${Lab} key=${i} i=${i} l=${l}/>`);
   return html`<group quaternion=${rq} position=${ro}><primitive object=${sc.g} dispose=${null} ...${ev}/><group ref=${kg}>${kids}</group></group>`}
 function App(){useS();const sc=getScene(sceneKey());
   return html`<${Canvas} dpr=${DESEMPENHO.dpr} gl=${{antialias:true,powerPreference:'high-performance'}} camera=${{fov:34,near:.05,far:120,position:[0,5,9]}}
