@@ -7,7 +7,7 @@ const TAU = Math.PI * 2;
 const $ = id => document.getElementById(id);
 const cv = $('cv'), X = cv.getContext('2d');
 const off = document.createElement('canvas'), OX = off.getContext('2d');
-let W = 600, H = 500, DPR = 1, NAR = false;
+let W = 600, H = 500, DPR = 1, NAR = false, K = 1;
 
 function rs() {
   DPR = Math.min(2, window.devicePixelRatio || 1);
@@ -16,7 +16,7 @@ function rs() {
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   off.width = cv.width; off.height = cv.height;
   X.setTransform(DPR, 0, 0, DPR, 0, 0); OX.setTransform(DPR, 0, 0, DPR, 0, 0);
-  NAR = W < 700;
+  NAR = W < 700; K = NAR ? 1 : cl(Math.min(H / 560, W / 1100), 1, 1.2);
 }
 
 // cores fixas (guia Campo escuro + adaptação do 🌻 Fibonacci para a Matemática)
@@ -45,10 +45,10 @@ const sup = n => String(n).split('').map(d => SUP[d]).join('');
 
 function tx(s, x, y, o = {}) {
   X.save(); if (o.al != null) X.globalAlpha *= o.al;
-  X.font = `${o.w || 600} ${o.s || 14}px ${o.f || FT}`; X.fillStyle = o.c || C.txt;
+  X.font = `${o.w || 600} ${(o.s || 14) * K}px ${o.f || FT}`; X.fillStyle = o.c || C.txt;
   X.textAlign = o.a || 'center'; X.textBaseline = o.b || 'middle'; X.fillText(s, x, y); X.restore();
 }
-function tw(s, sz, w, f) { X.font = `${w || 600} ${sz}px ${f || FT}`; return X.measureText(s).width; }
+function tw(s, sz, w, f) { X.font = `${w || 600} ${sz * K}px ${f || FT}`; return X.measureText(s).width; }
 function fit(s, maxw, sz, w, f, min = 10) { while (sz > min && tw(s, sz, w, f) > maxw) sz--; return sz; }
 function circ(x, y, r, f, s, lw) { X.beginPath(); X.arc(x, y, Math.max(.1, r), 0, TAU); if (f) { X.fillStyle = f; X.fill(); } if (s) { X.strokeStyle = s; X.lineWidth = lw || 1; X.stroke(); } }
 function ell(x, y, rx, ry, f, s, lw) { X.beginPath(); X.ellipse(x, y, Math.max(.1, rx), Math.max(.1, ry), 0, 0, TAU); if (f) { X.fillStyle = f; X.fill(); } if (s) { X.strokeStyle = s; X.lineWidth = lw || 1; X.stroke(); } }
@@ -59,13 +59,38 @@ function area() {
   return { x0, x1, y0, y1, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
 }
 function pill(s, x, y, c, o = {}) {
-  X.save(); const sz = o.s || (NAR ? 12 : 14); X.font = `${o.w || 600} ${sz}px ${o.f || FT}`;
+  X.save(); const sz = (o.s || (NAR ? 12 : 14)) * K; X.font = `${o.w || 600} ${sz}px ${o.f || FT}`;
   const w = X.measureText(s).width + (c ? 26 : 18), h = sz + 12;
   const px = o.a === 'center' ? x - w / 2 : o.a === 'right' ? x - w : x;
   rr(px, y - h / 2, w, h, 999, o.bg || 'rgba(11,15,28,.88)', o.st || 'rgba(255,255,255,.14)', o.lw || 1);
   if (c) circ(px + 12, y, 4.5, c);
   X.fillStyle = o.tc || C.txt; X.textAlign = 'left'; X.textBaseline = 'middle'; X.fillText(s, px + (c ? 21 : 9), y + .5);
   X.restore(); return { x: px, y: y - h / 2, w, h };
+}
+// ---------- estilo: profundidade discreta (🌻 Fibonacci) ----------
+function blob(x, y, rx, ry, c, o = {}) {
+  const g = X.createRadialGradient(x - rx * .25, y - ry * .3, 0, x, y, Math.max(rx, ry));
+  g.addColorStop(0, rgba(c, o.a0 ?? .2)); g.addColorStop(1, rgba(c, o.a1 ?? .04));
+  X.beginPath(); X.ellipse(x, y, Math.max(.1, rx), Math.max(.1, ry), 0, 0, TAU); X.fillStyle = g; X.fill();
+  X.save(); X.shadowColor = rgba(c, .55); X.shadowBlur = o.glow ?? 16; X.strokeStyle = c; X.lineWidth = o.lw || 2.2; X.stroke(); X.restore();
+}
+function frame(x, y, w, h) {
+  const g = X.createLinearGradient(x, y, x, y + h); g.addColorStop(0, 'rgba(255,255,255,.04)'); g.addColorStop(1, 'rgba(255,255,255,.012)');
+  rr(x, y, w, h, 16, g, 'rgba(120,138,190,.45)', 1.2);
+}
+function token(x, y, r, label, on, edge, o = {}) {
+  X.save(); X.shadowColor = on ? rgba(C.res, .6) : 'rgba(0,0,0,.5)'; X.shadowBlur = on ? 18 : 8; X.shadowOffsetY = on ? 0 : 2;
+  const g = X.createLinearGradient(x, y - r, x, y + r);
+  if (on) { g.addColorStop(0, '#FFD08A'); g.addColorStop(1, '#F29A1F'); } else { g.addColorStop(0, '#26304F'); g.addColorStop(1, '#161D33'); }
+  circ(x, y, r, g); X.restore();
+  circ(x, y, r, null, on ? '#FFE0AE' : (edge || C.line), on ? 1.5 : 1.4);
+  if (label != null) tx(label, x, y + 1, { f: FM, w: 500, s: o.s || (NAR ? 14 : 16), c: on ? C.ink : (o.tc || C.txt) });
+}
+function backdrop() {
+  const step = 28; X.save(); X.fillStyle = 'rgba(160,178,230,.07)';
+  for (let x = step / 2; x < W; x += step) for (let y = step / 2; y < H; y += step) { X.fillRect(x - .75, y - .75, 1.5, 1.5); }
+  const v = X.createRadialGradient(W / 2, H * .45, Math.min(W, H) * .2, W / 2, H * .45, Math.max(W, H) * .75);
+  v.addColorStop(0, 'rgba(11,15,28,0)'); v.addColorStop(1, 'rgba(11,15,28,.55)'); X.fillStyle = v; X.fillRect(0, 0, W, H); X.restore();
 }
 const inBox = (b, x, y) => b && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h;
 
@@ -96,11 +121,11 @@ function drawAxis(L, o = {}) {
     if (o.labels !== false && (!NAR || L.u > 22 || v % 2 === 0)) tx(fm(v), x, L.y + 18, { f: FM, w: 500, s: NAR ? 11 : 12, c: C.dim });
   }
 }
-function ball(x, y, closed, c, r = 6.5) { circ(x, y, r, closed ? c : '#0B0F1C', c, 2.5); }
+function ball(x, y, closed, c, r = 7.5) { X.save(); X.shadowColor = rgba(c, .7); X.shadowBlur = 10; circ(x, y, r, closed ? c : '#0B0F1C', c, 2.8); X.restore(); }
 function drawIv(L, I, c, y, lw = 6) {
   y = y ?? L.y; const xa = I.a === -Infinity ? L.x0 - 6 : L.px(I.a), xb = I.b === Infinity ? L.x1 + 6 : L.px(I.b);
   if (I.a === I.b) { ball(xa, y, true, c); return; }
-  X.save(); X.lineCap = 'round'; line(xa, y, xb, y, rgba(c, .9), lw); X.restore();
+  X.save(); X.lineCap = 'round'; X.shadowColor = rgba(c, .6); X.shadowBlur = 14; line(xa, y, xb, y, rgba(c, .95), lw + 1); X.restore();
   if (I.a === -Infinity) { X.beginPath(); X.moveTo(xa - 10, y); X.lineTo(xa, y - 8); X.lineTo(xa, y + 8); X.closePath(); X.fillStyle = c; X.fill(); } else ball(xa, y, I.ca, c);
   if (I.b === Infinity) { X.beginPath(); X.moveTo(xb + 10, y); X.lineTo(xb, y - 8); X.lineTo(xb, y + 8); X.closePath(); X.fillStyle = c; X.fill(); } else ball(xb, y, I.cb, c);
 }
@@ -152,11 +177,11 @@ const secOf = o => SECS.find(s => s.id === o.sec);
     t: 'Conjunto, elemento e pertinência', st: 'Os símbolos ∈ e ∉',
     init: () => ({ sel: null, pts: [] }),
     draw(S) {
-      const a = area(); const r = NAR ? 15 : 18;
-      rr(a.x0, a.y0, a.w, a.h, 14, 'rgba(255,255,255,.02)', C.line, 1.2);
+      const a = area(); const r = (NAR ? 15 : 18) * K;
+      frame(a.x0, a.y0, a.w, a.h);
       pill('U = {a, b, c, …, o}: as 15 primeiras letras', a.x0 + 10, a.y0 + 20, null, { s: NAR ? 11 : 13 });
       const ex = a.x0 + a.w * (NAR ? .3 : .3), ey = a.cy + 4, erx = a.w * (NAR ? .24 : .2), ery = a.h * .3;
-      ell(ex, ey, erx, ery, rgba(C.A, .12), C.A, 2);
+      blob(ex, ey, erx, ery, C.A);
       tx('A', ex - erx * .75, ey - ery * .85, { f: FH, s: 20, w: 700, c: C.A });
       S.pts = [];
       VOG.forEach((l, i) => { const ang = -Math.PI / 2 + i * TAU / 4 + .5; S.pts.push({ l, x: ex + Math.cos(ang) * erx * .5, y: ey + Math.sin(ang) * ery * .5, v: true }); });
@@ -165,8 +190,7 @@ const secOf = o => SECS.find(s => s.id === o.sec);
       CON.forEach((l, i) => { const c = i % cols, w = Math.floor(i / cols); S.pts.push({ l, x: lerp(gx0, gx1, cols > 1 ? c / (cols - 1) : .5), y: lerp(gy0, gy1, rows > 1 ? w / (rows - 1) : .5), v: false }); });
       for (const p of S.pts) {
         const on = S.sel === p.l, pulse = on ? 1 + .08 * Math.sin(S.t * 6) : 1;
-        circ(p.x, p.y, r * pulse, on ? C.res : C.panel2, on ? C.res : (p.v ? C.A : C.line), on ? 2.5 : 1.5);
-        tx(p.l, p.x, p.y + 1, { f: FM, w: 500, s: NAR ? 15 : 17, c: on ? C.ink : C.txt });
+        token(p.x, p.y, r * pulse, p.l, on, p.v ? C.A : C.line, { s: NAR ? 15 : 17 });
         if (on) pill(p.v ? `${p.l} ∈ A` : `${p.l} ∉ A`, p.x, p.y - r - 18, null, { a: 'center', st: C.res, tc: C.res, s: NAR ? 13 : 15, f: FM, w: 500 });
       }
       const by = a.y1 - (NAR ? 44 : 50), bx = a.x0 + 14, fs = NAR ? 12 : 14;
@@ -204,13 +228,14 @@ const secOf = o => SECS.find(s => s.id === o.sec);
       const head = n ? `A = {${Array.from({ length: n }, (_, i) => i + 1).join(', ')}}` : 'A = ∅';
       pill(head, a.x0, a.y0 + 8, C.A, { f: FM, w: 500, s: NAR ? 13 : 15 });
       pill(`n(A) = ${n}  →  2${sup(n)} = ${1 << n} subconjuntos`, NAR ? a.x0 : a.x1, a.y0 + (NAR ? 36 : 8), null, { a: NAR ? 'left' : 'right', f: FM, w: 500, s: NAR ? 12 : 14, tc: C.res });
-      const gy0 = a.y0 + (NAR ? 64 : 40), gh = a.y1 - gy0, fs = NAR ? 12 : 14;
-      const cw = tw(sstr(Array.from({ length: Math.max(n, 2) }, (_, i) => i + 1)), fs, 500, FM) + 22;
-      const cols = Math.max(1, Math.min(L.length, Math.floor(a.w / (cw + 8))));
-      const rows = Math.ceil(L.length / cols), ch0 = Math.min(42, gh / rows - 6), gw = Math.min(n ? L.length / 2 : L.length, cols) * (cw + 8) - 8, gx0 = a.cx - gw / 2;
+      const gy0 = a.y0 + (NAR ? 64 : 48), gh = a.y1 - gy0 - 8, fs = NAR ? 12 : 16;
+      let cw = tw(sstr(Array.from({ length: Math.max(n, 2) }, (_, i) => i + 1)), fs, 500, FM) + 26;
+      const cols = Math.max(1, Math.min(n ? L.length / 2 : L.length, Math.floor(a.w / (cw + 8))));
+      cw = Math.max(cw, Math.min(NAR ? cw : 168, a.w / cols - 10));
+      const rows = Math.ceil(L.length / cols), ch0 = Math.min(NAR ? 46 : 58, gh / rows - 6), gw = Math.min(n ? L.length / 2 : L.length, cols) * (cw + 8) - 8, gx0 = a.cx - gw / 2;
       S.boxes = [];
       const half = n ? L.length / 2 : L.length, hr = Math.ceil(half / cols), gapH = n ? 34 : 0;
-      const ch2 = Math.min(ch0, (gh - gapH - 24) / (2 * hr) - 6);
+      const ch2 = Math.min(NAR ? 46 : 58, (gh - gapH - 24) / (2 * hr) - 6);
       if (n) {
         tx(`sem o ${n}: os ${half} subconjuntos de {${Array.from({ length: n - 1 }, (_, i) => i + 1).join(', ')}}`.replace('{}', '∅'), gx0, gy0 + 6, { a: 'left', s: NAR ? 11 : 13, c: C.dim });
         const y2 = gy0 + 18 + hr * (ch2 + 6) + 10;
@@ -222,7 +247,8 @@ const secOf = o => SECS.find(s => s.id === o.sec);
         const x = gx0 + c * (cw + 8), y = gy0 + (n ? 18 : 0) + sec * (hr * (ch2 + 6) + 28) + r * (ch2 + 6) + (1 - k) * 10, ch = n ? ch2 : ch0;
         const on = S.sel === i, full = e.length === n;
         X.save(); X.globalAlpha = k;
-        rr(x, y, cw, ch, 8, on ? C.res : C.panel2, on ? C.res : full || !e.length ? C.res : rgba(C.A, .7), on ? 2 : 1.2);
+        X.shadowColor = on ? rgba(C.res, .6) : 'rgba(0,0,0,.45)'; X.shadowBlur = on ? 16 : 6; rr(x, y, cw, ch, 10, on ? C.res : sec ? '#2A2416' : '#1E2846', null); X.shadowBlur = 0;
+        rr(x, y, cw, ch, 10, null, on ? C.res : full || !e.length ? C.res : rgba(sec ? C.res : C.A, .6), on ? 2 : 1.2);
         tx(sstr(e), x + cw / 2, y + ch / 2 + 1, { f: FM, w: 500, s: fs, c: on ? C.ink : C.txt });
         X.restore(); S.boxes.push({ x, y, w: cw, h: ch, i });
       });
@@ -287,7 +313,7 @@ const secOf = o => SECS.find(s => s.id === o.sec);
         else { const sib = E.s.filter(q => q[1] === L), jj = sib.indexOf(p); x = r.x + r.w * (sib.length > 1 ? .62 + .2 * jj : .7); y = r.y + (inner.y - r.y) / 2 + 2; }
         const rad = NAR ? 17 : 21;
         X.save(); X.globalAlpha = .35 + .65 * (inU ? k2 : 1) * (inU ? 1 : .6);
-        circ(x, y, rad, inU ? C.res : 'rgba(11,15,28,.9)', inU ? C.res : C.line, 2);
+        token(x, y, rad, null, inU, C.line);
         if (!inU) { X.setLineDash([3, 3]); circ(x, y, rad + 4, null, C.line, 1); X.setLineDash([]); }
         tx(s, x, y + 1, { f: FM, w: 500, s: NAR ? 13 : 15, c: inU ? C.ink : C.dim });
         X.restore();
@@ -337,12 +363,12 @@ const secOf = o => SECS.find(s => s.id === o.sec);
     init: () => ({ op: 0, tc: 0 }),
     draw(S) {
       const g = geo(), { U, r, cy, ax, bx } = g, o = OPS[S.op];
-      rr(U.x, U.y, U.w, U.h, 14, 'rgba(255,255,255,.02)', C.line, 1.2);
+      frame(U.x, U.y, U.w, U.h);
       tx('U = {1, 2, …, 10}', U.x + 14, U.y + 18, { a: 'left', f: FM, w: 500, s: NAR ? 11 : 13, c: C.dim });
       const pA = pEll(ax, cy, r, r), pB = pEll(bx, cy, r, r), pU = pRect(U.x, U.y, U.w, U.h);
       const regs = [[['add', pA], ['add', pB]], [['add', pA], ['in', pB]], [['add', pA], ['out', pB]], [['add', pB], ['out', pA]], [['add', pU], ['out', pA]], [['add', pU], ['out', pA], ['out', pB]]];
       region(regs[S.op], C.res, .34 * ss((S.t - S.tc) / .35));
-      circ(ax, cy, r, rgba(C.A, .06), C.A, 2); circ(bx, cy, r, rgba(C.B, .06), C.B, 2);
+      blob(ax, cy, r, r, C.A, { a0: .14, a1: .03 }); blob(bx, cy, r, r, C.B, { a0: .14, a1: .03 });
       tx('A', ax - r * .7, cy - r * .86, { f: FH, s: 20, w: 700, c: C.A }); tx('B', bx + r * .7, cy - r * .86, { f: FH, s: 20, w: 700, c: C.B });
       const P = {
         1: [ax - r * .5, cy - r * .38], 3: [ax - r * .62, cy + .08 * r], 5: [ax - r * .4, cy + r * .48],
@@ -353,9 +379,8 @@ const secOf = o => SECS.find(s => s.id === o.sec);
       const res = [];
       for (let v = 1; v <= 10; v++) {
         const on = o.f(A.includes(v), B.includes(v)); if (on) res.push(v);
-        const [x, y] = P[v], rad = NAR ? 13 : 16;
-        circ(x, y, rad, on ? C.res : C.panel2, on ? C.res : C.line, 1.5);
-        tx(String(v), x, y + 1, { f: FM, w: 500, s: NAR ? 13 : 15, c: on ? C.ink : C.dim });
+        const [x, y] = P[v], rad = (NAR ? 13 : 16) * K;
+        token(x, y, rad, String(v), on, C.line, { s: NAR ? 13 : 15, tc: C.dim });
       }
       pill(`${o.k} = ${res.length ? '{' + res.join(', ') + '}' : '∅'}`, g.a.cx, g.a.y0 + 8, null, { a: 'center', f: FM, w: 500, s: NAR ? 13 : 16, st: C.res, tc: C.res });
     },
@@ -383,11 +408,11 @@ const secOf = o => SECS.find(s => s.id === o.sec);
       const a = area(), top = a.y0 + 34, U = { x: a.x0, y: top, w: a.w, h: a.y1 - top - (NAR ? 66 : 58) };
       const r = Math.min(U.h * .42, a.w * (NAR ? .28 : .2)), d = r * .62, cy = U.y + U.h / 2 + 6, ax = a.cx - d, bx = a.cx + d;
       pill('Pesquisa com 100 alunos: gosta de Matemática (M)? E de Física (F)?', a.cx, a.y0 + 8, null, { a: 'center', s: NAR ? 11 : 14 });
-      rr(U.x, U.y, U.w, U.h, 14, 'rgba(255,255,255,.02)', C.line, 1.2);
+      frame(U.x, U.y, U.w, U.h);
       tx('U: 100 alunos', U.x + 14, U.y + 18, { a: 'left', s: 13, c: C.dim });
       const pA = pEll(ax, cy, r, r), pB = pEll(bx, cy, r, r);
       region([['add', pA], ['in', pB]], C.res, .22 + .12 * Math.sin(S.t * 3));
-      circ(ax, cy, r, rgba(C.A, .07), C.A, 2); circ(bx, cy, r, rgba(C.B, .07), C.B, 2);
+      blob(ax, cy, r, r, C.A, { a0: .14, a1: .03 }); blob(bx, cy, r, r, C.B, { a0: .14, a1: .03 });
       tx('M', ax - r * .7, cy - r * .86, { f: FH, s: 20, w: 700, c: C.A }); tx('F', bx + r * .7, cy - r * .86, { f: FH, s: 20, w: 700, c: C.B });
       const big = NAR ? 20 : 26, sm = NAR ? 11 : 12, un = S.M + S.F - S.I, nen = S.tot - un;
       tx(String(S.M - S.I), ax - r * .45, cy, { f: FM, w: 500, s: big, c: C.A }); tx('só M', ax - r * .45, cy + big * .9, { s: sm, c: C.dim });
@@ -450,10 +475,10 @@ function numGeo() {
 }
 function drawNumSets(g, glow = {}) {
   const { R, Q, Z, N, Ix } = g, gl = k => glow[k] ? 3 : 1.6;
-  rr(R.x, R.y, R.w, R.h, 14, rgba(C.R, .05), C.R, gl('R'));
-  ell(Q.cx, Q.cy, Q.rx, Q.ry, rgba(C.Q, .06), C.Q, gl('Q'));
-  ell(Z.cx, Z.cy, Z.rx, Z.ry, rgba(C.Z, .07), C.Z, gl('Z'));
-  ell(N.cx, N.cy, N.rx, N.ry, rgba(C.N, .08), C.N, gl('N'));
+  X.save(); X.shadowColor = rgba(C.R, .5); X.shadowBlur = glow.R ? 20 : 10; rr(R.x, R.y, R.w, R.h, 16, rgba(C.R, .05), C.R, gl('R')); X.restore();
+  blob(Q.cx, Q.cy, Q.rx, Q.ry, C.Q, { a0: .12, a1: .03, lw: gl('Q'), glow: glow.Q ? 22 : 10 });
+  blob(Z.cx, Z.cy, Z.rx, Z.ry, C.Z, { a0: .14, a1: .04, lw: gl('Z'), glow: glow.Z ? 22 : 10 });
+  blob(N.cx, N.cy, N.rx, N.ry, C.N, { a0: .18, a1: .05, lw: gl('N'), glow: glow.N ? 22 : 10 });
   const fs = NAR ? 15 : 18;
   tx('ℝ', R.x + 14, R.y + 16, { a: 'left', f: FH, s: fs, w: 700, c: C.R });
   tx('ℚ', Q.cx, Q.cy - Q.ry + 15, { f: FH, s: fs, w: 700, c: C.Q });
@@ -799,12 +824,12 @@ def('numericos', 'irracionais', {
     init: () => ({ a: -2, b: 3, ca: true, cb: false, ia: false, ib: false, dr: null, L: null }),
     draw(S) {
       const a = area(), I = iv(S);
-      const L = S.L = axis({ x0: a.x0 + 22, x1: a.x1 - 30, y: a.y0 + a.h * .55, lo: LO, hi: HI });
+      const L = S.L = axis({ x0: a.x0 + 22, x1: a.x1 - 30, y: a.y0 + a.h * (NAR ? .55 : .58), lo: LO, hi: HI });
       const s1 = ivStr(I), s2 = s1.replace(/^\]/, '(').replace(/\[$/, ')').replace(/^\[/, '[').replace(/\]$/, ']');
       const alt = (I.a === -Infinity ? '(−∞' : (I.ca ? '[' : '(') + fm(I.a)) + '; ' + (I.b === Infinity ? '+∞)' : fm(I.b) + (I.cb ? ']' : ')'));
-      tx(s1, a.cx, a.y0 + 14, { f: FM, w: 500, s: NAR ? 24 : 32, c: C.res });
+      X.save(); X.shadowColor = rgba(C.res, .5); X.shadowBlur = 18; tx(s1, a.cx, a.y0 + (NAR ? 14 : 26), { f: FM, w: 500, s: NAR ? 26 : 44, c: C.res }); X.restore();
       if (NAR) { tx(`também escrito ${alt}`, a.cx, a.y0 + 44, { f: FM, w: 500, s: 12, c: C.txt }); tx(sb(I), a.cx, a.y0 + 64, { f: FM, w: 500, s: fit(sb(I), a.w, 13, 500, FM), c: C.txt }); }
-      else { const s3 = `também escrito ${alt}      ${sb(I)}`; tx(s3, a.cx, a.y0 + 54, { f: FM, w: 500, s: fit(s3, a.w, 15, 500, FM), c: C.txt }); }
+      else { const s3 = `também escrito ${alt}      ${sb(I)}`; tx(s3, a.cx, a.y0 + 76, { f: FM, w: 500, s: fit(s3, a.w, 15, 500, FM), c: C.txt }); }
       drawAxis(L, {});
       drawIv(L, I, C.res, L.y, 7);
       const it = ints(I);
@@ -1006,7 +1031,7 @@ window.addEventListener('hashchange', () => { const i = fromHash(); if (i >= 0 &
 let last = performance.now();
 function loop(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now; S.t += dt;
-  X.clearRect(0, 0, W, H); cur().draw(S, dt);
+  X.clearRect(0, 0, W, H); backdrop(); cur().draw(S, dt);
   const c = cur().cap ? cur().cap(S) : ''; if (c !== capPrev) { $('cap').innerHTML = c; capPrev = c; }
   requestAnimationFrame(loop);
 }
