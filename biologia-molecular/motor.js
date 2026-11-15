@@ -269,6 +269,7 @@ function LAB_iniciar() {
     S.dt = paused ? 0 : dt; S.paused = paused; S.ph += S.dt * (o.ctl.rate ? o.ctl.rate(S.v) : 1);
     if (o.ctl.auto && !S.touched && !paused) { const n = o.ctl.max - o.ctl.min + 1, v = o.ctl.min + Math.floor(S.ph / o.ctl.auto) % n; if (v !== S.v) { S.v = v; setCtl(o, S); } }
     X.clearRect(0, 0, W, H); LBS = []; X.save();
+    { const c = o.ctl; if (!Number.isFinite(+S.v)) S.v = c.v; S.v = Math.min(c.max, Math.max(c.min, +S.v)); }
     try { o.draw.call(o, S.ph, S); } catch (err) { console.error(err); }
     X.restore(); X.globalAlpha = 1; X.setLineDash([]);
     requestAnimationFrame(frame);

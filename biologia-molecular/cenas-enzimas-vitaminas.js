@@ -249,7 +249,7 @@
     links: [['Enzimas', '#enz/encaixe'], LK.tri],
     ctl: escolha('Vitamina', VK.map(k => 'vitamina ' + VIT[k].n), 4),
     draw(t, S) {
-      const A = area(), v = VIT[VK[Math.round(S.v)]], key = VK[Math.round(S.v)];
+      const A = area(), vi = Math.max(0, Math.min(VK.length - 1, Math.round(S.v) || 0)), key = VK[vi], v = VIT[key];
       const bw = NAR ? (A.w - 16) / 2 : Math.min(A.w * .32, 320), bh = Math.min(A.h - 60, NAR ? 250 : 340), y0 = A.y0 + (NAR ? 40 : 22);
       const xa = NAR ? A.x0 : A.cx - bw - 24, xb = NAR ? A.x0 + bw + 16 : A.cx + 24;
       [[xa, 'água', '#2A9FC9', 'hidrossolúveis', 'hidro'], [xb, 'óleo', '#F2D24B', 'lipossolúveis', 'lipo']].forEach(([x, nome, cor, cat, sol]) => {
