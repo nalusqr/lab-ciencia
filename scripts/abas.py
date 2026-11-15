@@ -83,14 +83,40 @@ def simbolos(mods):
     return s
 
 
+def _aba(m, atual, cls=''):
+    if m.get('curta_pc') and m.get('aba_curta'):
+        cls = (cls + ' cp').strip()   # nome curto também no computador largo, para a barra caber
+    on = ' class="on" aria-current="page"' if atual and m['id'] == atual['id'] else ''
+    if cls:
+        on = f' class="{cls}{" on" if on else ""}"' + (' aria-current="page"' if on else '')
+    nome = (f'<span class="nm-l">{esc(m["aba"])}</span><span class="nm-s">{esc(m["aba_curta"])}</span>'
+            if m.get('aba_curta') else f'<span>{esc(m["aba"])}</span>')
+    return f'<a href="../{m["pasta"]}/index.html"{on}><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>{nome}</a>'
+
+
+# Fecha o menu "Apoio" com Esc e com clique ou foco fora dele. É só conforto: sem este script (ou com JS
+# desligado) o menu abre e fecha pelo próprio <details>, com mouse, toque ou teclado.
+JS_APOIO = ('<script>(()=>{const d=document.querySelector(".tabs details.apoio");if(!d)return;const s=d.querySelector("summary");'
+            'const x=()=>s.setAttribute("aria-expanded",d.open);x();d.addEventListener("toggle",x);'
+            'document.addEventListener("keydown",e=>{if(e.key==="Escape"&&d.open){d.open=false;s.focus()}});'
+            'document.addEventListener("click",e=>{if(d.open&&!d.contains(e.target))d.open=false});'
+            'd.addEventListener("focusout",e=>{if(d.open&&e.relatedTarget&&!d.contains(e.relatedTarget))d.open=false})})();</script>')
+
+
 def nav(lista, atual, abre='<nav class="tabs" aria-label="Módulos">'):
+    """Abas do curso; os módulos de apoio aparecem duas vezes: como abas comuns (class="ap", visíveis só quando a
+    barra rola, no celular e em telas médias) e dentro do menu "Apoio" (visível só no computador largo)."""
+    curso = [m for m in lista if not m.get('apoio')]
+    apoio = [m for m in lista if m.get('apoio')]
     a = [abre + '<a href="../index.html"><span>Início</span></a>']
-    for m in lista:
-        on = ' class="on" aria-current="page"' if atual and m['id'] == atual['id'] else ''
-        nome = (f'<span class="nm-l">{esc(m["aba"])}</span><span class="nm-s">{esc(m["aba_curta"])}</span>'
-                if m.get('aba_curta') else f'<span>{esc(m["aba"])}</span>')
-        a.append(f'<a href="../{m["pasta"]}/index.html"{on}><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg>{nome}</a>')
-    return ''.join(a) + '</nav>'
+    a += [_aba(m, atual, '') for m in curso]
+    a += [_aba(m, atual, 'ap') for m in apoio]
+    if apoio:
+        dentro = atual is not None and atual.get('apoio')
+        itens = ''.join(f'<a href="../{m["pasta"]}/index.html"' + (' class="on" aria-current="page"' if atual and m['id'] == atual['id'] else '') +
+                        f'><svg class="ico" aria-hidden="true"><use href="#{m["icone"]}"/></svg><span>{esc(m["aba"])}</span></a>' for m in apoio)
+        a.append(f'<details class="apoio{" on" if dentro else ""}"><summary>Apoio</summary><div class="menu">{itens}</div></details>')
+    return ''.join(a) + '</nav>' + (JS_APOIO if apoio else '')
 
 
 def icones_faltando(texto_fora, lista, simb, ja_tem=()):
@@ -148,7 +174,8 @@ def card(m):
             f'    </a>\n')
 
 
-CSS_ARTE = ('    <style>.card .art{display:flex;align-items:center;justify-content:center;height:180px;'
+CSS_GRADE = '    <style>.cards{grid-auto-flow:dense}</style>\n'
+CSS_ARTE = ('    <style>.cards{grid-auto-flow:dense}.card .art{display:flex;align-items:center;justify-content:center;height:180px;'
             'background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%);border-bottom:1px solid var(--line)}'
             '.card.feat .art{flex:1;min-height:260px;height:auto}.card .art .ico{width:72px;height:72px;color:var(--dim)}</style>\n')
 
@@ -157,8 +184,7 @@ def pagina_inicial(lista, simb):
     p = os.path.join(SITE, 'index.html')
     t = ler(p)
     corpo = ''.join(card(m) for m in lista)   # já na ordem do curso
-    if any(not m.get('canvas') for m in lista):
-        corpo = CSS_ARTE + corpo
+    corpo = (CSS_ARTE if any(not m.get('canvas') for m in lista) else CSS_GRADE) + corpo
     ic = icones_faltando(FORA(t, 'cards'), lista, simb)
     if ic:
         corpo = '    ' + ic + '\n' + corpo
@@ -185,6 +211,7 @@ def incluir(ids):
 def main():
     ap = argparse.ArgumentParser(description='Barra de abas e cards de módulos do LAB.')
     ap.add_argument('--verificar', action='store_true', help='não grava; sai com 1 se algo ficaria diferente')
+    ap.add_argument('--pular', default='', help='pastas separadas por vírgula cujas páginas não devem ser gravadas agora (o módulo continua nas abas)')
     ap.add_argument('--incluir', default='', help='ids separados por vírgula: marca como prontos no JSON antes de aplicar')
     a = ap.parse_args()
     if a.incluir:
@@ -202,7 +229,10 @@ def main():
             print(f'  aviso: {m["id"]} está marcado como pronto, mas {os.path.relpath(pagina(m), RAIZ)} não existe; fica de fora', file=sys.stderr)
     simb = simbolos(mods)
     sprite_ids = set(SIMB_ID.findall(ler(SPRITE)))
-    saidas = [(pagina(m), pagina_modulo(m, lista, simb, sprite_ids)) for m in lista] + [pagina_inicial(lista, simb)]
+    pular = {x.strip() for x in a.pular.split(',') if x.strip()}
+    saidas = [(pagina(m), pagina_modulo(m, lista, simb, sprite_ids)) for m in lista if m['pasta'] not in pular] + [pagina_inicial(lista, simb)]
+    for x in sorted(pular):
+        print(f'  pulado (não gravado): site/{x}/')
     mudou = [p for p, t in saidas if ler(p) != t]
     print(f'módulos nas abas: {", ".join(m["id"] for m in lista)} ({len(lista)})')
     if a.verificar:
