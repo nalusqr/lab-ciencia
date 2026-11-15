@@ -455,7 +455,7 @@ function virion(x, y, r, o = {}) {
     }
   }
   if (!T.sem) {
-    if (T.mat && ev > .02) { X.save(); X.globalAlpha *= ev; circ(x, y, r * .9, null, rgba(C.capsideo, .5), Math.max(1.5, r * .04)); X.restore(); }
+    if (T.mat && ev > .02) { X.save(); X.globalAlpha *= ev * (1 - cl(o.desfaz || 0, 0, 1)); circ(x, y, r * .9, null, rgba(C.capsideo, .5), Math.max(1.5, r * .04)); X.restore(); }
     if (ev > .02 && corte < 1) { X.save(); X.globalAlpha *= ev * (1 - corte) * (1 - cl(o.desfaz || 0, 0, 1)); circ(x, y, r, '#1E1830'); circ(x, y, r, rgba(C.envelope, .14)); X.restore(); }
     envelope(x, y, r, { a: ev, esp: o.espN || T.esp, mostra: es, espTipo: T.et, espLen: r * (T.el || .3), rot, solta: o.solta, desfaz: o.desfaz });
   }
@@ -625,10 +625,10 @@ function regua(x, y, w, s, o = {}) {
 
 // ---------- cartões para classificar ----------
 // Toque no cartão e depois no alvo (no mouse e na caneta também dá para arrastar). Só a resposta certa fica; a errada volta e explica.
-// const B = baralho({ nome: 'bar', cartas: [{ t: 'tem DNA ou RNA', k: 0 }], alvos: [{ t: 'como um ser vivo', c: C.ok }],
+// const B = baralho({ nome: 'bar', cartas: [{ t: 'tem DNA ou RNA', k: 0, t2: 'texto depois de colocado (opcional)' }], alvos: [{ t: 'como um ser vivo', c: C.ok }],
 //   certo: (carta, S) => 'texto', errado: (carta, alvo, S) => 'texto', fim: S => 'texto' });
 // No tópico: init(S) { B.zera(S) }; tap(x, y, S) { if (B.tap(x, y, S)) return; ... }; grab: B.grab, grabMove: B.grabMove, grabEnd: B.grabEnd.
-// No draw: B.draw(S, { x0, y0, x1, y1 }, { cols, cartaH, alvoRect(k, n, caixa) }) e cap(B.msg(S)).
+// No draw: B.draw(S, { x0, y0, x1, y1 }, { cols, cartaH, slotH, alvoRect(k, n, caixa) }) e cap(B.msg(S)). slotH: altura máxima do cartão já colocado.
 // Estado em S[nome]: { onde: { i: k }, sel, msg, erros, fim }. B.feito(S) diz se acabou; B.resolver(S) põe tudo no lugar.
 function baralho(cfg) {
   const nm = cfg.nome || 'bar', cartas = cfg.cartas.map((c, i) => Object.assign({ i }, c)), alvos = cfg.alvos;
@@ -658,8 +658,8 @@ function baralho(cfg) {
     draw(S, bx, o = {}) {
       const b = st(S), dt = S.dt || .016, g = NAR ? 6 : 8, na = alvos.length;
       const pend = cartas.filter(c => b.onde[c.i] == null), cols = o.cols || (NAR ? 2 : 4), ch = o.cartaH || (NAR ? 38 : 42);
-      const rows = Math.ceil(cartas.length / cols), shelfH = Math.ceil(Math.max(1, pend.length) / cols) * (ch + g);
-      const bw = bx.x1 - bx.x0, cw = (bw - (cols - 1) * g) / cols, ay0 = bx.y0 + Math.min(rows * (ch + g), shelfH) + 8;
+      const rows = Math.ceil(cartas.length / cols);
+      const bw = bx.x1 - bx.x0, cw = (bw - (cols - 1) * g) / cols, ay0 = bx.y0 + rows * (ch + g) + 4;
       const aRect = o.alvoRect || ((k) => { const st2 = NAR && na > 2, c2 = st2 ? 2 : na, rw = (bw - (c2 - 1) * 12) / c2, nrw = Math.ceil(na / c2), rh = (bx.y1 - ay0 - (nrw - 1) * 10) / nrw; return { x: bx.x0 + (k % c2) * (rw + 12), y: ay0 + Math.floor(k / c2) * (rh + 10), w: rw, h: rh }; });
       // alvos
       const R = alvos.map((al, k) => aRect(k, na, bx));
@@ -669,11 +669,11 @@ function baralho(cfg) {
         title(al.t, r.x + r.w / 2, r.y + (NAR ? 15 : 17), r.w - 12, { c: al.c, s: NAR ? 13 : 15 });
       });
       // posição-alvo de cada cartão
-      const cap = k => cartas.filter(c => c.k === k).length;
+      const capa = k => cartas.filter(c => c.k === k).length;
       const tgt = c => {
         const k = b.onde[c.i];
         if (k == null) { const j = pend.indexOf(c); return [bx.x0 + (j % cols) * (cw + g), bx.y0 + Math.floor(j / cols) * (ch + g), cw, ch]; }
-        const r = R[k], ord = cartas.filter(q => b.onde[q.i] === k), j = ord.indexOf(c), hd = NAR ? 30 : 34, sh = Math.min(ch * .8, (r.h - hd - 6) / Math.max(1, cap(k)) - 4);
+        const r = R[k], ord = cartas.filter(q => b.onde[q.i] === k), j = ord.indexOf(c), hd = NAR ? 30 : 34, sh = Math.min(o.slotH || ch * .8, (r.h - hd - 6) / Math.max(1, capa(k)) - 4);
         return [r.x + 6, r.y + hd + j * (sh + 4), r.w - 12, sh];
       };
       const ord = cartas.slice().sort((p, q) => (b.drag && p.i === b.drag.i) - (b.drag && q.i === b.drag.i));
@@ -685,9 +685,9 @@ function baralho(cfg) {
         const k2 = b.onde[c.i], sel = b.sel === c.i, bc = sel ? C.amber : k2 != null ? alvos[k2].c : 'rgba(157,169,196,.5)';
         rr(x, y, p.w, p.h, 8, 'rgba(19,26,43,.94)', bc, sel ? 2.5 : 1.3);
         if (k2 == null) hitR(x, y, p.w, p.h, nm + ':c=' + c.i);
-        const fs = k2 != null ? 12 : (NAR ? 12 : 13), lh = fs + 3, th = wrapTx(c.t, 0, 0, p.w - 12, { s: fs, w: 600, lh, dry: true });
+        const txt = k2 != null && c.t2 ? c.t2 : c.t, fs = k2 != null ? 12 : (NAR ? 12 : 13), lh = fs + 3, th = wrapTx(txt, 0, 0, p.w - 12, { s: fs, w: 600, lh, dry: true });
         X.save(); X.beginPath(); X.rect(x, y, p.w, p.h); X.clip();
-        wrapTx(c.t, x + p.w / 2, y + p.h / 2 - th / 2 + lh / 2, p.w - 12, { s: fs, w: 600, lh, c: C.txt });
+        wrapTx(txt, x + p.w / 2, y + p.h / 2 - th / 2 + lh / 2, p.w - 12, { s: fs, w: 600, lh, c: C.txt });
         X.restore();
       }
       return R;
@@ -734,7 +734,9 @@ function LAB_VIRUS_iniciar() {
   $('secs').onclick = e => { const b = e.target.closest('button'); if (b && ORDER[b.dataset.s] && ORDER[b.dataset.s].length) go(ORDER[b.dataset.s][0], true); };
   const fresh = o => ({ ph: paused ? (o.still == null ? 2.5 : o.still) : 0, v: paused && o.stillV != null ? o.stillV : o.ctl.v, dt: 0 });
   function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); }
-  function syncExtra() { const o = SC[cur], S = ST[cur]; if (!o) return; [...$('extra').children].forEach((el, i) => { const y = o.extra && o.extra[i]; if (y) el.setAttribute('aria-pressed', y.pressed ? !!y.pressed(S) : false); }); }
+  // o.ctlVis(S) (opcional): false esconde a faixa naquele modo do tópico (ex.: a faixa só vale para uma das interações)
+  const ctlShow = (o, S) => { let v = !o.noCtl; if (v && o.ctlVis) try { v = !!o.ctlVis(S); } catch (err) { console.error(err); } $('ctlR').parentNode.hidden = !v; };
+  function syncExtra() { const o = SC[cur], S = ST[cur]; if (!o) return; [...$('extra').children].forEach((el, i) => { const y = o.extra && o.extra[i]; if (y) el.setAttribute('aria-pressed', y.pressed ? !!y.pressed(S) : false); }); ctlShow(o, S); }
   function go(key, force, keepHash) {
     const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) try { o.init(S); } catch (err) { console.error(err); }
@@ -749,7 +751,7 @@ function LAB_VIRUS_iniciar() {
     $('links').innerHTML = (o.links || []).map(([t, h]) => `<a class="btn" href="${h}">${t}</a>`).join('');
     $('tagC').style.background = o.c || sec.c; $('tagT').innerHTML = o.t; $('ondeV').innerHTML = o.loc || ''; $('ondeS').innerHTML = o.locNota == null ? 'Desenho esquemático' : o.locNota; $('ondeS').hidden = o.locNota === '';
     cv.setAttribute('aria-label', `Animação: ${semTag(o.t)}. ${semTag(o.alt || o.s)}.`); cv.classList.toggle('arr', !!o.drag);
-    setCtl(o, S); $('ctlR').parentNode.hidden = !!o.noCtl; capLast = null; cap('');
+    setCtl(o, S); ctlShow(o, S); capLast = null; cap('');
     // botões extras do tópico: o.extra = [{ t, on(S), pressed(S) }]; t aceita <i>
     $('extra').innerHTML = (o.extra || []).map((b, i) => `<button type="button" data-i="${i}" aria-pressed="${b.pressed ? !!b.pressed(S) : false}">${b.t}</button>`).join('');
     document.title = `${semTag(o.t)} | Vírus | LAB`;
