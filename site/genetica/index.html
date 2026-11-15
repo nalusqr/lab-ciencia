@@ -128,6 +128,7 @@
 
   <footer class="foot">Esquemas com cores adicionadas; os cromossomos e as células não estão em escala. Os cruzamentos mostram as proporções <i>esperadas</i>: em famílias reais, com poucos filhos, os números observados variam ao acaso. Referências: Mendel, G. <i>Versuche über Pflanzen-Hybriden</i> (1866); Griffiths et al., <i>Introdução à Genética</i>; Snustad &amp; Simmons, <i>Fundamentos de Genética</i>; Amabis &amp; Martho, <i>Biologia das Populações</i>; Landsteiner (1901), sistema ABO; Landsteiner &amp; Wiener (1940), fator Rh; Morgan (1910–1911), herança ligada ao sexo e ligação gênica. Os exemplos de heredogramas são fictícios, feitos para este módulo.</footer>
 </div>
+<script src="novos-a.js"></script><script src="novos-b.js"></script>
 <script>
 (()=>{
 // ================= BASE =================
@@ -271,7 +272,7 @@ const PD={
 const RSP={ad:'Autossômica dominante',ar:'Autossômica recessiva',xr:'Recessiva ligada ao X'};
 
 // ================= SEÇÕES E TÓPICOS =================
-const DNA=['O gene no DNA','../dna/index.html'],DIV=['Meiose e segregação (módulo 7)','../divisao-celular/index.html'];
+const DNA=['O gene no DNA','../dna/index.html'],DIV=['Meiose e segregação','../divisao-celular/index.html'];
 let T=0,A=0;                       // tempo total e tempo desde a última mudança (s)
 const SECS=[
 {id:'conceitos',t:'Conceitos',c:VIO,tops:[
@@ -400,7 +401,7 @@ const SECS=[
     draw(){const p=cl(A/2.5,0,1),e=st.e,nar=W<520,r=nar?9:12,top=80,bot=H-(nar?64:52),mid=W*.56,pw=nar?14:20;
      box(12,top,mid-12-pw/2,bot-top,16,rgba(RED,.1),rgba(TXT,.5),1.5);box(mid+pw/2,top,W-12-mid-pw/2,bot-top,16,rgba(PNK,.12),rgba(TXT,.5),1.5);
      box(mid-pw/2,top+8,pw,bot-top-16,6,rgba(VIO,.35));X.save();X.translate(mid,(top+bot)/2);X.rotate(-PI/2);tx('placenta',0,0,{s:12,c:TXT});X.restore();
-     tx(nar?'mãe · Rh−':'sangue da mãe · Rh−',12+(mid-12-pw/2)/2,top-12,{s:13,c:DIM});tx(e===4?'2º bebê · Rh+':'bebê · Rh+',mid+pw/2+(W-12-mid-pw/2)/2,top-12,{s:13,c:DIM});
+     tx(nar?'mãe, Rh−':'sangue da mãe, Rh−',12+(mid-12-pw/2)/2,top-12,{s:13,c:DIM});tx(e===4?'2º bebê, Rh+':'bebê, Rh+',mid+pw/2+(W-12-mid-pw/2)/2,top-12,{s:13,c:DIM});
      const R=rng(9),mw=mid-pw/2-12-r*4,fw=W-12-mid-pw/2-r*4,hh=bot-top-r*4;
      const mc=[],fc=[];for(let i=0;i<(nar?9:14);i++)mc.push([12+r*2+R()*mw,top+r*2+R()*hh]);for(let i=0;i<(nar?6:8);i++)fc.push([mid+pw/2+r*2+R()*fw,top+r*2+R()*hh]);
      const hem=(x,y,pos,al)=>{X.globalAlpha=al;circ(x,y,r,RED,'rgba(0,0,0,.3)',1);circ(x,y,r*.45,'rgba(0,0,0,.14)');if(pos)for(let i=0;i<4;i++){const a=i/4*TAU+.6;circ(x+Math.cos(a)*r,y+Math.sin(a)*r,Math.max(2,r*.26),'#fff','rgba(0,0,0,.4)',.8)}X.globalAlpha=1};
@@ -510,13 +511,16 @@ function acts(label,list){const w=el('div','pick'),l=el('span','pl');l.textConte
 function range(label,min,max,step,get,set,fmt){const w=el('label','pick'),l=el('span','pl');l.textContent=label;w.appendChild(l);const r=el('div','rg'),i=el('input'),b=el('b');i.type='range';i.min=min;i.max=max;i.step=step;i.value=get();b.textContent=fmt(get());
   i.oninput=()=>{set(+i.value);b.textContent=fmt(+i.value);sync()};r.appendChild(i);r.appendChild(b);w.appendChild(r);ui.appendChild(w)}
 function sync(){syncs.forEach(f=>f());const h=inst.res?inst.res():'';if(out.innerHTML!==h)out.innerHTML=h;cv.setAttribute('aria-label','Ilustração: '+cur.t+'. '+esc(h).replace(/\s+/g,' ').trim())}
+// tópicos novos vindos de novos-a.js e novos-b.js (seções novas primeiro, depois tópicos)
+(window.GEN_EXTRA||[]).forEach(x=>{if(x.nova){const k=SECS.findIndex(s=>s.id===x.antes);SECS.splice(k<0?SECS.length:k,0,x.nova)}});
+(window.GEN_EXTRA||[]).forEach(x=>{if(x.top){const s=SECS.find(s=>s.id===x.sec);if(!s)return;const k=x.depois?s.tops.findIndex(t=>t.id===x.depois)+1:0;s.tops.splice(k>0?k:s.tops.length,0,x.top)}});
 const flat=[];SECS.forEach((s,i)=>s.tops.forEach((t,j)=>flat.push([i,j])));
 function go(i,j,push){si=i;ti=j;const s=SECS[si];cur=s.tops[ti];if(!cur._i)cur._i=cur.mk();inst=cur._i;
   ui.innerHTML='';syncs=[];inst.ui();
   [...$('secs').children].forEach((b,k)=>{const on=k===si;b.classList.toggle('on',on);b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});
   $('tops').innerHTML=s.tops.map((t,k)=>`<button type="button" data-k="${k}" class="${k===ti?'on':''}"${k===ti?' aria-current="true"':''}><em>${k+1}</em><span>${t.t}<small>${t.s}</small></span></button>`).join('');
   $('topL').textContent='Tópicos de '+s.t;
-  $('tagC').style.background=$('iD').style.background=s.c;$('tagT').textContent=cur.t;$('iS').textContent=s.t+' · '+cur.s;$('iT').textContent=cur.t;
+  $('tagC').style.background=$('iD').style.background=s.c;$('tagT').textContent=cur.t;$('iS').textContent=s.t+': '+cur.s;$('iT').textContent=cur.t;
   $('desc').innerHTML=cur.d;$('enemT').innerHTML=cur.enem;$('links').innerHTML=cur.links.map(([t,h])=>`<a href="${h}">${t}</a>`).join('');
   const n=flat.findIndex(f=>f[0]===si&&f[1]===ti);$('pos').textContent='Tópico '+(n+1)+' de '+flat.length;$('prev').disabled=n===0;$('next').disabled=n===flat.length-1;
   document.title=cur.t+' · Genética · LAB';
