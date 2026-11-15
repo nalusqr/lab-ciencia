@@ -255,7 +255,7 @@
   }
 
   function cenaCruz(S, A, lt, H_) {
-    const appear = i => S.paused ? 1 : ss(seg(lt, .3 + i * .7, .9 + i * .7));
+    const appear = i => S.paused || i === 0 ? 1 : .25 + .75 * ss(seg(lt, i * .7, .6 + i * .7));
     let cw, ch, P;
     if (NAR) {
       cw = (A.w - 34) / 2; ch = Math.min(170, (A.h - 70) / 2);
