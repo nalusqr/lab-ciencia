@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Divisão celular · LAB</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<style>
+.wrap{max-width:1320px}
+.top{margin-bottom:16px}
+#secs{margin-bottom:12px}
+#secs button i{width:10px;height:10px;border-radius:50%;flex:none}
+#view{position:relative;height:clamp(460px,62vh,640px);border:1px solid var(--line);border-radius:20px 20px 0 0;border-bottom:0;overflow:hidden;background:radial-gradient(70% 70% at 50% 48%,var(--stage-in),var(--bg) 78%)}
+@media(max-width:699px){#view{height:clamp(480px,72svh,600px)}}
+#cv{display:block;width:100%;height:100%}
+.hud{position:absolute;top:12px;max-width:calc(50% - 16px);padding:6px 12px;border-radius:12px;pointer-events:none;font-size:13px;line-height:1.4;color:var(--dim)}
+.hud b{display:block;color:var(--txt);font-weight:600;font-size:14px}
+#hudL{left:12px}
+#hudR{right:12px;text-align:right}
+#hudR b{font-family:var(--f-data);font-weight:500;font-size:14px}
+@media(max-width:699px){.hud{top:8px;padding:4px 8px;font-size:12.5px}#hudL{left:8px}#hudR{right:8px}.hud b{font-size:13px}}
+.ctrl{border:1px solid var(--line);border-radius:0 0 20px 20px;background:var(--panel);padding:16px}
+.phase{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:12px;min-height:48px}
+.phase b{font-family:var(--f-title);font-size:18px;font-weight:600;color:var(--txt)}
+.phase .num{font-size:13px;color:var(--dim)}
+.phase p{flex:1 1 100%;font-size:15px;line-height:1.5;color:#D3DAEA;max-width:80ch}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row .btn.sq{padding:0;width:44px}
+.row .btn svg{width:20px;height:20px;flex:none}
+#rng{flex:1 1 200px;min-width:120px;height:44px;accent-color:#FFB347;cursor:pointer;margin:0 4px}
+#play{min-width:136px}
+@media(max-width:699px){.ctrl{padding:12px}#rng{order:-1;flex:1 1 100%;margin:0}#play{min-width:0;flex:1 1 60px;padding:8px}.row .tx{display:none}#play .tx{display:inline}}
+.steps{display:flex;gap:4px;margin-top:12px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background .15s,color .15s}
+.steps button:hover{background:var(--panel-2);color:var(--txt)}
+.steps button.on{background:var(--panel-2);color:#fff;border-color:var(--line-strong)}
+.steps button em{font-style:normal;font-family:var(--f-data);font-weight:500;font-size:13px}
+.leg{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:12px;font-size:13px;color:var(--dim)}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.leg i{width:10px;height:10px;border-radius:50%;flex:none}
+.below{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:24px}
+@media(min-width:1100px){.below{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start}}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:24px}
+@media(max-width:699px){.card{padding:16px}.below{gap:16px;margin-top:16px}}
+.insp .sub{display:inline-flex;align-items:center;gap:8px;color:var(--dim);font-size:13px}
+.insp .sub i{width:8px;height:8px;border-radius:50%}
+.insp h2{font-family:var(--f-title);font-size:24px;font-weight:600;line-height:1.2;color:var(--txt);margin:8px 0 12px}
+#desc{font-size:16px;line-height:1.6;color:#D3DAEA;max-width:68ch}
+#desc b{color:#fff}
+#desc p+p{margin-top:12px}
+#desc a{color:var(--txt)}
+.insp .kv{margin-top:16px;border-top:1px solid var(--line);padding-top:12px;max-width:68ch}
+.cmp{width:100%;border-collapse:collapse;font-size:14px;margin-top:16px}
+.cmp th,.cmp td{border-bottom:1px solid var(--line);padding:8px 4px;text-align:left;vertical-align:top;line-height:1.45}
+.cmp th{color:var(--dim);font-weight:600;font-size:13px}
+.cmp td:first-child{color:var(--dim)}
+.enem{margin-top:16px;padding:16px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-strong);font-size:15px;line-height:1.55;color:#D3DAEA;max-width:68ch}
+.enem .eh{display:flex;align-items:center;gap:8px;font-family:var(--f-title);font-weight:600;font-size:16px;color:var(--txt);margin-bottom:8px}
+.enem svg{width:20px;height:20px}
+.enem b{color:#fff}
+.links{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.lbl{color:var(--dim);font-size:13px;margin:0 0 12px}
+.tops{display:grid;grid-template-columns:1fr;gap:4px}
+.tops button{text-align:left;display:flex;align-items:center;gap:12px;min-width:0;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--txt);cursor:pointer;transition:background .15s}
+.tops button:hover{background:var(--panel-2)}
+.tops button.on{border-color:rgba(255,179,71,.55);background:var(--panel-2)}
+.tops button em{font-style:normal;color:var(--dim);font-family:var(--f-data);font-size:13px;min-width:22px}
+.tops button.on em{color:var(--amber)}
+.tops button span{min-width:0;font-size:14px;font-weight:600;line-height:1.3}
+.tops button small{display:block;color:var(--dim);font-size:13px;font-weight:400;margin-top:2px}
+.foot{padding-top:24px}
+.foot i{font-style:italic}
+@media(max-width:699px){.insp h2{font-size:21px}#desc{font-size:15px}.phase b{font-size:17px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg (embutidos porque <use> externo não funciona em file://); mod-divisao e ui-passo-* desenhados para este módulo -->
+<symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol>
+<symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol>
+<symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol>
+<symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol>
+<symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol>
+<symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol>
+<symbol id="mod-divisao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.2a5.6 5.6 0 1 0 0 7.6a5.6 5.6 0 1 0 0-7.6z"/><circle cx="7.8" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="16.2" cy="12" r="1.3" fill="currentColor" stroke="none"/><path d="M12 3v2.2M12 18.8V21"/></g></symbol>
+<symbol id="ui-pausar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></g></symbol>
+<symbol id="ui-continuar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.3v13.4a.9.9 0 0 0 1.4.75l10.2-6.7a.9.9 0 0 0 0-1.5L9.4 4.55A.9.9 0 0 0 8 5.3z"/></g></symbol>
+<symbol id="ui-reiniciar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12A7.5 7.5 0 1 0 12 4.5"/><path d="M14.8 2 12 4.5l2.8 2.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></g></symbol>
+<symbol id="ui-enem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3" width="15" height="18" rx="2"/><path d="m8.3 9.6 2 2 4.4-4.4M8.3 15.5h7.4"/></g></symbol>
+<symbol id="ui-rotulos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 4.5h7.6l9.4 9.4-6.6 6.6-9.4-9.4z"/><circle cx="8" cy="9" r="1.4" fill="currentColor" stroke="none"/></g></symbol>
+<symbol id="ui-passo-ant" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 5.5 9.5 12l7.5 6.5M6.5 5.5v13"/></g></symbol>
+<symbol id="ui-passo-prox" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5.5 14.5 12 7 18.5M17.5 5.5v13"/></g></symbol>
+</svg>
+<div class="wrap">
+  <nav class="tabs" id="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a><a href="index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-divisao"/></svg><span class="nm-l">Divisão celular</span><span class="nm-s">Divisão</span></a></nav>
+
+  <header class="top">
+    <svg class="ico-big" aria-hidden="true"><use href="#mod-divisao"/></svg>
+    <div>
+      <h1>Divisão celular</h1>
+      <div class="k">Módulo 7 <span class="badge">Biologia celular e genética</span></div>
+    </div>
+  </header>
+
+  <div class="seg scroll" id="secs" role="group" aria-label="Seções do módulo"></div>
+
+  <main>
+  <div id="view">
+    <canvas id="cv" role="img" aria-label="Animação"></canvas>
+    <div class="hud fl" id="hudL"><b id="hudLb">—</b><span id="hudLs"></span></div>
+    <div class="hud fl" id="hudR"><b id="hudRb">—</b><span id="hudRs"></span></div>
+  </div>
+  <div class="ctrl">
+    <div class="phase"><b id="phN">—</b><span class="num" id="phC"></span><p id="phD" aria-live="polite"></p></div>
+    <div class="row">
+      <button class="btn primary" id="play"><svg aria-hidden="true"><use href="#ui-continuar"/></svg><span class="tx">Reproduzir</span></button>
+      <button class="btn sq" id="prev" title="Fase anterior" aria-label="Fase anterior"><svg aria-hidden="true"><use href="#ui-passo-ant"/></svg></button>
+      <input type="range" id="rng" min="0" max="100" step="1" value="0" aria-label="Controle deslizante da fase da animação">
+      <button class="btn sq" id="next" title="Próxima fase" aria-label="Próxima fase"><svg aria-hidden="true"><use href="#ui-passo-prox"/></svg></button>
+      <button class="btn sq" id="again" title="Recomeçar a animação" aria-label="Recomeçar a animação"><svg aria-hidden="true"><use href="#ui-reiniciar"/></svg></button>
+      <button class="btn" id="lbls" aria-pressed="true" title="Mostrar ou esconder os nomes" aria-label="Mostrar nomes"><svg aria-hidden="true"><use href="#ui-rotulos"/></svg><span class="tx">Nomes</span></button>
+    </div>
+    <div class="steps" id="steps" role="group" aria-label="Fases, passo a passo"></div>
+    <div class="leg" id="leg"></div>
+  </div>
+
+  <div class="below">
+    <div class="card insp">
+      <div class="sub"><i id="iD"></i><span id="iS">—</span></div>
+      <h2 id="iT">—</h2>
+      <div id="desc"></div>
+      <div class="kv" id="kv"></div>
+      <div class="enem" id="enem"><div class="eh"><svg aria-hidden="true"><use href="#ui-enem"/></svg>No ENEM</div><div id="enemT"></div></div>
+      <div class="links" id="links"></div>
+    </div>
+    <div class="card">
+      <div class="lbl" id="topL">Tópicos</div>
+      <div class="tops" id="tops"></div>
+    </div>
+  </div>
+  </main>
+
+  <div class="foot">Ilustrações esquemáticas com cores adicionadas; proporções aproximadas. Para caber no desenho, a célula-modelo tem só 2 pares de cromossomos (2n&nbsp;=&nbsp;4); a espécie humana tem 23 pares (2n&nbsp;=&nbsp;46). Conteúdo e valores típicos de livros-texto: Alberts et al., <i>Biologia Molecular da Célula</i>; Junqueira &amp; Carneiro, <i>Biologia Celular e Molecular</i>; Reece et al., <i>Biologia de Campbell</i>; Griffiths et al., <i>Introdução à Genética</i>; Amabis &amp; Martho, <i>Biologia Moderna</i>. Duração das fases do ciclo: célula humana em cultura com ciclo de cerca de 24&nbsp;h (Alberts; Cooper, <i>A Célula</i>). Frequência da trissomia do 21: cerca de 1 em 700 nascimentos (Organização Mundial da Saúde).</div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+// ================= BASE =================
+const TAU=Math.PI*2,PI=Math.PI,$=id=>document.getElementById(id);
+const cv=$('cv');let X,W=600,H=460;
+function rs(){const d=Math.min(2,devicePixelRatio||1),r=cv.getBoundingClientRect();W=Math.max(240,r.width);H=Math.max(240,r.height);cv.width=Math.round(W*d);cv.height=Math.round(H*d);X=cv.getContext('2d');X.setTransform(d,0,0,d,0,0)}
+addEventListener('resize',rs);rs();
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t,ss=t=>{t=cl(t,0,1);return t*t*(3-2*t)};
+function hx(c){const n=parseInt(c.slice(1),16);return[n>>16&255,n>>8&255,n&255]}
+function rgba(c,a){const[r,g,b]=hx(c);return`rgba(${r},${g},${b},${a})`}
+function light(c,k=.45){const[r,g,b]=hx(c);return`rgb(${r+(255-r)*k|0},${g+(255-g)*k|0},${b+(255-b)*k|0})`}
+const C={mat:'#9A6BFF',pat:'#5CC8F0',mem:'#F06AAE',cyt:'rgba(44,29,68,.6)',ice:'#CFE0FF',wall:'#A9C54A',gol:'#F7C13B',red:'#FF6B7D',txt:'#E8EDF7',dim:'#9DA9C4',ok:'#7FE0A0',nuc:'#9A6BFF'};
+const FT='"Atkinson Hyperlegible Next", system-ui, sans-serif',FTT='"Space Grotesk", system-ui, sans-serif',FD='"JetBrains Mono", ui-monospace, monospace';
+let LB=true;
+function circ(x,y,r,f,s,lw){X.beginPath();X.arc(x,y,Math.max(.1,r),0,TAU);if(f){X.fillStyle=f;X.fill()}if(s){X.strokeStyle=s;X.lineWidth=lw||1;X.stroke()}}
+function line(x1,y1,x2,y2,s,lw){X.beginPath();X.moveTo(x1,y1);X.lineTo(x2,y2);X.strokeStyle=s;X.lineWidth=lw||1;X.stroke()}
+function rr(x,y,w,h,r){X.beginPath();if(X.roundRect)X.roundRect(x,y,w,h,r);else X.rect(x,y,w,h)}
+function tx(s,x,y,o={}){X.font=`${o.w||400} ${Math.max(12,o.s||13)}px ${o.f||FT}`;X.textAlign=o.a||'center';X.textBaseline='middle';if(o.bg!==false){X.lineWidth=4;X.lineJoin='round';X.strokeStyle='rgba(11,15,28,.9)';X.strokeText(s,x,y)}X.fillStyle=o.c||'#DFE6F5';X.fillText(s,x,y)}
+function arrow(x1,y1,x2,y2,c,lw){const a=Math.atan2(y2-y1,x2-x1);X.lineCap='round';line(x1,y1,x2,y2,c,lw||2);X.beginPath();X.moveTo(x2,y2);X.lineTo(x2-Math.cos(a-.5)*7,y2-Math.sin(a-.5)*7);X.moveTo(x2,y2);X.lineTo(x2-Math.cos(a+.5)*7,y2-Math.sin(a+.5)*7);X.stroke()}
+// rótulo com linha-guia: âncora (ax,ay), pastilha centrada em (bx,by)
+function lab(ax,ay,bx,by,s,al){if(!LB)return;X.save();X.globalAlpha=al==null?1:al;X.font=`600 13px ${FT}`;const pw=X.measureText(s).width+16,ph=24;bx=cl(bx,pw/2+6,W-pw/2-6);by=cl(by,48+ph/2,H-ph/2-6);
+ if(ax!=null){const ex=cl(ax,bx-pw/2,bx+pw/2),ey=cl(ay,by-ph/2,by+ph/2);X.lineCap='butt';line(ax,ay,ex,ey,'rgba(255,255,255,.6)',1);circ(ax,ay,2.5,'#fff')}
+ rr(bx-pw/2,by-ph/2,pw,ph,12);X.fillStyle='rgba(11,15,28,.86)';X.fill();X.strokeStyle='rgba(255,255,255,.14)';X.lineWidth=1;X.stroke();X.fillStyle='#E8EDF7';X.textAlign='center';X.textBaseline='middle';X.fillText(s,bx,by+.5);X.restore()}
+
+// ================= CROMOSSOMOS =================
+// cromátide: centro (x,y); a = ângulo do eixo (0 = vertical); b = desvio das pontas na direção perpendicular
+function ctd(x,y,a,L,w,col,o={}){const ux=Math.sin(a),uy=Math.cos(a),vx=Math.cos(a),vy=-Math.sin(a),b=o.b||0;
+ const P=t=>[x+ux*t*L/2+vx*b*t*t,y+uy*t*L/2+vy*b*t*t];
+ const path=(t0,t1)=>{X.beginPath();for(let i=0;i<=10;i++){const q=P(lerp(t0,t1,i/10));i?X.lineTo(q[0],q[1]):X.moveTo(q[0],q[1])}};
+ X.lineCap='round';X.lineJoin='round';X.lineWidth=w;X.strokeStyle=col;path(-1,1);X.stroke();
+ if(o.c2&&o.a2>.01){const ga=X.globalAlpha;X.globalAlpha=ga*o.a2;X.strokeStyle=o.c2;path(o.k,1);X.stroke();X.globalAlpha=ga}}
+function thread(x,y,r,col,sd){X.beginPath();for(let i=0;i<=44;i++){const f=i/44,a=f*TAU*1.35+sd,q=r*(.3+.7*Math.abs(Math.sin(f*PI*2.5+sd*1.7)));const px=x+Math.cos(a)*q+Math.sin(f*17+sd)*r*.14,py=y+Math.sin(a)*q+Math.cos(f*13+sd)*r*.14;i?X.lineTo(px,py):X.moveTo(px,py)}X.lineWidth=1.6;X.lineCap='round';X.lineJoin='round';X.strokeStyle=col;X.stroke()}
+function geo(R,o={}){return{R,w:Math.max(4.5,.07*R),L:[.38*R,.38*R,.25*R,.25*R],col:[C.mat,C.pat,C.mat,C.pat],xo:o.xo?[{B:C.pat},{A:C.mat}]:null,alle:o.alle||null}}
+function sis(c,G){const vx=Math.cos(c.a),vy=-Math.sin(c.a),off=G.w*.55+c.s;return[[c.x-vx*off,c.y-vy*off],[c.x+vx*off,c.y+vy*off]]}
+function chromo(c,i,S,G){const ga=X.globalAlpha,L=G.L[i],col=G.col[i],w=G.w;
+ if(S.cond<.99){X.globalAlpha=ga*(1-S.cond);thread(c.x,c.y,L*.6,col,i*2.1+1);if(S.dup>.01){X.globalAlpha=ga*(1-S.cond)*S.dup;thread(c.x+2.5,c.y+2.5,L*.6,light(col,.4),i*2.1+1)}}
+ if(S.cond>.01){const sat=cl(c.s/(2.5*w),0,1),[A,B]=sis(c,G),cur=-w*.9*(1-sat)+w*1.8*S.bend*sat,xo=G.xo&&G.xo[i]||{};
+  X.globalAlpha=ga*S.cond;ctd(A[0],A[1],c.a,L,w,col,{b:cur,c2:xo.A,a2:S.xo,k:.3});
+  X.globalAlpha=ga*S.cond*S.dup;ctd(B[0],B[1],c.a,L,w,col,{b:-cur,c2:xo.B,a2:S.xo,k:.3});
+  if(sat<.98){X.globalAlpha=ga*S.cond*(1-sat);circ(c.x,c.y,w*.6,light(col,.6))}}
+ X.globalAlpha=ga}
+// contorno da união de círculos (a membrana da célula que se divide)
+function drawCells(cells,fill,stroke,lw){X.beginPath();for(const c of cells){X.moveTo(c.x+c.r,c.y);X.arc(c.x,c.y,c.r,0,TAU)}X.fillStyle=fill||C.cyt;X.fill();
+ X.strokeStyle=stroke||C.mem;X.lineWidth=lw||2;X.lineCap='round';X.lineJoin='round';
+ cells.forEach((c,j)=>{if(cells.some((d,k)=>k<j&&Math.hypot(d.x-c.x,d.y-c.y)<.5))return;let on=false;X.beginPath();
+  for(let q=0;q<=120;q++){const a=q/120*TAU,px=c.x+Math.cos(a)*c.r,py=c.y+Math.sin(a)*c.r;
+   const ins=cells.some(d=>d!==c&&Math.hypot(d.x-c.x,d.y-c.y)>=.5&&Math.hypot(px-d.x,py-d.y)<d.r-.4);
+   if(ins)on=false;else{on?X.lineTo(px,py):X.moveTo(px,py);on=true}}
+  X.stroke()})}
+const NUMK=['cond','env','spin','xo','dup','nucl','bend'];
+function S0(o){return Object.assign({cond:1,env:0,spin:0,xo:0,dup:1,nucl:0,bend:0,att:[],pp:[],tags:[],labs:[]},o)}
+function mix(A,B,e){const o={};for(const k of NUMK)o[k]=lerp(A[k],B[k],e);
+ for(const k of['cells','nuc','ch','poles'])o[k]=B[k].map((b,j)=>{const a=A[k][j]||b,r={};for(const q in b)r[q]=lerp(a[q],b[q],e);return r});
+ o.att=B.att;o.pp=B.pp;o.tags=B.tags;o.labs=B.labs;o.e=e;return o}
+function drawDiv(S,G){
+ drawCells(S.cells);
+ if(S.env>.02){const seen=[];for(const n of S.nuc){if(seen.some(m=>Math.hypot(m.x-n.x,m.y-n.y)<1))continue;seen.push(n);X.globalAlpha=S.env;circ(n.x,n.y,n.r,'rgba(154,107,255,.10)');X.setLineDash(S.env<.85?[5,5]:[]);circ(n.x,n.y,n.r,null,C.nuc,1.6);X.setLineDash([]);if(S.nucl>.02){X.globalAlpha=S.env*S.nucl;circ(n.x+n.r*.34,n.y+n.r*.3,n.r*.2,'#6A45D8')}X.globalAlpha=1}}
+ if(S.spin>.02){X.globalAlpha=S.spin;X.lineCap='round';
+  for(const[a,b]of S.pp){const P=S.poles[a],Q=S.poles[b];if(Math.hypot(P.x-Q.x,P.y-Q.y)<2)continue;const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2,nx=-(Q.y-P.y),ny=Q.x-P.x;for(const k of[-.36,-.18,.18,.36]){X.beginPath();X.moveTo(P.x,P.y);X.quadraticCurveTo(mx+nx*k,my+ny*k,Q.x,Q.y);X.strokeStyle='rgba(207,224,255,.26)';X.lineWidth=1;X.stroke()}}
+  S.ch.forEach((c,i)=>{const at=S.att[i];if(!at)return;const[A,B]=sis(c,G);[[A,at[0]],[B,at[1]]].forEach(([q,k])=>{const P=S.poles[k];line(P.x,P.y,q[0],q[1],'rgba(207,224,255,.7)',1.1)})});
+  X.globalAlpha=1}
+ S.ch.forEach((c,i)=>chromo(c,i,S,G));
+ {const seen=[];for(const P of S.poles){if(seen.some(m=>Math.hypot(m.x-P.x,m.y-P.y)<2))continue;seen.push(P);circ(P.x,P.y,3,C.ice);circ(P.x,P.y,6,null,'rgba(207,224,255,.35)',1)}}
+ if(G.alle&&S.cond>.5)S.ch.forEach((c,i)=>{const ux=Math.sin(c.a),uy=Math.cos(c.a),L=G.L[i],pts=c.s<G.w?[[c.x,c.y]]:sis(c,G);for(const[px,py]of pts){let best=S.cells[0],bd=1e9;for(const q of S.cells){const d=Math.hypot(q.x-px,q.y-py);if(d<bd){bd=d;best=q}}
+   const sg=((px-best.x)*ux+(py-best.y)*uy)>=0?1:-1;tx(G.alle[i],px+ux*sg*(L/2+10),py+uy*sg*(L/2+10),{s:13,w:700,c:light(G.col[i],.55)})}});
+ X.globalAlpha=S.e;for(const t of S.tags)tx(t.s,t.x,t.y,{f:FD,s:13,w:500,c:t.c||C.txt});X.globalAlpha=1;
+ for(const l of S.labs)lab(l[0],l[1],l[2],l[3],l[4],S.e)}
+function runDiv(st,G,i,e){i=cl(i,0,st.length-1);const S=mix(st[Math.max(0,i-1)],st[i],i?e:1);drawDiv(S,G)}
+
+// ---------- mitose: 6 estados ----------
+function mkMitose(cx,cy,R,o={}){
+ const sc=[[-.2,-.17,.5],[.2,.14,-.6],[.06,-.27,1.2],[-.1,.27,-1]],ys=[-.545,.535,-.17,.15],dl=[-.27,.27,-.09,.09];
+ const one={x:cx,y:cy,r:R},nu={x:cx,y:cy,r:.56*R},att=[[0,1],[0,1],[0,1],[0,1]],pp=[[0,1]];
+ const scat=sc.map(q=>({x:cx+q[0]*R,y:cy+q[1]*R,a:q[2],s:0})),meta=ys.map(v=>({x:cx,y:cy+v*R,a:0,s:0}));
+ const P=d=>[{x:cx-d*R,y:cy},{x:cx+d*R,y:cy}],D=.74*R+4,nd=[{x:cx-D,y:cy,r:.46*R},{x:cx+D,y:cy,r:.46*R}];
+ const L=o.labs!==false,up=cy-R-22,dn=cy+R+22;
+ return[
+  S0({cells:[one,one],nuc:[nu,nu],env:1,nucl:1,cond:0,ch:scat,poles:[{x:cx-.12*R,y:cy-.7*R},{x:cx+.07*R,y:cy-.72*R}],att,pp,
+   labs:L?[[cx-.4*R,cy-.4*R,cx-.8*R,up,'Envoltório nuclear'],[cx+.07*R,cy-.72*R,cx+.8*R,up,'Centrossomos'],[cx+.2*R,cy+.2*R,cx,dn,'Cromatina (DNA já duplicado)']]:[]}),
+  S0({cells:[one,one],nuc:[nu,nu],env:.55,cond:1,ch:scat,poles:P(.78),spin:.55,att,pp,
+   labs:L?[[cx+.2*R,cy+.14*R,cx+.5*R,dn,'Cromossomo com 2 cromátides'],[cx-.78*R,cy,cx-.7*R,up,'Fuso em formação']]:[]}),
+  S0({cells:[one,one],nuc:nd,ch:meta,poles:P(.78),spin:1,att,pp,
+   labs:L?[[cx,cy-.76*R,cx,up,'Placa equatorial'],[cx-.4*R,cy+.09*R,cx-.7*R,dn,'Fibras do fuso'],[cx,cy+.535*R,cx+.7*R,dn,'Centrômero']]:[]}),
+  S0({cells:[{x:cx-.25*R,y:cy,r:.93*R},{x:cx+.25*R,y:cy,r:.93*R}],nuc:nd,ch:meta.map(c=>({x:cx,y:cy+(c.y-cy)*.78,a:0,s:.55*R})),bend:1,poles:P(.98),spin:1,att,pp,
+   labs:L?[[cx-.55*R,cy-.42*R,cx,up,'Cromátides-irmãs se separam']]:[]}),
+  S0({cells:[{x:cx-.6*R,y:cy,r:.8*R},{x:cx+.6*R,y:cy,r:.8*R}],nuc:nd.map(n=>({x:n.x,y:n.y,r:n.r})),env:.6,ch:meta.map((c,i)=>({x:cx,y:cy+(c.y-cy)*.3,a:0,s:D+dl[i]*R*.8})),bend:.4,poles:P(1.2),spin:.2,att,pp,
+   labs:L?[[cx-D,cy-.46*R,cx-.8*R,up,'Envoltório se refaz'],[cx,cy+.53*R,cx,dn,'Sulco de clivagem']]:[]}),
+  S0({cells:[{x:cx-D,y:cy,r:.74*R},{x:cx+D,y:cy,r:.74*R}],nuc:nd,env:1,ch:meta.map((c,i)=>({x:cx,y:cy,a:0,s:D+dl[i]*R})),poles:[{x:cx-D-.1*R,y:cy-.58*R},{x:cx+D+.1*R,y:cy-.58*R}],att,pp,
+   tags:[{x:cx-D,y:cy+.74*R+14,s:o.tag||'2n = 4'},{x:cx+D,y:cy+.74*R+14,s:o.tag||'2n = 4'}]})]}
+
+// ---------- meiose: 8 estados. o.swap = outro arranjo na metáfase I; o.nd = 'I' ou 'II' (não disjunção) ----------
+function mkMeiose(cx,cy,R,o={}){
+ const w=Math.max(4.5,.07*R),Ls=[.38*R,.38*R,.25*R,.25*R],plate=o.swap?[-1,1,1,-1]:[-1,1,-1,1],side=o.nd==='I'?[-1,-1,-1,1]:plate;
+ const r2=.76*R,r4=.58*R,D=r2+3,D4=r4+3,g=Math.max(.13*R,2.7*w+2),xs=s=>cx+s*D,grp=s=>[0,1,2,3].filter(i=>side[i]===s);
+ const row=(ids,gap)=>{const tot=ids.reduce((a,i)=>a+Ls[i],0)+gap*(ids.length-1);let q=-tot/2;const out={};for(const i of ids){out[i]=q+Ls[i]/2;q+=Ls[i]+gap}return out};
+ const off={},fdx={},fdy={};
+ for(const s of[-1,1]){const ids=grp(s);Object.assign(off,row(ids,.1*R));if(ids.length<3){for(const i of ids){fdx[i]=off[i];fdy[i]=0}}else{const r0=row(ids.slice(0,2),.1*R);for(const i of ids.slice(0,2)){fdx[i]=r0[i];fdy[i]=-.14*R}fdx[ids[2]]=0;fdy[ids[2]]=.17*R}}
+ const sc=[[-.2,-.17,.5],[.2,.14,-.6],[.06,-.27,1.2],[-.1,.27,-1]],yb=[-.3,-.3,.33,.33];
+ const one={x:cx,y:cy,r:R},nu={x:cx,y:cy,r:.56*R},c4=f=>[f(-1,-1),f(-1,1),f(1,-1),f(1,1)];
+ const pI=d=>c4(s=>({x:cx+s*d*R,y:cy})),pII=d=>c4((s,t)=>({x:xs(s),y:cy+t*d*R}));
+ const attI=side.map(s=>s<0?[0,0]:[2,2]),attII=side.map((s,i)=>o.nd==='II'&&i===0?[0,0]:s<0?[1,0]:[3,2]),ppI=[[0,2]],ppII=[[0,1],[2,3]];
+ const pc=[[-.16,-.2,.45],[.2,.26,-.5]],nd2=o.nd==='II';
+ const nm=c4(s=>({x:xs(s),y:cy,r:.66*R})),nf=c4((s,t)=>({x:xs(s),y:cy+t*D4,r:.48*R}));
+ const cnt=s=>grp(s).length,t1=s=>o.nd==='I'?(cnt(s)===3?'n + 1':'n − 1'):o.alle?'':'n = 2';
+ const tg=(s,t)=>{const ids=grp(s);if(o.alle)return ids.map(i=>o.alle[i]).join('');if(!o.nd)return'n = 2';const k=ids.length+(nd2&&s<0?-t:0);return k===3?'n + 1':k===1?'n − 1':'n'};
+ const L=!!o.labs,up=cy-R-22,dn=cy+R+22;
+ const chI=f=>[0,1,2,3].map(f);
+ return[
+  S0({cells:c4(()=>one),nuc:c4(()=>nu),env:1,nucl:1,cond:0,ch:chI(i=>({x:cx+sc[i][0]*R,y:cy+sc[i][1]*R,a:sc[i][2],s:0})),poles:c4(s=>({x:cx+(s<0?-.12:.07)*R,y:cy-.71*R})),att:attI,pp:ppI,
+   tags:[{x:cx,y:cy+R+14,s:'2n = 4'}]}),
+  S0({cells:c4(()=>one),nuc:c4(()=>nu),env:.55,xo:1,ch:chI(i=>{const q=pc[i>>1];return{x:cx+q[0]*R+Math.cos(q[2])*plate[i]*g,y:cy+q[1]*R-Math.sin(q[2])*plate[i]*g,a:q[2],s:0}}),poles:pI(.8),spin:.5,att:attI,pp:ppI,
+   labs:L?[[cx-.16*R,cy-.2*R-.19*R,cx-.3*R,up,'Homólogos pareados (bivalente)'],[cx-.16*R+.06*R,cy-.2*R+.14*R,cx+.2*R,dn,'Crossing-over']]:[]}),
+  S0({cells:c4(()=>one),nuc:nm,xo:1,ch:chI(i=>({x:cx+plate[i]*g,y:cy+yb[i]*R,a:0,s:0})),poles:pI(.8),spin:1,att:attI,pp:ppI,
+   labs:L?[[cx,cy-.52*R,cx,up,'Pares de homólogos no equador']]:[]}),
+  S0({cells:c4(s=>({x:cx+s*.25*R,y:cy,r:.93*R})),nuc:nm,xo:1,ch:chI(i=>({x:cx+side[i]*.55*R,y:cy+off[i],a:0,s:0})),poles:pI(.98),spin:1,att:attI,pp:ppI,
+   labs:L?[[cx-.55*R,cy+off[0]-.19*R,cx,up,'Homólogos se separam']]:[]}),
+  S0({cells:c4(s=>({x:xs(s),y:cy,r:r2})),nuc:nm,env:.7,xo:1,ch:chI(i=>({x:xs(side[i]),y:cy+off[i],a:0,s:0})),poles:pII(.62),spin:.12,att:attI,pp:ppI,
+   tags:[-1,1].map(s=>({x:xs(s),y:cy+r2+14,s:t1(s)}))}),
+  S0({cells:c4(s=>({x:xs(s),y:cy,r:r2})),nuc:nm,xo:1,ch:chI(i=>({x:xs(side[i])+off[i],y:cy,a:PI/2,s:0})),poles:pII(.62),spin:1,att:attII,pp:ppII,
+   tags:[-1,1].map(s=>({x:xs(s),y:cy+r2+14,s:t1(s)}))}),
+  S0({cells:c4((s,t)=>({x:xs(s),y:cy+t*.22*R,r:.7*R})),nuc:nf,xo:1,bend:1,ch:chI(i=>nd2&&i===0?{x:xs(side[i])+off[i],y:cy-.3*R,a:PI/2,s:0}:{x:xs(side[i])+off[i],y:cy,a:PI/2,s:.3*R}),poles:pII(.8),spin:1,att:attII,pp:ppII,
+   labs:L?[[xs(-1)+off[0],cy-.3*R,cx,up,'Cromátides-irmãs se separam']]:[]}),
+  S0({cells:c4((s,t)=>({x:xs(s),y:cy+t*D4,r:r4})),nuc:nf,env:1,xo:1,ch:chI(i=>nd2&&i===0?{x:xs(side[i])+fdx[i],y:cy-D4+fdy[i],a:PI/2,s:0}:{x:xs(side[i])+fdx[i],y:cy+fdy[i],a:PI/2,s:D4}),poles:pII(.8),att:attII,pp:ppII,
+   tags:c4((s,t)=>({x:xs(s),y:cy+t*(D4+r4+12),s:tg(s,t)}))})]}
+
+// ---------- disposição ----------
+function areas(n){const y0=52,h=H-y0-8;if(n===1)return[{x:8,y:y0,w:W-16,h}];return W>=640?[{x:8,y:y0,w:W/2-12,h},{x:W/2+4,y:y0,w:W/2-12,h}]:[{x:8,y:y0,w:W-16,h:h/2-4},{x:8,y:y0+h/2+4,w:W-16,h:h/2-4}]}
+function ptitle(a,s){tx(s,a.x+a.w/2,a.y+11,{f:FTT,s:W<640?14:15,w:600,c:C.txt})}
+function divider(){if(W>=640)line(W/2,60,W/2,H-12,'rgba(91,108,153,.35)',1);else{const a=areas(2)[1];line(16,a.y-4,W-16,a.y-4,'rgba(91,108,153,.35)',1)}}
+const rMei=(a,t)=>Math.min((a.w-10)/3.1,(a.h-(t?24:0)-52)/2.32),rMit=(a,t)=>Math.min((a.w-16)/3.05,(a.h-(t?24:0)-(t?36:96))/2);
+
+// ---------- anel do ciclo celular ----------
+function ring(cx,cy,Ro,segs,act,ang){const wd=Math.max(24,Ro*.15),Rm=Ro-wd/2;let a0=-PI/2;const out=[];
+ segs.forEach(([n,fr,col,sub],k)=>{const a1=a0+fr*TAU,on=k===act;X.beginPath();X.arc(cx,cy,Rm,a0+.012,a1-.012);X.lineWidth=wd;X.lineCap='butt';X.strokeStyle=rgba(col,on?.95:.28);X.stroke();
+  const am=(a0+a1)/2;tx(n,cx+Math.cos(am)*Rm,cy+Math.sin(am)*Rm,{f:FTT,s:14,w:700,c:on?'#0B0F1C':C.txt,bg:false});
+  if(sub){const c=Math.cos(am),s=Math.sin(am);tx(sub,cx+c*(Ro+8),cy+s*(Ro+12),{f:FD,s:12,c:on?C.txt:C.dim,a:c>.35?'left':c<-.35?'right':'center'})}
+  out.push([a0,a1]);a0=a1});
+ if(ang!=null){const px=cx+Math.cos(ang)*Rm,py=cy+Math.sin(ang)*Rm;circ(px,py,wd/2+3,null,'rgba(11,15,28,.9)',5);circ(px,py,wd/2+3,null,'#fff',2)}
+ return{out,wd,Rm}}
+const RINGC=['#4B7BFF','#9A6BFF','#2FCFBF','#F7C13B'];
+
+// ================= CONTEÚDO =================
+const SEC=[
+ {id:'ciclo',t:'Ciclo celular',c:'#4B7BFF'},
+ {id:'mitose',t:'Mitose',c:'#9A6BFF'},
+ {id:'meiose',t:'Meiose',c:'#5CC8F0'},
+ {id:'comparar',t:'Mitose × meiose',c:'#F7C13B'},
+ {id:'erros',t:'Erros',c:'#FF6B7D'},
+ {id:'gametogenese',t:'Gametogênese',c:'#F06AAE'}];
+const SC={},ORDER={};
+function def(sec,id,o){o.sec=sec;o.key=sec+'/'+id;SC[o.key]=o;(ORDER[sec]=ORDER[sec]||[]).push(o.key)}
+const LEGC=[[C.mat,'cromossomo de origem materna'],[C.pat,'cromossomo de origem paterna'],[C.ice,'fuso e centrossomos'],[C.mem,'membrana plasmática']];
+
+// ---------------- 1. CICLO CELULAR ----------------
+def('ciclo','interfase',{t:'Interfase: G1, S e G2',s:'a célula cresce e duplica o DNA',c:'#4B7BFF',
+ ph:[['G1','A célula cresce, produz proteínas e organelas. Cada cromossomo tem uma só molécula de DNA.'],
+  ['S','Fase de síntese: todo o DNA é duplicado. Cada cromossomo passa a ter duas cromátides-irmãs.'],
+  ['G2','A célula continua crescendo e confere se o DNA foi copiado direito. Os centrossomos já estão duplicados.'],
+  ['M','Mitose e citocinese: a fase mais curta. O DNA condensado é repartido entre duas células-filhas.']],
+ inf:[['DNA: 2C','um cromossomo = uma cromátide'],['DNA: 2C → 4C','duplicação em andamento'],['DNA: 4C','um cromossomo = duas cromátides'],['DNA: 4C → 2C','repartido entre as filhas']],
+ leg:[['#4B7BFF','G1'],['#9A6BFF','S'],['#2FCFBF','G2'],['#F7C13B','M (divisão)'],[C.mat,'cromatina (DNA + proteínas)']],
+ d:`<p>O <b>ciclo celular</b> é a vida de uma célula, do momento em que ela surge até se dividir. Ele tem duas partes: a <b>interfase</b>, longa, e a <b>divisão</b> (fase M), curta. Numa célula humana que se divide a cada 24&nbsp;h, a interfase ocupa cerca de 23&nbsp;h.</p><p>A interfase tem três etapas. Em <b>G1</b> a célula cresce e trabalha. Em <b>S</b> (de síntese) ela <b>duplica o DNA</b>. Em <b>G2</b> ela se prepara para dividir. Células que param de se dividir, como os neurônios, saem do ciclo e ficam em <b>G0</b>.</p><p>No anel, cada fatia tem o tamanho da duração da fase. A letra <b>C</b> mede a quantidade de DNA: C é o que há num gameta; uma célula do corpo em G1 tem 2C.</p>`,
+ kv:[['Duração típica (célula humana em cultura)','cerca de 24 h'],['G1','cerca de 11 h'],['S','cerca de 8 h'],['G2','cerca de 4 h'],['M','cerca de 1 h']],
+ enem:`A interfase <b>não é repouso</b>: é quando a célula mais trabalha. A pegadinha clássica é dizer que o DNA se duplica na prófase. Ele se duplica <b>na fase S da interfase</b>, antes de a divisão começar. A duplicação não muda o número de cromossomos, só o de cromátides.`,
+ links:[['Como o DNA se duplica, no módulo 1','../dna/index.html'],['O núcleo por dentro, no módulo 6','../morfofisiologia/index.html#nucleo/geral']],
+ draw(i,e,f){const cy=(52+H-8)/2,cx=W/2,Ro=Math.min(W/2-46,(H-60)/2-30),u=i+f;
+  const R=ring(cx,cy,Ro,[['G1',11/24,RINGC[0],'11 h'],['S',8/24,RINGC[1],'8 h'],['G2',4/24,RINGC[2],'4 h'],['M',1/24,RINGC[3],'1 h']],i,null);
+  const[a0,a1]=R.out[i],ang=a0+(a1-a0)*f;circ(cx+Math.cos(ang)*R.Rm,cy+Math.sin(ang)*R.Rm,R.wd/2+3,null,'rgba(11,15,28,.9)',5);circ(cx+Math.cos(ang)*R.Rm,cy+Math.sin(ang)*R.Rm,R.wd/2+3,null,'#fff',2);
+  const r=(Ro-R.wd)*.74,M=mkMitose(cx,cy,r,{labs:false}),g2=M[0],k=(q,d,same)=>Object.assign({},g2,{labs:[],cells:[{x:cx,y:cy,r:r*q},{x:cx,y:cy,r:r*q}],dup:d,poles:same?[{x:cx-.03*r,y:cy-.6*r},{x:cx-.03*r,y:cy-.6*r}]:[{x:cx-.1*r,y:cy-.62*r},{x:cx+.07*r,y:cy-.64*r}],nuc:[{x:cx,y:cy,r:.5*r},{x:cx,y:cy,r:.5*r}]});
+  const st=[k(.8,0,true),k(.9,1,false),Object.assign({},g2,{labs:[]}),Object.assign({},M[2],{labs:[]})];runDiv(st,geo(r),i,e);
+  if(i===1)lab(cx+.2*r,cy+.14*r,cx,cy+r+4,'DNA sendo duplicado',e);if(i===2)lab(cx+.07*r,cy-.72*r,cx,cy-r-2,'Centrossomos duplicados',e)}});
+
+def('ciclo','checagem',{t:'Pontos de checagem',s:'o controle de qualidade do ciclo',c:'#2FCFBF',
+ ph:[['Checagem G1/S','Antes de duplicar o DNA: a célula tem tamanho, nutrientes e sinais de crescimento? O DNA está inteiro?'],
+  ['Checagem G2/M','Antes de dividir: o DNA foi copiado por completo e sem erros?'],
+  ['Checagem do fuso','Na metáfase: todos os cromossomos estão presos às fibras do fuso? Só então as cromátides se separam.'],
+  ['Quando algo falha','Com DNA danificado, a proteína p53 segura o ciclo. A célula conserta o dano ou se autodestrói (apoptose).']],
+ inf:[['1 de 3','entrada na fase S'],['2 de 3','entrada na mitose'],['3 de 3','metáfase para anáfase'],['Ciclo pausado','reparo ou apoptose']],
+ leg:[['#E8EDF7','ponto de checagem ativo'],[C.ok,'condição cumprida'],[C.red,'falha detectada']],
+ d:`<p>A célula não passa de uma fase para a outra sem conferir se está tudo certo. Esses controles são os <b>pontos de checagem</b>. Os três principais ficam no fim de G1, no fim de G2 e no meio da mitose.</p><p>Quem dá a ordem de avançar são proteínas chamadas <b>ciclinas</b>, que ativam enzimas (as <b>CDKs</b>). Quem freia são proteínas como a <b>p53</b>, conhecida como "guardiã do genoma": se o DNA está danificado, ela pausa o ciclo para o reparo e, se o dano for grave, dispara a <b>apoptose</b>, a morte programada da célula.</p><p>O anel aqui está fora de escala, para as três checagens caberem.</p>`,
+ kv:[['Checagem G1/S','tamanho, nutrientes, DNA íntegro'],['Checagem G2/M','DNA todo duplicado'],['Checagem do fuso','cromossomos presos ao fuso'],['Freio principal','proteína p53']],
+ enem:`Questões costumam descrever uma proteína "que impede a divisão de células com DNA danificado" e pedir a consequência da sua falta: <b>células com mutações continuam se dividindo</b>, o que favorece tumores. Radiação ultravioleta, fumo e certos vírus aparecem como causas do dano.`,
+ links:[['Mutações no DNA, no módulo 1','../dna/index.html'],['Núcleo e cromatina, no módulo 5','../celula/index.html#nucleo']],
+ draw(i,e,f){const cy=(52+H-8)/2,cx=W/2,Ro=Math.min(W/2-30,(H-60)/2-22),fr=[.36,.26,.2,.18];
+  const act=i===0?0:i===1?2:i===2?3:0,R=ring(cx,cy,Ro,[['G1',fr[0],RINGC[0]],['S',fr[1],RINGC[1]],['G2',fr[2],RINGC[2]],['M',fr[3],RINGC[3]]],act,null);
+  const ga=[-PI/2+fr[0]*TAU,-PI/2+(fr[0]+fr[1]+fr[2])*TAU,-PI/2+(fr[0]+fr[1]+fr[2]+fr[3]*.5)*TAU],gi=i===3?0:i;
+  ga.forEach((a,k)=>{const c=Math.cos(a),s=Math.sin(a),on=k===gi,col=on?(i===3?C.red:'#E8EDF7'):'rgba(232,237,247,.45)';X.lineCap='round';line(cx+c*(Ro-R.wd-3),cy+s*(Ro-R.wd-3),cx+c*(Ro+3),cy+s*(Ro+3),col,on?5:3);
+   const bx=cx+c*(Ro+15),by=cy+s*(Ro+15);circ(bx,by,10,on?col:'rgba(11,15,28,.9)',col,1.5);tx(String(k+1),bx,by+.5,{f:FD,s:12,w:500,c:on?'#0B0F1C':C.dim,bg:false})});
+  const from=i===0?-PI/2:i===3?ga[0]-.5:ga[i-1],to=ga[gi],ang=lerp(from,to,ss(f/.6));circ(cx+Math.cos(ang)*R.Rm,cy+Math.sin(ang)*R.Rm,R.wd/2+3,null,'rgba(11,15,28,.9)',5);circ(cx+Math.cos(ang)*R.Rm,cy+Math.sin(ang)*R.Rm,R.wd/2+3,null,i===3?C.red:'#fff',2);
+  const T=[['Antes de duplicar o DNA',['Tamanho adequado','Nutrientes e sinais','DNA sem danos']],['Antes de dividir',['DNA todo duplicado','DNA sem danos','Tamanho adequado']],['No meio da mitose',['Alinhados no equador','Todos presos ao fuso']],['Dano no DNA',['DNA danificado','p53 pausa o ciclo','Reparo ou apoptose']]][i];
+  const n=T[1].length,lh=26,y0=cy-(n*lh)/2+8;tx(T[0],cx,y0-26,{f:FTT,s:15,w:600,c:C.txt,bg:false});
+  X.font=`400 13px ${FT}`;const tw=Math.max(...T[1].map(s=>X.measureText(s).width)),x0=cx-(tw+24)/2;
+  T[1].forEach((s,k)=>{const al=cl(e*n*1.2-k,0,1),y=y0+k*lh,bad=i===3&&k===0;X.globalAlpha=.25+.75*al;const col=bad?C.red:i===3?C.txt:C.ok;circ(x0+8,y,8,null,col,1.6);X.lineCap='round';X.lineJoin='round';X.beginPath();
+   if(bad){X.moveTo(x0+5,y-3);X.lineTo(x0+11,y+3);X.moveTo(x0+11,y-3);X.lineTo(x0+5,y+3)}else if(i===3){X.moveTo(x0+5,y);X.lineTo(x0+11,y);X.moveTo(x0+8.5,y-2.5);X.lineTo(x0+11,y);X.lineTo(x0+8.5,y+2.5)}else{X.moveTo(x0+4.5,y+.5);X.lineTo(x0+7.2,y+3);X.lineTo(x0+11.5,y-2.8)}
+   X.strokeStyle=col;X.lineWidth=1.6;X.stroke();tx(s,x0+24,y+.5,{a:'left',s:13,c:C.txt,bg:false});X.globalAlpha=1})}});
+
+def('ciclo','cancer',{t:'Câncer: ciclo sem freio',s:'divisão celular fora de controle',c:'#FF6B7D',dur:4,
+ ph:[['Tecido normal','As células só se dividem para repor as que morrem. O número total se mantém.'],
+  ['Mutações','Uma célula acumula mutações em genes que controlam o ciclo e passa a ignorar os pontos de checagem.'],
+  ['Tumor','A célula alterada se divide sem parar e passa as mutações às filhas. Forma-se um tumor.'],
+  ['Invasão e metástase','Em tumores malignos, células atravessam a lâmina basal, entram no sangue e formam tumores em outros órgãos.']],
+ inf:[['Divisão controlada','reposição de células'],['1 célula alterada','mutações acumuladas'],['Divisão sem controle','tumor em crescimento'],['Tumor maligno','metástase']],
+ leg:[[C.mem,'célula normal'],[C.red,'célula com mutações'],['#D7303B','vaso sanguíneo'],[C.ice,'lâmina basal']],
+ d:`<p><b>Câncer</b> é o nome de um conjunto de doenças em que células se dividem <b>sem controle</b>. Ele começa com <b>mutações</b> em genes que regulam o ciclo celular, acumuladas ao longo do tempo numa mesma linhagem de células.</p><p>Dois tipos de gene importam. Os <b>proto-oncogenes</b> estimulam a divisão; mutados, viram <b>oncogenes</b>, como um acelerador travado. Os <b>genes supressores de tumor</b> (o da p53 é o mais famoso) freiam a divisão; mutados, deixam de frear.</p><p>O tumor é <b>benigno</b> quando fica no lugar e <b>maligno</b> quando invade tecidos vizinhos. <b>Metástase</b> é a chegada de células do tumor a outros órgãos, pelo sangue ou pela linfa.</p>`,
+ kv:[['Acelerador travado','oncogenes'],['Freio quebrado','supressores de tumor mutados'],['Agentes mutagênicos','fumo, radiação UV, alguns vírus (HPV)'],['Alvo da quimioterapia','células em divisão']],
+ enem:`O ENEM liga câncer a <b>mitose descontrolada</b> e a <b>agentes mutagênicos</b> (cigarro, raios UV, HPV). Outro ponto cobrado: a quimioterapia e a radioterapia atingem células que se dividem muito, por isso também afetam cabelo, mucosas e medula óssea. Câncer <b>não é contagioso</b>, e só as mutações em células germinativas passam aos filhos.`,
+ links:[['Mutações no DNA, no módulo 1','../dna/index.html'],['Tipos de célula, no módulo 5','../celula/index.html']],
+ draw(i,e,f,t){const yb=Math.round(H*.62),cw=W<520?40:54,chh=Math.round(cw*1.15),n=Math.floor((W-24)/cw),x0=(W-n*cw)/2,m=Math.floor(n/2),xm=x0+(m+.5)*cw;
+  const vh=Math.min(36,(H-yb)*.32),vy=yb+(H-yb)*.56;
+  rr(8,vy-vh/2,W-16,vh,vh/2);X.fillStyle='rgba(215,48,59,.16)';X.fill();X.strokeStyle='rgba(215,48,59,.7)';X.lineWidth=1.5;X.stroke();
+  for(let k=0;k<7;k++){const px=((k*137+t*26)%(W-56))+28;X.beginPath();X.ellipse(px,vy+Math.sin(k*2.3)*vh*.18,7,4.5,.3,0,TAU);X.fillStyle='rgba(215,48,59,.75)';X.fill()}
+  const gapx=xm+cw*.9,gp=i===3?e:0;X.lineCap='round';line(10,yb+4,gapx-14*gp,yb+4,'rgba(207,224,255,.6)',2.5);line(gapx+14*gp,yb+4,W-10,yb+4,'rgba(207,224,255,.6)',2.5);
+  const cell=(x,w,al,mut,mk)=>{if(al<=.01||w<3)return;X.globalAlpha=al;rr(x+2,yb-chh,w-4,chh,Math.min(9,w/3));X.fillStyle=C.cyt;X.fill();X.strokeStyle=mut>.5?C.red:C.mem;X.lineWidth=2;X.stroke();circ(x+w/2,yb-chh*.45,Math.min(w*.3,cw*(.2+.07*mut)),mut>.5?'rgba(255,107,125,.35)':'rgba(154,107,255,.3)',mut>.5?C.red:C.nuc,1.5);X.globalAlpha=1};
+  const dk=Math.min(n-1,m+2);
+  for(let k=0;k<n;k++){const x=x0+k*cw;let al=1,w=cw,xx=x;
+   if(i===0&&k===dk){al=1-ss(f/.35);cell(x,cw,al,0);const g=ss((f-.4)/.4);if(g>0){X.globalAlpha=1;cell(x,cw,g,0)}continue}
+   const mut=k===m?(i===1?e:i>1?1:0):(i>=2&&Math.abs(k-m)===1?(i===2?e:1):0);cell(xx,w,al,mut)}
+  if(i===0){const g=ss((f-.4)/.4);lab(x0+(dk+.5)*cw,yb-chh-2,x0+(dk+.5)*cw,yb-chh-40,g>.5?'Célula nova repõe a perdida':'Célula velha morre',1)}
+  if(i===1){const sx=xm,sy=yb-chh-16;X.globalAlpha=e;X.strokeStyle=C.red;X.lineWidth=2;X.lineJoin='round';X.beginPath();X.moveTo(sx+4,sy-16);X.lineTo(sx-4,sy-4);X.lineTo(sx+3,sy-4);X.lineTo(sx-3,sy+8);X.stroke();X.globalAlpha=1;lab(xm,yb-chh*.45,xm,yb-chh-52,'Mutações em genes do ciclo',e)}
+  if(i>=2){const cr=cw*.2,N=i===2?Math.round(lerp(1,26,e)):26,by=yb-chh-cr-1;let c=0,topy=by;for(let k=0;c<N&&k<200;k++){const r=cr*1.12*Math.sqrt(k),a=k*2.39996,px=xm+r*Math.cos(a),py=by-Math.abs(r*Math.sin(a))*.92;if(Math.sin(a)<-.05&&k>0)continue;c++;topy=Math.min(topy,py);circ(px,py,cr,'rgba(70,24,40,.85)',C.red,1.6);circ(px,py,cr*.5,'rgba(255,107,125,.4)')}
+   if(i===2)lab(xm,topy-cr,xm,topy-cr-30,'Tumor: divisões sem freio',e)
+   else{for(let k=0;k<4;k++){const u=((t*.1+k*.25)%1),cr2=cr*.85;let px,py,al=1;if(u<.4){const q=u/.4;px=lerp(gapx,gapx+6,q);py=lerp(yb-8,vy,q)}else{const q=(u-.4)/.6;px=lerp(gapx+6,W-24,q);py=vy+Math.sin(q*9)*3;al=1-ss((q-.75)/.25)}X.globalAlpha=al*e;circ(px,py,cr2,'rgba(70,24,40,.9)',C.red,1.6);X.globalAlpha=1}
+    lab(gapx,yb+4,Math.min(W-90,gapx+70),yb-chh-34,'Invasão',e);lab(Math.min(W-40,gapx+cw*2),vy,W-90,H-22,'Metástase pelo sangue',e)}}
+  tx('Vaso sanguíneo',16,vy+vh/2+12,{a:'left',s:12.5,c:C.dim});tx('Epitélio',16,yb-chh-12,{a:'left',s:12.5,c:C.dim})}});
+
+// ---------------- 2. MITOSE ----------------
+def('mitose','fases',{t:'As fases da mitose',s:'uma célula 2n forma duas células 2n',c:'#9A6BFF',
+ ph:[['Interfase (G2)','Ponto de partida: DNA já duplicado, ainda descondensado dentro do núcleo.'],
+  ['Prófase','Os cromossomos se condensam e ficam visíveis. O nucléolo some, o fuso se forma e o envoltório nuclear se desfaz.'],
+  ['Metáfase','Os cromossomos, no máximo de condensação, alinham-se no equador da célula, presos ao fuso pelo centrômero.'],
+  ['Anáfase','Os centrômeros se dividem. As cromátides-irmãs se separam e são puxadas para polos opostos.'],
+  ['Telófase','Os cromossomos chegam aos polos e se descondensam. Dois envoltórios nucleares se refazem.'],
+  ['Citocinese','O citoplasma se divide. Resultado: duas células com os mesmos cromossomos da célula-mãe.']],
+ inf:[['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · cromátides separadas'],['2 núcleos','DNA: 2C em cada núcleo'],['2 células · 2n = 4','DNA: 2C em cada célula']],
+ leg:LEGC,
+ d:`<p>A <b>mitose</b> é a divisão do núcleo que reparte o DNA duplicado em duas partes iguais. Ela faz o corpo <b>crescer</b>, <b>repõe células</b> perdidas, cicatriza feridas e é a base da reprodução assexuada.</p><p>O segredo está na <b>anáfase</b>: cada cromossomo duplicado se abre em duas <b>cromátides-irmãs</b>, cópias idênticas, e cada polo recebe uma. Por isso as duas células-filhas têm o <b>mesmo número de cromossomos</b> e a <b>mesma informação genética</b> da célula-mãe.</p><p>A célula do desenho tem 2n&nbsp;=&nbsp;4: dois cromossomos longos e dois curtos, um de cada par vindo da mãe e outro do pai.</p>`,
+ kv:[['Células formadas','2'],['Cromossomos','2n → 2n'],['Células-filhas','geneticamente iguais'],['Onde ocorre','células somáticas'],['Sequência','prófase, metáfase, anáfase, telófase']],
+ enem:`Para identificar a fase numa figura: cromossomos <b>no meio</b> é metáfase; <b>dois grupos se afastando</b> é anáfase. O cariótipo é feito com células em <b>metáfase</b>, quando os cromossomos estão mais condensados. Substâncias que impedem o fuso (colchicina) travam a divisão nessa fase.`,
+ links:[['Núcleo e centríolos em 3D, no módulo 5','../celula/index.html#centriolo'],['Da cromatina ao cromossomo, no módulo 6','../morfofisiologia/index.html#nucleo/geral']],
+ draw(i,e){const a=areas(1)[0],R=rMit(a),cx=a.x+a.w/2,cy=a.y+a.h/2;runDiv(mkMitose(cx,cy,R),geo(R),i,e)}});
+
+def('mitose','citocinese',{t:'Citocinese: animal × vegetal',s:'duas formas de dividir o citoplasma',c:'#A9C54A',
+ ph:[['Fim da mitose','Os dois núcleos já estão formados. Falta dividir o citoplasma.'],
+  ['Começo','Animal: um anel de proteínas aperta a célula pelo equador. Vegetal: vesículas do complexo de Golgi se alinham no centro.'],
+  ['Avanço','Animal: o sulco avança de fora para dentro. Vegetal: a placa celular cresce de dentro para fora.'],
+  ['Duas células','Animal: a célula se estrangula em duas. Vegetal: a placa encosta na parede e vira a nova parede entre as filhas.']],
+ inf:[['Animal × vegetal','citocinese'],['Animal × vegetal','citocinese'],['Animal × vegetal','citocinese'],['2 células cada','citocinese completa']],
+ leg:[[C.mem,'membrana plasmática'],[C.wall,'parede celular'],[C.gol,'vesículas do complexo de Golgi'],[C.ice,'anel contrátil e fibras']],
+ d:`<p>A <b>citocinese</b> é a divisão do citoplasma, que termina a divisão celular. Ela acontece de modos diferentes em células animais e vegetais, por causa da <b>parede celular</b>.</p><p>Na <b>célula animal</b>, um <b>anel contrátil</b> de actina e miosina estrangula a célula, como um cordão que aperta um saco. A divisão vai <b>de fora para dentro</b>: é <b>centrípeta</b>.</p><p>Na <b>célula vegetal</b>, a parede rígida impede o estrangulamento. Vesículas do complexo de Golgi (complexo golgiense) se fundem no meio da célula e formam a <b>placa celular</b>, que cresce <b>de dentro para fora</b>: é <b>centrífuga</b>. Células de plantas com flores também não têm centríolos; o fuso se forma sem eles.</p>`,
+ kv:[['Animal','centrípeta, por estrangulamento'],['Vegetal','centrífuga, por placa celular'],['Centríolos','presentes na animal, ausentes na vegetal'],['Origem da placa','vesículas do complexo de Golgi']],
+ enem:`A comparação cai em forma de tabela ou figura: <b>animal = cêntrica, astral e centrípeta</b>; <b>vegetal = acêntrica, anastral e centrífuga</b>. Traduzindo: com ou sem centríolos, com ou sem áster, de fora para dentro ou de dentro para fora.`,
+ links:[['Célula animal e vegetal em 3D, no módulo 5','../celula/index.html#vegetal'],['Complexo de Golgi, no módulo 5','../celula/index.html#golgi']],
+ draw(i,e){const q=i?cl((i-1+e)/3,0,1):0,A=areas(2);divider();
+  {const a=A[0],R=Math.min(a.w/3.5,(a.h-74)/2),cx=a.x+a.w/2,cy=a.y+26+(a.h-52)/2,r=lerp(.82,.74,q)*R,d=lerp(.5,.8,q)*R;ptitle(a,'Célula animal');
+   drawCells([{x:cx-d,y:cy,r},{x:cx+d,y:cy,r}]);for(const s of[-1,1]){circ(cx+s*d,cy,.36*R,'rgba(154,107,255,.14)',C.nuc,1.6);thread(cx+s*d,cy,.2*R,C.mat,2+s);circ(cx+s*(d+.5*R),cy-.3*R,3,C.ice)}
+   if(d<r&&i>0){const h=Math.sqrt(r*r-d*d);X.beginPath();X.ellipse(cx,cy,3.5,h,0,0,TAU);X.strokeStyle=C.ice;X.lineWidth=2;X.stroke();if(q>0&&q<1){arrow(cx,cy-h-24,cx,cy-h-7,C.ice);arrow(cx,cy+h+24,cx,cy+h+7,C.ice)}lab(cx,cy+h*.5,cx+.9*R,cy+R*.95,'Anel contrátil',i===1?e:1)}
+   tx('de fora para dentro (centrípeta)',cx,a.y+a.h-10,{s:13,c:C.dim})}
+  {const a=A[1],R=Math.min(a.w/3.5,(a.h-74)/2),cx=a.x+a.w/2,cy=a.y+26+(a.h-52)/2,bw=Math.min(a.w-40,2.9*R),bh=1.6*R;ptitle(a,'Célula vegetal');
+   rr(cx-bw/2,cy-bh/2,bw,bh,7);X.fillStyle=C.cyt;X.fill();X.strokeStyle=C.wall;X.lineWidth=5;X.stroke();rr(cx-bw/2+5,cy-bh/2+5,bw-10,bh-10,4);X.strokeStyle=C.mem;X.lineWidth=1.5;X.stroke();
+   for(const s of[-1,1]){circ(cx+s*bw*.27,cy,.32*R,'rgba(154,107,255,.14)',C.nuc,1.6);thread(cx+s*bw*.27,cy,.18*R,C.mat,2+s);for(const v of[-1,1]){X.beginPath();X.ellipse(cx+s*bw*.4,cy+v*bh*.3,.11*R,.06*R,s*v*.5,0,TAU);X.fillStyle='rgba(63,191,106,.5)';X.fill();X.strokeStyle='#3FBF6A';X.lineWidth=1;X.stroke()}}
+   const hm=bh/2-5,half=q*hm;X.globalAlpha=.4*(1-q);for(let k=-2;k<=2;k++)line(cx-.3*R,cy+k*bh*.13,cx+.3*R,cy+k*bh*.13,C.ice,1);X.globalAlpha=1;
+   if(half>1){X.lineCap='butt';line(cx,cy-half,cx,cy+half,C.wall,4);line(cx-3.5,cy-half,cx-3.5,cy+half,C.mem,1.5);line(cx+3.5,cy-half,cx+3.5,cy+half,C.mem,1.5)}
+   if(i>0)for(let j=0;j<13;j++){const yy=cy+(j-6)/6*(hm-6),dist=Math.abs(yy-cy);if(dist<=half-2)continue;const near=cl((half+.3*bh-dist)/(.3*bh),0,1),o=lerp(.24*R,5,near)*(j%2?1:-1);circ(cx+o,yy,3,C.gol)}
+   if(q>0&&q<1){arrow(cx+13,cy-half+12,cx+13,cy-half-5,C.wall);arrow(cx+13,cy+half-12,cx+13,cy+half+5,C.wall)}
+   if(i>0)lab(cx,cy+(half>8?half*.4:0),cx-.9*R,cy+bh/2+18,i===3?'Nova parede celular':'Placa celular',i===1?e:1);
+   tx('de dentro para fora (centrífuga)',cx,a.y+a.h-10,{s:13,c:C.dim})}}});
+
+// ---------------- 3. MEIOSE ----------------
+const MEI_PH=[['Interfase','Ponto de partida: célula 2n com o DNA já duplicado.'],
+  ['Prófase I','Os cromossomos homólogos se juntam aos pares e trocam pedaços entre si (crossing-over). O envoltório nuclear se desfaz.'],
+  ['Metáfase I','Os pares de homólogos se alinham no equador. Cada par se orienta ao acaso.'],
+  ['Anáfase I','Os homólogos se separam. As cromátides-irmãs continuam juntas: cada polo recebe um cromossomo duplicado de cada par.'],
+  ['Telófase I','Formam-se duas células n. Cada cromossomo ainda tem duas cromátides. Não há nova duplicação do DNA.'],
+  ['Metáfase II','Em cada célula, os cromossomos se alinham no equador, como numa mitose.'],
+  ['Anáfase II','Os centrômeros se dividem e as cromátides-irmãs se separam.'],
+  ['Telófase II','Resultado: quatro células n, todas diferentes entre si e da célula-mãe.']];
+def('meiose','fases',{t:'Meiose I e meiose II',s:'uma célula 2n forma quatro células n',c:'#5CC8F0',ph:MEI_PH,
+ inf:[['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C · homólogos pareados'],['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C · homólogos se separam'],['n = 2 por célula','DNA: 2C · cromossomos duplicados'],['n = 2 por célula','DNA: 2C'],['n = 2 por célula','DNA: 2C · cromátides se separam'],['4 células · n = 2','DNA: C em cada uma']],
+ leg:LEGC,
+ d:`<p>A <b>meiose</b> reduz o número de cromossomos à metade: de <b>2n</b> (diploide) para <b>n</b> (haploide). É assim que se formam os gametas nos animais e os esporos nas plantas. Na fecundação, dois gametas n refazem o 2n.</p><p>O DNA é duplicado <b>uma vez</b> e o núcleo se divide <b>duas vezes</b>. Na <b>meiose I</b>, chamada <b>reducional</b>, separam-se os <b>cromossomos homólogos</b>: é aí que o número cai de 2n para n. Na <b>meiose II</b>, <b>equacional</b>, separam-se as <b>cromátides-irmãs</b>, como numa mitose.</p><p>Repare nas cores: depois do crossing-over, alguns cromossomos carregam um trecho materno e outro paterno. Nenhuma das quatro células finais é igual a outra.</p>`,
+ kv:[['Células formadas','4'],['Cromossomos','2n → n'],['Duplicações do DNA','1'],['Divisões','2 (meiose I e II)'],['Células-filhas','geneticamente diferentes']],
+ enem:`O ponto mais cobrado: <b>a redução acontece na meiose I</b>, quando os homólogos se separam. A meiose II não reduz nada, só separa cromátides. A meiose é a fonte da <b>variabilidade</b> na reprodução sexuada, e é por ela que o número de cromossomos da espécie se mantém de geração em geração.`,
+ links:[['Genes e alelos no DNA, no módulo 1','../dna/index.html'],['Espermatozoide em 3D, no módulo 5','../celula/index.html#esperma']],
+ draw(i,e){const a=areas(1)[0],R=rMei(a),cx=a.x+a.w/2,cy=a.y+a.h/2;runDiv(mkMeiose(cx,cy,R,{labs:true}),geo(R,{xo:true}),i,e)}});
+
+def('meiose','crossing',{t:'Crossing-over',s:'troca de pedaços entre homólogos',c:'#9A6BFF',
+ ph:[['Homólogos duplicados','Um cromossomo veio da mãe, o outro do pai. Eles têm os mesmos genes, mas podem ter alelos diferentes (A e a, B e b).'],
+  ['Pareamento','Na prófase I, os homólogos se encostam lado a lado, gene com gene. O conjunto de 4 cromátides é o bivalente, ou tétrade.'],
+  ['Quiasma','Duas cromátides não irmãs, uma de cada homólogo, se cruzam. O ponto de cruzamento é o quiasma.'],
+  ['Troca','As cromátides se quebram no mesmo ponto e se religam trocadas. Isso é o crossing-over, ou permutação.'],
+  ['Resultado','Das 4 cromátides, 2 continuam como eram (parentais) e 2 são combinações novas (recombinantes).']],
+ inf:[['AB / ab','alelos antes da troca'],['Bivalente','4 cromátides'],['Quiasma','ponto de cruzamento'],['Permutação','troca de segmentos'],['AB, Ab, aB, ab','4 combinações']],
+ leg:[[C.mat,'cromossomo de origem materna'],[C.pat,'cromossomo de origem paterna'],['#E8EDF7','A, a, B, b: alelos de dois genes']],
+ d:`<p>O <b>crossing-over</b> (ou <b>permutação</b>) é a troca de pedaços entre <b>cromossomos homólogos</b>. Acontece na <b>prófase I</b> da meiose, quando os homólogos estão pareados.</p><p>A troca ocorre entre <b>cromátides não irmãs</b>: uma do cromossomo materno e uma do paterno. Elas se cruzam, quebram no mesmo ponto e se religam trocadas. O resultado são cromossomos que <b>misturam alelos</b> maternos e paternos, combinações que não existiam em nenhum dos pais.</p><p>No exemplo, os alelos A e B estavam juntos no cromossomo materno, e a e b no paterno. Depois da troca aparecem também <b>Ab</b> e <b>aB</b>.</p>`,
+ kv:[['Quando','prófase I da meiose'],['Entre quem','cromátides não irmãs de homólogos'],['Sinal visível','quiasma'],['Efeito','novas combinações de alelos']],
+ enem:`Três ideias que a prova mistura: o crossing-over ocorre na <b>prófase I</b> (não na mitose, não na meiose II); é entre <b>homólogos</b> (não entre cromátides-irmãs, que são idênticas); e <b>não cria alelos novos</b>, só recombina os que existem. Alelo novo é obra de mutação.`,
+ links:[['O que é um gene, no módulo 1','../dna/index.html']],
+ draw(i,e){const cx=W/2,top=84,Lc=Math.min(H-top-74,330),bot=top+Lc,cy=top+Lc/2,yc=cy+Lc*.1,yA=cy-Lc*.17,yB=cy+Lc*.34,yce=top+Lc*.13,sg=W<520?17:22,wd=W<520?9:11;
+  const h0=Math.min(120,W*.21),sp=Math.min(96,(W-64)/3.5),col=h=>[cx-h-sg/2,cx-h+sg/2,cx+h-sg/2,cx+h+sg/2];
+  const V=[{x:col(h0),c:0,hw:.2,j:1,m:0},{x:col(sg*1.2),c:0,hw:.2,j:1,m:0},{x:col(sg*1.2),c:1,hw:.2,j:1,m:0},{x:col(sg*1.2),c:1,hw:.07,j:1,m:1},{x:[-1.5,-.5,.5,1.5].map(k=>cx+k*sp),c:1,hw:.07,j:0,m:1}];
+  const A=V[Math.max(0,i-1)],B=V[i],q=i?e:1,xs=B.x.map((b,k)=>lerp(A.x[k],b,q)),c=lerp(A.c,B.c,q),hw=lerp(A.hw,B.hw,q)*Lc,j=lerp(A.j,B.j,q),m=lerp(A.m,B.m,q);
+  const xa=(k,y)=>k===1||k===2?lerp(xs[k],xs[3-k],c*ss((y-(yc-hw))/(2*hw))):xs[k];
+  X.globalAlpha=j;X.lineCap='round';line(xs[0],yce,xs[1],yce,light(C.mat,.5),wd*.8);line(xs[2],yce,xs[3],yce,light(C.pat,.5),wd*.8);X.globalAlpha=1;
+  X.lineCap='round';X.lineJoin='round';X.lineWidth=wd;
+  for(const k of[0,3]){line(xs[k],top,xs[k],bot,k<2?C.mat:C.pat,wd)}
+  if(m<.99){X.globalAlpha=1-m;for(const k of[1,2]){X.beginPath();for(let s=0;s<=48;s++){const y=lerp(top,bot,s/48);s?X.lineTo(xa(k,y),y):X.moveTo(xa(k,y),y)}X.lineWidth=wd;X.strokeStyle=k<2?C.mat:C.pat;X.stroke()}X.globalAlpha=1}
+  if(m>.01){X.globalAlpha=m;for(const k of[1,2]){X.lineCap='butt';line(xs[k],yc-2,xs[k],bot,k<2?C.pat:C.mat,wd);X.lineCap='round';line(xs[k],bot-1,xs[k],bot,k<2?C.pat:C.mat,wd);line(xs[k],top,xs[k],top+1,k<2?C.mat:C.pat,wd);X.lineCap='butt';line(xs[k],top,xs[k],yc,k<2?C.mat:C.pat,wd)}X.globalAlpha=1;X.lineCap='round'}
+  const bd=(x,y,s,co)=>{circ(x,y,10,light(co,.62),'rgba(11,15,28,.7)',1.5);tx(s,x,y+.5,{f:FTT,s:13,w:700,c:'#0B0F1C',bg:false})};
+  for(let k=0;k<4;k++){bd(xs[k],yA,k<2?'A':'a',k<2?C.mat:C.pat);bd(xa(k,yB),yB,k<2?'B':'b',k<2?C.mat:C.pat);circ(xs[k],yce,wd*.36,'rgba(11,15,28,.55)')}
+  if(i<4){tx('materno',xs[1]+wd/2,top-18,{a:'right',s:13,c:light(C.mat,.4)});tx('paterno',xs[2]-wd/2,top-18,{a:'left',s:13,c:light(C.pat,.3)})}
+  if(i===0)lab(xs[1],yce,xs[1]+70,yce-4,'Cromátides-irmãs',1);
+  if(i===1)lab((xs[1]+xs[2])/2,cy+Lc*.22,cx,bot+24,'Bivalente: 4 cromátides lado a lado',e);
+  if(i===2)lab(cx,yc,cx+Math.min(110,W*.28),yc,'Quiasma',e);
+  if(i===3)lab(xs[1],cy+Lc*.24,cx,bot+24,'Trechos trocados entre homólogos',e);
+  if(i===4){X.globalAlpha=e;['AB','Ab','aB','ab'].forEach((s,k)=>tx(s,xs[k],bot+20,{f:FD,s:14,w:500,c:C.txt}));tx('parental',xs[0],bot+40,{s:13,c:C.dim});tx('parental',xs[3],bot+40,{s:13,c:C.dim});tx('recombinantes',cx,bot+40,{s:13,w:600,c:C.txt});X.globalAlpha=1}}});
+
+def('meiose','segregacao',{t:'Segregação independente',s:'cada par se separa por conta própria',c:'#5CC8F0',
+ ph:[['Metáfase I','Dois arranjos possíveis, com a mesma chance. À esquerda, os dois cromossomos maternos ficam do mesmo lado; à direita, em lados opostos.'],
+  ['Anáfase I','Os homólogos de cada par se separam. O destino de um par não depende do outro.'],
+  ['Fim da meiose I','Cada célula recebeu um cromossomo de cada par, numa combinação que depende do arranjo.'],
+  ['Anáfase II','As cromátides-irmãs se separam.'],
+  ['Gametas','Um arranjo produz gametas AB e ab; o outro, Ab e aB. Juntos: 4 tipos de gameta.']],
+ inf:[['2 arranjos','mesma probabilidade'],['2 arranjos','homólogos se separam'],['n = 2','cromossomos duplicados'],['n = 2','cromátides se separam'],['AB, ab, Ab, aB','2² = 4 tipos de gameta']],
+ leg:[[C.mat,'origem materna (alelos A e B)'],[C.pat,'origem paterna (alelos a e b)']],
+ d:`<p>Na <b>metáfase I</b>, cada par de homólogos se alinha no equador <b>ao acaso</b>: o cromossomo materno pode ficar virado para um polo ou para o outro. E a orientação de um par <b>não influencia</b> a dos outros. Essa é a <b>segregação independente</b>.</p><p>Com 2 pares há 2 arranjos e <b>2²&nbsp;=&nbsp;4</b> tipos de gameta. Com n pares, <b>2ⁿ</b>. Na espécie humana, com 23 pares, são 2²³: mais de <b>8&nbsp;milhões</b> de combinações só por esse mecanismo, sem contar o crossing-over.</p><p>É a explicação celular da <b>2ª lei de Mendel</b>: genes em cromossomos diferentes se distribuem de forma independente. Aqui o gene A/a está no par longo e o B/b no par curto.</p>`,
+ kv:[['Tipos de gameta','2ⁿ (n = número de pares)'],['Com 2 pares','4'],['Espécie humana (23 pares)','8 388 608'],['Lei relacionada','2ª lei de Mendel']],
+ enem:`Conta que cai: "quantos tipos de gameta forma um indivíduo AaBb?" Resposta: <b>2² = 4</b> (AB, Ab, aB, ab), se os genes estão em cromossomos diferentes. As três fontes de variabilidade da reprodução sexuada são <b>crossing-over</b>, <b>segregação independente</b> e <b>fecundação ao acaso</b>.`,
+ links:[['Genes e alelos no DNA, no módulo 1','../dna/index.html']],
+ draw(i,e){const A=areas(2),map=[2,3,4,6,7];divider();A.forEach((a,k)=>{const R=rMei(a,1),cx=a.x+a.w/2,cy=a.y+24+(a.h-24)/2;ptitle(a,k?'Arranjo 2':'Arranjo 1');const st=mkMeiose(cx,cy,R,{swap:!!k,alle:['A','a','B','b']}).filter((s,j)=>map.includes(j));runDiv(st,geo(R,{alle:['A','a','B','b']}),i,e)})}});
+
+// ---------------- 4. MITOSE × MEIOSE ----------------
+def('comparar','grafico',{t:'Gráfico: DNA e cromossomos',s:'2n, n e quantidade de DNA, fase a fase',c:'#F7C13B',dur:2.6,
+ ph:[['G1','Começo igual nos dois casos: célula 2n com 2C de DNA.'],
+  ['S','O DNA é duplicado: de 2C para 4C. O número de cromossomos continua 2n, porque as cromátides-irmãs ficam unidas.'],
+  ['G2','Célula 2n com 4C, pronta para dividir.'],
+  ['Primeira divisão','Mitose: separa cromátides, e cada filha fica 2n com 2C. Meiose I: separa homólogos, e cada filha fica n com 2C.'],
+  ['Segunda divisão','Só na meiose: a meiose II separa as cromátides, e o DNA cai de 2C para C. As filhas da mitose já estão em G1.'],
+  ['Resultado','Mitose: 2 células 2n com 2C. Meiose: 4 células n com C.']],
+ inf:[['2C','2n nas duas'],['2C → 4C','2n nas duas'],['4C','2n nas duas'],['4C → 2C','mitose 2n · meiose n'],['2C → C','só na meiose'],['2C × C','mitose × meiose']],
+ leg:[[C.mat,'quantidade de DNA por célula (C)'],[C.pat,'conjuntos de cromossomos (2n ou n)']],
+ d:`<p>Este é o gráfico que mais aparece em provas. O eixo vertical mostra a <b>quantidade de DNA por célula</b>, em unidades <b>C</b> (C é o DNA de um gameta). Embaixo, a faixa mostra se a célula é <b>2n</b> ou <b>n</b>.</p><p>Há <b>uma subida</b> e depois <b>descidas</b>. A subida é a fase <b>S</b>, quando o DNA dobra. Cada descida é uma divisão, que reparte o DNA pela metade. A <b>mitose</b> tem uma descida e volta ao valor inicial (2C). A <b>meiose</b> tem duas descidas e termina com metade do valor inicial (C).</p><p>Atenção ao detalhe: na fase S o DNA dobra, mas o número de cromossomos <b>não</b>. Um cromossomo duplicado continua sendo um cromossomo, agora com duas cromátides.</p>`,
+ kv:[['Mitose','2C → 4C → 2C'],['Meiose','2C → 4C → 2C → C'],['Número de cromossomos na mitose','2n → 2n'],['Número de cromossomos na meiose','2n → n']],
+ enem:`Para ler o gráfico: <b>conte os degraus de descida</b>. Um degrau é mitose; dois degraus é meiose. O trecho inclinado é sempre a fase S. Se a pergunta for "em que momento a célula se torna haploide?", a resposta é o <b>primeiro degrau da meiose</b> (fim da meiose I).`,
+ links:[['Como o DNA se duplica, no módulo 1','../dna/index.html']],
+ draw(i,e,f){const u=i+f,nar=W<600,x0=nar?40:64,x1=W-14,y0=54,gap=12,hh=(H-y0-10-gap)/2,cw=(x1-x0)/6;
+  const drop=(u,a,hi,lo)=>hi-(hi-lo)*ss((u-(a-.62))/.3),up=u=>2+2*cl((u-1)/.7,0,1);
+  const D=[{t:'Mitose',v:u=>u<1?2:u<3?up(u):u<4?drop(u,4,4,2):2,cols:nar?['G1','S','G2','M','G1','…']:['G1','S','G2','Mitose','G1 das filhas','novo ciclo'],pl:['2n','2n','2n','2n','2n','2n']},
+   {t:'Meiose',v:u=>u<1?2:u<3?up(u):u<4?drop(u,4,4,2):u<5?drop(u,5,2,1):1,cols:nar?['G1','S','G2','M I','M II','Fim']:['G1','S','G2','Meiose I','Meiose II','Gametas'],pl:['2n','2n','2n','2n→n','n','n']}];
+  D.forEach((d,k)=>{const top=y0+k*(hh+gap),pt=top+26,pb=top+hh-42,Y=v=>pb-(v/4.5)*(pb-pt),Xu=q=>x0+q/6*(x1-x0);
+   tx(d.t,x0+2,top+10,{a:'left',f:FTT,s:15,w:600,c:C.txt});tx('DNA por célula',x1,top+10,{a:'right',s:12.5,c:C.dim});
+   X.fillStyle='rgba(255,255,255,.05)';X.fillRect(x0+i*cw,pt-2,cw,pb-pt+40);
+   for(const[v,s]of[[1,'C'],[2,'2C'],[4,'4C']]){line(x0,Y(v),x1,Y(v),'rgba(157,169,196,.2)',1);tx(s,x0-8,Y(v),{a:'right',f:FD,s:12,c:C.dim,bg:false})}
+   line(x0,pt-2,x0,pb,'#5B6C99',1);line(x0,pb,x1,pb,'#5B6C99',1);
+   for(let c=0;c<6;c++){const xa=x0+c*cw;if(c)line(xa,pb,xa,pb+38,'rgba(157,169,196,.2)',1);tx(d.cols[c],xa+cw/2,pb+12,{s:12.5,w:c===i?700:400,c:c===i?C.txt:C.dim,bg:false});tx(d.pl[c],xa+cw/2,pb+29,{f:FD,s:12,c:c===i?C.pat:rgba(C.pat,.65),bg:false})}
+   const path=(u1)=>{X.beginPath();const n=Math.max(2,Math.round(u1*40));for(let s=0;s<=n;s++){const q=u1*s/n;s?X.lineTo(Xu(q),Y(d.v(q))):X.moveTo(Xu(q),Y(d.v(q)))}};
+   X.lineJoin='round';X.lineCap='round';path(6);X.strokeStyle=rgba(C.mat,.3);X.lineWidth=2;X.stroke();path(u);X.strokeStyle=C.mat;X.lineWidth=3;X.stroke();
+   const v=d.v(u),mx=Xu(u),my=Y(v),rv=Math.round(v),s=Math.abs(v-rv)<.04?(rv===1?'C':rv+'C'):v.toFixed(1).replace('.',',')+'C';line(mx,pt-2,mx,pb,'rgba(255,255,255,.35)',1);circ(mx,my,5.5,C.mat,'#fff',2);
+   tx(s,cl(mx,x0+22,x1-22),my-16,{f:FD,s:13,w:500,c:C.txt})})}});
+
+def('comparar','lado',{t:'Lado a lado',s:'as duas divisões no mesmo passo',c:'#F7C13B',
+ ph:[['Célula-mãe','As duas começam iguais: célula 2n com o DNA duplicado.'],
+  ['Prófase','Mitose: os cromossomos se condensam, cada um por si. Meiose I: os homólogos se pareiam e fazem crossing-over.'],
+  ['Metáfase','Mitose: cromossomos em fila única no equador. Meiose I: pares de homólogos no equador.'],
+  ['Anáfase','Mitose: separam-se as cromátides-irmãs. Meiose I: separam-se os homólogos.'],
+  ['Fim da primeira divisão','Mitose: terminou, com 2 células 2n. Meiose I: 2 células n, com cromossomos ainda duplicados.'],
+  ['Segunda divisão','Só na meiose: a meiose II separa as cromátides-irmãs.'],
+  ['Resultado','Mitose: 2 células 2n idênticas. Meiose: 4 células n diferentes.']],
+ inf:[['2n = 4','ponto de partida'],['Prófase','pareamento só na meiose'],['Metáfase','fila única × pares'],['Anáfase','cromátides × homólogos'],['2n × n','fim da 1ª divisão'],['Meiose II','só na meiose'],['2 × 4 células','2n idênticas × n diferentes']],
+ leg:LEGC,
+ d:`<p>As duas divisões usam a mesma maquinaria (fuso, centrômeros, condensação), mas com objetivos opostos. A <b>mitose conserva</b>: copia e reparte por igual. A <b>meiose reduz e embaralha</b>: corta o número de cromossomos pela metade e mistura os alelos.</p>
+ <table class="cmp"><tr><th>Característica</th><th>Mitose</th><th>Meiose</th></tr>
+ <tr><td>Divisões do núcleo</td><td>1</td><td>2</td></tr>
+ <tr><td>Células formadas</td><td>2</td><td>4</td></tr>
+ <tr><td>Cromossomos</td><td>2n → 2n</td><td>2n → n</td></tr>
+ <tr><td>Pareamento de homólogos</td><td>não ocorre</td><td>ocorre na prófase I</td></tr>
+ <tr><td>Crossing-over</td><td>não ocorre</td><td>ocorre na prófase I</td></tr>
+ <tr><td>O que se separa</td><td>cromátides-irmãs</td><td>homólogos (I), depois cromátides-irmãs (II)</td></tr>
+ <tr><td>Células-filhas</td><td>iguais à célula-mãe</td><td>diferentes entre si</td></tr>
+ <tr><td>Função</td><td>crescimento, reposição, reprodução assexuada</td><td>formação de gametas (animais) e esporos (plantas)</td></tr></table>`,
+ kv:[],
+ enem:`Quando a questão pergunta "qual processo garante que filhos tenham o mesmo número de cromossomos dos pais?", a resposta combina os dois: a <b>meiose</b> reduz à metade nos gametas e a <b>fecundação</b> restaura o 2n. E quando pergunta por clones, regeneração ou crescimento: <b>mitose</b>.`,
+ links:[['As fases da mitose','#mitose/fases'],['Meiose I e II','#meiose/fases']],
+ draw(i,e){const A=areas(2);divider();
+  {const a=A[0],R=rMit(a,1),cx=a.x+a.w/2,cy=a.y+24+(a.h-24)/2,M=mkMitose(cx,cy,R,{labs:false}),st=[0,1,2,3,5,5,5].map(k=>M[k]);ptitle(a,'Mitose');runDiv(st,geo(R),i,e)}
+  {const a=A[1],R=rMei(a,1),cx=a.x+a.w/2,cy=a.y+24+(a.h-24)/2,M=mkMeiose(cx,cy,R,{}),st=[0,1,2,3,4,6,7].map(k=>M[k]);ptitle(a,'Meiose');runDiv(st,geo(R,{xo:true}),i,e)}}});
+
+// ---------------- 5. ERROS ----------------
+def('erros','naodisjuncao',{t:'Não disjunção',s:'quando os cromossomos não se separam',c:'#FF6B7D',
+ ph:[['Metáfase I','À esquerda, o erro será na meiose I. À direita, na meiose II. Até aqui, tudo igual.'],
+  ['Anáfase I','Esquerda: os dois homólogos do par longo vão para o mesmo polo. Direita: separação normal.'],
+  ['Fim da meiose I','Esquerda: uma célula com um cromossomo a mais, outra com um a menos. Direita: duas células normais.'],
+  ['Metáfase II','Os cromossomos se alinham no equador de cada célula.'],
+  ['Anáfase II','Esquerda: divisão normal do que já veio errado. Direita: numa das células, as cromátides-irmãs do longo não se separam.'],
+  ['Gametas','Erro na meiose I: os 4 gametas saem alterados. Erro na meiose II: 2 gametas normais e 2 alterados.']],
+ inf:[['2n = 4','antes do erro'],['Erro na meiose I','homólogos não se separam'],['n + 1 e n − 1','ou n e n'],['Meiose II','segunda divisão'],['Erro na meiose II','cromátides não se separam'],['n + 1, n − 1, n','gametas']],
+ leg:[[C.mat,'origem materna'],[C.pat,'origem paterna'],['#E8EDF7','n + 1: um cromossomo a mais; n − 1: um a menos']],
+ d:`<p><b>Disjunção</b> é a separação dos cromossomos na anáfase. Quando ela falha, falamos em <b>não disjunção</b>: dois cromossomos que deveriam ir para polos opostos vão juntos para o mesmo lado.</p><p>Se o erro é na <b>meiose I</b>, um par de <b>homólogos</b> não se separa, e os quatro gametas ficam alterados: dois com um cromossomo a mais (<b>n&nbsp;+&nbsp;1</b>) e dois com um a menos (<b>n&nbsp;−&nbsp;1</b>). Se é na <b>meiose II</b>, são as <b>cromátides-irmãs</b> que não se separam numa das células: metade dos gametas sai normal.</p><p>Se um gameta n&nbsp;+&nbsp;1 participa da fecundação, o zigoto terá um cromossomo a mais em todas as células do corpo.</p>`,
+ kv:[['Erro na meiose I','2 gametas n + 1 e 2 gametas n − 1'],['Erro na meiose II','2 normais, 1 n + 1 e 1 n − 1'],['O que falha','separação na anáfase'],['Fator de risco conhecido','idade materna avançada']],
+ enem:`A prova costuma mostrar um esquema de meiose com erro e perguntar <b>em que divisão</b> ele ocorreu ou <b>quais gametas</b> se formam. Regra prática: se <b>todos</b> os gametas estão alterados, o erro foi na meiose I; se <b>metade</b> está normal, foi na meiose II.`,
+ links:[['Meiose sem erro','#meiose/fases'],['Aneuploidias','#erros/aneuploidias']],
+ draw(i,e){const A=areas(2),map=[2,3,4,5,6,7];divider();A.forEach((a,k)=>{const R=rMei(a,1),cx=a.x+a.w/2,cy=a.y+24+(a.h-24)/2;ptitle(a,k?'Erro na meiose II':'Erro na meiose I');const st=mkMeiose(cx,cy,R,{nd:k?'II':'I'}).filter((s,j)=>map.includes(j));runDiv(st,geo(R),i,e)})}});
+
+def('erros','aneuploidias',{t:'Aneuploidias',s:'um cromossomo a mais ou a menos',c:'#FF6B7D',
+ ph:[['Gametas','Por uma não disjunção na meiose, este óvulo tem duas cópias do cromossomo 21. O espermatozoide é normal, com uma.'],
+  ['Fecundação','Os núcleos se unem: 24 + 23 = 47 cromossomos. O zigoto tem três cópias do 21.'],
+  ['Trissomia do 21','Cariótipo 47,XX,+21: síndrome de Down. Todas as células do corpo terão o cromossomo extra.'],
+  ['Monossomia do X','Cariótipo 45,X: síndrome de Turner. Falta um cromossomo sexual.'],
+  ['XXY','Cariótipo 47,XXY: síndrome de Klinefelter. Há um cromossomo X a mais.']],
+ inf:[['24 + 23','óvulo n + 1, espermatozoide n'],['47 cromossomos','zigoto 2n + 1'],['47,XX,+21','síndrome de Down'],['45,X','síndrome de Turner'],['47,XXY','síndrome de Klinefelter']],
+ leg:[[C.mat,'origem materna'],[C.pat,'origem paterna'],[C.red,'cromossomo a mais ou a menos']],
+ d:`<p><b>Aneuploidia</b> é a alteração do número de cromossomos em que sobra ou falta <b>um ou poucos cromossomos</b>, e não um conjunto inteiro. Na <b>trissomia</b> há três cópias de um cromossomo (2n&nbsp;+&nbsp;1); na <b>monossomia</b>, só uma (2n&nbsp;−&nbsp;1). A causa mais comum é a não disjunção na meiose.</p><p>A mais conhecida é a <b>trissomia do 21</b>, a <b>síndrome de Down</b>: 47 cromossomos, com três cópias do 21. Ocorre em cerca de 1 a cada 700 nascimentos, e a chance aumenta com a idade da mãe.</p><p>Nos cromossomos sexuais, as mais cobradas são a <b>síndrome de Turner</b> (45,X) e a <b>síndrome de Klinefelter</b> (47,XXY). Elas se confirmam pelo <b>cariótipo</b>, a foto organizada dos cromossomos de uma célula em metáfase. Síndrome de Down é uma condição genética, não uma doença contagiosa nem algo que se "cura".</p>`,
+ kv:[['Síndrome de Down','47,XX,+21 ou 47,XY,+21'],['Síndrome de Turner','45,X'],['Síndrome de Klinefelter','47,XXY'],['Síndrome de Edwards','trissomia do 18'],['Síndrome de Patau','trissomia do 13']],
+ enem:`Saiba ler a notação: <b>número total, cromossomos sexuais, o que sobra</b>. "47,XY,+21" é um menino com trissomia do 21. Não confunda <b>aneuploidia</b> (2n + 1, 2n − 1) com <b>euploidia</b> (conjuntos inteiros: 3n, 4n), comum em plantas cultivadas. E lembre: o cariótipo mostra alterações <b>cromossômicas</b>, não mutações de um gene.`,
+ links:[['Não disjunção na meiose','#erros/naodisjuncao'],['Cromossomos e DNA, no módulo 1','../dna/index.html']],
+ draw(i,e){const cx=W/2,y0=56,a1=i<2?1:i===2?1-ss(e*2):0,a2=i<2?0:i===2?ss(e*2-1):1;
+  const rod=(x,y,h,c,w)=>{X.lineCap='round';line(x,y-h/2,x,y+h/2,c,w||5)};
+  if(a1>.01){const q=i===0?0:i===1?e:1,Re=Math.min(W*.22,(H-y0)*.26,110),ex=cx-Math.min(W*.14,90),ey=y0+(H-y0)*.46,hr=Math.max(14,Re*.24);X.globalAlpha=a1;
+   circ(ex,ey,Re,C.cyt,C.mem,2);circ(ex,ey,Re*.6,'rgba(154,107,255,.12)',C.nuc,1.6);
+   const h=Math.max(16,Re*.3),bx=ex-Re*.16;rod(bx-7,ey-4,h,C.mat,5.5);rod(bx+7,ey-4,h,C.mat,5.5);
+   const sx=lerp(Math.min(W-hr*4.4-8,ex+Re+Math.max(60,W*.2)),ex+Re*.3,q),sy=lerp(ey-Re*.3,ey-4,q);
+   if(q<.98){X.globalAlpha=a1*(1-ss((q-.6)/.4));X.beginPath();for(let s=0;s<=20;s++){const f=s/20,px=sx+hr+f*hr*3.2,py=sy+Math.sin(f*9)*4*f;s?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle=C.ice;X.lineWidth=1.5;X.stroke();X.beginPath();X.ellipse(sx,sy,hr,hr*.72,0,0,TAU);X.fillStyle='rgba(44,29,68,.9)';X.fill();X.strokeStyle=C.mem;X.lineWidth=1.8;X.stroke();X.globalAlpha=a1}
+   rod(sx,sy,h,C.pat,5.5);
+   tx('21',lerp(bx,ex+Re*.07,q),ey-4+h/2+14,{f:FD,s:12,c:C.txt});tx('+ 22 outros',ex,ey+Re*.6+14>ey+Re-8?ey+Re*.42:ey+Re*.6+14,{s:12.5,c:C.dim,bg:false});
+   tx(q>.9?'Zigoto: 47 cromossomos':'Óvulo: 24 cromossomos',ex,ey+Re+18,{s:13,w:600,c:C.txt});
+   if(q<.5){X.globalAlpha=a1*(1-q*2);tx('Espermatozoide: 23',Math.min(W-78,sx+hr),sy-hr-16,{s:13,w:600,c:C.txt});X.globalAlpha=a1}
+   if(q>.9)lab(sx,sy-h/2,Math.min(W-90,ex+Re+70),ey-Re-6,'Três cópias do 21',cl((q-.9)*10,0,1)*a1);
+   X.globalAlpha=1}
+  if(a2>.01){X.globalAlpha=a2;const cols=W<600?6:8,gw=Math.min(104,(W-24)/cols),gx0=(W-gw*cols)/2,rows=Math.ceil(23/cols),gh=Math.min(140,(H-y0-14)/rows),top=y0+((H-y0-8)-rows*gh)/2,k2=Math.min(2.1,gh/62),rw=W<600?5:7,id=Math.max(0,i-2),cur=[[1,0,0],[0,1,0],[0,0,1]][id],prv=i>2?[[1,0,0],[0,1,0],[0,0,1]][id-1]:cur,v=cur.map((c,j)=>lerp(prv[j],c,e));
+   for(let k=0;k<23;k++){const gx=gx0+(k%cols+.5)*gw,gy=top+Math.floor(k/cols)*gh,by=gy+gh-24,sex=k===22,h=(sex?24:lerp(34,11,k/21))*k2,d=Math.min(10,gw*.14);
+    const hot=(k===20?v[0]:0)+(sex?Math.max(v[1],v[2]):0);if(hot>.01){X.globalAlpha=a2*hot;rr(gx-gw/2+3,gy+3,gw-6,gh-6,8);X.fillStyle='rgba(255,107,125,.08)';X.fill();X.strokeStyle=C.red;X.lineWidth=1.5;X.stroke();X.globalAlpha=a2}
+    const three=(k===20&&v[0]>.01)||(sex&&v[2]>.01),o=three?-d:0;
+    rod(gx-d+o,by-h/2,h,C.mat,rw);
+    if(sex){X.globalAlpha=a2*(1-v[1]);rod(gx+d+o,by-h/2,h,C.pat,rw);if(v[1]>.01){X.globalAlpha=a2*v[1];X.setLineDash([3,3]);rr(gx+d-3.5,by-h-2,7,h+4,3.5);X.strokeStyle=C.red;X.lineWidth=1.3;X.stroke();X.setLineDash([])}
+     if(v[2]>.01){X.globalAlpha=a2*v[2];rod(gx+d*3+o,by-h*.28,h*.56,C.red,rw)}X.globalAlpha=a2}
+    else rod(gx+d+o,by-h/2,h,C.pat,rw);
+    if(k===20&&v[0]>.01){X.globalAlpha=a2*v[0];rod(gx+d*3+o,by-h/2,h,C.red,rw);X.globalAlpha=a2}
+    tx(sex?['XX','X','XXY'][id]:String(k+1),gx,by+13,{f:FD,s:12,c:hot>.5?C.txt:C.dim,bg:false})}
+   X.globalAlpha=1}}});
+
+// ---------------- 6. GAMETOGÊNESE ----------------
+function sperm(x,y,s,rot,t){X.save();X.translate(x,y);X.rotate(rot);X.beginPath();for(let k=0;k<=24;k++){const f=k/24,py=s*1.1+f*s*4.2,px=Math.sin(f*8-t*5)*s*.45*f;k?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle=C.ice;X.lineWidth=1.6;X.lineCap='round';X.stroke();
+ X.beginPath();X.ellipse(0,0,s*.8,s*1.15,0,0,TAU);X.fillStyle='rgba(44,29,68,.9)';X.fill();X.strokeStyle=C.mem;X.lineWidth=1.6;X.stroke();X.beginPath();X.ellipse(0,s*.1,s*.5,s*.75,0,0,TAU);X.fillStyle=C.nuc;X.fill();X.restore()}
+function tree(N,PL,i,e,t){const y0=60,rows=5,rh=(H-y0-12)/rows,hw=Math.min(W/2-34,280),cx=W/2,k=Math.min(1.15,rh/84),by={};
+ const al=n=>n.ph<i?1:n.ph===i?(i?e:1):0,pos=n=>[cx+n.x*hw,y0+rh*(n.row+.5)];N.forEach(n=>by[n.id]=n);
+ PL.forEach(([row,s,ph])=>{const a=ph<i?1:ph===i?e:0;if(a<=.01)return;X.globalAlpha=a;tx(s,W-12,y0+rh*(row+1),{a:'right',s:13,c:C.dim});X.globalAlpha=1});
+ for(const n of N){const a=al(n);if(a<=.01||!n.from)continue;const p=by[n.from],[x1,y1]=pos(p),[x2,y2]=pos(n),d=Math.hypot(x2-x1,y2-y1),r1=p.r*k+3,r2=(n.kind==='sp'?12:n.r*k)+4;if(d<r1+r2)continue;X.globalAlpha=a*.8;X.lineCap='round';line(x1+(x2-x1)*r1/d,y1+(y2-y1)*r1/d,lerp(x1,x2,1-r2/d),lerp(y1,y2,1-r2/d),'#5B6C99',1.5);X.globalAlpha=1}
+ for(const n of N){const a=al(n);if(a<=.01)continue;const[x,y]=pos(n),r=n.r*k;X.globalAlpha=a;
+  if(n.kind==='sp')sperm(x,y-8*k,6.5*k,0,t+n.x*3);
+  else{circ(x,y,r,C.cyt,n.kind==='pb'?'rgba(240,106,174,.6)':C.mem,2);if(n.kind==='pb')circ(x,y,r*.5,C.nuc);else{circ(x,y,r*.56,'rgba(154,107,255,.22)',C.nuc,1.5);tx(n.pl,x,y+.5,{f:FD,s:12,w:500,c:'#fff',bg:false})}
+   if(n.sp){const q=n.ph===i?e:1;sperm(x-r-lerp(40,7,q)*k,y,6*k,PI/2,t)}}
+  if(n.nm){if(n.np==='l')tx(n.nm,14,y-r-10,{a:'left',s:13,w:600,c:C.txt});else if(n.np==='b'){X.font=`600 13px ${FT}`;const tw=X.measureText(n.nm).width/2+8;tx(n.nm,cl(x,tw,W-tw),y+r+12,{s:13,w:600,c:C.txt})}else tx(n.nm,x+r+10,y,{a:'left',s:13,w:600,c:C.txt})}
+  X.globalAlpha=1}}
+def('gametogenese','espermatogenese',{t:'Espermatogênese',s:'1 célula forma 4 espermatozoides',c:'#5CC8F0',
+ ph:[['Espermatogônia','Células 2n da parede dos túbulos seminíferos, no testículo. Multiplicam-se por mitose durante toda a vida, a partir da puberdade.'],
+  ['Espermatócito I','Uma espermatogônia cresce, duplica o DNA e vira espermatócito primário (2n), que vai entrar em meiose.'],
+  ['Meiose I','O espermatócito I se divide em dois espermatócitos secundários, já haploides (n).'],
+  ['Meiose II','Cada espermatócito II se divide em duas espermátides (n). São quatro ao todo, de tamanhos iguais.'],
+  ['Espermiogênese','Sem nova divisão, cada espermátide se transforma em espermatozoide: perde citoplasma e ganha cauda e acrossomo.']],
+ inf:[['2n','espermatogônia'],['2n','espermatócito I'],['n + n','2 espermatócitos II'],['4 × n','espermátides'],['4 espermatozoides','n cada um']],
+ leg:[[C.mem,'membrana'],[C.nuc,'núcleo (2n ou n)'],[C.ice,'cauda (flagelo)']],
+ d:`<p><b>Gametogênese</b> é a formação dos gametas. Nos dois sexos ela passa pelas mesmas etapas: <b>multiplicação</b> (mitoses), <b>crescimento</b>, <b>maturação</b> (meiose) e, nos homens, <b>diferenciação</b>.</p><p>A <b>espermatogênese</b> ocorre nos <b>túbulos seminíferos</b> dos testículos, começa na <b>puberdade</b> e não para mais. De cada espermatócito primário saem <b>quatro espermatozoides</b>, todos funcionais e de mesmo tamanho. O processo inteiro leva cerca de 70 dias, e são produzidos milhões por dia.</p><p>A última etapa, a <b>espermiogênese</b>, não é divisão: é uma mudança de forma. O núcleo fica compacto, o complexo de Golgi forma o <b>acrossomo</b> e as mitocôndrias se concentram na base da cauda.</p>`,
+ kv:[['Onde','túbulos seminíferos (testículos)'],['Início','puberdade'],['Rendimento','1 espermatócito I → 4 espermatozoides'],['Duração','cerca de 70 dias'],['Divisão do citoplasma','igual']],
+ enem:`O que mais cai é a <b>comparação com a ovogênese</b>: aqui são <b>4 gametas</b> por célula, pequenos e móveis, produzidos continuamente da puberdade em diante. Guarde também a ordem: espermatogônia, espermatócito I, espermatócito II, espermátide, espermatozoide.`,
+ links:[['Espermatozoide em 3D, no módulo 5','../celula/index.html#esperma'],['Meiose I e II','#meiose/fases']],
+ draw(i,e,f,t){tree([{id:'a',row:0,x:0,r:19,pl:'2n',ph:0,nm:'Espermatogônia'},{id:'b',row:1,x:0,r:25,pl:'2n',ph:1,from:'a',nm:'Espermatócito I'},
+   {id:'c1',row:2,x:-.38,r:19,pl:'n',ph:2,from:'b',nm:'Espermatócitos II',np:'l'},{id:'c2',row:2,x:.38,r:19,pl:'n',ph:2,from:'b'},
+   {id:'d1',row:3,x:-.6,r:15,pl:'n',ph:3,from:'c1',nm:'Espermátides',np:'l'},{id:'d2',row:3,x:-.2,r:15,pl:'n',ph:3,from:'c1'},{id:'d3',row:3,x:.2,r:15,pl:'n',ph:3,from:'c2'},{id:'d4',row:3,x:.6,r:15,pl:'n',ph:3,from:'c2'},
+   {id:'e1',row:4,x:-.6,r:10,kind:'sp',ph:4,from:'d1',nm:'Espermatozoides',np:'l'},{id:'e2',row:4,x:-.2,r:10,kind:'sp',ph:4,from:'d2'},{id:'e3',row:4,x:.2,r:10,kind:'sp',ph:4,from:'d3'},{id:'e4',row:4,x:.6,r:10,kind:'sp',ph:4,from:'d4'}],
+  [[0,'mitoses e crescimento',1],[1,'meiose I',2],[2,'meiose II',3],[3,'espermiogênese',4]],i,e,t)}});
+
+def('gametogenese','ovogenese',{t:'Ovogênese',s:'1 célula forma 1 óvulo',c:'#F06AAE',
+ ph:[['Ovogônia','Células 2n do ovário. Multiplicam-se por mitose só na vida fetal: a menina nasce com todos os ovócitos que terá.'],
+  ['Ovócito I','Ainda antes do nascimento, a célula cresce, duplica o DNA e começa a meiose I. Ela para na prófase I e assim fica por anos.'],
+  ['Meiose I','A partir da puberdade, a cada ciclo um ovócito I termina a meiose I. A divisão é desigual: um ovócito II grande e um corpúsculo polar pequeno.'],
+  ['Ovulação','O ovócito II é liberado do ovário parado na metáfase II. É essa a célula que encontra o espermatozoide.'],
+  ['Fecundação','Só se houver fecundação a meiose II termina: forma-se o óvulo e o segundo corpúsculo polar. Os núcleos n se unem no zigoto 2n.']],
+ inf:[['2n','ovogônia'],['2n','ovócito I em pausa'],['n','ovócito II + corpúsculo polar'],['n','ovócito II em metáfase II'],['1 óvulo','n, com quase todo o citoplasma']],
+ leg:[[C.mem,'membrana'],[C.nuc,'núcleo (2n ou n)'],[C.ice,'espermatozoide']],
+ d:`<p>A <b>ovogênese</b> acontece nos <b>ovários</b> e tem duas pausas longas. Ela começa <b>antes do nascimento</b>: as ovogônias se multiplicam e viram ovócitos primários, que iniciam a meiose e <b>param na prófase I</b>.</p><p>Da puberdade à menopausa, a cada ciclo menstrual um ovócito I retoma a meiose. A divisão do citoplasma é <b>desigual</b>: quase tudo fica com o <b>ovócito secundário</b>, e o resto vai para um <b>corpúsculo polar</b>, que degenera. O ovócito II é liberado na <b>ovulação</b>, parado na <b>metáfase II</b>.</p><p>A meiose só termina <b>se houver fecundação</b>. No fim, cada ovócito I rende <b>um único óvulo</b>, grande e cheio de reservas para o início do desenvolvimento do embrião.</p>`,
+ kv:[['Onde','ovários'],['Início','vida fetal'],['Primeira pausa','prófase I (até a puberdade)'],['Segunda pausa','metáfase II (até a fecundação)'],['Rendimento','1 ovócito I → 1 óvulo'],['Divisão do citoplasma','desigual']],
+ enem:`Duas pegadinhas: a célula liberada na ovulação <b>não é o óvulo pronto</b>, é o <b>ovócito secundário</b>; e a mulher <b>não produz novos ovócitos</b> depois de nascer. Na comparação com a espermatogênese: 1 gameta por célula contra 4, divisão desigual contra igual, processo com pausas contra contínuo.`,
+ links:[['Espermatogênese','#gametogenese/espermatogenese'],['Não disjunção e idade materna','#erros/naodisjuncao']],
+ draw(i,e,f,t){tree([{id:'a',row:0,x:-.45,r:18,pl:'2n',ph:0,nm:'Ovogônia'},{id:'b',row:1,x:-.45,r:30,pl:'2n',ph:1,from:'a',nm:'Ovócito I'},
+   {id:'c',row:2,x:-.45,r:28,pl:'n',ph:2,from:'b',nm:'Ovócito II'},{id:'p1',row:2,x:.8,r:9,kind:'pb',ph:2,from:'b',nm:'1º corpúsculo polar',np:'b'},
+   {id:'d',row:3,x:-.45,r:28,pl:'n',ph:3,from:'c',nm:'Ovócito II ovulado'},
+   {id:'f',row:4,x:-.45,r:28,pl:'n',ph:4,from:'d',nm:'Óvulo',sp:1},{id:'p2',row:4,x:.8,r:9,kind:'pb',ph:4,from:'d',nm:'2º corpúsculo polar',np:'b'}],
+  [[0,'mitoses e crescimento',1],[1,'meiose I',2],[2,'ovulação',3],[3,'fecundação e meiose II',4]],i,e,t)}});
+
+// ================= INTERFACE =================
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,HOLD=.8;
+let cur=null,N=1,p=0,playing=false,stopAt=null,tm=0,last=0,shown=-1,drag=false;
+$('secs').innerHTML=SEC.map(s=>`<button data-s="${s.id}" aria-pressed="false"><i style="background:${s.c}"></i>${s.t}</button>`).join('');
+$('secs').onclick=ev=>{const b=ev.target.closest('button');if(b)go(ORDER[b.dataset.s][0])};
+function updPlay(){const end=p>=N-.01,b=$('play');b.querySelector('use').setAttribute('href',playing?'#ui-pausar':'#ui-continuar');b.querySelector('.tx').textContent=playing?'Pausar':end?'Ver de novo':'Reproduzir';b.setAttribute('aria-label',playing?'Pausar a animação':end?'Ver a animação de novo':'Reproduzir a animação')}
+function ui(){const o=SC[cur],i=Math.min(N-1,Math.floor(p));if(i===shown)return;shown=i;const ph=o.ph[i];
+ $('phN').textContent=ph[0];$('phC').textContent=`fase ${i+1} de ${N}`;$('phD').textContent=ph[1];
+ $('hudLb').textContent=ph[0];$('hudLs').textContent=`${i+1} de ${N}`;$('hudRb').textContent=o.inf[i][0];$('hudRs').textContent=o.inf[i][1];
+ [...$('steps').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.setAttribute('aria-current',k===i?'step':'false');if(k===i&&b.scrollIntoView&&$('steps').scrollWidth>$('steps').clientWidth)$('steps').scrollLeft=Math.max(0,b.offsetLeft-$('steps').clientWidth/2+b.offsetWidth/2)});
+ cv.setAttribute('aria-label',`${o.t}. Fase ${i+1} de ${N}: ${ph[0]}. ${ph[1]}`)}
+function setP(v,keep){p=cl(v,0,N-.0001);if(!keep){playing=false;stopAt=null}if(!drag)$('rng').value=Math.round(p*100);ui();updPlay()}
+function go(key,nohash){const o=SC[key];if(!o)return;cur=key;N=o.ph.length;shown=-1;
+ [...$('secs').children].forEach(b=>{const on=b.dataset.s===o.sec;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(on&&$('secs').scrollWidth>$('secs').clientWidth)$('secs').scrollLeft=Math.max(0,b.offsetLeft-40)});
+ const sec=SEC.find(s=>s.id===o.sec);
+ $('tops').innerHTML=ORDER[o.sec].map((k,i)=>`<button data-k="${k}" class="${k===key?'on':''}" aria-current="${k===key?'true':'false'}"><em>${String(i+1).padStart(2,'0')}</em><span>${SC[k].t}<small>${SC[k].s}</small></span></button>`).join('');
+ $('topL').textContent=`${sec.t}: escolha um tópico`;
+ $('iS').textContent=sec.t;$('iD').style.background=o.c;$('iT').textContent=o.t;$('desc').innerHTML=o.d;$('enemT').innerHTML=o.enem;
+ $('kv').innerHTML=o.kv.map(([a,b])=>`<div>${a}</div><div>${b}</div>`).join('');$('kv').hidden=!o.kv.length;
+ $('links').innerHTML=o.links.map(([t,h])=>`<a class="btn" href="${h}">${t}</a>`).join('');
+ $('steps').innerHTML=o.ph.map((q,i)=>`<button data-i="${i}"><em>${i+1}</em>${q[0]}</button>`).join('');
+ $('leg').innerHTML=(o.leg||[]).map(([c,s])=>`<span><i style="background:${c}"></i>${s}</span>`).join('');
+ $('rng').max=N*100;$('rng').setAttribute('aria-valuetext','');
+ if(RM){setP(HOLD)}else{p=0;stopAt=null;playing=true;$('rng').value=0;ui();updPlay()}
+ document.title=`${o.t} · Divisão celular · LAB`;
+ if(!nohash&&decodeURIComponent(location.hash.slice(1))!==key)history.replaceState(null,'','#'+key)}
+function route(){const h=decodeURIComponent(location.hash.slice(1));const k=SC[h]?h:ORDER[h]?ORDER[h][0]:null;if(k){if(k!==cur)go(k,!!SC[h])}else if(!cur)go('ciclo/interfase',true)}
+addEventListener('hashchange',route);
+$('tops').onclick=ev=>{const b=ev.target.closest('button');if(b){go(b.dataset.k);$('view').scrollIntoView({block:'nearest',behavior:RM?'auto':'smooth'})}};
+$('steps').onclick=ev=>{const b=ev.target.closest('button');if(b)setP(+b.dataset.i+HOLD)};
+$('play').onclick=()=>{if(playing){playing=false;stopAt=null}else{if(p>=N-.01)p=0;playing=true;stopAt=null}updPlay()};
+$('prev').onclick=()=>{setP(Math.max(0,Math.floor(p)-1)+HOLD)};
+$('next').onclick=()=>{const tg=Math.min(N-1,Math.floor(p)+1)+HOLD;if(RM||tg<=p)setP(Math.min(tg,N-.0001));else{stopAt=tg;playing=true;updPlay()}};
+$('again').onclick=()=>{if(RM)setP(HOLD);else{p=0;stopAt=null;playing=true;shown=-1;ui();updPlay()}};
+$('rng').oninput=ev=>{drag=true;setP(+ev.target.value/100);drag=false};
+$('lbls').onclick=()=>{LB=!LB;$('lbls').setAttribute('aria-pressed',LB);$('lbls').setAttribute('aria-label',LB?'Esconder nomes':'Mostrar nomes')};
+addEventListener('keydown',ev=>{const tg=ev.target.tagName;if(tg==='INPUT'||tg==='TEXTAREA'||ev.altKey||ev.ctrlKey||ev.metaKey)return;if(ev.key==='ArrowRight'){$('next').click();ev.preventDefault()}if(ev.key==='ArrowLeft'){$('prev').click();ev.preventDefault()}});
+function frame(now){const dt=Math.min(.05,(now-last)/1000||0);last=now;const o=SC[cur];
+ if(playing){tm+=dt;p+=dt/(o.dur||3.4);if(stopAt!=null&&p>=stopAt){p=stopAt;playing=false;stopAt=null;updPlay()}if(p>=N-.0001){p=N-.0001;playing=false;stopAt=null;updPlay()}$('rng').value=Math.round(p*100);ui()}
+ const i=Math.min(N-1,Math.floor(p)),f=p-i,e=ss(f/.6);
+ X.clearRect(0,0,W,H);X.save();try{o.draw.call(o,i,e,f,tm)}catch(err){console.error(err)}X.restore();X.globalAlpha=1;X.setLineDash([]);
+ requestAnimationFrame(frame)}
+route();
+{const tb=$('tabs');if(tb.scrollWidth>tb.clientWidth)tb.scrollLeft=tb.scrollWidth}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(rs);
+requestAnimationFrame(frame);
+// para testes automáticos
+window.__lab={rotas:()=>SEC.flatMap(s=>ORDER[s.id]),fases:()=>N,fase:(i,f)=>setP(i+(f==null?HOLD:f)),tocando:()=>playing};
+})();
+</script>
+</body>
+</html>

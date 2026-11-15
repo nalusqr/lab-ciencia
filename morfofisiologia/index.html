@@ -84,11 +84,58 @@ body{background:radial-gradient(120% 60% at 50% 20%,#161D33 0%,var(--bg) 70%) fi
 .foot{font-size:13px;line-height:1.5;color:var(--dim);text-align:left;padding:24px 0 32px;max-width:90ch}
 .foot i{font-style:italic}
 @media(max-width:699px){.wrap{padding:16px}.top h1{font-size:26px}.mag .n,.tool .tx{display:none}.mag{padding:6px 10px}.mag b{font-size:13px}.tag{max-width:50%;font-size:13px}.ctl input{width:90px}.ctl span{display:none}.ctl b{min-width:0}.insp h2{font-size:21px}#desc{font-size:15px}.tabs a{flex:none}}
+@media(max-width:699px){.tool:has(.ctl.on) #prev,.tool:has(.ctl.on) #next{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav class="tabs" aria-label="Módulos"><a href="../index.html">Início</a><a href="../dna/index.html">DNA</a><a href="../tabela-periodica/index.html">Tabela periódica</a><a href="../moleculas/index.html">Moléculas</a><a href="../biomoleculas/index.html">Biomoléculas</a><a href="../celula/index.html">Célula</a><a class="on" aria-current="page" href="index.html">Morfofisiologia</a></nav>
+  <!-- abas:inicio (gerado por scripts/abas.py a partir de scripts/modulos.json; não edite à mão) --><nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../morfofisiologia/index.html" class="cp on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../dna/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><details class="apoio"><summary>Apoio</summary><div class="menu"><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span>Tabela periódica</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a></div></details></nav><script>(()=>{const d=document.querySelector(".tabs details.apoio");if(!d)return;const s=d.querySelector("summary");const x=()=>s.setAttribute("aria-expanded",d.open);x();d.addEventListener("toggle",x);document.addEventListener("keydown",e=>{if(e.key==="Escape"&&d.open){d.open=false;s.focus()}});document.addEventListener("click",e=>{if(d.open&&!d.contains(e.target))d.open=false});d.addEventListener("focusout",e=>{if(d.open&&e.relatedTarget&&!d.contains(e.relatedTarget))d.open=false})})();</script><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="mod-morfofisiologia" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/>
+      <path d="M12 3.5v16m-3-3 3 3 3-3"/>
+    </g>
+  </symbol><symbol id="mod-celula" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <circle cx="10.4" cy="10.8" r="3.4"/>
+      <circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/>
+      <path d="M14.6 17.1l2.6-1.6"/>
+      <circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/>
+    </g>
+  </symbol><symbol id="mod-dna" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/>
+      <path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/>
+    </g>
+  </symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/>
+      <path d="M3 9h18M6 6v9"/>
+      <rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/>
+      <rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/>
+    </g>
+  </symbol><symbol id="mod-moleculas" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="13.5" r="3.6"/>
+      <circle cx="5.2" cy="7.3" r="2.4"/>
+      <circle cx="18.8" cy="7.3" r="2.4"/>
+      <path d="M9.3 11.1 7 9M14.7 11.1 17 9"/>
+    </g>
+  </symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24">
+    
+    <g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="rotate(-35 12 12)">
+      <path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/>
+      <path d="M9.4 12h5.2"/>
+      <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+      </g>
+    </g>
+  </symbol></svg><!-- abas:fim -->
 
   <div class="top">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="12" rx="9.5" ry="8"/><circle cx="10" cy="12" r="3.2"/><path d="M15.5 8.5c1 .6 1.6 1.6 1.6 2.8M16 15.5h.01"/></svg>
@@ -126,7 +173,7 @@ body{background:radial-gradient(120% 60% at 50% 20%,#161D33 0%,var(--bg) 70%) fi
     </div>
   </div>
 
-  <div class="foot">Ilustrações com cores adicionadas; proporções aproximadas. Valores típicos de livros-texto: Alberts et al., <i>Molecular Biology of the Cell</i>; Junqueira &amp; Carneiro, <i>Biologia Celular e Molecular</i>; Karp, <i>Biologia Celular e Molecular</i> (composição de membranas: Guidotti, 1972). Modelo do mosaico fluido: Singer &amp; Nicolson, <i>Science</i> 1972. Endossimbiose: Margulis (Sagan), 1967. Temperaturas de transição DPPC/DOPC: Avanti Polar Lipids. DNA mitocondrial humano: NCBI RefSeq NC_012920 (16 569 pb). Transcrição do rDNA: Miller &amp; Beatty, <i>Science</i> 1969.</div>
+  <div class="foot">Ilustrações com cores adicionadas; proporções aproximadas. Valores típicos de livros-texto: Alberts et al., <i>Molecular Biology of the Cell</i>; Junqueira &amp; Carneiro, <i>Biologia Celular e Molecular</i>; Karp, <i>Biologia Celular e Molecular</i> (composição de membranas: Guidotti, 1972). Modelo do mosaico fluido: Singer &amp; Nicolson, <i>Science</i> 1972. Endossimbiose: Margulis (Sagan), 1967. Temperaturas de transição DPPC/DOPC: Avanti Polar Lipids. DNA mitocondrial humano: NCBI RefSeq NC_012920 (16 569 pb). Transcrição do rDNA: Miller &amp; Beatty, <i>Science</i> 1969. História da teoria celular: Hooke, <i>Micrographia</i> (1665); cartas de Leeuwenhoek à Royal Society (1674–1683); Schleiden (1838); Schwann (1839); Remak (1852); Virchow (1855); Pasteur (1862).</div>
 </div>
 <script>
 (()=>{
@@ -199,12 +246,163 @@ function euk(cx,cy,R,t){const rx=R*1.15,ry=R;
 // ================= CONTEÚDO =================
 const ENEM={"tipos/lado": "A prova costuma dar uma tabela ou uma descrição de célula e perguntar se ela é procarionte ou eucarionte. A pegadinha é achar que procarionte não tem ribossomo, DNA ou parede: tem os três. O que falta é a carioteca e as organelas com membrana.", "tipos/proc": "Bactérias aparecem em questões sobre antibióticos, doenças e biotecnologia. Pegadinha: dizer que a bactéria \"não tem material genético organizado\". Ela tem DNA, só que solto no citoplasma (nucleoide), e muitas vezes carrega plasmídeos com genes de resistência.", "tipos/euc": "A questão costuma descrever a função de uma organela e pedir o nome, ou o contrário. A pegadinha é achar que só a célula animal tem mitocôndria: a célula vegetal tem mitocôndrias <b>e</b> cloroplastos.", "tipos/escala": "Pode aparecer como conta de escala (µm, nm) ou como a pergunta \"por que as células são pequenas?\". A resposta é a relação superfície/volume: quando a célula cresce, o volume aumenta mais que a área, e as trocas com o meio não dão conta. Cuidado com a conversão: 1 µm = 1 000 nm, e 1 mm = 1 000 µm.", "membranas/mosaico": "A prova costuma mostrar o desenho da membrana e pedir para reconhecer as partes ou explicar por que ela é \"fluida\". Pegadinha: achar que a membrana é uma parede rígida ou que as proteínas ficam paradas. Lembre que o glicocálix (açúcares da face externa) serve para o reconhecimento entre células.", "membranas/comp": "Aparece como gráfico ou tabela para você relacionar a composição com a função. Pegadinha: achar que toda membrana tem a mesma composição. A mielina, que é isolante, é quase só lipídio; a membrana da mitocôndria, cheia de enzimas, é quase só proteína.", "membranas/fluidez": "Pode aparecer ligado a gorduras saturadas e insaturadas ou a seres que vivem no frio. A dobra da ligação dupla cis deixa a membrana mais fluida; por isso, organismos de lugares frios têm mais ácidos graxos insaturados. Pegadinha: confundir \"fluido\" com \"derretido\" ou \"rompido\".", "membranas/difusao": "A questão costuma pedir quais substâncias atravessam a bicamada sozinhas. Gases como O₂ e CO₂ e moléculas apolares passam; íons e glicose, não. Pegadinha: achar que a difusão para quando as concentrações se igualam. As moléculas continuam passando, só que em números iguais nos dois sentidos.", "membranas/facilitada": "O ponto mais cobrado é separar transporte passivo de ativo: a difusão facilitada usa proteína, mas <b>não gasta ATP</b>. Pegadinha: achar que \"precisou de proteína, então é ativo\". Também pode aparecer o gráfico em que a velocidade para de subir porque os transportadores ficam todos ocupados.", "membranas/osmose": "Costuma aparecer no cotidiano: salgar carne, fazer doce em calda, alface murcha no tempero, soro na veia, beber água do mar. Lembre: a <b>água</b> vai do meio menos concentrado para o mais concentrado, e o sal não \"puxa\" a célula para fora. Pegadinhas: trocar hipotônico por hipertônico e achar que a célula vegetal estoura em água pura (a parede impede, e ela fica túrgida).", "membranas/bomba": "É o exemplo clássico de transporte ativo: contra o gradiente, gastando ATP, 3 Na⁺ saem e 2 K⁺ entram. Pegadinha: inverter os íons. Há mais Na⁺ fora e mais K⁺ dentro. Também pode cair a ligação com o impulso nervoso.", "membranas/endo": "Costuma aparecer com os glóbulos brancos engolindo bactérias (fagocitose) ou com células que secretam hormônios e enzimas (exocitose). Pegadinha: confundir fagocitose (\"comer\" partículas) com pinocitose (\"beber\" líquido), ou esquecer que esses processos gastam energia.", "membranas/espec": "O mais cobrado são os microvilos do intestino: eles aumentam a área de absorção dos nutrientes. Pegadinha: confundir microvilos (da membrana de uma célula) com vilosidades (dobras da parede do intestino, feitas de muitas células). Desmossomos dão resistência; junções comunicantes deixam passar substâncias entre células vizinhas.", "origem/invag": "É menos cobrado que a endossimbiose, mas pode aparecer numa questão sobre a origem da célula eucarionte. A ideia é que dobras da membrana plasmática formaram a carioteca e o retículo. Pegadinha: achar que a mitocôndria e o cloroplasto também vieram de dobras da membrana; eles vieram de bactérias englobadas.", "origem/mito": "A teoria endossimbiótica costuma aparecer com um texto sobre as características da mitocôndria, e a pergunta é qual hipótese elas apoiam. Pegadinha: dizer que a mitocôndria \"é uma bactéria\" hoje; ela descende de uma, mas perdeu a maioria dos genes e não vive mais sozinha. Lembre também que o DNA mitocondrial é herdado da mãe.", "origem/cloro": "O raciocínio é o mesmo da mitocôndria, só que com uma cianobactéria fotossintetizante. Pegadinha: achar que o cloroplasto veio antes da mitocôndria. A célula que englobou a cianobactéria já tinha mitocôndrias, e por isso as plantas têm as duas organelas.", "origem/evid": "A questão costuma listar características e pedir as que servem de evidência: DNA circular próprio, ribossomos parecidos com os bacterianos, divisão por fissão e duas membranas. Pegadinha: marcar como evidência algo que toda organela tem, como \"realizar reações químicas\" ou \"ter proteínas\".", "nucleo/geral": "Costuma aparecer como \"a organela que controla a célula\" ou numa questão sobre células sem núcleo, como a hemácia madura, que não se divide nem fabrica proteínas novas. Pegadinha: achar que procariontes \"não têm DNA\" por não terem núcleo.", "nucleo/poro": "Pode aparecer como a \"ponte\" entre transcrição e tradução: o RNA mensageiro é feito no núcleo e sai pelos poros para ser traduzido nos ribossomos do citoplasma. Pegadinha: achar que as proteínas são fabricadas dentro do núcleo.", "nucleo/cromatina": "Costuma cair a diferença entre cromatina e cromossomo: são o <b>mesmo DNA</b>, só que mais ou menos enrolado. Pegadinha: achar que o cromossomo \"aparece do nada\" na divisão ou que a cromatina é outra molécula.", "nucleo/eu": "Pode aparecer ligado à epigenética ou ao corpúsculo de Barr. O corpúsculo é um X inativado, e por isso aparece nas células com dois X. Pegadinha: achar que heterocromatina é \"DNA defeituoso\". Ela é DNA normal, só que condensado e com os genes desligados.", "nucleo/nucleolo": "O mais cobrado é a função: o nucléolo é onde se fabricam as partes dos ribossomos. Pegadinha: achar que o nucléolo é uma organela com membrana ou que ele fabrica proteínas. Células que produzem muita proteína costumam ter nucléolos grandes.", "nucleo/cromossomos": "Costuma aparecer em cariótipos, síndromes como a de Down (três cromossomos 21) e na contagem 2n = 46. Pegadinha: confundir cromátides-irmãs (cópias idênticas, unidas pelo centrômero) com cromossomos homólogos (um do pai e outro da mãe)."};
 const SEC=[
+ {id:'teoria',t:'Teoria celular',c:'#CFE0FF'},
  {id:'tipos',t:'Procarionte × Eucarionte',c:'#A9C54A'},
  {id:'membranas',t:'Membranas',c:'#F06AAE'},
  {id:'origem',t:'Origem das organelas',c:'#F25C3B'},
  {id:'nucleo',t:'Núcleo',c:'#9A6BFF'}];
 const SC={},ORDER={};
 function def(sec,id,o){o.sec=sec;o.key=sec+'/'+id;SC[o.key]=o;(ORDER[sec]=ORDER[sec]||[]).push(o.key)}
+Object.assign(ENEM,{
+ "teoria/hooke":"A questão costuma perguntar <b>o que Hooke realmente viu</b>: paredes de células <b>mortas</b> da cortiça, e não células vivas com núcleo. Também cai a origem da palavra célula (do latim <i>cella</i>, pequeno cômodo) e o papel do microscópio no avanço da Biologia.",
+ "teoria/leeuwenhoek":"O ENEM liga a história da ciência à <b>tecnologia</b>: sem lentes melhores não haveria teoria celular nem microbiologia. Fique atento à diferença entre <b>aumento</b> e <b>resolução</b>: o microscópio óptico não mostra ribossomos nem a estrutura interna das organelas; para isso é preciso o eletrônico.",
+ "teoria/schleiden":"Saiba atribuir cada ideia ao autor certo: <b>Schleiden, plantas (1838)</b>; <b>Schwann, animais (1839)</b>; <b>Virchow, origem das células (1855)</b>. Questões de história da ciência também mostram que uma teoria é construída aos poucos, por vários pesquisadores, e corrigida com novas evidências.",
+ "teoria/virchow":"Biogênese contra abiogênese é tema clássico: o experimento de <b>Pasteur</b> (pescoço de cisne) e o de <b>Redi</b> (carne e moscas, 1668) refutaram a geração espontânea. Repare na lógica do experimento: o caldo e o ar são os mesmos, e a única diferença é a poeira com micróbios chegar ou não ao caldo.",
+ "teoria/postulados":"As questões pedem para reconhecer qual afirmação <b>não</b> faz parte da teoria celular, ou por que os <b>vírus</b> são exceção. Lembre a ligação com a reprodução e a hereditariedade: a célula vem de outra célula e leva junto o DNA.",
+ "teoria/virus":"É muito cobrado: vírus são <b>acelulares</b> e <b>parasitas intracelulares obrigatórios</b>. Por isso <b>antibióticos não funcionam</b> contra vírus (eles agem em estruturas de bactérias, como a parede e os ribossomos 70S). Contra vírus usam-se <b>vacinas</b> e alguns antivirais.",
+ "tipos/organelas":"A prova costuma relacionar uma <b>função</b> a uma organela a partir de um tipo de célula: célula que secreta muita proteína (pâncreas) tem muito retículo rugoso e Golgi; célula muscular tem muitas mitocôndrias; célula do fígado tem muito retículo liso e peroxissomos. Pense em <b>forma e função</b>."});
+
+// ---------------- 0, TEORIA CELULAR ----------------
+// texto quebrado em linhas (centrado), para frases longas dentro do palco
+function wrapT(s,x,y,maxw,o={}){const sz=Math.max(12,o.s||14);X.font=`${o.w||400} ${sz}px ${o.f||FT}`;const ws=s.split(' '),ls=[];let l='';for(const w of ws){const k=l?l+' '+w:w;if(X.measureText(k).width>maxw&&l){ls.push(l);l=w}else l=k}if(l)ls.push(l);const lh=o.lh||sz*1.35,y0=o.up?y-(ls.length-1)*lh:y;ls.forEach((q,i)=>tx(q,x,y0+i*lh,o));return ls.length}
+// zoom suave entre níveis (escala log); com a animação pausada, vai direto
+function zoomTo(S,k,alvo){if(S[k]==null||!S.dt)S[k]=alvo;else S[k]=Math.exp(lerp(Math.log(S[k]),Math.log(alvo),1-Math.exp(-S.dt*4)));return S[k]}
+function lente(cx,cy,R){X.beginPath();X.arc(cx,cy,R,0,TAU);X.fillStyle='#0D111D';X.fill()}
+function lenteAro(cx,cy,R){circ(cx,cy,R,null,'#5B6C99',3);circ(cx,cy,R+5,null,'rgba(91,108,153,.35)',1)}
+function hexP(x,y,r){X.beginPath();for(let i=0;i<6;i++){const a=-PI/2+i*PI/3,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;i?X.lineTo(px,py):X.moveTo(px,py)}X.closePath()}
+function folha(x,y,s){X.beginPath();X.moveTo(x-s,y);X.quadraticCurveTo(x-s*.1,y-s*.95,x+s,y);X.quadraticCurveTo(x-s*.1,y+s*.95,x-s,y);X.closePath()}
+function girino(x,y,s,t){X.beginPath();for(let i=0;i<=20;i++){const f=i/20,px=x+s*.45+f*s*1.3,py=y+Math.sin(f*7-t*6)*s*.14*f;i?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle='#C9B48A';X.lineWidth=Math.max(2,s*.16);X.lineCap='round';X.stroke();ell(x,y,s*.62,s*.46,0,'rgba(201,180,138,.35)','#C9B48A',1.6);circ(x-s*.25,y-s*.12,Math.max(1.5,s*.07),'#E8EDF7')}
+function celSimples(x,y,r,o={}){circ(x,y,r,o.f||'rgba(44,29,68,.75)',o.m||'#F06AAE',o.lw||1.6);if(o.n!==false)circ(x+(o.nx||0)*r,y+(o.ny||0)*r,r*.36,'rgba(154,107,255,.35)','#9A6BFF',1.2)}
+// duas células saindo de uma (0 = uma célula, 1 = duas separadas)
+function dividir(x,y,r,q,horiz){const d=lerp(0,r*1.05,ss(q)),rr=r*lerp(1,.82,ss(q)),dx=horiz===false?0:d,dy=horiz===false?d:0;
+ const cs=[[x-dx,y-dy],[x+dx,y+dy]];X.beginPath();for(const[a,b]of cs){X.moveTo(a+rr,b);X.arc(a,b,rr,0,TAU)}X.fillStyle='rgba(44,29,68,.75)';X.fill();
+ for(const[a,b]of cs)circ(a,b,rr,null,'#F06AAE',1.6);X.beginPath();for(const[a,b]of cs){X.moveTo(a+rr-1.6,b);X.arc(a,b,rr-1.6,0,TAU)}X.fillStyle='rgb(30,24,48)';X.fill();
+ if(q<.35)circ(x,y,r*.36,'rgba(154,107,255,.35)','#9A6BFF',1.2);else for(const[a,b]of cs){X.globalAlpha=ss(seg(q,.35,.7));circ(a,b,rr*.38,'rgba(154,107,255,.35)','#9A6BFF',1.2);X.globalAlpha=1}}
+function fago(x,y,s,ang,o={}){X.save();X.translate(x,y);X.rotate(ang||0);X.globalAlpha*=o.al??1;const hh=s*.55;
+ X.beginPath();for(let i=0;i<6;i++){const a=i*PI/3,px=Math.cos(a)*hh*.62,py=-s*.9+Math.sin(a)*hh*.62;i?X.lineTo(px,py):X.moveTo(px,py)}X.closePath();X.fillStyle='rgba(185,194,211,.22)';X.fill();X.strokeStyle='#B9C2D3';X.lineWidth=1.5;X.stroke();
+ if(o.dna!==false){X.beginPath();for(let i=0;i<=16;i++){const f=i/16,px=Math.sin(f*TAU*2)*hh*.32,py=-s*.9-hh*.38+f*hh*.76;i?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle='#9A6BFF';X.lineWidth=1.4;X.stroke()}
+ X.fillStyle='rgba(185,194,211,.5)';X.fillRect(-s*.07,-s*.9+hh*.55,s*.14,s*.62);X.fillRect(-s*.2,-s*.06,s*.4,s*.08);
+ X.strokeStyle='#B9C2D3';X.lineWidth=1.2;X.beginPath();for(const k of[-1,-.4,.4,1]){X.moveTo(k*s*.15,-s*.02);X.lineTo(k*s*.36,s*.2);X.lineTo(k*s*.42,s*.3)}X.stroke();X.restore()}
+
+def('teoria','hooke',{t:'Hooke e a cortiça',s:'1665: as primeiras "células"',c:'#C9A06A',sz:['1665','Micrographia, de Robert Hooke'],
+ ctl:{l:'aumento',min:0,max:4,step:1,v:0,f:v=>v?['','5×','15×','30×','50×'][v]:'olho nu',auto:3},tip:'O aumento muda sozinho até você mexer no controle.',
+ d:`<p><b>Em 1665, o inglês Robert Hooke</b> examinou uma fatia fina de <b>cortiça</b> num microscópio feito por ele, que aumentava cerca de 30 a 50 vezes. Viu uma estrutura parecida com um favo de mel, formada por pequenos compartimentos vazios. Chamou cada um de <b>cell</b>, do latim <i>cella</i>, "cela" ou "pequeno cômodo". O livro em que descreveu isso, <i>Micrographia</i>, popularizou o microscópio.</p><p>A cortiça é um tecido <b>morto</b> da casca de árvores. Hooke viu só as <b>paredes celulares</b> que sobraram, cheias de ar. Ele não sabia que, numa célula viva, esse espaço é ocupado por membrana, citoplasma e núcleo. A palavra ficou, mas o sentido moderno de célula só veio quase 200 anos depois.</p>`,
+ kv:[['Ano','1665'],['Material','cortiça (súber), tecido morto'],['Aumento do microscópio','cerca de 30 a 50 vezes'],['O que ele viu','paredes celulares vazias']],links:[['Célula vegetal e sua parede, no módulo 5','../celula/index.html#celula_vegetal']],
+ draw(t,S){const Z=[1,5,15,30,50],z=zoomTo(S,'z',Z[S.v]),nar=W<600,cx=W/2,cy=nar?H*.43:H*.45,Rv=Math.min(W*.42,H*.31),k=ss(Math.log(z)/Math.log(6)),s=Rv*1.45/10*z,fx=1.15*k,fy=-.35*k;
+  const P=(u,v)=>[cx+(u-fx)*s,cy+(v-fy)*s];lente(cx,cy,Rv);X.save();X.beginPath();X.arc(cx,cy,Rv,0,TAU);X.clip();
+  const[a0,b0]=P(-5,-3);X.beginPath();X.roundRect(a0,b0,10*s,6*s,.6*s);X.fillStyle='#B98B57';X.fill();
+  const c=.035,cp=c*s;let best=null,bd=1e9;
+  if(cp>3.5){X.save();X.beginPath();X.roundRect(a0,b0,10*s,6*s,.6*s);X.clip();X.globalAlpha=cl((cp-3.5)/5,0,1);const dy=cp*.866,r=cp*.577;
+   const u0=fx-Rv/s-c,u1=fx+Rv/s+c,v0=fy-Rv/s-c,v1=fy+Rv/s+c,R=rng(5);X.fillStyle='#2A1D12';
+   for(let j=Math.floor(v0/(c*.866));j<=Math.ceil(v1/(c*.866));j++)for(let i=Math.floor(u0/c)-1;i<=Math.ceil(u1/c);i++){const u=i*c+(j&1?c/2:0),v=j*c*.866;if(u<-5||u>5||v<-3||v>3)continue;const[px,py]=P(u,v),q=Math.hypot(px-cx,py-cy);if(q>Rv+cp)continue;
+    if(q<bd){bd=q;best=[px,py]}const h=((i*73856093)^(j*19349663))>>>0;hexP(px,py,r*(.8+(h%100)/1000));X.fill()}
+   X.restore()}
+  else{const R=rng(9);X.fillStyle='rgba(60,40,22,.35)';for(let i=0;i<260;i++){const u=(R()-.5)*10,v=(R()-.5)*6;const[px,py]=P(u,v);if(Math.hypot(px-cx,py-cy)<Rv)circ(px,py,Math.max(.6,.02*s),'rgba(60,40,22,.35)')}}
+  X.restore();lenteAro(cx,cy,Rv);
+  if(z<2.2)lab(...P(-2.5,1.5),cx-Rv*.9,cy+Rv*1.02,'Fatia fina de cortiça');
+  if(best&&z>12){lab(best[0]+cp*.5,best[1],cx+Rv*.95,cy-Rv*.75,'Parede celular');lab(best[0],best[1],cx-Rv*1.15,cy+Rv*.85,'Espaço vazio (ar)')}
+  caption(null,z<2.2?'A olho nu: um pedaço de cortiça':z<12?'Aumentando: aparece uma textura':'Hooke chamou cada cômodo de "cell"')}});
+
+def('teoria','leeuwenhoek',{t:'Leeuwenhoek e os microscópios',s:'os primeiros seres microscópicos',c:'#2A9FC9',sz:['~270×','aumento das melhores lentes de Leeuwenhoek'],
+ ctl:{l:'lente',min:0,max:3,step:1,v:0,f:v=>['olho nu','10×','270×','1 000×'][v],auto:3.5},tip:'A lente muda sozinha até você mexer no controle.',
+ d:`<p><b>Antonie van Leeuwenhoek</b>, comerciante de tecidos holandês, fabricava microscópios de <b>uma lente só</b>, pequena e muito bem polida, que aumentavam até cerca de <b>270 vezes</b>. A partir de 1674, enviou cartas à Royal Society de Londres descrevendo o que via em gotas de água, na saliva e na placa dos dentes: protozoários, bactérias, espermatozoides e hemácias. Chamou os seres que se mexiam de <b>"animálculos"</b>.</p><p>Foi o primeiro a ver <b>microrganismos vivos</b>. A melhoria dos microscópios foi o que permitiu a teoria celular. Hoje o <b>microscópio óptico</b> aumenta até cerca de 1&nbsp;000 vezes e distingue detalhes de 0,2&nbsp;µm; o <b>eletrônico</b>, inventado na década de 1930, chega a menos de 1&nbsp;nm e mostra as organelas por dentro.</p>`,
+ kv:[['Período','1674 a 1723'],['Microscópio','uma lente, até cerca de 270×'],['Viu primeiro','protozoários, bactérias, espermatozoides'],['Óptico atual','cerca de 1 000×, resolve 0,2 µm'],['Eletrônico','resolve menos de 1 nm']],links:[['Tamanhos e escala','#tipos/escala'],['Bactéria em 3D, no módulo 5','../celula/index.html#celula_bacteria']],
+ draw(t,S){const F=[6000,800,160,60],fov=zoomTo(S,'f',F[S.v]),nar=W<600,cx=W/2,cy=nar?H*.43:H*.45,Rv=Math.min(W*.42,H*.31),s=2*Rv/fov,P=(u,v)=>[cx+u*s,cy+v*s];
+  lente(cx,cy,Rv);X.save();X.beginPath();X.arc(cx,cy,Rv,0,TAU);X.clip();
+  const g=X.createRadialGradient(cx-600*s,cy-600*s,10,cx,cy,1800*s);g.addColorStop(0,'rgba(120,200,235,.35)');g.addColorStop(1,'rgba(42,159,201,.16)');circ(cx,cy,1800*s,g,'rgba(42,159,201,.6)',1.5);
+  const vis=(u,v,r)=>Math.hypot(u*s,v*s)<Rv+r*s;let anP=null,anE=null,anB=null;
+  for(let i=0;i<5;i++){const bu=[-650,420,-260,900,120][i],bv=[-420,520,760,-300,-900][i],u=bu+Math.cos(t*.25+i*1.7)*180,v=bv+Math.sin(t*.21+i)*140,a=Math.atan2(Math.cos(t*.21+i)*140*.21,-Math.sin(t*.25+i*1.7)*180*.25);if(!vis(u,v,120))continue;const[px,py]=P(u,v),L=100*s;
+   if(L<1.2){circ(px,py,1.2,'rgba(230,211,168,.8)');continue}ell(px,py,L,L*.32,a,'rgba(230,211,168,.35)','#E6D3A8',1.2);if(L>10){circ(px,py,L*.12,'rgba(154,107,255,.5)')}if(!anP||Math.hypot(px-cx,py-cy)<Math.hypot(anP[0]-cx,anP[1]-cy))anP=[px,py]}
+  for(let i=0;i<4;i++){const u=[32,-40,12,-10][i]+Math.cos(t*.5+i*2)*14,v=[-22,28,38,-44][i]+Math.sin(t*.43+i)*12,a=t*.3+i;const[px,py]=P(u,v),L=10*s;if(L<.8)continue;
+   ell(px,py,L,L*.3,a,'rgba(63,191,106,.3)','#3FBF6A',1.2);if(L>12){ell(px+Math.cos(a)*L*.2,py+Math.sin(a)*L*.2,L*.18,L*.12,a,'rgba(154,107,255,.6)');X.beginPath();X.moveTo(px+Math.cos(a)*L,py+Math.sin(a)*L);X.quadraticCurveTo(px+Math.cos(a)*L*1.6+Math.sin(t*8)*L*.2,py+Math.sin(a)*L*1.6,px+Math.cos(a)*L*2,py+Math.sin(a)*L*2);X.strokeStyle='rgba(207,224,255,.8)';X.lineWidth=1;X.stroke()}
+   if(i===0)anE=[px,py]}
+  const R=rng(11);for(let i=0;i<70;i++){const bu=(R()-.5)*90,bv=(R()-.5)*90,ra=R()*TAU,u=bu+Math.sin(t*1.7+i)*1.5,v=bv+Math.cos(t*1.3+i*2)*1.5,[px,py]=P(u,v),L=1.3*s;if(L<.7||Math.hypot(px-cx,py-cy)>Rv)continue;
+   if(i%3===0)circ(px,py,Math.max(.8,L*.45),'#A9C54A');else{X.lineCap='round';line(px-Math.cos(ra)*L,py-Math.sin(ra)*L,px+Math.cos(ra)*L,py+Math.sin(ra)*L,'#A9C54A',Math.max(1.2,L*.7))}if(i===4)anB=[px,py]}
+  X.restore();lenteAro(cx,cy,Rv);
+  if(S.v===0)lab(cx+1800*s*.7,cy-1800*s*.7,cx+Rv*.95,cy-Rv*.85,'Gota de água');
+  if(S.v===1&&anP)lab(anP[0],anP[1],cx+Rv*.95,cy-Rv*.85,'Protozoário');
+  if(S.v>=2){if(anE)lab(anE[0],anE[1],cx+Rv*.95,cy-Rv*.85,'Protozoário (alga)');if(anB)lab(anB[0],anB[1],cx-Rv*1.1,cy+Rv*.85,'Bactérias')}
+  caption(null,['A olho nu: só uma gota','Com lupa: pontinhos que se mexem','Leeuwenhoek: os "animálculos"','Microscópio óptico atual'][S.v])}});
+
+def('teoria','schleiden',{t:'Schleiden e Schwann',s:'1838–1839: todo ser vivo tem células',c:'#3FBF6A',sz:['1838–1839','Schleiden (plantas) e Schwann (animais)'],
+ d:`<p><b>Em 1838, o botânico alemão Matthias Schleiden</b> concluiu que todas as partes das plantas são formadas por células. Ele se apoiou na descoberta do <b>núcleo</b> por Robert Brown, em 1831. <b>Em 1839, o zoólogo Theodor Schwann</b> mostrou o mesmo nos animais, estudando cartilagem, girinos e outros tecidos: as células animais são menos visíveis, porque não têm parede, mas estão lá, com seu núcleo.</p><p>Juntos, eles formularam a primeira <b>teoria celular</b>: <b>todos os seres vivos são formados por células</b>, e a célula é a unidade básica da vida. Foi a primeira vez que plantas e animais foram explicados pela mesma estrutura.</p><p>Eles erraram num ponto: achavam que células novas se formavam a partir de uma substância sem estrutura, como cristais. A correção veio com Remak e Virchow.</p>`,
+ kv:[['Schleiden','1838, plantas'],['Schwann','1839, animais'],['Base','núcleo descrito por Robert Brown, 1831'],['Ideia central','todo ser vivo é formado por células']],links:[['Célula animal e vegetal, no módulo 5','../celula/index.html#celula_vegetal'],['Lado a lado: procarionte e eucarionte','#tipos/lado']],
+ draw(t){const nar=W<600,p=(t%10)/10,g=ss(seg(p,.08,.38)),top=nar?84:96,bot=H-104;
+  const A=nar?[{x:0,y:top,w:W,h:(bot-top)/2},{x:0,y:top+(bot-top)/2,w:W,h:(bot-top)/2}]:[{x:0,y:top,w:W/2,h:bot-top},{x:W/2,y:top,w:W/2,h:bot-top}];
+  if(nar)line(16,A[1].y,W-16,A[1].y,'rgba(91,108,153,.35)',1);else line(W/2,top+8,W/2,bot,'rgba(91,108,153,.35)',1);
+  A.forEach((a,k)=>{head(k?'Schwann, 1839: animais':'Schleiden, 1838: plantas',a.x+a.w/2,a.y+14,k?'#F7A8CF':'#7FDA9C');
+   const ox=a.x+a.w*(nar?.2:.24),oy=a.y+a.h*.56,os=Math.min(a.w*.15,a.h*.24),ix=a.x+a.w*(nar?.66:.66),ir=Math.min(a.w*(nar?.29:.27),a.h*.36),mx=ox+os*(k?-.1:.3),my=oy+(k?0:-os*.05),mr=os*.2;
+   if(k)girino(ox,oy,os,t);else{folha(ox,oy,os);X.fillStyle='rgba(63,191,106,.35)';X.fill();X.strokeStyle='#3FBF6A';X.lineWidth=1.6;X.stroke();line(ox-os,oy,ox+os*.9,oy,'rgba(127,218,156,.8)',1.2);line(ox-os,oy,ox-os*1.35,oy+os*.25,'#3FBF6A',2)}
+   if(g>.01){X.globalAlpha=g;circ(mx,my,mr,null,'#E8EDF7',1.5);line(mx,my-mr,ix,oy-ir*g,'rgba(232,237,247,.35)',1);line(mx,my+mr,ix,oy+ir*g,'rgba(232,237,247,.35)',1);X.globalAlpha=1;
+    const r=ir*g;X.save();X.beginPath();X.arc(ix,oy,r,0,TAU);X.fillStyle='#0D111D';X.fill();X.clip();
+    if(k){X.fillStyle='rgba(201,180,138,.12)';X.fillRect(ix-r,oy-r,2*r,2*r);const cs=r*.34;for(let j=-3;j<=3;j++)for(let i=-3;i<=3;i++){const px=ix+i*cs*1.1+(j&1)*cs*.55,py=oy+j*cs*.95;if(Math.hypot(px-ix,py-oy)>r+cs)continue;celSimples(px,py,cs*.42,{nx:.15,ny:-.1})}}
+    else{const cw=r*.5,ch=r*.3;for(let j=-4;j<=4;j++)for(let i=-3;i<=3;i++){const px=ix+i*cw+(j&1)*cw*.5,py=oy+j*ch;if(Math.hypot(px-ix,py-oy)>r+cw)continue;X.beginPath();X.roundRect(px-cw/2+1.5,py-ch/2+1.5,cw-3,ch-3,3);X.fillStyle='rgba(42,159,201,.12)';X.fill();X.strokeStyle='#A9C54A';X.lineWidth=2.4;X.stroke();
+     circ(px-cw*.22,py,ch*.17,'#9A6BFF');for(let q=0;q<3;q++)ell(px+cw*(.05+q*.12),py+(q&1?ch*.22:-ch*.22),ch*.09,ch*.055,0,'#3FBF6A')}}
+    X.restore();circ(ix,oy,r,null,'#5B6C99',2);
+    if(g>.95){if(k){lab(ix+r*.38,oy-r*.03,ix+r*.55,oy-r*1.12,'Núcleo');lab(ix-r*.33,oy+r*.33,ix-r*.2,oy+r*1.12,'Membrana')}else{lab(ix-r*.05,oy-r*.3+r*.15,ix+r*.55,oy-r*1.12,'Parede celular');lab(ix-r*.11,oy,ix-r*.2,oy+r*1.12,'Núcleo')}}}});
+  if(p>.42){X.globalAlpha=ss(seg(p,.42,.55));caption(null,'Todos os seres vivos são formados por células');X.globalAlpha=1}}});
+
+def('teoria','virchow',{t:'Virchow: célula vem de célula',s:'1855: omnis cellula e cellula',c:'#F06AAE',sz:['1855','Virchow: omnis cellula e cellula'],
+ d:`<p><b>Em 1855, o médico alemão Rudolf Virchow</b> afirmou que <b>toda célula surge de outra célula preexistente</b>, resumindo a ideia na frase latina <i><b>omnis cellula e cellula</b></i>. Pouco antes, em 1852, Robert Remak tinha observado células se dividindo em embriões. Virchow usou a ideia para explicar doenças, inclusive o câncer, como alterações das células do corpo.</p><p>A frase também derrubava, no nível da célula, a <b>geração espontânea</b> (abiogênese), a ideia de que seres vivos surgem da matéria sem vida. O golpe final veio em 1862, com os frascos de <b>pescoço de cisne</b> de <b>Louis Pasteur</b>: o caldo fervido ficava sem micróbios enquanto a curva do gargalo segurava a poeira do ar; quando o gargalo era quebrado, os micróbios cresciam. Vida vem de vida: é a <b>biogênese</b>.</p>`,
+ kv:[['Virchow','1855, omnis cellula e cellula'],['Remak','1852, divisão em embriões'],['Pasteur','1862, frasco de pescoço de cisne'],['Ideia derrubada','geração espontânea (abiogênese)']],links:[['Divisão celular: mitose, no módulo 7','../divisao-celular/index.html#mitose/fases'],['Câncer: ciclo sem freio, no módulo 7','../divisao-celular/index.html#ciclo/cancer']],
+ draw(t){const nar=W<600,top=nar?84:96,bot=H-100,A=nar?[{x:0,y:top,w:W,h:(bot-top)*.5},{x:0,y:top+(bot-top)*.5,w:W,h:(bot-top)*.5}]:[{x:0,y:top,w:W*.55,h:bot-top},{x:W*.55,y:top,w:W*.45,h:bot-top}];
+  if(nar)line(16,A[1].y,W-16,A[1].y,'rgba(91,108,153,.35)',1);else line(W*.55,top+8,W*.55,bot,'rgba(91,108,153,.35)',1);
+  {const a=A[0],p=(t%12)/12,q=Math.min(3.999,p*4.6),gN=Math.floor(q),f=q-gN,rows=4,rh=(a.h-30)/rows;head('Toda célula vem de outra',a.x+a.w/2,a.y+14);
+   const pos=(k,i)=>[a.x+a.w*(i+.5)/2**k,a.y+30+rh*(k+.5)],rad=k=>Math.min(a.w/2**k/2.8,rh*.36,28);
+   for(let k=1;k<=gN;k++)for(let i=0;i<2**k;i++){const[x1,y1]=pos(k-1,i>>1),[x2,y2]=pos(k,i);X.globalAlpha=k<gN?1:ss(f*2);line(x1,y1+rad(k-1),x2,y2-rad(k),'rgba(157,169,196,.45)',1);X.globalAlpha=1}
+   for(let k=0;k<=gN;k++)for(let i=0;i<2**k;i++){const[x,y]=pos(k,i),r=rad(k);if(k<gN||k===0)celSimples(x,y,r);else{const[px,py]=pos(k-1,i>>1),e=ss(f*1.6);X.globalAlpha=e;celSimples(lerp(px,x,e),lerp(py,y,e),r);X.globalAlpha=1}}
+   if(!nar)tx('omnis cellula e cellula',a.x+a.w/2,a.y+a.h-6,{s:14,c:'#C9D2E6',f:'Atkinson Hyperlegible Next, system-ui, sans-serif'})}
+  {const a=A[1],p=(t%14)/14,br=p>.5,tur=ss(seg(p,.62,.92)),fr=Math.min(a.w*.17,a.h*.2),fx=a.x+a.w*(nar?.36:.34),fy=a.y+a.h*.68;head(nar?'Pasteur, 1862':'Pasteur, 1862: pescoço de cisne',a.x+a.w/2,a.y+14);
+   const pts=[[fx,fy-fr*.9],[fx+fr*.1,fy-fr*1.75],[fx+fr*.75,fy-fr*1.95],[fx+fr*1.15,fy-fr*1.25],[fx+fr*1.6,fy-fr*1.55],[fx+fr*1.9,fy-fr*2.05]];
+   const neck=br?[[fx,fy-fr*.9],[fx+fr*.05,fy-fr*1.45]]:pts;
+   X.beginPath();X.moveTo(...neck[0]);for(let i=1;i<neck.length;i++){const[a1,b1]=neck[i-1],[a2,b2]=neck[i];X.quadraticCurveTo(a1,b1,(a1+a2)/2,(b1+b2)/2)}X.lineTo(...neck[neck.length-1]);X.lineCap='round';X.lineJoin='round';X.strokeStyle='rgba(207,224,255,.55)';X.lineWidth=fr*.2;X.stroke();X.strokeStyle='#131A2B';X.lineWidth=fr*.11;X.stroke();
+   circ(fx,fy,fr,'rgba(207,224,255,.06)','rgba(207,224,255,.7)',2);X.save();X.beginPath();X.arc(fx,fy,fr-2,0,TAU);X.clip();X.fillStyle=`rgba(247,193,59,${.22+.25*tur})`;X.fillRect(fx-fr,fy-fr*.15,fr*2,fr*1.2);
+   if(tur>0){const R=rng(4);for(let i=0;i<Math.round(60*tur);i++){const u=(R()-.5)*1.9*fr,v=fy-fr*.1+R()*fr;circ(fx+u+Math.sin(t+i)*1.5,v,1.6,'#A9C54A')}}X.restore();
+   if(br){const R=rng(8);for(let i=0;i<10;i++){const ph=((t*.35+R())%1),x=fx+(R()-.5)*fr*.3,y=lerp(fy-fr*2.3,fy-fr*.2,ph);X.globalAlpha=1-ph*.6;circ(x,y,1.7,'#C9B48A');X.globalAlpha=1}
+    lab(fx+fr*.05,fy-fr*1.45,fx+fr*1.15,fy-fr*1.9,'Gargalo quebrado');lab(fx+fr*.3,fy+fr*.3,fx+fr*1.3,fy+fr*.65,tur>.5?'Micróbios crescem':'Poeira cai no caldo')}
+   else{const R=rng(8),seg2=pts.slice(3).reverse();for(let i=0;i<8;i++){const ph=Math.min(1,((t*.25+R())%1.6)),qq=ph*2,j=Math.min(1,Math.floor(qq)),u=qq-j,[x1,y1]=seg2[j],[x2,y2]=seg2[Math.min(2,j+1)],x=lerp(x1,x2,Math.min(1,u)),y=lerp(y1,y2,Math.min(1,u));circ(x,y-fr*.03,1.8,'#C9B48A')}
+    lab(pts[3][0],pts[3][1],fx+fr*1.2,fy-fr*.55,'Poeira presa na curva');lab(fx+fr*.3,fy+fr*.3,fx+fr*1.3,fy+fr*.65,'Caldo sem micróbios')}}
+  caption(null,'Vida vem de vida, e célula vem de célula')}});
+
+def('teoria','postulados',{t:'Os postulados da teoria celular',s:'a teoria em cinco frases',c:'#CFE0FF',sz:['5','postulados da teoria celular moderna'],
+ ctl:{l:'postulado',min:1,max:5,step:1,v:1,f:v=>`${v} de 5`,auto:5},tip:'Os postulados passam sozinhos até você mexer no controle.',
+ d:`<p>A teoria celular moderna junta as ideias de Schleiden, Schwann e Virchow com o que se descobriu depois sobre o DNA e o metabolismo. Os livros a resumem em cinco postulados:</p><ol style="margin:8px 0 0 20px;line-height:1.6"><li><b>Todos os seres vivos são formados por células</b> e pelos produtos delas.</li><li>A célula é a <b>unidade de estrutura e de função</b> dos seres vivos: é a menor parte que ainda está viva.</li><li><b>Toda célula surge de outra preexistente</b>, por divisão.</li><li>A célula guarda o <b>material hereditário</b> (DNA), que passa às células-filhas na divisão.</li><li>As <b>reações químicas da vida</b> (o metabolismo) acontecem dentro das células.</li></ol>`,
+ kv:[['Base histórica','Schleiden, Schwann, Virchow'],['Exceção','vírus, acelulares'],['Unidade da vida','a célula']],links:[['Vírus: a exceção','#teoria/virus'],['DNA, no módulo 1','../dna/index.html'],['Divisão celular, no módulo 7','../divisao-celular/index.html']],
+ draw(t,S){const v=S.v,nar=W<600,T=['Todo ser vivo é formado por células','A célula é a unidade de estrutura e de função','Toda célula vem de outra célula','A célula guarda e transmite o DNA','O metabolismo acontece dentro das células'];
+  wrapT(`${v}. ${T[v-1]}`,W/2,nar?100:84,W-48,{f:'Space Grotesk, sans-serif',s:nar?16:19,w:600,c:'#E8EDF7'});
+  const yb=H-96;for(let i=1;i<=5;i++){const x=W/2+(i-3)*40;circ(x,yb,13,i===v?'#FFB347':'rgba(19,26,43,.9)',i===v?'#FFB347':'#5B6C99',1.5);tx(String(i),x,yb+.5,{s:13,w:700,c:i===v?'#1A1206':'#9DA9C4',bg:false})}
+  const cy=((nar?150:120)+yb-24)/2+6,R=Math.min(W*.2,(yb-140)*.36);
+  if(v===1){const bx=W*(nar?.27:.3),fx=W*(nar?.7:.66);const L=R*1.1;bact(bx,cy,L,L*.42,t,{cap:false});tx('Unicelular',bx,cy+R*.95,{s:14,w:600});tx('(bactéria)',bx,cy+R*.95+18,{s:13,c:'#9DA9C4'});
+   const s=R*1.05;X.save();folha(fx,cy,s);X.fillStyle='rgba(63,191,106,.2)';X.fill();X.clip();const cp=s*.16;for(let j=-8;j<=8;j++)for(let i=-8;i<=8;i++){const px=fx+i*cp+(j&1)*cp/2,py=cy+j*cp*.866;hexP(px,py,cp*.55);X.strokeStyle='rgba(169,197,74,.9)';X.lineWidth=1.2;X.stroke();circ(px,py,cp*.13,'#9A6BFF')}X.restore();folha(fx,cy,s);X.strokeStyle='#3FBF6A';X.lineWidth=2;X.stroke();
+   tx('Pluricelular',fx,cy+R*.95,{s:14,w:600});tx('(folha: milhões de células)',fx,cy+R*.95+18,{s:13,c:'#9DA9C4'})}
+  if(v===2){const xs=[W*.18,W*.5,W*.82],r=Math.min(R*.75,W*.13);folha(xs[0],cy,r);X.fillStyle='rgba(63,191,106,.3)';X.fill();X.strokeStyle='#3FBF6A';X.lineWidth=1.6;X.stroke();circ(xs[0]+r*.2,cy-r*.05,r*.2,null,'#E8EDF7',1.4);
+   X.save();X.beginPath();X.arc(xs[1],cy,r,0,TAU);X.clip();const cw=r*.5,ch=r*.32;for(let j=-4;j<=4;j++)for(let i=-3;i<=3;i++){const px=xs[1]+i*cw+(j&1)*cw*.5,py=cy+j*ch;X.beginPath();X.roundRect(px-cw/2+1.5,py-ch/2+1.5,cw-3,ch-3,3);X.strokeStyle='#A9C54A';X.lineWidth=2;X.stroke();circ(px-cw*.2,py,ch*.17,'#9A6BFF')}X.restore();circ(xs[1],cy,r,null,'#5B6C99',2);
+   const w2=r*1.5,h2=r*1.05;X.beginPath();X.roundRect(xs[2]-w2/2,cy-h2/2,w2,h2,8);X.fillStyle='rgba(42,30,61,.8)';X.fill();X.strokeStyle='#A9C54A';X.lineWidth=3;X.stroke();ell(xs[2]+w2*.12,cy,w2*.26,h2*.3,0,'rgba(42,159,201,.35)','#2A9FC9',1);circ(xs[2]-w2*.27,cy-h2*.1,h2*.16,'rgba(154,107,255,.4)','#9A6BFF',1.2);chloro(xs[2]-w2*.25,cy+h2*.27,w2*.1,h2*.07,.2);chloro(xs[2]+w2*.3,cy-h2*.33,w2*.1,h2*.07,-.3);
+   for(const k of[0,1]){const x1=xs[k]+r+6,x2=xs[k+1]-(k?w2/2:r)-6;line(x1,cy,x2,cy,'#9DA9C4',1.5);line(x2,cy,x2-7,cy-5,'#9DA9C4',1.5);line(x2,cy,x2-7,cy+5,'#9DA9C4',1.5)}
+   ['Organismo','Tecido','Célula'].forEach((s,i)=>tx(s,xs[i],cy+r+22,{s:14,w:600,c:i===2?'#FFB347':'#E8EDF7'}));tx('menor parte que ainda está viva',nar?W/2:xs[2],cy+r+(nar?44:40),{s:13,c:'#9DA9C4'})}
+  if(v===3){const q=(t%4)/4;dividir(W/2,cy,R*.8,ss(seg(q,.1,.75)));tx('divisão celular',W/2,cy+R*1.05,{s:14,c:'#9DA9C4'})}
+  if(v===4){const q=(t%5)/5,e=ss(seg(q,.2,.6)),px=W*(nar?.5:.3),py=nar?cy-R*.55:cy,r=R*(nar?.55:.75),cr=(x,y,c,two,sc)=>{const h=r*.36*sc;X.lineCap='round';if(two){line(x-2.5,y-h,x+2.5,y+h,c,4);line(x+2.5,y-h,x-2.5,y+h,c,4)}else line(x,y-h,x,y+h,c,4)};
+   celSimples(px,py,r,{n:false});cr(px-r*.25,py,'#9A6BFF',1,1);cr(px+r*.25,py,'#5CC8F0',1,1);
+   const ds=nar?[[W*.28,cy+R*.75],[W*.72,cy+R*.75]]:[[W*.7,cy-R*.6],[W*.7,cy+R*.6]];X.globalAlpha=e;ds.forEach(([x,y])=>{line(px,py,x,y,'rgba(157,169,196,.35)',1);celSimples(x,y,r*.7,{n:false});cr(x-r*.17,y,'#9A6BFF',0,.8);cr(x+r*.17,y,'#5CC8F0',0,.8)});X.globalAlpha=1;
+   lab(px-r*.25,py-r*.2,px-r*1.2,py-r*1.15,'Cromossomos (DNA)');if(e>.9)lab(ds[0][0]+r*.17,ds[0][1],ds[0][0]+r*.9,ds[0][1]-r*.9,'Mesma informação')}
+  if(v===5){const r=R*.85,x=W/2;celSimples(x,cy,r,{n:false});mito(x-r*.3,cy+r*.15,r*.3,r*.15,.3);mito(x+r*.35,cy-r*.3,r*.25,r*.12,-.5);const pu=1+.08*Math.sin(t*4);tx('ATP',x+r*.15,cy+r*.15,{s:16*pu,w:700,c:'#FFB347'});
+   const io=[['glicose',-1,-.55,1],['O₂',-1,.45,1],['CO₂',1,-.45,0],['H₂O',1,.55,0]];for(const[s,sd,yy,inn]of io){const yy2=cy+yy*r,xa=x+sd*(r+(nar?52:80)),xb=x+sd*(r*.95);const f=(t*.5+yy)%1,a1=inn?xa:xb,a2=inn?xb:xa;line(a1,yy2,a2,yy2,'rgba(157,169,196,.6)',1.5);circ(lerp(a1,a2,f),yy2,3,inn?'#7FDA9C':'#FF6B7D');tx(s,xa+sd*4,yy2-14,{s:13,w:600,a:sd<0?'left':'right'})}
+   tx('respiração celular',x,cy+r+20,{s:14,c:'#9DA9C4'})}}});
+
+def('teoria','virus',{t:'Vírus: a exceção',s:'seres acelulares',c:'#B9C2D3',sz:['~100 nm','vírus típico (bactéria: ~2 µm)'],
+ d:`<p><b>Os vírus não são formados por células.</b> Um vírus é só uma cápsula de proteína, o <b>capsídeo</b>, com um ácido nucleico dentro: <b>DNA ou RNA</b>, nunca os dois. Alguns têm um envelope de lipídios roubado da membrana da célula que infectaram. Não têm citoplasma, ribossomos nem metabolismo próprio, e medem de 20 a 300&nbsp;nm, bem menos que uma bactéria.</p><p>Fora de uma célula, o vírus não faz nada. Dentro dela, ele usa os ribossomos, as enzimas e a energia da célula para fazer cópias de si mesmo: é um <b>parasita intracelular obrigatório</b>. Por isso a teoria celular trata o vírus como <b>exceção</b>, e os biólogos discutem se ele é ou não um ser vivo. A favor: tem material genético, se reproduz (dentro de uma célula) e sofre mutação e seleção natural.</p><p>O desenho mostra o ciclo lítico de um <b>bacteriófago</b>, um vírus que infecta bactérias, fora de escala.</p>`,
+ kv:[['Tamanho','20 a 300 nm'],['Material genético','DNA ou RNA'],['Estrutura','capsídeo, às vezes envelope'],['Metabolismo','nenhum fora da célula'],['Exemplos de viroses','gripe, dengue, covid-19, HIV/aids']],links:[['Bacteriófago em 3D, no módulo 5','../celula/index.html#celula_fago'],['Postulados da teoria celular','#teoria/postulados']],
+ draw(t){const nar=W<600,p=(t%14)/14,cx=W/2,cy=nar?H*.48:H*.5,L=Math.min(W*.62,H*1.05),Wd=Math.min(L*.42,H*.3),s=Wd*.34,ax=cx-L*.12,ay=cy-Wd/2,ph=p<.14?0:p<.28?1:p<.5?2:p<.7?3:p<.84?4:5;
+  const lys=ss(seg(p,.72,.84)),R=rng(21);X.globalAlpha=1-lys;rod(cx,cy,L,Wd);X.fillStyle='rgba(20,32,26,.9)';X.fill();X.strokeStyle='#A9C54A';X.lineWidth=3;X.stroke();rod(cx,cy,L-Wd*.12,Wd*.88);X.strokeStyle='#F06AAE';X.lineWidth=1.4;X.stroke();
+  X.globalAlpha=(1-lys)*(1-ss(seg(p,.28,.5))*.85);dnaLoop(cx+L*.08,cy+Wd*.04,Wd*.42,Wd*.18,t,'#9A6BFF',0);X.globalAlpha=1;
+  if(ph>=1&&ph<5){const e=ss(seg(p,.14,.28));X.globalAlpha=1-lys;X.beginPath();for(let i=0;i<=24;i++){const f=i/24*e,px=ax+Math.sin(f*14)*Wd*.05,py=ay+f*Wd*.45;i?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle='#C9AEFF';X.lineWidth=1.6;X.stroke();X.globalAlpha=1}
+  const nd=Math.round(ss(seg(p,.3,.5))*7);for(let i=0;i<nd;i++){const u=(R()-.5)*L*.7,v=(R()-.5)*Wd*.5;X.globalAlpha=1-lys;X.beginPath();for(let k=0;k<=8;k++){const px=cx+u+k*3,py=cy+v+Math.sin(k+i+t*2)*2;k?X.lineTo(px,py):X.moveTo(px,py)}X.strokeStyle='#C9AEFF';X.lineWidth=1.4;X.stroke();X.globalAlpha=1}
+  const np=Math.round(ss(seg(p,.5,.7))*8),R2=rng(33),esc=ss(seg(p,.76,1));for(let i=0;i<np;i++){const u=(R2()-.5)*L*.72,v=(R2()-.5)*Wd*.5,a=R2()*TAU,dx=Math.cos(a)*esc*Math.min(W,H)*.32,dy=Math.sin(a)*esc*Math.min(W,H)*.25;fago(cx+u+dx,cy+v+dy,s*.55,a*.3+esc*2)}
+  const e0=ss(seg(p,0,.14)),hx2=lerp(ax-L*.25,ax,e0),hy=lerp(ay-Wd*.9,ay-1,e0);fago(hx2,hy,s,0,{dna:ph<1||(ph===1&&p<.2),al:ph>=5?.45:1});
+  if(lys>0){X.globalAlpha=lys*(1-esc*.6);const R3=rng(5);for(let i=0;i<14;i++){const a=R3()*TAU;const q=1+esc*.5;X.beginPath();X.arc(cx+Math.cos(a)*L*.42*q,cy+Math.sin(a)*Wd*.55*q,Wd*.1,a,a+1);X.strokeStyle='#A9C54A';X.lineWidth=2;X.stroke()}X.globalAlpha=1}
+  if(ph===0){lab(hx2,hy-s*.9,hx2-s*1.2,hy-s*2.2,'Capsídeo (proteína)');lab(cx+L*.3,cy+Wd*.3,cx+L*.3,cy+Wd*1.1,'Bactéria (célula)')}
+  if(ph===1)lab(ax,ay+Wd*.3,ax-L*.25,cy+Wd*1.05,'DNA viral entra');if(ph===2)lab(cx+L*.08,cy,cx+L*.25,cy+Wd*1.05,'DNA da bactéria se desfaz');
+  caption(ph+1,['O vírus se prende à bactéria','O DNA viral é injetado','A célula passa a copiar o DNA viral','Novos vírus são montados','A célula se rompe (lise)','Os novos vírus infectam outras células'][ph])}});
 
 // ---------------- 1, PROCARIONTE × EUCARIONTE ----------------
 def('tipos','lado',{t:'Lado a lado',s:'os dois planos de organização',c:'#9A6BFF',sz:['0,5–100 µm','procariontes 0,5–5 µm, eucariontes 10–100 µm'],
@@ -242,6 +440,33 @@ def('tipos','euc',{t:'Célula eucarionte',s:'compartimentos com membrana',c:'#F7
   lab(...b.mem,cx-Rx*1.02,cy-R*.95,'membrana plasmática');lab(...b.env,cx-Rx*1.05,cy-R*.45,'carioteca');lab(...b.pore,cx-Rx*1.1,cy+R*.1,'poro nuclear');lab(...b.nl,cx-R*.1,cy-R*1.12,'nucléolo');
   lab(...b.nuc,cx-Rx*1.05,cy+R*.6,'cromatina');lab(...b.rer,cx-R*.05,cy+R*1.14,'retículo rugoso');lab(...b.gol,cx+Rx*1.05,cy-R*.95,'complexo de Golgi');lab(...b.ves,cx+Rx*1.08,cy-R*.55,'vesículas');
   lab(...b.mit,cx+Rx*1.08,cy+R*.45,'mitocôndria');lab(...b.lys,cx+Rx*1.08,cy+R*.02,'lisossomo');}});
+const ORGF=[['Membrana plasmática','controla o que entra e sai da célula (permeabilidade seletiva)','membrana','a'],
+ ['Núcleo','guarda o DNA e comanda a célula','nucleo','a'],
+ ['Ribossomos','fabricam proteínas (tradução)','ribossomo','a'],
+ ['Retículo endoplasmático','rugoso: proteínas; liso: lipídios e desintoxicação','re','a'],
+ ['Complexo de Golgi','modifica, empacota e secreta; forma os lisossomos','golgi','a'],
+ ['Lisossomo','digestão dentro da célula, com enzimas','lisossomo','a'],
+ ['Peroxissomo','decompõe a água oxigenada (H₂O₂) e gorduras','peroxissomo','a'],
+ ['Mitocôndria','respiração celular: produz ATP','mitocondria','a'],
+ ['Citoesqueleto','dá forma, move a célula e transporta vesículas','citoesqueleto','a'],
+ ['Centríolos','organizam cílios, flagelos e o fuso (animais)','centriolo','a'],
+ ['Cloroplasto','fotossíntese: luz vira energia química','cloroplasto','v'],
+ ['Vacúolo central','guarda água e reservas, mantém a célula túrgida','vacuolo','v'],
+ ['Parede celular','protege e sustenta (celulose)','celula_vegetal','v']];
+def('tipos','organelas',{t:'Organelas e suas funções',s:'o que cada uma faz',c:'#FFE1A6',sz:['13','estruturas, cada uma com uma tarefa'],
+ ctl:{l:'estrutura',min:0,max:ORGF.length-1,step:1,v:0,f:v=>`${v+1} de ${ORGF.length}`,auto:3.2},tip:'As estruturas passam sozinhas até você mexer no controle. Use os botões abaixo para ver cada uma em 3D no módulo 5.',
+ d:`<p>Cada organela tem uma tarefa, e elas trabalham em conjunto, como setores de uma fábrica. As três últimas da lista aparecem só nas <b>células vegetais</b>. Já os centríolos faltam nas plantas com flores, e os lisossomos típicos são raros nelas, porque o vacúolo assume a digestão.</p>
+ <table class="cmp"><tr><th>Estrutura</th><th>Função principal</th></tr>${ORGF.map(o=>`<tr><td>${o[0]}${o[3]==='v'?' (vegetal)':''}</td><td>${o[1]}</td></tr>`).join('')}</table>`,
+ kv:[],links:ORGF.map(o=>[o[0],'../celula/index.html#'+o[2]]),
+ draw(t,S){const v=S.v,nar=W<600,o=ORGF[v],R=nar?Math.min(W*.3,H*.17):Math.min(W*.2,H*.28),acx=nar?W*.48:W*.33,acy=nar?H*.36:H*.45;
+  const b=euk(acx,acy,R,t);const per=[acx+R*.55,acy+R*.42];circ(per[0],per[1],R*.045,'rgba(47,207,191,.35)','#2FCFBF',1);X.lineCap='round';const cs=[acx+R*.12,acy+R*.05];line(cs[0]-3,cs[1]-5,cs[0]-3,cs[1]+3,'#CFE0FF',3);line(cs[0]+1,cs[1]-1,cs[0]+8,cs[1]-1,'#CFE0FF',3);
+  const vw=nar?Math.min(W*.58,R*2.1):R*1.9,vh=vw*.66,vx=nar?W*.5:W*.73,vy=nar?H*.655:H*.45;X.beginPath();X.roundRect(vx-vw/2,vy-vh/2,vw,vh,10);X.fillStyle='rgba(42,30,61,.75)';X.fill();X.strokeStyle='#A9C54A';X.lineWidth=4;X.stroke();X.beginPath();X.roundRect(vx-vw/2+5,vy-vh/2+5,vw-10,vh-10,7);X.strokeStyle='#F06AAE';X.lineWidth=1.3;X.stroke();
+  ell(vx+vw*.1,vy+vh*.02,vw*.26,vh*.3,0,'rgba(42,159,201,.32)','#2A9FC9',1.2);circ(vx-vw*.3,vy-vh*.18,vh*.13,'rgba(154,107,255,.35)','#9A6BFF',1.3);const ch=[[vx-vw*.28,vy+vh*.25,.3],[vx+vw*.32,vy-vh*.3,-.2],[vx+vw*.36,vy+vh*.3,.5]];for(const[a,c,r]of ch)chloro(a,c,vw*.08,vh*.07,r);
+  tx('Célula animal',acx,acy-R*1.12,{s:14,w:600,c:'#C9D2E6'});tx('Célula vegetal',vx,vy-vh/2-14,{s:14,w:600,c:'#C9D2E6'});
+  const A={membrana:b.mem,nucleo:b.nuc,ribossomo:b.rer,re:[b.rer[0]+R*.05,b.rer[1]-R*.06],golgi:b.gol,lisossomo:b.lys,peroxissomo:per,mitocondria:b.mit,citoesqueleto:[acx+R*.62,acy+R*.12],centriolo:cs,cloroplasto:[ch[1][0],ch[1][1]],vacuolo:[vx+vw*.1,vy],celula_vegetal:[vx+vw*.5-2,vy-vh*.1]};
+  const a=A[o[2]],pu=1+.12*Math.sin(t*5);circ(a[0],a[1],(nar?14:18)*pu,null,'#FFB347',2);
+  const right=a[0]>(nar?W*.5:acx);lab(a[0],a[1],right?Math.min(W-150,a[0]+R*.5):a[0]-R*.5,Math.max(nar?104:76,a[1]-R*(nar?.55:.6)),o[0]);
+  wrapT(o[1],W/2,H-90,W-40,{s:nar?14:16,w:600,c:'#E8EDF7',up:true})}});
 def('tipos','escala',{t:'Tamanhos e escala',s:'do ribossomo ao óvulo',c:'#CFE0FF',sz:['10⁴ ×','do ribossomo ao óvulo'],
  d:`<p><b>A régua da biologia celular é o micrômetro</b> (µm, um milésimo de milímetro). O olho humano enxerga até ~100 µm; abaixo disso precisamos do microscópio óptico (limite ~0,2 µm) e, para organelas e ribossomos, do microscópio eletrônico (resolve ~1 nm).</p><p>Por que as células são pequenas? Quando uma célula cresce, o volume aumenta mais rápido que a superfície (o volume com o cubo, a área com o quadrado). Uma célula grande demais não troca substâncias com o meio na velocidade de que precisa.</p>`,
  kv:[['Ribossomo','~25 nm'],['Vírus da gripe','~100 nm'],['E. coli','~2 µm'],['Hemácia humana','~7,5 µm'],['Célula animal','~20 µm'],['Óvulo humano','~120 µm']],links:[],
@@ -574,10 +799,11 @@ $('pause').onclick=()=>setP(!paused);if(matchMedia('(prefers-reduced-motion: red
 const ALL=SEC.flatMap(s=>ORDER[s.id]);const step=d=>go(ALL[(ALL.indexOf(cur)+d+ALL.length)%ALL.length],true);
 $('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)tm+=dt;const o=SC[cur],S=ST[cur];S.dt=paused?0:dt;const lt=tm-S.t0;
+function frame(now){const dt=Math.max(0,Math.min(.05,(now-last)/1000));last=now;if(!paused)tm+=dt;const o=SC[cur],S=ST[cur];S.dt=paused?0:dt;const lt=tm-S.t0;
  if(o.ctl&&o.ctl.auto&&!S.touched){const v=o.ctl.min+Math.floor(lt/o.ctl.auto)%(o.ctl.max-o.ctl.min+1);if(v!==S.v){S.v=v;$('ctlR').value=v;$('ctlV').textContent=o.ctl.f(v)}}
  X.clearRect(0,0,W,H);lbReset();X.save();try{o.draw.call(o,lt,S)}catch(err){console.error(err)}X.restore();X.globalAlpha=1;X.shadowBlur=0;X.setLineDash([]);requestAnimationFrame(frame)}
-{const h=decodeURIComponent(location.hash.slice(1));go(SC[h]?h:ORDER[h]?ORDER[h][0]:'tipos/lado')}
+{const h=decodeURIComponent(location.hash.slice(1));go(SC[h]?h:ORDER[h]?ORDER[h][0]:'teoria/hooke')}
+addEventListener('hashchange',()=>{const h=decodeURIComponent(location.hash.slice(1)),k=SC[h]?h:ORDER[h]?ORDER[h][0]:null;if(k&&k!==cur)go(k,true)});
 requestAnimationFrame(frame);
 })();
 </script>

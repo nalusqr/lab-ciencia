@@ -47,6 +47,24 @@ button{font:inherit}
   .tabs a{flex:none;padding:8px 12px}
   .tabs .nm-l{display:none}.tabs .nm-s{display:inline}
 }
+/* Módulos de apoio (gerado por scripts/abas.py): no computador largo ficam no menu "Apoio" (<details>, funciona
+   sem JS e por teclado); abaixo disso a barra rola e eles aparecem como abas comuns (a.ap) */
+.tabs details.apoio{display:none;position:relative;flex:none}
+.tabs summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:600;line-height:1.3;color:var(--dim);cursor:pointer;list-style:none;white-space:nowrap;user-select:none;transition:background .15s,color .15s}
+.tabs summary::-webkit-details-marker{display:none}
+.tabs summary::after{content:'';width:6px;height:6px;margin:0 2px 0 4px;border:solid currentColor;border-width:0 1.75px 1.75px 0;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
+.tabs details[open]>summary::after{transform:translateY(1px) rotate(-135deg)}
+.tabs summary:hover,.tabs details[open]>summary{background:var(--panel-2);color:var(--txt)}
+.tabs details.on>summary{color:var(--txt);background:var(--panel-2);box-shadow:inset 0 -2px 0 var(--amber)}
+.tabs .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;min-width:240px;display:flex;flex-direction:column;gap:2px;padding:4px;border:1px solid var(--line-strong);border-radius:12px;background:var(--panel);box-shadow:var(--float-shadow)}
+.tabs .menu a{flex:none;justify-content:flex-start}
+.tabs .menu a.on{box-shadow:inset 2px 0 0 var(--amber)}
+@media(min-width:1100px){
+  .tabs{overflow:visible}
+  .tabs>a.ap{display:none}
+  .tabs details.apoio{display:block}
+  .tabs a.cp .nm-l{display:none}.tabs a.cp .nm-s{display:inline}
+}
 
 /* Cabeçalho do módulo: ícone, título, "Módulo N" + selo */
 .top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
