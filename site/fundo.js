@@ -4,7 +4,9 @@
    - Abaixo da capa, o fundo fica com metade da opacidade, para a lista de módulos ler melhor.
    - prefers-reduced-motion: anda bem mais devagar (35% da velocidade), sem parar.
    - Aba oculta: o laço para (requestAnimationFrame cancelado) e volta quando a aba aparece.
-   - Leve: no máximo cerca de 30 quadros por segundo, densidade de pixels até 1,5 e partículas contadas pela área. */
+   - Leve: no máximo cerca de 30 quadros por segundo, densidade de pixels até 1,5 e partículas contadas pela área.
+   - Botão "Pausar fundo" / "Animar fundo" no canto de baixo (aria-pressed="true" quando parado). Parado, fica o último
+     quadro desenhado. A escolha fica em localStorage ("lab-fundo" = "parado"); sem localStorage, vale só para a visita. */
 (function () {
   'use strict';
   var doc = document.documentElement, body = document.body;
@@ -18,6 +20,8 @@
   doc.classList.add('fundo-on');
 
   var reduz = matchMedia('(prefers-reduced-motion: reduce)');
+  var CHAVE = 'lab-fundo', parado = false;
+  try { parado = localStorage.getItem(CHAVE) === 'parado'; } catch (e) {}
   var W = 0, H = 0, raf = 0, last = 0, t = 0, motes = [];
   var TAU = Math.PI * 2;
 
@@ -118,9 +122,28 @@
   function liga() {
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
     last = 0;
-    if (reduz.matches && !t) t = 40;   // movimento reduzido: começa com as luzes espalhadas e anda a 35% da velocidade
+    if ((reduz.matches || parado) && !t) t = 40;   // movimento reduzido ou parado: luzes já espalhadas; reduzido anda a 35% da velocidade
+    if (parado) { desenha(0); return; }           // parado: um quadro fixo, sem laço
     if (!document.hidden) raf = requestAnimationFrame(quadro);
   }
+
+  // Botão no canto: para e retoma o fundo (WCAG 2.2.2, pausar o que se move sozinho)
+  var bt = document.createElement('button');
+  bt.type = 'button'; bt.className = 'fundo-bt';
+  bt.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path class="ic-pausa" d="M5 3.5v9M11 3.5v9"/>' +
+    '<path class="ic-anima" d="M5.5 3.2v9.6L12.8 8z"/></svg><span></span>';
+  function rotulo() {
+    bt.setAttribute('aria-pressed', parado ? 'true' : 'false');
+    bt.lastChild.textContent = parado ? 'Animar fundo' : 'Pausar fundo';
+    doc.classList.toggle('fundo-parado', parado);
+  }
+  bt.addEventListener('click', function () {
+    parado = !parado;
+    try { if (parado) localStorage.setItem(CHAVE, 'parado'); else localStorage.removeItem(CHAVE); } catch (e) {}
+    rotulo(); liga();
+  });
+  rotulo();
+  body.appendChild(bt);
 
   // abaixo da capa, o fundo apaga pela metade (a transição de opacidade fica no home.css)
   var baixo = null;

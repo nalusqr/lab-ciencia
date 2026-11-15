@@ -108,3 +108,21 @@ html:not(.js) .centro{position:static;transform:none;width:auto;margin-top:24px}
   .centro.troca h2,.centro.troca .desc,#f-corpo.troca{animation:none}
   .item.on .dio{transform:none}
 }
+
+/* ---------- Selo do cartão do centro (inicio.js): número de módulos ou "Em breve" ---------- */
+.centro .selo{display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--txt);font-size:13px;font-weight:600;line-height:1.5;font-variant-numeric:tabular-nums}
+.centro .selo.breve{border-style:dashed;background:transparent;color:#C3CCE0}
+.centro.troca .selo{animation:troca 260ms var(--ease-out)}
+
+/* ---------- "Você parou aqui" (inicio.js): o último módulo aberto pela faixa ---------- */
+.mods .parou{display:inline-flex;align-self:flex-start;align-items:center;margin-bottom:8px;padding:2px 8px;border-radius:999px;background:var(--amber);color:var(--on-amber);font-size:13px;font-weight:700;line-height:1.5}
+.mods>li.aqui .ref{border-color:var(--amber);background:var(--panel-2)}
+.mods>li.aqui .ref>.ico{color:var(--txt);border-color:var(--line-strong)}
+
+/* ---------- Entrada dos cartões da faixa (inicio.js): em sequência, uma vez por sessão ---------- */
+#f-corpo.esperando .mods>li{opacity:0;transform:translateY(12px)}
+#f-corpo.entrando .mods>li{transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out);transition-delay:calc(var(--k,0) * 50ms)}
+@media(prefers-reduced-motion:reduce){
+  #f-corpo.esperando .mods>li{opacity:1;transform:none}
+  .centro.troca .selo{animation:none}
+}
