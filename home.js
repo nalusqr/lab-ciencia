@@ -9,6 +9,7 @@
   var doc = document.documentElement;
   var semEntrada = doc.classList.contains('sem-entrada');
   var reduz = matchMedia('(prefers-reduced-motion: reduce)');
+  var R = (document.body && document.body.getAttribute('data-raiz')) || '';   // '../' em biologia/index.html
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
@@ -30,7 +31,7 @@
     quadro.title = 'Célula animal em 3D, girando devagar';
     quadro.tabIndex = -1;
     quadro.setAttribute('aria-hidden', 'true');
-    quadro.src = 'celula/index.html?embed=1';
+    quadro.src = R + 'celula/index.html?embed=1';
     palco.insertBefore(quadro, $('.palco-link', palco));
   } else if (estado) {
     estado.textContent = 'Célula animal, cerca de 20\u00a0µm';
@@ -72,7 +73,7 @@
   DIORAMAS.forEach(function (id) {
     var use = $('.trilha .passo .meta use[href="#mod-' + id + '"]');
     if (!use) return;
-    var passo = use.closest('.passo'), base = 'assets/dioramas/' + id;
+    var passo = use.closest('.passo'), base = R + 'assets/dioramas/' + id;
     var fig = document.createElement('picture');
     fig.className = 'diorama';
     fig.innerHTML = '<source srcset="' + base + '.webp" type="image/webp">' +
@@ -114,7 +115,7 @@
   addEventListener('scroll', rolar, { passive: true });
   rolar();
   if ('IntersectionObserver' in window) {
-    var atalhos = $$('.atalhos a');
+    var atalhos = $$('.atalhos a[href^="#"]');
     var secoes = atalhos.map(function (a) { return $(a.getAttribute('href')); }).filter(Boolean);
     var vis = new IntersectionObserver(function (ents) {
       ents.forEach(function (en) {

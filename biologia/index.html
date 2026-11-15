@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biologia: LAB, ciência em movimento</title>
+<meta name="description" content="Biologia para o ensino médio e o ENEM, em 3D e animações feitas com dados reais. Siga a trilha do curso, etapa por etapa.">
+<meta name="theme-color" content="#0B0F1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../home.css">
+<!-- Antes de pintar: liga o modo com JS (as animações de entrada só existem com ele) e pula a entrada se ela já
+     rodou nesta sessão ou se a pessoa pediu menos movimento. Sem JS, tudo aparece pronto. -->
+<script>(function(d){d.classList.add('js');try{if(sessionStorage.getItem('lab-entrada')||matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('sem-entrada')}catch(e){}})(document.documentElement)</script>
+</head>
+<body data-raiz="../">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg --><symbol id="mod-dna" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5c0 5 10 5 10 9.5s-10 4.5-10 9.5M17 2.5c0 5-10 5-10 9.5s10 4.5 10 9.5"/><path d="M8.6 4.6h6.8M8 12h8M8.6 19.4h6.8"/></g></symbol><symbol id="mod-tabela-periodica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h3v3h3v3h3V6h6V3h3v12H3z"/><path d="M3 9h18M6 6v9"/><rect x="7.5" y="17.5" width="10.5" height="3.5" rx=".5"/><rect x="12.6" y="10.6" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-moleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="3.6"/><circle cx="5.2" cy="7.3" r="2.4"/><circle cx="18.8" cy="7.3" r="2.4"/><path d="M9.3 11.1 7 9M14.7 11.1 17 9"/></g></symbol><symbol id="mod-biomoleculas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-35 12 12)"><path d="M1.4 12l2-3.46h4l2 3.46-2 3.46h-4zM14.6 12l2-3.46h4l2 3.46-2 3.46h-4z"/><path d="M9.4 12h5.2"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g></g></symbol><symbol id="mod-celula" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/><path d="M14.6 17.1l2.6-1.6"/><circle cx="16.6" cy="8" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-morfofisiologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5h6v5H3M21 9.5h-6v5h6"/><path d="M12 3.5v16m-3-3 3 3 3-3"/></g></symbol></svg>
+<a class="pular" href="#trilha">Pular para a trilha do curso</a>
+
+<header class="barra" id="barra">
+  <div class="barra-in">
+    <a class="marca" href="../index.html" aria-label="LAB, todas as matérias">
+      <svg class="marca-ic" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="10.4" cy="10.8" r="3.4"/><circle cx="10.4" cy="10.8" r="1.1" fill="currentColor" stroke="none"/></g></svg>
+      <span>LAB</span>
+    </a>
+    <nav class="atalhos" aria-label="Nesta página">
+      <a href="../index.html">Matérias</a>
+      <a href="#trilha">Trilha</a>
+      <a href="#consultar">Para consultar</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap home">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="hero-txt">
+      <p class="sobre e" style="--i:0"><span class="badge">Biologia para o ensino médio e o ENEM</span></p>
+      <h1 id="titulo" class="e" style="--i:1">Biologia</h1>
+      <p class="lead e" style="--i:2">Entre na célula, gire as moléculas e veja os processos acontecendo. Tudo feito com dados reais: sequências genéticas verdadeiras, estruturas medidas em laboratório e as propriedades oficiais dos elementos.</p>
+      <div class="acoes e" style="--i:3">
+        <!-- comecar:inicio --><a class="btn primary" href="../biologia-molecular/index.html">Começar pela etapa 1</a><!-- comecar:fim -->
+        <a class="btn" href="../celula/index.html">Abrir a célula em 3D</a>
+      </div>
+      <dl class="fatos e" style="--i:4">
+        <div><dt>Etapas no curso</dt><dd id="n-etapas">7</dd></div>
+        <div><dt>Para consultar</dt><dd id="n-apoio">4</dd></div>
+        <div><dt>Estruturas em 3D</dt><dd>44</dd></div>
+      </dl>
+    </div>
+
+    <!-- Vitrine: a Célula em modo ?embed=1 (só a cena, fundo transparente, girando devagar; parada com movimento
+         reduzido). home.js cria o iframe só se houver WebGL. A imagem vitrine.webp fica por baixo e só some quando o iframe avisa, por postMessage
+         {lab:'celula-pronta'}, que já desenhou. Se o 3D não abrir, a imagem continua no lugar. -->
+    <figure class="palco e" style="--i:2" id="palco">
+      <img class="poster" src="../celula/vitrine.webp" alt="" width="1120" height="880" decoding="async">
+      <a class="palco-link" href="../celula/index.html"><span class="sr-only">Abrir o módulo Célula em 3D</span></a>
+      <figcaption class="pill bl"><b id="palco-estado">Carregando a célula…</b><span class="palco-nota">Ilustração com cores adicionadas</span></figcaption>
+      <span class="palco-cta" aria-hidden="true">Entrar na célula</span>
+    </figure>
+  </section>
+
+  <section class="secao" id="trilha" aria-labelledby="t-trilha">
+    <div class="secao-cab">
+      <h2 id="t-trilha">Trilha do curso</h2>
+      <p>As etapas seguem a ordem da ementa. Cada uma usa o que você viu na anterior, então vale ir em sequência.</p>
+    </div>
+    <!-- Trilha. O trecho entre trilha:inicio e trilha:fim é gerado por scripts/abas.py (Prometeu), a partir de
+         scripts/modulos.json. Classes estáveis, usadas por home.css e home.js:
+           ol.trilha                       a lista numerada
+           li.etapa.pronta | li.etapa.breve uma etapa (pronta tem link; breve é "Em breve", sem link)
+           span.no                          o número no trilho (decorativo; o número lido vem de "Etapa N")
+           a.passo | div.passo              o cartão da etapa (o cartão inteiro é o link)
+           .meta > svg.ico + span + .badge  ícone, "Etapa N" e selos (.badge.new "Novo", .badge.breve "Em breve")
+           h3, p                            título e resumo
+           ul.temas > li                    3 a 5 temas da ementa
+         home.js marca com .inicio a etapa para onde aponta o botão "Começar". -->
+    <ol class="trilha"><!-- trilha:inicio (gerado por scripts/abas.py a partir de scripts/modulos.json; não edite à mão) -->
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">1</span>
+      <a class="passo" href="../biologia-molecular/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-biologia-molecular"/></svg><span>Etapa 1</span></div>
+        <h3>Biologia molecular</h3>
+        <p>Comece pela química da vida: água, sais minerais, carboidratos, lipídios, proteínas, enzimas, vitaminas e ácidos nucleicos.</p>
+        <ul class="temas" aria-label="Temas"><li>Água e sais minerais</li><li>Carboidratos e lipídios</li><li>Proteínas e enzimas</li><li>Vitaminas</li><li>Ácidos nucleicos</li></ul>
+      </a>
+    </li>
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">2</span>
+      <a class="passo" href="../morfofisiologia/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span>Etapa 2</span> <span class="badge new">Novo</span></div>
+        <h3>Morfofisiologia celular</h3>
+        <p>Veja como a célula se organiza: a membrana que escolhe o que entra e sai, as organelas e o núcleo.</p>
+        <ul class="temas" aria-label="Temas"><li>Procarionte e eucarionte</li><li>Membrana plasmática</li><li>Transporte pela membrana</li><li>Origem das organelas</li><li>Núcleo</li></ul>
+      </a>
+    </li>
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">3</span>
+      <a class="passo" href="../celula/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Etapa 3</span></div>
+        <h3>A célula por dentro</h3>
+        <p>Entre numa célula em 3D, encontre cada organela e veja por dentro o que ela faz.</p>
+        <ul class="temas" aria-label="Temas"><li>Célula animal e vegetal</li><li>Organelas em 3D</li><li>Bactéria e vírus</li><li>Células especializadas</li></ul>
+      </a>
+    </li>
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">4</span>
+      <a class="passo" href="../divisao-celular/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-divisao"/></svg><span>Etapa 4</span></div>
+        <h3>Divisão celular</h3>
+        <p>Acompanhe a mitose e a meiose fase por fase e descubra de onde vem a variação entre os filhos.</p>
+        <ul class="temas" aria-label="Temas"><li>Ciclo celular</li><li>Mitose</li><li>Meiose</li><li>Permutação</li><li>Não disjunção</li></ul>
+      </a>
+    </li>
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">5</span>
+      <a class="passo" href="../bioenergetica/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-bioenergetica"/></svg><span>Etapa 5</span></div>
+        <h3>Fotossíntese e respiração</h3>
+        <p>Siga a energia da luz até o ATP: fotossíntese, respiração e fermentação, passo a passo.</p>
+        <ul class="temas" aria-label="Temas"><li>ATP</li><li>Respiração celular</li><li>Fermentação</li><li>Fotossíntese</li><li>Ciclo do carbono</li></ul>
+      </a>
+    </li>
+    <li class="etapa pronta">
+      <span class="no" aria-hidden="true">6</span>
+      <a class="passo" href="../genetica/index.html">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-genetica"/></svg><span>Etapa 6</span></div>
+        <h3>Genética</h3>
+        <p>Resolva cruzamentos de Mendel, leia heredogramas e veja como os grupos sanguíneos passam de pais para filhos.</p>
+        <ul class="temas" aria-label="Temas"><li>Leis de Mendel</li><li>Heredogramas</li><li>Grupos sanguíneos</li><li>Herança ligada ao sexo</li><li>Ligação gênica</li></ul>
+      </a>
+    </li>
+    <li class="etapa breve">
+      <span class="no" aria-hidden="true">7</span>
+      <div class="passo">
+        <div class="meta"><svg class="ico" aria-hidden="true"><use href="#mod-ecologia"/></svg><span>Etapa 7</span> <span class="badge breve">Em breve</span></div>
+        <h3>Ecologia</h3>
+        <p>Ligue tudo ao ambiente: teias alimentares, ciclos da matéria, biomas brasileiros e o impacto humano.</p>
+        <ul class="temas" aria-label="Temas"><li>Teias alimentares</li><li>Ciclos biogeoquímicos</li><li>Relações ecológicas</li><li>Biomas brasileiros</li><li>Impactos ambientais</li></ul>
+      </div>
+    </li>
+    <li class="icones" hidden><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="mod-biologia-molecular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5 14 6.4v5.8L9 15.1 4 12.2V6.4z"/><path d="M14 12.2l3.2 2.4"/><circle cx="18.6" cy="16.6" r="2.4"/><circle cx="9" cy="20.2" r="1.3" fill="currentColor" stroke="none"/><path d="M9 15.1v3.8"/></g></symbol><symbol id="mod-divisao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.2a5.6 5.6 0 1 0 0 7.6a5.6 5.6 0 1 0 0-7.6z"/><circle cx="7.8" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="16.2" cy="12" r="1.3" fill="currentColor" stroke="none"/><path d="M12 3v2.2M12 18.8V21"/></g></symbol><symbol id="mod-bioenergetica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.5 5.5 13.2h5.2L9.6 21.5l8.9-11.7h-5.6z"/><path d="M19.2 3.4v2.4M22 6.2h-2.4M3 17.6h2.4M4.2 16.4v2.4"/></g></symbol><symbol id="mod-genetica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M12 3.5v17M3.5 12h17"/><circle cx="7.75" cy="7.75" r="1.6" fill="currentColor"/><circle cx="16.25" cy="7.75" r="1.6" fill="currentColor"/><circle cx="7.75" cy="16.25" r="1.6" fill="currentColor"/><circle cx="16.25" cy="16.25" r="1.6"/></g></symbol><symbol id="mod-ecologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-6.5"/><path d="M12 14.5c-4.6 0-7-2.6-7-7.5 4.6 0 7 2.6 7 7.5z"/><path d="M12 12c0-4.4 2.3-7.4 7-8.5.4 5-2 8.1-7 8.5z"/><path d="M4.5 21h15"/></g></symbol></svg></li>
+  <!-- trilha:fim --></ol>
+  </section>
+
+  <section class="secao" id="consultar" aria-labelledby="t-consultar">
+    <div class="secao-cab">
+      <h2 id="t-consultar">Para consultar</h2>
+      <p>Material de apoio, fora da trilha. Use a qualquer momento, quando precisar ver uma molécula, um elemento ou o DNA de perto.</p>
+    </div>
+    <!-- Faixa de apoio, gerada por scripts/abas.py entre apoio:inicio e apoio:fim.
+         Classes: div.apoio > a.ref > svg.ico + span > b (título) + small (resumo). -->
+    <div class="apoio"><!-- apoio:inicio (gerado por scripts/abas.py a partir de scripts/modulos.json; não edite à mão) -->
+    <a class="ref" href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span><b>Dupla hélice do DNA</b><small>O gene da hemoglobina em 3D, lido códon por códon.</small></span></a>
+    <a class="ref" href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span><b>Tabela periódica</b><small>Os 118 elementos, cada um com ficha e átomo animado.</small></span></a>
+    <a class="ref" href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span><b>Moléculas em 3D</b><small>Água, CO₂ e outras moléculas em 3D, com ângulos medidos.</small></span></a>
+    <a class="ref" href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span><b>Moléculas da vida</b><small>Aminoácidos, lipídios e a α-hélice de perto.</small></span></a>
+  <!-- apoio:fim --></div>
+  </section>
+
+  <footer class="rodape">
+    <p>As fontes de cada módulo estão no rodapé dele: NCBI RefSeq, PDB e IUPAC, entre outras.</p>
+    <p>As ilustrações têm cores adicionadas para ensinar; as proporções são aproximadas.</p>
+  </footer>
+</main>
+<script src="../home.js"></script>
+</body>
+</html>
