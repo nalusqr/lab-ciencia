@@ -87,3 +87,19 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 ## Próxima etapa (decidida pela Nalu em 2026-11-15)
 
 A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente, sem rótulo "em breve" (pedido da Nalu); as que ainda não têm conteúdo só não terão módulos por enquanto. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
+
+## Ementa da Nalu (fila de etapas, uma por vez)
+
+1. Biologia molecular: publicada.
+2. Teoria celular e morfofisiologia: publicada (módulo Morfofisiologia).
+3. Citogenética (classificação dos cromossomos, mitose e meiose, euploidias e aneuploidias): em andamento, no módulo divisao-celular, que passa a se chamar Citogenética.
+4. Bioenergética (respiração, fermentação, fotossíntese e quimiossíntese): o módulo já existe; o 🔬 Taxon confere o que falta para o ENEM.
+5. Embriologia: tipos de ovos quanto à quantidade e à distribuição do vitelo; segmentação, mórula, blástula, gástrula, nêurula e organogênese; anexos embrionários (vesícula vitelínica, alantoide, córion e âmnio); gametogênese (ovulogênese e espermatogênese); embriologia humana. É um módulo novo (site/embriologia/), que reaproveita a gametogênese da Citogenética.
+6. Histologia: características gerais e fisiologia dos tecidos epiteliais, conjuntivos, musculares e nervoso. Módulo novo (site/histologia/).
+7. Taxonomia e nomenclatura. Módulo novo (site/taxonomia/).
+8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); já existe o tópico #teoria/virus na Morfofisiologia.
+9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Provavelmente um módulo por reino, ou um módulo com uma seção por reino.
+10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor.
+11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
+12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo.
+13. Ecologia: conceitos; cadeias e teias; fluxo de energia; pirâmides; ciclos biogeoquímicos; dinâmica populacional; relações ecológicas; sucessão; biomas; desequilíbrios. O módulo site/ecologia/ está pausado em cerca de 90% (fora do main, no WIP); retomar e completar.
