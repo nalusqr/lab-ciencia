@@ -12,6 +12,7 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 | **Prometeu**, engenheiro fullstack sênior (18 anos; React, Node/Next, Java, APIs, CI) | Ajuda o Aurelius: bundle e infraestrutura do 3D, carregamento de modelos .glb, testes automáticos | `site/celula/fonte/entry.js`, `site/celula/fonte/src/e_modelos.js`, `site/celula/vendor/`, `site/assets/modelos/*.glb.js`, `site/assets/modelos/indice.js`, `scripts/glb2js.py`, `testes/` |
 | **Apolo**, diretor de arte | Identidade visual, paleta, tipografia, estilo estético, regras de UI/UX | `docs/GUIA-DE-ESTILO.md` |
 | **Íris**, artista / gerente de assets | Ícones, sprites, fontes, efeitos visuais, materiais 3D, seguindo o guia | `site/assets/`, `docs/ASSETS.md` |
+| **Leo**, programador sênior de UI/UX front-end (entrou em 2026-11-15) | Dono da página inicial: layout, tipografia, botões, microinterações, hierarquia e acessibilidade, dentro do guia Campo escuro | `site/index.html`, `site/home.css`, `site/home.js` |
 | **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 
 ## Regras de trabalho
@@ -21,6 +22,7 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 - Aurelius e Prometeu não editam o mesmo arquivo. Na Célula, o Aurelius fica com `head.html`, `data.js` e `src/a_` a `src/d_`; o Prometeu, com `entry.js`, `src/e_modelos.js`, o bundle e `testes/`. Para ligar uma coisa na outra, combinam pelo PM.
 
 - Cada pessoa da equipe só edita os arquivos da sua coluna "Onde escreve". Mudança em arquivo de outro dono vira pedido ao PM.
+- Página inicial: o Leo é dono de `site/index.html` (fora do bloco `abas`) e de `site/home.css`/`site/home.js`. O Prometeu fica com o modo `?embed=1` da Célula e com `scripts/abas.py`/`scripts/modulos.json`, que geram a trilha.
 - O professor não edita o código: escreve as correções, e o engenheiro aplica.
 - Nada de copiar imagens, código ou assets de terceiros. Tudo é feito por nós.
 - Prévia do módulo Célula: sempre no mesmo link do Claude. Cópia na pasta da Nalu e no GitHub (`nalusqr/lab-ciencia`) a cada versão.

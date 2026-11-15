@@ -20,7 +20,7 @@ function ionB(x, y, r, c, s) { circ(x, y, r, c, 'rgba(11,15,28,.6)', 1.5); if (r
 // =====================================================================================
 {
   const CL = [['água', C.aguaM], ['proteínas', C.prot], ['lipídios', C.lip], ['carboidratos', C.carb], ['ácidos nucleicos', C.na], ['sais e íons', C.sal], ['outras moléculas pequenas', '#6F7A96']];
-  const DADOS = [[70, 18, 5, 2, 1, 1, 3], [70, 15, 2, 3, 7, 1, 2], [0, 60, 17, 7, 3, 3, 10]];
+  const DADOS = [[70, 18, 5, 2, 1, 1, 3], [70, 15, 2, 3, 7, 1, 2], [0, 60, 16, 7, 5, 3, 9]];
   def('comp', 'celula', {
     t: 'Do que a célula é feita', s: 'água, proteínas, lipídios e o resto', c: C.dim, loc: 'Porcentagem da massa', still: 4,
     ctl: escolha('Célula', ['animal', 'bactéria', 'animal sem água'], 7),
@@ -283,7 +283,7 @@ def('agua', 'solvente', {
     ctl: escolha('Mineral', MIN.map(m => m.n), 6),
     alt: 'Ficha de cada sal mineral com uma ilustração da sua função, as fontes na dieta e a doença causada pela carência',
     d: `<p><b>Os sais minerais são substâncias inorgânicas que, no corpo, aparecem principalmente como íons dissolvidos</b> (Na⁺, K⁺, Ca²⁺, Cl⁻) ou presos a moléculas e estruturas (o ferro na hemoglobina, o cálcio no osso). Não fornecem energia, mas sem eles nervos, músculos, enzimas e ossos param de funcionar.</p>
-<p>Eles chegam pela alimentação e pela água e saem na urina, nas fezes e no suor. As carências mais comuns no Brasil são de <b>ferro</b> (anemia), de <b>cálcio</b> e de <b>iodo</b>. Políticas públicas combatem as carências: o sal de cozinha é iodado por lei, e as farinhas de trigo e de milho são enriquecidas com ferro e ácido fólico.</p>
+<p>Eles chegam pela alimentação e pela água e saem na urina, nas fezes e no suor. As carências mais comuns no Brasil são de <b>ferro</b> (anemia) e de <b>cálcio</b>. A de <b>iodo</b>, que causava bócio, era comum e foi controlada pela iodação do sal, obrigatória por lei desde 1974. As farinhas de trigo e de milho são enriquecidas com ferro e ácido fólico.</p>
 <p>O controle passa por sete minerais; escolha um para ver a ficha.</p>`,
     kv: MIN.map(m => [m.n + ' (' + m.ion + ')', m.ca.split(';')[0].split('.')[0]]),
     enem: 'As carências mais cobradas: ferro e anemia, iodo e bócio, cálcio e osteoporose (com a vitamina D). A prova também gosta das políticas públicas: sal iodado e farinhas fortificadas. Na fisiologia, Na⁺ e K⁺ aparecem no impulso nervoso, e o Ca²⁺, na contração muscular e na coagulação.',
@@ -309,7 +309,7 @@ def('sais', 'osmose', {
   alt: 'Hemácias em soluções com diferentes concentrações de sal: incham e estouram em pouca concentração, murcham em muita e ficam normais em 0,9 por cento',
   d: `<p><b>Os sais dissolvidos controlam para onde a água vai.</b> A água atravessa a membrana por <b>osmose</b>, do lado com menos solutos para o lado com mais solutos. Por isso a concentração de sais no sangue precisa ficar estável.</p>
 <p>Uma hemácia num meio com a mesma concentração que ela (<b>isotônico</b>, cerca de 0,9% de NaCl) não muda. Num meio com menos sal (<b>hipotônico</b>), a água entra, a célula incha e pode estourar (<b>hemólise</b>). Num meio com mais sal (<b>hipertônico</b>), a água sai e a célula murcha. Mude a concentração no controle.</p>
-<p>É por isso que o <b>soro fisiológico</b> tem 0,9% de NaCl, e que o soro caseiro leva sal e açúcar: repõe a água e os sais perdidos na diarreia. Salgar carnes e fazer doces muito açucarados conserva os alimentos, porque o meio hipertônico tira a água dos microrganismos.</p>`,
+<p>É por isso que o <b>soro fisiológico</b> tem 0,9% de NaCl, e que o soro caseiro leva sal e açúcar: repõe a água e os sais perdidos na diarreia, e o açúcar ajuda o intestino a absorver o sódio, e a água vai junto. Salgar carnes e fazer doces muito açucarados conserva os alimentos, porque o meio hipertônico tira a água dos microrganismos.</p>`,
   kv: [['Isotônico para a hemácia', 'cerca de 0,9% de NaCl'], ['Hipotônico', 'a água entra; a célula incha'], ['Hipertônico', 'a água sai; a célula murcha'], ['Soro caseiro', 'água, sal e açúcar']],
   enem: 'Tema muito frequente: soro caseiro e desidratação, conservação de alimentos com sal ou açúcar, por que não beber água do mar e por que não injetar água pura na veia. Pense sempre para que lado a água vai: para onde há mais solutos.',
   links: [['Teor de água', '#agua/teor'], ['Membranas (Morfofisiologia)', '../morfofisiologia/index.html']],
