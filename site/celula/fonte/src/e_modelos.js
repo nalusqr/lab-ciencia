@@ -65,7 +65,17 @@ const MODELOS={
   ROTULOS:{
     mitocondria:[['membrana_externa','membrana externa'],['membrana_interna','membrana interna'],['cristas','cristas (dobras)'],
       ['matriz','matriz'],['atp_sintase','ATP sintase'],['dna_mitocondrial','DNA próprio'],['ribossomos','ribossomos próprios'],
-      ['espaco_intermembranas','espaço intermembranas'],['cadeia_transportadora','cadeia transportadora de elétrons']]
+      ['espaco_intermembranas','espaço intermembranas'],['cadeia_transportadora','cadeia transportadora de elétrons']],
+    // núcleo em corte (peças de nucleo.glb). No computador cabem 8 rótulos; os últimos só aparecem se houver espaço.
+    nucleo:[['poros_nucleares','poro nuclear'],['nucleolo','nucléolo (fábrica de ribossomos)'],['membrana_externa','envelope nuclear (membrana dupla)'],
+      ['eucromatina','eucromatina (DNA ativo)'],['heterocromatina','heterocromatina (DNA compactado)'],
+      ['reticulo_endoplasmatico','retículo ligado ao núcleo'],['ribossomos','ribossomos'],['nucleoplasma','nucleoplasma'],
+      ['membrana_interna','membrana interna'],['espaco_perinuclear','espaço perinuclear'],['lumen_do_reticulo','lúmen do retículo']],
+    // cloroplasto em corte (peças de cloroplasto.glb)
+    cloroplasto:[['tilacoides','granum (pilha de tilacoides)'],['estroma','estroma (ciclo de Calvin)'],['membrana_externa','membrana externa'],
+      ['membrana_interna','membrana interna'],['graos_de_amido','grão de amido'],['dna_do_cloroplasto','DNA próprio'],
+      ['lamelas_estromais','lamelas (ligam os grana)'],['ribossomos','ribossomos próprios'],['lumen_do_tilacoide','lúmen do tilacoide'],
+      ['plastoglobulos','plastoglóbulos (gotas de lipídio)'],['espaco_intermembranas','espaço intermembranas']]
   },
   tem(nome){return !!(window.LAB_MODELOS&&typeof window.LAB_MODELOS[nome]==='string')},
   pronto(nome){return MODELOS._prontos[nome]},
@@ -110,9 +120,9 @@ const MODELOS={
       if(!o.manterTick)s.tick=null;
       // rótulos nas âncoras do modelo (mesmo formato de lab(): [texto, Vector3])
       const rot=o.rotulos||MODELOS.ROTULOS[nome]||Object.keys(m.pecas).map(p=>[p,p.replace(/_/g,' ')]);
-      // pontos espalhados, na face voltada para a câmera (o.vista; padrão a direção da câmera da mitocôndria procedural),
+      // pontos espalhados, na face voltada para a câmera (o.vista; padrão a direção da câmera da cena, s.cam),
       // já no espaço de s.g; o.ancoras ({peça:[x,y,z]}, também no espaço de s.g) vence o cálculo automático
-      const auto=modEspalhar(m,rot.map(r=>r[0]),o.vista||[0,.95,1]);
+      const auto=modEspalhar(m,rot.map(r=>r[0]),o.vista||(s.cam&&s.cam.isVector3?s.cam.toArray():[0,.95,1]));
       const nov=[];for(const [peca,texto] of rot){const a=o.ancoras&&o.ancoras[peca]?new modTHREE.Vector3(...o.ancoras[peca]):auto[peca];if(a)nov.push([texto,a])}
       s.labels.length=0;s.labels.push(...nov);
       s.modelo=m;modAvisar()};

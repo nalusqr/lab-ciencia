@@ -31,6 +31,9 @@
 <script>
 (()=>{
 const nome=(new URLSearchParams(location.search).get('modelo')||'mitocondria').replace(/[^a-z0-9_\-]/g,'');
+// ?base=pasta/ aponta para outra pasta de .glb.js (ex.: cópias no scratchpad); ?tamanho= e ?rx= (rotação em x, rad) imitam as opções de MODELOS.trocar
+const QS=new URLSearchParams(location.search);if(QS.get('base'))window.LAB_MODELOS_BASE=QS.get('base');
+const TAM=+QS.get('tamanho')||4.6,RX=+QS.get('rx')||0;
 document.getElementById('nome').textContent=nome;
 const st=t=>{document.getElementById('st').textContent=t};
 const fim=(status,extra)=>{document.body.dataset.status=status;window.TESTE_MODELO=Object.assign({nome,status},extra||{})};
@@ -46,7 +49,7 @@ function script(src){return new Promise(res=>{const s=document.createElement('sc
   if(!grupo){st('O .glb não pôde ser lido (ver o console). O site usaria a versão procedural.');fim('erro');return}
   const {THREE,RoomEnvironment}=window.R3F;
   // mesmo encaixe que MODELOS.trocar usa no site (maior dimensão = 4,6, centrado)
-  const cena={g:new THREE.Group(),labels:[],mats:[],tick:null};MODELOS.trocar(cena,nome,{tamanho:4.6});
+  const cena={g:new THREE.Group(),labels:[],mats:[],tick:null};MODELOS.trocar(cena,nome,{tamanho:TAM,rotacao:[RX,0,0]});
   const pecas=Object.keys(grupo.pecas);
   document.getElementById('pecas').innerHTML='Peças ('+pecas.length+'): <code>'+pecas.join(', ')+'</code><br>Carregado '+(!antes&&injetado?'sob demanda':'da página')+' em '+ms+' ms. O modelo gira sozinho; os pontos âmbar são as âncoras dos rótulos.';
   const W=()=>innerWidth,H=()=>innerHeight;
@@ -60,7 +63,7 @@ function script(src){return new Promise(res=>{const s=document.createElement('sc
   addEventListener('resize',()=>{cam.aspect=W()/H();cam.updateProjectionMatrix();r.setSize(W(),H())});
   const rots=cena.labels.map(([t])=>{const d=document.createElement('div');d.className='rot';d.textContent=t;document.body.appendChild(d);return d});
   const v=new THREE.Vector3();let quadros=0;
-  r.setAnimationLoop(t=>{cena.g.rotation.y=t*.0004;cena.g.updateMatrixWorld(true);r.render(sc,cam);quadros++;
+  const GIRA=!QS.get('parado');r.setAnimationLoop(t=>{if(GIRA)cena.g.rotation.y=t*.0004;cena.g.updateMatrixWorld(true);r.render(sc,cam);quadros++;
     cena.labels.forEach(([,p],i)=>{v.copy(p).applyMatrix4(cena.g.matrixWorld).project(cam);const d=rots[i];d.style.display=v.z>1?'none':'';d.style.left=((v.x*.5+.5)*W())+'px';d.style.top=((-v.y*.5+.5)*H())+'px'});
     if(quadros===3)fim('ok',{pecas,rotulos:cena.labels.map(l=>l[0]),ms,sobDemanda:!antes&&injetado})});
   st('Modelo carregado.');
