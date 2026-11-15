@@ -16,9 +16,11 @@ Este arquivo é o plano vivo da equipe. Quem lidera é o PM; cada frente tem um 
 | 🔬 **Taxon**, professor de Biologia (PhD, ensino médio e ENEM) | Revisa a ciência, o nível e a linguagem; liga cada módulo ao que o ENEM cobra | `docs/revisao-biologia/` |
 | 🧬 **Sapien**, professor sênior de Biologia (entrou em 2026-11-15) | Divide com o Taxon os roteiros e as revisões científicas; cada um revisa o trabalho do outro | `docs/revisao-biologia/` |
 
+Matemática: ver docs/matematica/TIME.md
+
 ## Regras de trabalho
 
-- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, 🧬 Sapien, ✨ Leo.
+- Emojis da equipe (pedido da Nalu, 2026-11-15): sempre que um agente for citado, o emoji dele vem junto do nome: 🧭 Atlas, 🏛️ Aurelius, 🔥 Prometeu, 🎨 Apolo, 🌈 Íris, 🔬 Taxon, 🧬 Sapien, ✨ Leo; time de Matemática: 📐 Tales, 🌀 Hipátia, ⚙ Arquimedes, 🔭 Galileo.
 
 - Todos os agentes também são programadores fullstack sênior (decisão da Nalu, 2026-11-14). Quem ficar livre ajuda outra frente, pegando do PM uma tarefa com arquivos próprios, sem editar o arquivo que outro agente está editando.
 
