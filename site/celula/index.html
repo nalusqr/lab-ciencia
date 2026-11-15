@@ -28,6 +28,8 @@
 .hs span{position:absolute;left:18px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt);pointer-events:none}
 .hs.on span{border-color:var(--amber)}
 .hs.r span{left:auto;right:18px}
+.hs.t span{left:0;top:-46px;transform:translateX(-50%)}
+.hs.b span{left:0;top:18px;transform:translateX(-50%)}
 .hs.hid span{visibility:hidden}
 @keyframes ping{from{transform:scale(.8);opacity:1}to{transform:scale(1.9);opacity:0}}
 /* rótulos das telas de detalhe */
@@ -35,7 +37,10 @@
 .dl i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(11,15,28,.7)}
 .dl span{position:absolute;left:12px;top:-14px;white-space:nowrap;font:600 13px/1.3 var(--f-txt);padding:5px 10px;border-radius:999px;background:var(--pill);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--float-line);color:var(--txt)}
 .dl.r span{left:auto;right:12px}
+.dl.t span{left:0;top:-40px;transform:translateX(-50%)}
+.dl.b span{left:0;top:12px;transform:translateX(-50%)}
 .dl.hid{visibility:hidden}
+.dl b{position:absolute;left:0;top:0;height:1px;width:0;background:rgba(255,255,255,.6);transform-origin:0 0}
 @media(prefers-reduced-motion:reduce){.hs button::after{animation:none}#view.fade #stage{animation:none}}
 /* camadas flutuantes sobre o palco (nível 2) */
 .hud{position:absolute}
@@ -90,6 +95,18 @@
   .tag{top:auto;bottom:76px;left:12px;font-size:13px}.tag small{display:none}
   .tool{bottom:12px}.tool button{padding:0 10px}
 }
+/* revisão visual v5 (Apolo): A cartão compacto, B palco na primeira dobra */
+.mag .vw{color:var(--dim);font:500 12px/1.4 var(--f-data)}
+.mag [hidden]{display:none}
+@media (min-width:700px){
+  .mag{min-width:0;max-width:280px;padding:12px}
+  .mag b{display:block;font-size:15px;line-height:1.3}
+  .mag .sb{flex-direction:column;align-items:flex-end;gap:4px;margin:8px 0 2px}
+  .mag .sb em{white-space:normal;text-align:right}
+  #magBar{max-width:100%}
+  .mag .n{max-width:256px;margin-left:auto;margin-top:6px}
+  #view{height:clamp(460px,calc(100svh - 286px),820px)}
+}
 </style>
 </head>
 <body>
@@ -111,7 +128,7 @@
     <div id="stage"></div>
     <div class="hud tag" id="tag"><i id="tagC"></i><span id="tagT">—</span></div>
     <button class="hud" id="back"><svg aria-hidden="true"><use href="#ui-voltar"/></svg><span class="tx">Voltar à célula inteira</span></button>
-    <div class="hud mag" id="mag"><b id="magX">—</b><div class="sb"><span id="magBar"></span><em id="magL">—</em></div><div class="n">Ilustração com cores adicionadas.<br><span id="magU">1 µm é um milésimo de milímetro.</span></div></div>
+    <div class="hud mag" id="mag"><b id="magX">—</b><div class="sb"><span id="magBar"></span><em id="magL">—</em></div><div class="vw" id="magV"></div><div class="n" id="magN">Ilustração com cores adicionadas.<br><span id="magU">1 µm é um milésimo de milímetro.</span></div></div>
     <div class="hud tool" role="toolbar" aria-label="Controles do 3D">
       <button id="lbls" title="Mostrar ou esconder os nomes" aria-pressed="true"><svg aria-hidden="true"><use href="#ui-rotulos"/></svg><span class="tx">Nomes</span></button>
       <button class="sq" id="zout" title="Afastar" aria-label="Afastar"><svg aria-hidden="true"><use href="#ui-afastar"/></svg></button>
@@ -503,7 +520,7 @@ vegetal(){SEED=5;const s=scene({dist:8.2,upu:50/5.6,cam:V3(0,.62,1)}),G=s.g;cons
   const chs=G.children.filter(o=>o.userData.k==='cloroplasto').map(o=>({o,p:o.position.clone(),a:rnd()*TAU}));
   s.tick=(t)=>{for(const c of chs){c.o.position.set(c.p.x+Math.sin(t*.4+c.a)*.025,c.p.y+Math.cos(t*.5+c.a)*.02,c.p.z)}};return s},
 
-bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const R=.62,L=2.6;
+bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(-.38,.6,1)}),G=s.g;const R=.62,L=2.6;
   const g=bumpy(capG(R,L,48),.02,2.4,1);g.rotateZ(Math.PI/2);shell(G,g,'parede_bac','#82c91e','#d8f5a2',{thickness:1,attenuationDistance:2.2,pick:false});
   const im=noPick(mesh(capG(R*.9,L,40),FILM(null,'#b197fc',.12)));im.rotation.z=Math.PI/2;G.add(im);
   const IN=p=>{const x=Math.max(-L/2,Math.min(L/2,p.x));return Math.hypot(p.x-x,p.y,p.z)<R*.82};
@@ -521,7 +538,7 @@ bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const
   s.anch.pili=V3(.4,-R-.3,.1).applyAxisAngle(V3(1,0,0),-.9);
   G.position.x=-1.45;s.tick=(t)=>{fl.rotation.x=t*4};return s},
 
-neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
+neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(-.4,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
   const soma=bumpy(ellG(.95,.72,.82,80),.08,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
   s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.4);
   const dm=M('dendrito','#fff',{vc:true,roughness:.4});
@@ -543,7 +560,7 @@ neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;con
   s.tick=(t)=>{const u=(t*.22)%1;const k=sheaths.findIndex(x=>x>u);const tt=u<.16?u:(k<0?u:sheaths[Math.max(0,k-1)]+.11*Math.pow((u-sheaths[Math.max(0,k-1)])/.11,4));const p=axc.getPointAt(Math.min(1,tt));sp.position.copy(p);halo.position.copy(p)};
   G.position.x=1.25;return s},
 
-esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(0,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
+esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(-.42,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
   const head=bumpy(ellG(.62,.2,.4,72),.012,3,1);head.translate(hP.x,hP.y,hP.z);shell(G,head,null,'#74c0fc','#d0ebff',{thickness:.5,attenuationDistance:1.2});
   G.add(mesh(bumpy(ellG(.5,.14,.31,56),.01,5,3,C('nucleo_esp'),.35),M('nucleo_esp','#fff',{vc:true,roughness:.5}),'nucleo_esp',hP.clone().add(V3(.04,0,0))));s.anch.nucleo_esp=hP.clone().add(V3(.25,.3,0));
   const ac=new THREE.SphereGeometry(1,56,40,0,TAU,0,Math.PI*.42);ac.rotateZ(Math.PI/2);ac.scale(.66,.23,.44);G.add(mesh(ac,FILM('acrossomo',C('acrossomo'),.55,{depthWrite:true}),'acrossomo',hP));s.anch.acrossomo=hP.clone().add(V3(-.45,.28,0));
@@ -609,7 +626,7 @@ function lab(s,t,p){s.labels.push([t,p.isVector3?p:V3(...p)])}
 const DETB={
 nucleo(){SEED=61;const s=scene({dist:8.4,upu:6/3.6,cam:V3(0,.5,1)}),G=s.g;const r=1.75;nucleus(G,'nucleo',V3(0,0,0),r);
   erSheets(G,V3(0,0,0),r+.22,2,TAU*.42,Math.PI*.62,5);
-  lab(s,'envelope duplo',[1.45,.75,.75]);lab(s,'poro nuclear',[.4,1.62,-.4]);lab(s,'nucléolo',[.3,-.1,.3]);lab(s,'cromatina (DNA + proteínas)',[-.55,.45,.5]);lab(s,'retículo ligado ao núcleo',[-1.75,-.55,.95]);return s},
+  lab(s,'envelope duplo',[1.45,.75,.75]);lab(s,'poro nuclear',[.4,1.62,-.4]);lab(s,'nucléolo',[.3,-.1,.3]);lab(s,'cromatina (DNA + proteínas)',[-.55,.45,.5]);lab(s,'retículo ligado ao núcleo',[-1.75,-.55,.95]);if(typeof MODELOS!=='undefined')MODELOS.trocar(s,'nucleo',{tamanho:3.8});return s},
 
 mitocondria(){SEED=62;const s=scene({dist:7,upu:2/5,cam:V3(0,.95,1)}),G=s.g;const P=CUT(),L=2.6;
   const o=bumpy(capG(1,L,64),.025,2,1);o.rotateZ(Math.PI/2);G.add(mesh(o,M('mitocondria',C('mitocondria'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'mitocondria'));
@@ -628,34 +645,34 @@ mitocondria(){SEED=62;const s=scene({dist:7,upu:2/5,cam:V3(0,.95,1)}),G=s.g;cons
 cloroplasto(){SEED=63;const s=scene({dist:7.6,upu:5/5,cam:V3(0,1.05,1)}),G=s.g;const P=CUT();
   G.add(mesh(bumpy(ellG(2.5,.95,1.45,90),.02,2,1),M('cloroplasto',C('cloroplasto'),{clippingPlanes:P,side:THREE.DoubleSide,roughness:.4}),'cloroplasto'));
   G.add(mesh(ellG(2.38,.86,1.35,90),FILM('cloroplasto','#b2f2bb',.35,{clippingPlanes:P}),'cloroplasto'));
-  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2A9450',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.35,clearcoat:.8,clippingPlanes:P});const disks=[],stacks=[];
+  const tg=bumpy(new THREE.CylinderGeometry(.3,.3,.07,36,1),.01,8,2,'#2A9450',.3);const tm=M('cloroplasto','#fff',{vc:true,roughness:.65,clearcoat:0,sheen:0,clippingPlanes:P});const disks=[],stacks=[];
   const pl=placer();scatter(10,.36,()=>V3(rr(-1.8,1.8),0,rr(-.9,.9)),pl,800).forEach(c=>{if((c.x/2.1)**2+(c.z/1.15)**2>1)return;stacks.push(c);const n=6+Math.floor(rnd()*5);for(let j=0;j<n;j++)disks.push({p:V3(c.x,-.6+j*.085,c.z)})});
   G.add(inst(tg,tm,'cloroplasto',disks));
   const lm=M('cloroplasto','#37b24d',{roughness:.4,clippingPlanes:P,transparent:true,opacity:.85});for(let i=0;i<stacks.length-1;i++){const a=stacks[i],b=stacks[i+1];const d=b.clone().sub(a);const o=mesh(new THREE.BoxGeometry(d.length(),.025,.12),lm,'cloroplasto',a.clone().lerp(b,.5).setY(-.35+(i%3)*.12));o.rotation.y=-Math.atan2(d.z,d.x);G.add(o)}
-  G.add(mesh(bumpy(ellG(.35,.18,.25,32),.02,5,1,'#f8f9fa',.1),M('cloroplasto','#fff',{vc:true,roughness:.6,clippingPlanes:P}),'cloroplasto',[1.6,-.35,.6]));
+  G.add(mesh(bumpy(ellG(.35,.18,.25,32),.02,5,1,'#F2EAD8',.1),M('cloroplasto','#fff',{vc:true,roughness:.6,clippingPlanes:P}),'cloroplasto',[1.6,-.35,.6]));
   G.add(inst(sphG(.05,12),M('cloroplasto','#ffe066',{roughness:.2,clippingPlanes:P}),'cloroplasto',Array.from({length:14},()=>({p:V3(rr(-2,2),rr(-.6,-.1),rr(-1,1))})).filter(t=>(t.p.x/2.2)**2+(t.p.z/1.2)**2<1)));
-  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: luz → ATP',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);return s},
+  const sg2=stacks.reduce((a,b)=>b.z<a.z?b:a);lab(s,'granum (pilha de tilacoides)',[sg2.x,.05,sg2.z]);const sl=stacks.reduce((a,b)=>b.x<a.x?b:a);lab(s,'tilacoide: luz → ATP',[sl.x,-.05,sl.z+.3]);lab(s,'estroma (ciclo de Calvin)',[-.9,-.55,.9]);lab(s,'membrana dupla',[-2.45,.1,.4]);lab(s,'grão de amido',[1.6,-.1,.6]);if(typeof MODELOS!=='undefined')MODELOS.trocar(s,'cloroplasto',{tamanho:5,rotacao:[-.6,0,0]});return s},
 
 re(){SEED=64;const s=scene({dist:9,upu:2/5,cam:V3(0,.75,1)}),G=s.g;const rib=[];
   for(let k=0;k<4;k++){const g=new THREE.BoxGeometry(3.6,.12,2.8,90,1,70);const p=g.attributes.position;const y0=-.95+k*.62;
     for(let j=0;j<p.count;j++){const x=p.getX(j),z=p.getZ(j);p.setY(j,p.getY(j)+Math.sin(x*1.8+k)*.12+Math.sin(z*2.2+k*.7)*.1)}g.computeVertexNormals();
-    const o=mesh(bumpy(g,.008,5,k,C('re'),.25),M('re','#fff',{vc:true,roughness:.35,clearcoat:.9}),'re',[-.9,y0,0]);G.add(o);
+    const o=mesh(bumpy(g,.008,5,k,C('re'),.25),M('re','#fff',{vc:true,roughness:.62,clearcoat:0,sheen:0}),'re',[-.9,y0,0]);G.add(o);
     for(let j=0;j<260;j++){const x=rr(-1.75,1.75),z=rr(-1.35,1.35),sg=rnd()<.5?1:-1;rib.push({p:V3(x-.9,y0+Math.sin(x*1.8+k)*.12+Math.sin(z*2.2+k*.7)*.1+sg*.1,z)})}}
   G.add(inst(sphG(.045,10),M('ribossomo',C('ribossomo'),{roughness:.5}),'ribossomo',rib));
-  const sm=M('re','#8FB0FF',{roughness:.3,clearcoat:1});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
+  const sm=M('re','#6A92FF',{roughness:.65,clearcoat:0,sheen:0});for(let i=0;i<9;i++){const w=walk(9,.38,p=>p.x>1&&p.x<3.3&&Math.abs(p.y)<1.2&&Math.abs(p.z)<1.3,V3(1.3,rr(-.9,.9),rr(-1,1)));if(w.length>3)G.add(mesh(tubeG(w,.075,50,10),sm,'re'))}
   const ves=noPick(mesh(sphG(.12,20),FILM(null,'#d3f9d8',.6,{depthWrite:true})));G.add(ves);s.tick=t=>{const u=(t*.25)%1;ves.position.set(2.2+u*1.2,.2+u*1.1,.2);ves.scale.setScalar(Math.min(1,u*5))};
   lab(s,'RE rugoso (cheio de ribossomos)',[-1.9,.95,.6]);lab(s,'ribossomo',[-.3,.45,-.9]);lab(s,'RE liso (tubos, faz lipídios)',[2.0,-.75,.6]);lab(s,'vesícula saindo',[3,1,.2]);return s},
 
 golgi(){SEED=65;const s=scene({dist:7.6,upu:1/5,cam:V3(0,.55,1)}),G=s.g;const c0=new THREE.Color('#F7C13B'),c1=new THREE.Color('#E58A2E');
   for(let i=0;i<6;i++){const a=1.75-i*.1;const g=superG(a,.075,1.05-i*.04,.7,64);const p=g.attributes.position;for(let j=0;j<p.count;j++){const x=p.getX(j);p.setY(j,p.getY(j)+x*x*.13)}
-    const col='#'+c0.clone().lerp(c1,i/5).getHexString();G.add(mesh(bumpy(g,.012,4,i,col,.2),M('golgi','#fff',{vc:true,roughness:.3,clearcoat:1}),'golgi',[0,-.75+i*.28,0]));
-    for(const sg of[-1,1])G.add(mesh(sphG(.11,20),M('golgi',col,{roughness:.25}),'golgi',[sg*(a+.05),-.75+i*.28+a*a*.13,rr(-.4,.4)]))}
+    const col='#'+c0.clone().lerp(c1,i/5).getHexString();G.add(mesh(bumpy(g,.012,4,i,col,.2),M('golgi','#fff',{vc:true,roughness:.68,clearcoat:0,sheen:0}),'golgi',[0,-.75+i*.28,0]));
+    for(const sg of[-1,1])G.add(mesh(sphG(.11,20),M('golgi',col,{roughness:.6,clearcoat:0}),'golgi',[sg*(a+.05),-.75+i*.28+a*a*.13,rr(-.4,.4)]))}
   const vm=FILM(null,'#ffc078',.8,{depthWrite:true});const flow=Array.from({length:6},(_,i)=>{const o=noPick(mesh(sphG(.12,18),vm));G.add(o);return{o,ph:i/6,x:rr(-1,1),z:rr(-.5,.5)}});
   s.tick=t=>{for(const f of flow){const u=(t*.12+f.ph)%1;f.o.position.set(f.x*(1-u*.3),-1.3+u*2.6,f.z+.6);f.o.scale.setScalar(Math.min(1,Math.min(u,1-u)*8))}};
   lab(s,'face cis: chega do retículo',[-1.5,-1.0,.6]);lab(s,'cisternas',[1.2,-.1,.7]);lab(s,'face trans: sai empacotado',[1.4,1.0,.4]);lab(s,'vesícula',[1.85,.95,0]);return s},
 
 lisossomo(){SEED=66;const s=scene({dist:7.3,upu:.5/3.2,cam:V3(0,1.1,1)}),G=s.g;const P=CUT();
-  G.add(mesh(bumpy(sphG(1.55,90),.035,2.5,1,C('lisossomo'),.3),M('lisossomo','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.35}),'lisossomo'));
+  G.add(mesh(bumpy(sphG(1.55,90),.035,2.5,1,'#2FCFBF',.15),M('lisossomo','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.65,clearcoat:0,sheen:0}),'lisossomo'));
   const pumps=[];for(let i=0;i<40;i++){const d=V3(rr(-1,1),rr(-1,0),rr(-1,1)).normalize();pumps.push({p:d.clone().multiplyScalar(1.57),q:qY(d)})}
   G.add(inst(new THREE.CylinderGeometry(.06,.06,.16,10),M('lisossomo','#a5d8ff',{roughness:.3,clippingPlanes:P}),'lisossomo',pumps));
   const enz=[];for(let i=0;i<70;i++){const p=V3(rr(-1.2,1.2),rr(-1.2,-.1),rr(-1.2,1.2));if(p.length()<1.25)enz.push({p,r:[rr(0,3),rr(0,3),0],s:rr(.7,1.3)})}
@@ -673,7 +690,7 @@ ribossomo(){SEED=67;const s=scene({dist:8.8,upu:.025/4,cam:V3(0,.35,1)}),G=s.g;
   const pm=M('ribossomo','#ff8787',{roughness:.35});const chain=Array.from({length:40},(_,i)=>{const o=noPick(mesh(sphG(.08,10),pm));G.add(o);return o});
   const path=new THREE.CatmullRomCurve3([V3(0,.4,.4),V3(.2,1.2,.6),V3(.8,1.8,.3),V3(1.5,2.0,-.2),V3(2.2,1.6,-.4),V3(2.6,1.0,0)]);
   s.tick=t=>{const u=(t*.08)%1;mrna.position.x=-u*1.2;const n=Math.floor(u*40);chain.forEach((o,i)=>{o.visible=i<n;if(i<n)o.position.copy(path.getPointAt(Math.min(1,(n-i)/40)))})};
-  lab(s,'subunidade maior',[1.0,1.3,.2]);lab(s,'subunidade menor',[-.9,-1.25,.5]);lab(s,'RNA mensageiro (a receita)',[-2.6,-.05,.4]);lab(s,'RNA transportador (traz aminoácidos)',[.45,.35,1.5]);lab(s,'proteína nascendo',[1.6,2.2,-.2]);s.labels[4].live=()=>{const n=chain.filter(o=>o.visible).length;return path.getPointAt(Math.min(1,Math.max(n,4)/40)).add(V3(0,.15,0))};return s},
+  lab(s,'subunidade maior',[1.0,1.3,.2]);lab(s,'subunidade menor',[-.9,-1.25,.5]);lab(s,'RNA mensageiro (a receita)',[-2.6,-.05,.4]);lab(s,'RNA transportador (traz aminoácidos)',[.45,.35,1.5]);lab(s,'proteína nascendo',[1.6,2.2,-.2]);const nVis=()=>chain.filter(o=>o.visible).length;s.labels[4].live=()=>path.getPointAt(Math.min(1,Math.max(nVis(),12)/40)).add(V3(0,.18,0));s.labels[4].off=()=>nVis()<12;/* só aparece quando a cadeia já saiu da subunidade maior */return s},
 
 membrana(){SEED=68;const s=scene({dist:8.8,upu:.03/6,cam:V3(0,.6,1)}),G=s.g;const prot=[{p:V3(-1.2,0,-.2),r:.6},{p:V3(1.3,0,.4),r:.55},{p:V3(.1,0,-.9),r:.5}];
   const free=(x,z)=>prot.every(q=>Math.hypot(x-q.p.x,z-q.p.z)>q.r+.08);const heads=[],tails=[],chol=[];
@@ -703,17 +720,17 @@ citoesqueleto(){SEED=69;const s=scene({dist:9.4,upu:.2/6,cam:V3(0,.6,1)}),G=s.g;
   s.tick=t=>{const u=(t*.1)%1;kin.position.set(-3+u*6,-.03,0);l1.rotation.z=Math.sin(t*6)*.4;l2.rotation.z=-Math.sin(t*6)*.4};
   lab(s,'microtúbulo (tubos de tubulina)',[2.6,-.05,.25]);lab(s,'filamento de actina',[1.2,1.25,-1.2]);lab(s,'filamento intermediário',[2.2,-1.05,.05]);lab(s,'cinesina (motor que anda)',[0,.4,.3]);lab(s,'carga',[0,1.75,0]);s.labels[3].live=()=>kin.position.clone().add(V3(0,.45,.2));s.labels[4].live=()=>kin.position.clone().add(V3(0,1.8,0));return s},
 
-centriolo(){SEED=70;const s=scene({dist:8.4,upu:.5/4.5,cam:V3(0,.7,1)}),G=s.g;const cm=M('centriolo',C('centriolo'),{roughness:.35,clearcoat:.8});
+centriolo(){SEED=70;const s=scene({dist:8.4,upu:.5/4.5,cam:V3(0,.7,1)}),G=s.g;const cm=M('centriolo','#8FA8E0',{roughness:.7,clearcoat:0,sheen:0});
   function barrel(pos,rot){const g=new THREE.Group();g.position.copy(pos);g.rotation.set(...rot);const T=[];for(let k=0;k<9;k++){const a=k/9*TAU;for(let j=0;j<3;j++){const ang=a+j*.16,R=.5+j*.075;T.push({p:V3(Math.cos(ang)*R,0,Math.sin(ang)*R)})}}
-    g.add(inst(new THREE.CylinderGeometry(.075,.075,1.5,14),cm,'centriolo',T));const sp=M('centriolo','#ffe3e3',{roughness:.4});for(let k=0;k<9;k++){const a=k/9*TAU;const o=mesh(new THREE.CylinderGeometry(.015,.015,.5,6),sp,'centriolo',[Math.cos(a)*.25,-.6,Math.sin(a)*.25],[0,-a,Math.PI/2]);g.add(o)}
+    g.add(inst(new THREE.CylinderGeometry(.075,.075,1.5,14),cm,'centriolo',T));const sp=M('centriolo','#6078B8',{roughness:.7,clearcoat:0});for(let k=0;k<9;k++){const a=k/9*TAU;const o=mesh(new THREE.CylinderGeometry(.015,.015,.5,6),sp,'centriolo',[Math.cos(a)*.25,-.6,Math.sin(a)*.25],[0,-a,Math.PI/2]);g.add(o)}
     g.add(mesh(new THREE.CylinderGeometry(.06,.06,.1,12),sp,'centriolo',[0,-.6,0]));G.add(g);return g}
   barrel(V3(-.55,0,0),[0,0,0]);barrel(V3(.75,-.15,.25),[Math.PI/2,0,.3]);
   G.add(noPick(inst(sphG(.035,8),M(null,'#ffd8d8',{roughness:.6,transparent:true,opacity:.55,depthWrite:false}),null,Array.from({length:420},()=>{const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();return{p:d.multiplyScalar(rr(1.25,1.9)),s:rr(.5,1.2)}}))));
-  const tm=M('citoesqueleto','#d0ebff',{roughness:.4,transparent:true,opacity:.8});for(let i=0;i<10;i++){const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();G.add(mesh(tubeG([d.clone().multiplyScalar(1.4),d.clone().multiplyScalar(2.4).add(V3(rr(-.3,.3),rr(-.3,.3),0)),d.clone().multiplyScalar(3.4)],.035,20,6),tm,'centriolo'))}
+  const tm=M('citoesqueleto','#d0ebff',{roughness:.4,transparent:true,opacity:.8});for(let i=0;i<10;i++){const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();G.add(mesh(tubeG([d.clone().multiplyScalar(1.4),d.clone().multiplyScalar(1.95).add(V3(rr(-.2,.2),rr(-.2,.2),0)),d.clone().multiplyScalar(2.5)],.035,20,6),tm,'centriolo'))}
   lab(s,'trinca de microtúbulos',[-.05,.8,.35]);lab(s,'9 trincas formando um cilindro',[-.55,.85,-.6]);lab(s,'par em ângulo reto',[1.2,.3,.6]);lab(s,'nuvem que lança microtúbulos',[1.6,1.4,-.2]);return s},
 
 peroxissomo(){SEED=71;const s=scene({dist:7.3,upu:.5/3.2,cam:V3(0,1.1,1)}),G=s.g;const P=CUT();
-  G.add(mesh(bumpy(sphG(1.55,80),.03,2.6,2,C('peroxissomo'),.3),M('peroxissomo','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.35}),'peroxissomo'));
+  G.add(mesh(bumpy(sphG(1.55,80),.03,2.6,2,'#2FCFBF',.15),M('peroxissomo','#fff',{vc:true,clippingPlanes:P,side:THREE.DoubleSide,roughness:.65,clearcoat:0,sheen:0}),'peroxissomo'));
   const cr=[];for(let i=0;i<6;i++)for(let j=0;j<4;j++)for(let k=0;k<6;k++)cr.push({p:V3(-.45+i*.18,-.95+j*.18,-.45+k*.18).applyAxisAngle(V3(0,1,0),.5)});
   G.add(inst(new THREE.BoxGeometry(.13,.13,.13),M('peroxissomo','#fff3bf',{roughness:.15,clearcoat:1,metalness:.1,clippingPlanes:P}),'peroxissomo',cr));
   G.add(inst(bumpy(sphG(.07,14),.02,14,1),M('peroxissomo','#ffa94d',{roughness:.4,clippingPlanes:P}),'peroxissomo',Array.from({length:90},()=>({p:V3(rr(-1.3,1.3),rr(-1.2,-.05),rr(-1.3,1.3))})).filter(t=>t.p.length()<1.35&&(Math.abs(t.p.x)>.6||Math.abs(t.p.z)>.6))));
@@ -723,7 +740,7 @@ peroxissomo(){SEED=71;const s=scene({dist:7.3,upu:.5/3.2,cam:V3(0,1.1,1)}),G=s.g
 
 vacuolo(){SEED=72;const s=scene({dist:10.4,upu:10/6,cam:V3(0,.36,1)}),G=s.g;const fb=[];
   for(let L=0;L<4;L++){const a=L*.9;for(let i=0;i<26;i++){const off=-2.4+i*.19;fb.push({p:V3(0,-1.75+L*.1,off).applyAxisAngle(V3(0,1,0),a),q:new THREE.Quaternion().setFromUnitVectors(V3(0,1,0),V3(1,0,0).applyAxisAngle(V3(0,1,0),a))})}}
-  G.add(inst(new THREE.CylinderGeometry(.045,.045,5,8),M('vacuolo','#d8f5a2',{roughness:.6}),'vacuolo',fb));
+  G.add(inst(new THREE.CylinderGeometry(.045,.045,5,8),M('vacuolo','#A9C54A',{roughness:.65,clearcoat:0}),'vacuolo',fb));
   G.add(mesh(new THREE.BoxGeometry(5,.04,5),FILM('membrana',C('membrana'),.35),'membrana',[0,-1.45,0]));
   const vg=bumpy(sphG(1.8,96),.03,1.5,4);G.add(mesh(vg,FILM('vacuolo',C('vacuolo'),.28,{roughness:.05}),'vacuolo',[0,.55,0]));const r=noPick(mesh(vg,RIM('#99e9f2',1.3,2)));r.position.y=.55;G.add(r);
   const aq=[];for(let i=0;i<46;i++){const d=V3(rr(-1,1),rr(-1,1),rr(-1,1)).normalize();aq.push({p:d.clone().multiplyScalar(1.8).add(V3(0,.55,0)),q:qY(d)})}G.add(inst(new THREE.CylinderGeometry(.07,.07,.16,8),M('vacuolo','#1098ad',{roughness:.3}),'vacuolo',aq));
@@ -749,7 +766,7 @@ function set(p){let ch=false;for(const k in p)if(S[k]!==p[k]){ch=true;break}if(!
 const useS=()=>React.useSyncExternalStore(cb=>{subs.add(cb);return()=>subs.delete(cb)},()=>S.ver);
 const sceneKey=()=>S.view==='celula'?'c:'+S.ctype:'d:'+S.view;
 const CACHE={};
-function getScene(key){if(CACHE[key])return CACHE[key];MATS.length=0;const [t,k]=key.split(':');const sc=(t==='c'?CELLB[k]:DETB[k])();sc.mats=MATS.slice();MATS.length=0;sc.g.updateMatrixWorld(true);return CACHE[key]=sc}
+function getScene(key){if(CACHE[key])return CACHE[key];MATS.length=0;const [t,k]=key.split(':');const sc=(t==='c'?CELLB[k]:DETB[k])();sc.mats=MATS.slice();MATS.length=0;sc.g.updateMatrixWorld(true);ext(sc);return CACHE[key]=sc}
 const inList=k=>CELLS[S.ctype][1].includes(k);
 function choose(k){stopTour();if(!inList(k))return;if(k==='mitocondria'&&typeof MODELOS!=='undefined')MODELOS.preparar('mitocondria');if(S.sel===k&&DETB[k])open(k);else set({sel:k,hv:k})}
 function open(k){if(!DETB[k])return;set({view:k,sel:null,hv:null,z:0});setHash(k)}
@@ -759,7 +776,7 @@ function setHash(h){try{history.replaceState(null,'','#'+h)}catch(e){}}
 let T=0;const PORTAL={current:document.getElementById('stage')};
 const BAR=()=>innerWidth<700?68:76;   // altura ocupada pela barra de ferramentas embaixo do palco (px)
 // ---------- componentes 3D ----------
-function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClippingEnabled=true;if(MAT)MAT.configurarRenderer(gl);
+function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClippingEnabled=true;if(MAT)MAT.configurarRenderer(gl);gl.toneMappingExposure=.92;
   const pm=new THREE.PMREMGenerator(gl);const env=pm.fromScene(new RoomEnvironment(),.04).texture;scene.environment=env;scene.environmentIntensity=.38;pm.dispose();
   let bg=null,bt=null;
   if(MAT){bg=MAT.fundoPalco(34);scene.add(bg)}   // degradê do palco (guia 2.1), da biblioteca de materiais
@@ -768,69 +785,109 @@ function Env(){const {gl,scene}=useThree();React.useEffect(()=>{gl.localClipping
 // três luzes do "laboratório" (guia 5): principal morna de cima e da esquerda, preenchimento frio, contorno por trás
 const LUZ=MAT?MAT.luzes(1.05):null;
 function Lights(){return LUZ?html`<primitive object=${LUZ}/>`:html`<ambientLight intensity=${.2}/><directionalLight position=${[-5,5,5]} intensity=${2.3} color="#FFF4E6"/><directionalLight position=${[6,1,3]} intensity=${.7} color="#CFE0FF"/><directionalLight position=${[0,3,-6]} intensity=${1.4}/>`}
-const fitK=(w,h)=>Math.min(2.5,Math.max(1,1.27/(w/h)));
+// ---------- enquadramento pela forma do modelo (revisão visual v5, ajuste 3) ----------
+// A distância da câmera sai da silhueta da cena (não só da proporção do palco): o modelo é centrado na área
+// livre (entre o topo ocupado pela etiqueta e pelo cartão e a barra de ferramentas) e ocupa até ~74% do lado
+// menor e ~85% do maior. No celular em pé, a célula larga é girada 90° em torno do eixo da câmera, para usar a altura.
+const TAN=Math.tan(17*Math.PI/180),_cv=new THREE.Vector3(),_m4=new THREE.Matrix4();
+const livre=(w,h)=>{const m=w<700;return{x0:16,x1:w-16,y0:m?88:64,y1:h-BAR()-(m?6:0)}};
+function ext(sc){if(sc.ext)return sc.ext;sc.g.updateMatrixWorld(true);const n=sc.cam.clone().normalize(),r=V3(0,1,0).cross(n).normalize(),u=n.clone().cross(r);
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;const box=new THREE.Box3();
+  const add=(p,rad)=>{const x=p.dot(r),y=p.dot(u);x0=Math.min(x0,x-rad);x1=Math.max(x1,x+rad);y0=Math.min(y0,y-rad);y1=Math.max(y1,y+rad);box.expandByPoint(p)};
+  sc.g.traverse(o=>{if(!(o.isMesh||o.isLine)||!o.geometry||!o.geometry.attributes.position)return;for(let q=o;q;q=q.parent)if(!q.visible)return;const geo=o.geometry,pos=geo.attributes.position;
+    if(o.isInstancedMesh){if(!geo.boundingBox)geo.computeBoundingBox();const bb=geo.boundingBox,st=Math.max(1,Math.floor(o.count/200));
+      for(let i=0;i<o.count;i+=st){o.getMatrixAt(i,_m4);_m4.premultiply(o.matrixWorld);for(let c=0;c<8;c++){_cv.set(c&1?bb.max.x:bb.min.x,c&2?bb.max.y:bb.min.y,c&4?bb.max.z:bb.min.z).applyMatrix4(_m4);add(_cv,0)}}}
+    else{const st=Math.max(1,Math.floor(pos.count/400));for(let i=0;i<pos.count;i+=st){_cv.fromBufferAttribute(pos,i).applyMatrix4(o.matrixWorld);add(_cv,0)}}});
+  if(x0>x1){x0=y0=-1;x1=y1=1;box.set(V3(-1,-1,-1),V3(1,1,1))}
+  return sc.ext={n,r,u,cx:(x0+x1)/2,cy:(y0+y1)/2,ex:(x1-x0)/2,ey:(y1-y0)/2,box}}
+const emPe=(sc,w,h)=>S.view==='celula'&&w/h<.85&&ext(sc).ex>ext(sc).ey*1.25;
+function fitD(sc,w,h){const e=ext(sc),F=livre(w,h),pe=emPe(sc,w,h),EX=pe?e.ey:e.ex,EY=pe?e.ex:e.ey,Fw=F.x1-F.x0,Fh=F.y1-F.y0,m=w<700;
+  const big=m?.92:.8,small=m?.8:.78,k=Math.min((Fw>=Fh?big:small)*Fw/(2*EX),(Fw>=Fh?small:big)*Fh/(2*EY));return (h/2)/(k*TAN)}
+// deslocamento que leva o centro da silhueta ao centro da área livre (com a cena em pé, os eixos trocam)
+function fitOff(sc,pe){const e=ext(sc);return pe?e.u.clone().multiplyScalar(e.cx).addScaledVector(e.r,-e.cy):e.r.clone().multiplyScalar(-e.cx).addScaledVector(e.u,-e.cy)}
 function Rig({sc}){const ctl=React.useRef();const {camera,size}=useThree();
-  React.useEffect(()=>{camera.position.copy(sc.cam.clone().normalize().multiplyScalar(sc.dist*fitK(size.width,size.height)*1.35));if(ctl.current)ctl.current.target.set(0,0,0);camera.lookAt(0,0,0)},[sc]);
+  React.useEffect(()=>{camera.position.copy(sc.cam.clone().normalize().multiplyScalar(fitD(sc,size.width,size.height)*1.35));if(ctl.current)ctl.current.target.set(0,0,0);camera.lookAt(0,0,0)},[sc]);
   useFrame((st,dt)=>{const c=ctl.current;if(!c)return;dt=Math.min(dt,.05);let tgt=V3(0,0,0),f=1;
-    // com seleção: a organela vai para o centro da área livre (acima da barra)
+    // com seleção: a organela vai para o centro da área livre
     if(S.view==='celula'&&S.sel&&sc.anch[S.sel]){tgt=sc.anch[S.sel].clone().applyMatrix4(sc.g.matrixWorld);f=.66}
-    const oy=Math.round(BAR()/2);if(!camera.view||camera.view.offsetY!==oy||camera.view.fullWidth!==size.width||camera.view.fullHeight!==size.height)camera.setViewOffset(size.width,size.height,0,oy,size.width,size.height);
-    c.target.lerp(tgt,Math.min(1,dt*3));const want=sc.dist*fitK(size.width,size.height)*f*Math.pow(1.3,-S.z);const off=camera.position.clone().sub(c.target);const cur=off.length();off.setLength(cur+(want-cur)*Math.min(1,dt*4));camera.position.copy(c.target).add(off);c.update();
+    const F=livre(size.width,size.height),oy=Math.round(size.height/2-(F.y0+F.y1)/2);if(!camera.view||camera.view.offsetY!==oy||camera.view.fullWidth!==size.width||camera.view.fullHeight!==size.height)camera.setViewOffset(size.width,size.height,0,oy,size.width,size.height);
+    c.target.lerp(tgt,Math.min(1,dt*3));const want=fitD(sc,size.width,size.height)*f*Math.pow(1.3,-S.z);const off=camera.position.clone().sub(c.target);const cur=off.length();off.setLength(cur+(want-cur)*Math.min(1,dt*4));camera.position.copy(c.target).add(off);c.update();
     const vis=2*off.length()*Math.tan(camera.fov*Math.PI/360)*size.width/size.height;updMag(size.width/(vis*sc.upu),vis*sc.upu,size.width)});
   return html`<${OrbitControls} ref=${ctl} makeDefault enablePan=${false} enableZoom=${false} enableDamping=${true} dampingFactor=${.08} rotateSpeed=${.55} minPolarAngle=${.12} maxPolarAngle=${Math.PI-.12}/>`}
 // ---------- rótulos sem sobreposição (guia 5, "Rótulos") ----------
-// Cada rótulo se registra; a cada quadro, do mais importante para o menos, cada um tenta ficar à direita ou à
-// esquerda do seu ponto. Se não couber sem tocar num já colocado (nem nas bordas, no cartão ou na barra), fica escondido.
-const LBL=new Set();const _pv=new THREE.Vector3();let _lt=0,_mr=null,_mt=0;
-function layoutLabels(cam,size){const now=performance.now();if(now-_lt<90)return;_lt=now;const W=size.width,H=size.height,list=[...LBL].filter(e=>e.g&&e.d&&e.d.isConnected);
-  const sp=e=>e.d.querySelector('span');const max=W<700?5:8;
-  list.sort((a,b)=>b.pri()-a.pri()||a.i-b.i);
-  if(!_mr||now-_mt>1000){_mt=now;const mag=document.getElementById('mag'),sr=document.getElementById('stage').getBoundingClientRect(),r=mag.getBoundingClientRect();_mr=[r.left-sr.left,r.top-sr.top,r.right-sr.left,r.bottom-sr.top]}
-  const block=[_mr];
+// Célula inteira: cada nome tenta ficar ao lado do seu ponto (direita, esquerda, acima, abaixo), do mais importante
+// para o menos; não toca em outro nome, no cartão, na etiqueta, na barra nem em outro ponto. No computador todos os
+// nomes aparecem (decisão do PM); no celular, até 5.
+// Detalhe: os nomes vão para fora da silhueta, em duas fileiras (acima e abaixo do modelo), ligados ao ponto por
+// uma linha-guia de 1 px. Teto do guia: 8 no computador, 5 no celular.
+const LBL=new Set();const _pv=new THREE.Vector3();let _lt=0,_blk=[],_mt=0;
+const hitR=(r,arr)=>arr.some(q=>r[0]<q[2]+4&&r[2]+4>q[0]&&r[1]<q[3]+3&&r[3]+3>q[1]);
+function blocos(now){if(now-_mt<1000&&_blk.length)return _blk;_mt=now;const sr=document.getElementById('stage').getBoundingClientRect();_blk=[];
+  for(const id of['mag','tag','back']){const el=document.getElementById(id),q=el&&el.getBoundingClientRect();if(q&&q.width)_blk.push([q.left-sr.left,q.top-sr.top,q.right-sr.left,q.bottom-sr.top])}return _blk}
+function layoutLabels(cam,size,sc){const now=performance.now(),W=size.width,H=size.height,list=[...LBL].filter(e=>e.g&&e.d&&e.d.isConnected);if(!list.length)return;
+  const det=list[0].dot===12;if(!det&&now-_lt<90)return;_lt=now;
+  for(const e of list){e.g.getWorldPosition(_pv).project(cam);e.x=(_pv.x*.5+.5)*W;e.y=(-_pv.y*.5+.5)*H;const l=e.lr&&e.lr.current;e.off=_pv.z>1||e.x<-8||e.x>W+8||e.y<-8||e.y>H+8||!!(l&&l.off&&l.off());
+    const s=e.s=e.d.querySelector('span');if(s&&(!e.w||e.d.dataset.t!==s.textContent)){e.w=s.offsetWidth||s.textContent.length*7.5+22;e.d.dataset.t=s.textContent}}
+  const block=blocos(now).slice();
+  if(det)return layoutDet(list,cam,W,H,sc,block);
   block.push([W/2-200,H-BAR()-4,W/2+200,H]);
-  const hit=(r,arr)=>arr.some(q=>r[0]<q[2]+4&&r[2]+4>q[0]&&r[1]<q[3]+3&&r[3]+3>q[1]);
+  const max=W<700?5:99;list.sort((a,b)=>b.pri()-a.pri()||a.i-b.i);
   const placed=[];let n=0;
-  for(const e of list){e.g.getWorldPosition(_pv).project(cam);e.x=(_pv.x*.5+.5)*W;e.y=(-_pv.y*.5+.5)*H;e.off=_pv.z>1||e.x<-8||e.x>W+8||e.y<-8||e.y>H+8}
-  const dots=list.filter(e=>!e.off).map(e=>{const r=e.dot===18?11:5;return[e.x-r,e.y-r,e.x+r,e.y+r,e]});
-  for(const e of list){const s=sp(e);if(!s){e.d.classList.remove('hid');continue}
-    if(e.off){e.d.classList.add('hid');continue}
-    const x=e.x,y=e.y;if(!e.w||e.d.dataset.t!==s.textContent){e.w=s.offsetWidth||s.textContent.length*7.5+22;e.d.dataset.t=s.textContent}
-    const h=28,gap=e.dot,R=[x+gap,y-h/2,x+gap+e.w,y+h/2],L=[x-gap-e.w,y-h/2,x-gap,y+h/2];
-    const od=e.dot===12&&e.i===0?[]:dots.filter(q=>q[4]!==e);// 1º rótulo do detalhe é o principal: não cede a pontos
-    const okR=R[2]<W-4&&!hit(R,placed)&&!hit(R,block)&&!hit(R,od),okL=L[0]>4&&!hit(L,placed)&&!hit(L,block)&&!hit(L,od);
-    const must=e.pri()>=2;let side=null;
-    if(n<max||must){if(x>W*.62){side=okL?'l':okR?'r':null}else{side=okR?'r':okL?'l':null}if(!side&&must)side=x>W*.62?'l':'r'}
-    e.LR=[L,R];if(side){placed.push(side==='r'?R:L);n++;e.d.classList.toggle('r',side==='l');e.d.classList.remove('hid')}else e.d.classList.add('hid')}
-  // cena densa (pontos muito juntos, comum no celular): 2ª passada sem bloquear por pontos, até 3 nomes
-  if(n<3)for(const e of list){if(n>=3)break;if(e.off||!e.LR||!e.d.classList.contains('hid'))continue;const [L,R]=e.LR;
-    const okR=R[2]<W-4&&!hit(R,placed)&&!hit(R,block),okL=L[0]>4&&!hit(L,placed)&&!hit(L,block);const side=e.x>W*.62?(okL?'l':okR?'r':null):(okR?'r':okL?'l':null);
-    if(side){placed.push(side==='r'?R:L);n++;e.d.classList.toggle('r',side==='l');e.d.classList.remove('hid')}}}
+  const dots=list.filter(e=>!e.off).map(e=>[e.x-11,e.y-11,e.x+11,e.y+11,e]);
+  const cand=e=>{const x=e.x,y=e.y,h=28,g=e.dot,w=e.w,R=[x+g,y-h/2,x+g+w,y+h/2,'r'],L=[x-g-w,y-h/2,x-g,y+h/2,'l'],U=[x-w/2,y-g-h,x+w/2,y-g,'t'],D=[x-w/2,y+g,x+w/2,y+g+h,'b'];return x>W*.62?[L,R,U,D]:[R,L,U,D]};
+  const free=(r,od)=>r[0]>=8&&r[2]<=W-8&&r[1]>=8&&r[3]<=H-8&&!hitR(r,placed)&&!hitR(r,block)&&!(od&&hitR(r,od));
+  const put=(e,r)=>{placed.push(r);n++;const c=e.d.classList;c.toggle('r',r[4]==='l');c.toggle('t',r[4]==='t');c.toggle('b',r[4]==='b');c.remove('hid')};
+  for(const e of list){e.cs=null;if(!e.s){e.d.classList.remove('hid');continue}if(e.off){e.d.classList.add('hid');continue}
+    const od=dots.filter(q=>q[4]!==e),must=e.pri()>=2,cs=e.cs=cand(e);let r=null;
+    if(n<max||must){r=cs.find(c=>free(c,od))||null;if(!r&&must)r=cs[0]}
+    if(r)put(e,r);else e.d.classList.add('hid')}
+  // 2ª passada, sem bloquear por pontos: no computador, todos os nomes; no celular, até 3 quando a cena é densa
+  for(const e of list){if(!e.cs||!e.d.classList.contains('hid'))continue;if(!(W>=700||n<3))continue;const r=e.cs.find(c=>free(c));if(r)put(e,r)}}
+const _dc=new THREE.Vector3();
+function layoutDet(list,cam,W,H,sc,block){const F=livre(W,H),h=28,gap=8,max=W<700?5:8;
+  // silhueta na tela: caixa da cena projetada
+  let sy0=1e9,sy1=-1e9;const bx=ext(sc).box,pm=sc.g.parent?sc.g.parent.matrixWorld:null;
+  for(let i=0;i<8;i++){_dc.set(i&1?bx.max.x:bx.min.x,i&2?bx.max.y:bx.min.y,i&4?bx.max.z:bx.min.z);if(pm)_dc.applyMatrix4(pm);_dc.project(cam);const y=(-_dc.y*.5+.5)*H;sy0=Math.min(sy0,y);sy1=Math.max(sy1,y)}
+  const mid=(sy0+sy1)/2,yT=Math.max(F.y0,Math.min(sy0-24-h,mid-60-h)),yB=Math.min(F.y1-h-8,Math.max(sy1+24,mid+60));
+  // faixa livre de cada fileira: recua onde há cartão, etiqueta ou botão
+  const faixa=y=>{let lo=16,hi=W-16;for(const q of block){if(y<q[3]+6&&y+h+6>q[1]){if((q[0]+q[2])/2<W/2)lo=Math.max(lo,q[2]+8);else hi=Math.min(hi,q[0]-8)}}return[lo,hi]};
+  const rows=[{y:yT,f:faixa(yT),it:[],used:0,top:true},{y:yB,f:faixa(yB),it:[],used:0,top:false}];
+  list.sort((a,b)=>a.i-b.i);let n=0;
+  for(const e of list){e.row=null;if(!e.s||e.off||n>=max)continue;
+    const pref=e.y<mid?0:1;for(const ri of[pref,1-pref]){const R=rows[ri],need=e.w+(R.it.length?gap:0);if(R.used+need<=R.f[1]-R.f[0]){R.it.push(e);R.used+=need;e.row=R;n++;break}}}
+  for(const R of rows){R.it.sort((a,b)=>a.x-b.x);let prev=R.f[0]-gap;for(const e of R.it){e.px=Math.max(e.x-e.w/2,prev+gap);prev=e.px+e.w}
+    let nx=R.f[1]+gap;for(let i=R.it.length-1;i>=0;i--){const e=R.it[i];e.px=Math.min(e.px,nx-gap-e.w);nx=e.px}}
+  for(const e of list){if(!e.s)continue;const c=e.d.classList;if(!e.row){if(!c.contains('hid'))c.add('hid');continue}
+    if(c.contains('hid'))c.remove('hid');const R=e.row,l=Math.round(e.px-e.x),t=Math.round(R.y-e.y),key=l+','+t;if(e.k===key)continue;e.k=key;
+    e.s.style.left=l+'px';e.s.style.top=t+'px';
+    const ln=e.d.querySelector('b');if(ln){const ax=Math.max(e.px+12,Math.min(e.px+e.w-12,e.x))-e.x,ay=(R.top?R.y+h:R.y)-e.y;ln.style.width=Math.max(0,Math.hypot(ax,ay)-5)+'px';ln.style.transform='rotate('+Math.atan2(ay,ax)+'rad) translateX(5px)'}}}
 function Hot({k,p,i}){useS();const g=React.useRef(),d=React.useRef();const on=S.sel===k||S.hv===k;
   React.useEffect(()=>{const e={g:null,d:null,i,dot:18,pri:()=>S.sel===k?3:S.hv===k?2:0};const t=setInterval(()=>{e.g=g.current;e.d=d.current},200);e.g=g.current;e.d=d.current;LBL.add(e);return()=>{clearInterval(t);LBL.delete(e)}},[]);
   useFrame(()=>{if(g.current)g.current.position.copy(p)});
   return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className=${'hs'+(on?' on':'')} style=${{'--c':ORG[k].c}}><button aria-label=${ORG[k].t} onClick=${e=>{e.stopPropagation();choose(k)}} onPointerEnter=${()=>set({hv:k})} onPointerLeave=${()=>set({hv:null})}></button>${S.labels||on?html`<span>${ORG[k].t}</span>`:null}</div><//></group>`}
-function Lab({l,i}){const g=React.useRef(),d=React.useRef();
-  React.useEffect(()=>{const e={g:null,d:null,i,dot:12,pri:()=>0};const t=setInterval(()=>{e.g=g.current;e.d=d.current},200);e.g=g.current;e.d=d.current;LBL.add(e);return()=>{clearInterval(t);LBL.delete(e)}},[]);
+function Lab({l,i}){const g=React.useRef(),d=React.useRef(),lr=React.useRef(l);lr.current=l;
+  React.useEffect(()=>{const e={g:null,d:null,i,dot:12,lr,pri:()=>0};const t=setInterval(()=>{e.g=g.current;e.d=d.current},200);e.g=g.current;e.d=d.current;LBL.add(e);return()=>{clearInterval(t);LBL.delete(e)}},[]);
   useFrame(()=>{if(g.current)g.current.position.copy(l.live?l.live():l[1])});
-  return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className="dl"><i></i><span>${l[0]}</span></div><//></group>`}
+  return html`<group ref=${g}><${Html} portal=${PORTAL} zIndexRange=${[40,0]}><div ref=${d} className="dl hid"><b></b><i></i><span>${l[0]}</span></div><//></group>`}
 // seleção: a organela escolhida ganha um realce; as outras perdem 40% da saturação (guia 5, "Brilho")
 const _hsl={},_c=new THREE.Color();
-function World({sc}){useS();const kg=React.useRef();
+function World({sc}){useS();DESEMPENHO.simplificar(sc.mats);const kg=React.useRef();const size=useThree(st=>st.size);const pe=emPe(sc,size.width,size.height);
+  const [rq,ro]=React.useMemo(()=>[new THREE.Quaternion().setFromAxisAngle(ext(sc).n,pe?-Math.PI/2:0),fitOff(sc,pe)],[sc,pe]);
   useFrame((st,dt)=>{dt=Math.min(dt,.05);if(!S.paused){T+=dt;if(sc.tick)sc.tick(T,dt)}
-    sc.g.updateMatrixWorld();if(kg.current){kg.current.position.copy(sc.g.position);kg.current.quaternion.copy(sc.g.quaternion);kg.current.scale.copy(sc.g.scale)}const now=st.clock.elapsedTime;
+    if(kg.current){kg.current.position.copy(sc.g.position);kg.current.quaternion.copy(sc.g.quaternion);kg.current.scale.copy(sc.g.scale)}const now=st.clock.elapsedTime;
     const cell=S.view==='celula',focus=cell?(S.sel||S.hv):null;
     for(const m of sc.mats){const k=m.userData.k;const on=k&&k===focus;const t=on?.22+.08*Math.sin(now*4):m.userData.e0;m.emissiveIntensity+=(t-m.emissiveIntensity)*Math.min(1,dt*8);
       const c0=m.userData.c0;if(!c0)continue;const dim=focus&&!on&&k!=='membrana'?1:0;m.userData.dz=(m.userData.dz||0)+(dim-(m.userData.dz||0))*Math.min(1,dt*6);
       const q=m.userData.dz;_c.copy(c0);if(q>.002){_c.getHSL(_hsl);_c.setHSL(_hsl.h,_hsl.s*(1-.4*q),_hsl.l*(1-.25*q))}m.color.copy(_c)}
-    layoutLabels(st.camera,st.size)});
+    layoutLabels(st.camera,st.size,sc)});
   const kOf=e=>{let o=e.object;while(o&&!o.userData.k)o=o.parent;return o&&o.userData.k};
   const cell=S.view==='celula';
   const ev=cell?{onPointerMove:e=>{e.stopPropagation();const k=kOf(e);const v=k&&inList(k)?k:null;if(v!==S.hv)set({hv:v});document.body.style.cursor=v?'pointer':''},
     onPointerOut:()=>{if(S.hv)set({hv:null});document.body.style.cursor=''},onClick:e=>{e.stopPropagation();const k=kOf(e);if(k&&inList(k))choose(k)}}:{};
   const kids=cell?CELLS[S.ctype][1].filter(k=>sc.anch[k]).map((k,i)=>html`<${Hot} key=${k} k=${k} i=${i} p=${sc.anch[k]}/>`):sc.labels.map((l,i)=>html`<${Lab} key=${i} i=${i} l=${l}/>`);
-  return html`<primitive object=${sc.g} dispose=${null} ...${ev}/><group ref=${kg}>${kids}</group>`}
+  return html`<group quaternion=${rq} position=${ro}><primitive object=${sc.g} dispose=${null} ...${ev}/><group ref=${kg}>${kids}</group></group>`}
 function App(){useS();const sc=getScene(sceneKey());
-  return html`<${Canvas} dpr=${[1,2]} gl=${{antialias:true,powerPreference:'high-performance'}} camera=${{fov:34,near:.05,far:120,position:[0,5,9]}}
+  return html`<${Canvas} dpr=${DESEMPENHO.dpr} gl=${{antialias:true,powerPreference:'high-performance'}} camera=${{fov:34,near:.05,far:120,position:[0,5,9]}}
     onPointerMissed=${()=>{if(S.view==='celula'&&S.sel){stopTour();set({sel:null})}}}>
     <${Env}/><${Lights}/><${World} key=${sceneKey()} sc=${sc}/><${Rig} sc=${sc}/><//>`}
 // ---------- interface HTML ----------
@@ -880,7 +937,11 @@ const fmtMag=m=>{const r=+m.toPrecision(2);return r>=1e6?`${nf.format(+(r/1e6).t
 function updMag(ppu,viewUm,W){const target=Math.min(150,W*.22)/ppu;const e=Math.floor(Math.log10(target));let v=Math.pow(10,e);for(const n of NICE)if(n*Math.pow(10,e)<=target)v=n*Math.pow(10,e);
   const mag=ppu*264.6;const key=`${fmtMag(mag)}|${v}|${fmtLen(viewUm)}`;if(key===lastMag)return;lastMag=key;
   $('magX').innerHTML='<span class="pre">Ampliada </span>cerca de '+fmtMag(mag);$('magBar').style.width=Math.round(v*ppu)+'px';
-  $('magL').innerHTML=`${fmtLen(v)}<span class="vw">; vista de ${fmtLen(viewUm)}</span>`;$('magU').textContent=v<1?'1 nm é um milionésimo de milímetro.':'1 µm é um milésimo de milímetro; uma hemácia tem cerca de 7 µm.'}
+  $('magL').textContent=fmtLen(v);$('magV').textContent='Vista de '+fmtLen(viewUm);
+  // a explicação da unidade aparece só na primeira vez (por sessão); depois o cartão fica só com os números
+  const un=v<1?'nm':'um',sk=sceneKey()+un;if(sk!==magSK){magSK=sk;let visto=false;try{visto=!!sessionStorage.getItem('lab-cel-'+un);sessionStorage.setItem('lab-cel-'+un,'1')}catch(e){}
+    $('magN').hidden=visto;$('magU').textContent=un==='nm'?'1 nm é um milionésimo de milímetro.':'1 µm é um milésimo de milímetro; uma hemácia tem cerca de 7 µm.'}}
+let magSK='';
 // início
 {const h=decodeURIComponent(location.hash.slice(1));if(CELLS[h])S.ctype=h;else if(DETB[h]){if(ORG[h].veg)S.ctype='vegetal';if(h==='nucleo_lev')S.ctype='levedura';S.view=h}}
 function webgl(){try{const c=document.createElement('canvas');return!!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
@@ -955,7 +1016,17 @@ const MODELOS={
   ROTULOS:{
     mitocondria:[['membrana_externa','membrana externa'],['membrana_interna','membrana interna'],['cristas','cristas (dobras)'],
       ['matriz','matriz'],['atp_sintase','ATP sintase'],['dna_mitocondrial','DNA próprio'],['ribossomos','ribossomos próprios'],
-      ['espaco_intermembranas','espaço intermembranas'],['cadeia_transportadora','cadeia transportadora de elétrons']]
+      ['espaco_intermembranas','espaço intermembranas'],['cadeia_transportadora','cadeia transportadora de elétrons']],
+    // núcleo em corte (peças de nucleo.glb). No computador cabem 8 rótulos; os últimos só aparecem se houver espaço.
+    nucleo:[['poros_nucleares','poro nuclear'],['nucleolo','nucléolo (fábrica de ribossomos)'],['membrana_externa','envelope nuclear (membrana dupla)'],
+      ['eucromatina','eucromatina (DNA ativo)'],['heterocromatina','heterocromatina (DNA compactado)'],
+      ['reticulo_endoplasmatico','retículo ligado ao núcleo'],['ribossomos','ribossomos'],['nucleoplasma','nucleoplasma'],
+      ['membrana_interna','membrana interna'],['espaco_perinuclear','espaço perinuclear'],['lumen_do_reticulo','lúmen do retículo']],
+    // cloroplasto em corte (peças de cloroplasto.glb)
+    cloroplasto:[['tilacoides','granum (pilha de tilacoides)'],['estroma','estroma (ciclo de Calvin)'],['membrana_externa','membrana externa'],
+      ['membrana_interna','membrana interna'],['graos_de_amido','grão de amido'],['dna_do_cloroplasto','DNA próprio'],
+      ['lamelas_estromais','lamelas (ligam os grana)'],['ribossomos','ribossomos próprios'],['lumen_do_tilacoide','lúmen do tilacoide'],
+      ['plastoglobulos','plastoglóbulos (gotas de lipídio)'],['espaco_intermembranas','espaço intermembranas']]
   },
   tem(nome){return !!(window.LAB_MODELOS&&typeof window.LAB_MODELOS[nome]==='string')},
   pronto(nome){return MODELOS._prontos[nome]},
@@ -1000,9 +1071,9 @@ const MODELOS={
       if(!o.manterTick)s.tick=null;
       // rótulos nas âncoras do modelo (mesmo formato de lab(): [texto, Vector3])
       const rot=o.rotulos||MODELOS.ROTULOS[nome]||Object.keys(m.pecas).map(p=>[p,p.replace(/_/g,' ')]);
-      // pontos espalhados, na face voltada para a câmera (o.vista; padrão a direção da câmera da mitocôndria procedural),
+      // pontos espalhados, na face voltada para a câmera (o.vista; padrão a direção da câmera da cena, s.cam),
       // já no espaço de s.g; o.ancoras ({peça:[x,y,z]}, também no espaço de s.g) vence o cálculo automático
-      const auto=modEspalhar(m,rot.map(r=>r[0]),o.vista||[0,.95,1]);
+      const auto=modEspalhar(m,rot.map(r=>r[0]),o.vista||(s.cam&&s.cam.isVector3?s.cam.toArray():[0,.95,1]));
       const nov=[];for(const [peca,texto] of rot){const a=o.ancoras&&o.ancoras[peca]?new modTHREE.Vector3(...o.ancoras[peca]):auto[peca];if(a)nov.push([texto,a])}
       s.labels.length=0;s.labels.push(...nov);
       s.modelo=m;modAvisar()};
@@ -1080,6 +1151,88 @@ function modDescartar(o){o.traverse(c=>{if(c.geometry)c.geometry.dispose()})}
 function modAvisar(){try{if(typeof S!=='undefined'&&typeof subs!=='undefined'){S.ver++;subs.forEach(f=>f())}}catch(e){}}
 // pré-carrega todo modelo presente na página, para que a troca já aconteça na primeira vez que a cena for montada
 if(window.LAB_MODELOS)Object.keys(window.LAB_MODELOS).forEach(n=>MODELOS.carregar(n));
+// ================= DESEMPENHO: qualidade adaptativa para notebook fraco · dono: Prometeu =================
+// Concatenado DEPOIS de e_modelos.js, dentro do mesmo IIFE. O único nome solto é DESEMPENHO (o resto fica
+// fechado dentro da função abaixo). Só depende de window.R3F; funciona também fora do IIFE.
+// ATENÇÃO: nunca escreva aqui "<" seguido de "/script", nem em comentário (fecha a tag inline do index.html).
+//
+// O que faz: mede os quadros por segundo (FPS) nos primeiros segundos de 3D. Se a média ficar abaixo de ~30,
+// desce um nível de qualidade e mede de novo; no máximo três degraus. Só desce, nunca sobe (evita ficar oscilando).
+// Depois de duas medições boas seguidas, para de medir (custo zero).
+//
+//   nível    dpr (resolução do canvas)   efeitos caros (sombras de contato, Sparkles)   materiais
+//   alto     [1,2] (o de hoje)           ligados                                        completos
+//   medio    1                           desligados                                     completos
+//   baixo    0.75                        desligados                                     simplificados (ver simplificar)
+//   minimo   0.5 (imagem mais borrada)   desligados                                     simplificados
+//
+// API
+//   DESEMPENHO.nivel          'alto' | 'medio' | 'baixo' | 'minimo'
+//   DESEMPENHO.dpr            valor pronto para a prop dpr do Canvas do R3F
+//   DESEMPENHO.efeitos        true só no nível alto: use para montar ou não ContactShadows, Sparkles e afins
+//   DESEMPENHO.fps            última média medida (null antes da primeira)
+//   DESEMPENHO.aoMudar(fn)    chama fn(nivel) a cada mudança; devolve uma função que cancela a inscrição
+//   DESEMPENHO.definir(nivel) força um nível e para de medir (botão de qualidade, testes)
+//   DESEMPENHO.medir()        mede de novo (ex.: depois de abrir uma cena mais pesada)
+//   DESEMPENHO.simplificar(mats)  nos níveis baixo e minimo, zera clearcoat e sheen (brilhos extras) dos materiais da lista;
+//                             nos outros níveis, devolve os valores originais. Pode chamar a cada render: é barato.
+//   Na URL, ?qualidade=alto|medio|baixo|minimo fixa o nível (não mede). O nível escolhido vale até fechar a aba
+//   (sessionStorage), para a página não abrir pesada de novo a cada módulo.
+//
+// ---------------------------------------------------------------------------------------------------
+// INTEGRAÇÃO (para o Aurelius; este arquivo não mexe em d_app.js nem em build.sh):
+// 1) build.sh: concatenar "$F"/src/f_desempenho.js depois de e_modelos.js.
+// 2) d_app.js, em App(): trocar  dpr=${[1,2]}  por  dpr=${DESEMPENHO.dpr}
+//    (App já usa useS(); quando o nível muda, este arquivo avisa o store S/subs e App redesenha com o dpr novo).
+// 3) d_app.js, em World(), logo depois de useS():  DESEMPENHO.simplificar(sc.mats);
+// 4) Quando entrarem sombras de contato ou Sparkles:  ${DESEMPENHO.efeitos?html`...o efeito...`:null}
+// App e World só rodam depois que o IIFE inteiro terminou (o React desenha de forma assíncrona), então
+// DESEMPENHO já existe quando eles são chamados.
+// ---------------------------------------------------------------------------------------------------
+const DESEMPENHO=(()=>{
+  const NIVEIS=['alto','medio','baixo','minimo'];
+  const DPR={alto:[1,2],medio:1,baixo:.75,minimo:.5};
+  const LIMITE=30;        // FPS mínimo aceitável
+  const AQUECE=1500;      // ms ignorados no começo e depois de cada troca (compilação de shaders, montagem da cena)
+  const JANELA=2000;      // ms de cada medição
+  const CHAVE='lab-desempenho';
+  const ouvintes=new Set();
+  let nivel='alto',fps=null,medindo=false,fixo=false,raf=0,t0=0,tIni=0,n=0,boas=0;
+  const ler=()=>{try{return sessionStorage.getItem(CHAVE)}catch(e){return null}};
+  const gravar=v=>{try{sessionStorage.setItem(CHAVE,v)}catch(e){}};
+  const avisar=()=>{ouvintes.forEach(f=>{try{f(nivel)}catch(e){console.warn('[desempenho]',e)}});
+    // redesenha os componentes que usam o store de d_app.js (App lê DESEMPENHO.dpr)
+    try{if(typeof S!=='undefined'&&typeof subs!=='undefined'){S.ver++;subs.forEach(f=>f())}}catch(e){}};
+  function mudar(v,guardar){if(!NIVEIS.includes(v)||v===nivel)return;nivel=v;if(guardar)gravar(v);avisar()}
+  function parar(){medindo=false;if(raf)cancelAnimationFrame(raf);raf=0}
+  function reiniciar(agora){t0=agora;tIni=0;n=0}
+  function quadro(agora){raf=0;if(!medindo)return;
+    if(document.hidden||!document.querySelector('canvas')){reiniciar(agora)}   // sem 3D na tela ou aba escondida: não conta
+    else if(agora-t0>=AQUECE){if(!tIni){tIni=agora;n=0}else n++;
+      if(agora-tIni>=JANELA){fps=n*1000/(agora-tIni);
+        if(fps<LIMITE){boas=0;const i=NIVEIS.indexOf(nivel);if(i<NIVEIS.length-1){mudar(NIVEIS[i+1],true);reiniciar(agora)}else{parar();return}}
+        else if(++boas>=2){parar();return}
+        else{tIni=agora;n=0}}}
+    raf=requestAnimationFrame(quadro)}
+  function medir(){if(fixo||medindo)return;medindo=true;boas=0;raf=requestAnimationFrame(t=>{reiniciar(t);quadro(t)})}
+  addEventListener('visibilitychange',()=>{if(medindo)reiniciar(performance.now())});
+  // materiais: guarda os valores originais em userData.des e zera o que custa caro no fragment shader
+  const CAROS=['clearcoat','sheen'];   // transmissão fica de fora: zerá-la deixaria a peça opaca
+  function simplificar(mats){const baixo=nivel==='baixo'||nivel==='minimo';if(!mats)return;
+    for(const m of mats){if(!m||!m.isMeshPhysicalMaterial)continue;const g=m.userData.des;
+      if(baixo&&!g){const o={};let mudou=false;for(const k of CAROS)if(m[k]>0){o[k]=m[k];m[k]=0;mudou=true}m.userData.des=o;if(mudou)m.needsUpdate=true}
+      else if(!baixo&&g){let mudou=false;for(const k in g){m[k]=g[k];mudou=true}delete m.userData.des;if(mudou)m.needsUpdate=true}}}
+  // início: ?qualidade= fixa; senão retoma o nível desta aba e mede
+  let q=null;try{q=new URLSearchParams(location.search).get('qualidade')}catch(e){}
+  if(NIVEIS.includes(q)){nivel=q;fixo=true}
+  else{const g=ler();if(NIVEIS.includes(g))nivel=g;medir()}
+  return{
+    get nivel(){return nivel},get dpr(){return DPR[nivel]},get efeitos(){return nivel==='alto'},get fps(){return fps},get medindo(){return medindo},
+    aoMudar(fn){ouvintes.add(fn);return()=>ouvintes.delete(fn)},
+    definir(v){if(!NIVEIS.includes(v))return;fixo=true;parar();mudar(v,true)},
+    medir(){fixo=false;medir()},
+    simplificar};
+})();
 })();
 </script>
 </body>

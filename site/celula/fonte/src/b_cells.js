@@ -78,7 +78,7 @@ vegetal(){SEED=5;const s=scene({dist:8.2,upu:50/5.6,cam:V3(0,.62,1)}),G=s.g;cons
   const chs=G.children.filter(o=>o.userData.k==='cloroplasto').map(o=>({o,p:o.position.clone(),a:rnd()*TAU}));
   s.tick=(t)=>{for(const c of chs){c.o.position.set(c.p.x+Math.sin(t*.4+c.a)*.025,c.p.y+Math.cos(t*.5+c.a)*.02,c.p.z)}};return s},
 
-bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const R=.62,L=2.6;
+bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(-.38,.6,1)}),G=s.g;const R=.62,L=2.6;
   const g=bumpy(capG(R,L,48),.02,2.4,1);g.rotateZ(Math.PI/2);shell(G,g,'parede_bac','#82c91e','#d8f5a2',{thickness:1,attenuationDistance:2.2,pick:false});
   const im=noPick(mesh(capG(R*.9,L,40),FILM(null,'#b197fc',.12)));im.rotation.z=Math.PI/2;G.add(im);
   const IN=p=>{const x=Math.max(-L/2,Math.min(L/2,p.x));return Math.hypot(p.x-x,p.y,p.z)<R*.82};
@@ -96,7 +96,7 @@ bacteria(){SEED=3;const s=scene({dist:7.6,upu:3/3.9,cam:V3(0,.6,1)}),G=s.g;const
   s.anch.pili=V3(.4,-R-.3,.1).applyAxisAngle(V3(1,0,0),-.9);
   G.position.x=-1.45;s.tick=(t)=>{fl.rotation.x=t*4};return s},
 
-neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
+neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(-.4,.7,1)}),G=s.g;const sP=V3(-2.6,0,0);
   const soma=bumpy(ellG(.95,.72,.82,80),.08,1.6,2);soma.translate(sP.x,sP.y,sP.z);shell(G,soma,null,'#f59f00','#ffd8a8',{thickness:1.2,attenuationDistance:1.5});
   s.anch.nucleo=nucleus(G,'nucleo',sP.clone().add(V3(-.05,0,0)),.4);
   const dm=M('dendrito','#fff',{vc:true,roughness:.4});
@@ -118,7 +118,7 @@ neuronio(){SEED=21;const s=scene({dist:11,upu:110/8.4,cam:V3(0,.7,1)}),G=s.g;con
   s.tick=(t)=>{const u=(t*.22)%1;const k=sheaths.findIndex(x=>x>u);const tt=u<.16?u:(k<0?u:sheaths[Math.max(0,k-1)]+.11*Math.pow((u-sheaths[Math.max(0,k-1)])/.11,4));const p=axc.getPointAt(Math.min(1,tt));sp.position.copy(p);halo.position.copy(p)};
   G.position.x=1.25;return s},
 
-esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(0,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
+esperma(){SEED=9;const s=scene({dist:9,upu:60/8.6,cam:V3(-.42,.75,1)}),G=s.g;const hP=V3(-3.5,0,0);
   const head=bumpy(ellG(.62,.2,.4,72),.012,3,1);head.translate(hP.x,hP.y,hP.z);shell(G,head,null,'#74c0fc','#d0ebff',{thickness:.5,attenuationDistance:1.2});
   G.add(mesh(bumpy(ellG(.5,.14,.31,56),.01,5,3,C('nucleo_esp'),.35),M('nucleo_esp','#fff',{vc:true,roughness:.5}),'nucleo_esp',hP.clone().add(V3(.04,0,0))));s.anch.nucleo_esp=hP.clone().add(V3(.25,.3,0));
   const ac=new THREE.SphereGeometry(1,56,40,0,TAU,0,Math.PI*.42);ac.rotateZ(Math.PI/2);ac.scale(.66,.23,.44);G.add(mesh(ac,FILM('acrossomo',C('acrossomo'),.55,{depthWrite:true}),'acrossomo',hP));s.anch.acrossomo=hP.clone().add(V3(-.45,.28,0));

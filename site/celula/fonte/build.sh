@@ -12,7 +12,7 @@ sym=''.join(re.findall(r'<symbol[\s\S]*?</symbol>',sp))
 sym=re.sub(r'\s*<title>[^<]*</title>','',sym);sym=re.sub(r'>\s+<','><',sym)
 sys.stdout.write(h.replace('<!--SPRITE-->','<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><!-- ícones da equipe: site/assets/icons/sprite.svg -->'+sym+'</svg>'))
 PY
-  echo '<script src="../assets/materials.js"></script>'; echo '<script src="vendor/r3f.js"></script>'; echo '<script>'; echo '(()=>{'; cat "$F/data.js" "$F"/src/a_util.js "$F"/src/b_cells.js "$F"/src/c_details.js "$F"/src/d_app.js "$F"/src/e_modelos.js; echo '})();'; echo '</script>'; echo '</body>'; echo '</html>'; } > "$D/index.html"
+  echo '<script src="../assets/materials.js"></script>'; echo '<script src="vendor/r3f.js"></script>'; echo '<script>'; echo '(()=>{'; cat "$F/data.js" "$F"/src/a_util.js "$F"/src/b_cells.js "$F"/src/c_details.js "$F"/src/d_app.js "$F"/src/e_modelos.js "$F"/src/f_desempenho.js; echo '})();'; echo '</script>'; echo '</body>'; echo '</html>'; } > "$D/index.html"
 # prévia com tudo embutido (opcional): PREVIA=/caminho/arquivo.html bash build.sh
 PREVIA="${PREVIA:-/tmp/claude-0/-home-user/3971ec28-5be7-5fd9-9c6c-a4175a2fe9a2/scratchpad/celula-lab.html}"
 if [ -d "$(dirname "$PREVIA")" ]; then python3 - "$D" "$PREVIA" <<'PY'
