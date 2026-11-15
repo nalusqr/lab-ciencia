@@ -11,7 +11,7 @@ Regras de origem: guia de estilo, seções 2.3 (paleta científica), 5 (3D) e 6 
 | Gerador dos ícones, sprite e prévia | `site/assets/fonte/gerar-icones.py` |
 | Biblioteca de materiais 3D | `site/assets/materials.js` |
 | Modelos 3D (.glb, .blend e prévia) | `site/assets/modelos/` |
-| Geradores dos modelos 3D (Blender, `bpy`) | `site/assets/modelos/fonte/*.py` |
+| Geradores dos modelos 3D (Blender, `bpy`) | `site/assets/modelos/fonte/*.py` (`comum.py` é a base de núcleo e cloroplasto) |
 | Capturas de conferência | `prints/assets/icones.png`, `prints/assets/materiais.png` (pasta do projeto) |
 
 Origem e licença: todos são criação da equipe do LAB, mesma licença do site. As fontes (Atkinson Hyperlegible Next, Space Grotesk, JetBrains Mono) aparecem só na página de conferência, carregadas do sistema. Nenhum arquivo de fonte foi incluído aqui.
@@ -215,9 +215,94 @@ Todos com `metalness` 0, sem emissivo e `doubleSided: false`.
 - DNA mitocondrial: três anéis com duas fitas enroladas, nos vãos entre cristas. Não está em escala: o mtDNA humano esticado tem cerca de 5 µm, e na célula fica compactado em nucleoides.
 - Ribossomos mitocondriais com duas subunidades, menores que a organela e soltos na matriz.
 
+### 5.2 Peças comuns (`fonte/comum.py`)
+
+O núcleo e o cloroplasto usam `site/assets/modelos/fonte/comum.py`, que reúne a paleta, as primitivas, a booleana exata do Blender, o corte, a cor de vértice da fatia, a exportação e a prévia. A mitocôndria continua com o script próprio, sem mudança.
+
+Como os compartimentos ficam contínuos: cada membrana é um sólido montado por booleanas (volume de fora − volume do espaço interno), cortado depois pelo semiespaço y ≥ 0. Os espaços (perinuclear, lúmen do retículo, intermembranas, lúmen do tilacoide) aparecem só como a fatia, 1,5 nm atrás do plano do corte, no buraco que a membrana deixa ali. Depois de pronto, o sólido é separado por outras booleanas só para os rótulos. As peças separadas encostam umas nas outras sem emenda visível.
+
+Dois cuidados que o código já toma:
+- A booleana devolve a fatia de um anel como um único n-gono com uma "ponte", e a triangulação padrão às vezes tapa o buraco. `reparar_ngons_planos()` refaz essas fatias com o preenchimento por varredura, que respeita os buracos.
+- Tudo é triangulado no script, antes de exportar. Assim os três `.glb` saem idênticos byte a byte a cada execução.
+
+### 5.3 Núcleo (`nucleo`)
+
+| Arquivo | Para quê |
+|---|---|
+| `site/assets/modelos/nucleo.glb` (+ `nucleo.glb.js`) | 1,30 MB, 52 101 triângulos, sem Draco |
+| `site/assets/modelos/nucleo.blend` | Cena com câmera e luzes |
+| `site/assets/modelos/previa-nucleo.png` | Prévia 1200 × 800 |
+| `site/assets/modelos/fonte/nucleo.py` | Gerador (`python3 site/assets/modelos/fonte/nucleo.py`, ~1 min com prévia) |
+
+Escala: 1 unidade = 1 µm. O núcleo tem 6 µm de diâmetro, levemente achatado, e o retículo sai pelo lado +x. Corte em z = 0 do glTF, com a metade aberta para +Z. Caixa: x de −3,11 a 3,66, y de −2,84 a 2,85, z de −3,06 a 0.
+
+| Nó / mesh | `rotulo` | Triângulos | Cor | Notas |
+|---|---|---|---|---|
+| `envelope_nuclear` (grupo) | Envelope nuclear | | | Group com os três itens abaixo |
+| ↳ `membrana_externa` | Membrana nuclear externa | 7 713 | `#F06AAE` (membranas) | fatia escurecida |
+| ↳ `membrana_interna` | Membrana nuclear interna | 7 403 | `#F06AAE` | fatia escurecida |
+| ↳ `espaco_perinuclear` | Espaço perinuclear | 134 | `#442C48` (membranas + `--panel`) | só a fatia |
+| `poros_nucleares` | Poros nucleares | 6 891 | `#F7ADD2` (membranas clareada 45%) | 26 complexos; 2 deles cortados no plano |
+| `reticulo_endoplasmatico` | Retículo endoplasmático rugoso | 3 692 | `#F06AAE` → `#4B7BFF` | cor no vértice (base branca); veja abaixo |
+| `lumen_do_reticulo` | Lúmen do retículo | 63 | `#442C48` | **mesmo material** do espaço perinuclear |
+| `ribossomos` | Ribossomos | 5 600 | `#FFE1A6` | 40 no retículo e 16 na membrana externa |
+| `cromatina` (grupo) | Cromatina | | | Group com os dois itens abaixo |
+| ↳ `eucromatina` | Eucromatina | 6 424 | `#9A6BFF` (genética) | fibras frouxas |
+| ↳ `heterocromatina` | Heterocromatina | 8 498 | `#7D54E8` (genética → densa, 60%) | fatia escurecida |
+| `nucleolo` | Nucléolo | 3 699 | `#6A45D8` (partes densas) | fatia escurecida |
+| `nucleoplasma` | Nucleoplasma | 1 984 | `#402D64` (genética + ameixa) | forro interno |
+
+Para o engenheiro:
+- No three.js, `envelope_nuclear` e `cromatina` chegam como `Group` com os meshes dentro. Para o rótulo do grupo, suba pelo `parent` até achar o nó.
+- O `reticulo_endoplasmatico` tem a cor toda em `COLOR_0`, com `baseColorFactor` branco: a cor passa do rosa (junto ao envelope) para o azul. Se trocar o material, mantenha `vertexColors: true`. A `dessaturar()` do `materials.js` não vai agir sobre essa cor.
+
+**Decisões de Biologia (núcleo)**
+- Envelope com duas membranas e o espaço perinuclear entre elas. Membranas exageradas ~4× (30 nm) e espaço de 50 nm.
+- Poros: nos 26 poros, a membrana externa e a interna são a mesma membrana dobrada em volta do canal (membrana do poro), e o espaço perinuclear termina antes do canal. Dois poros caem no plano do corte, para o aluno ver isso na fatia. Cada complexo tem anel citoplasmático, anel nuclear, a cesta nuclear (filamentos que se juntam num anel) e filamentos citoplasmáticos. O tamanho está ~2× (complexo de ~0,25 µm; real ~0,12 µm), e a densidade real (~10 por µm²) foi reduzida a 26 poros na metade.
+- Retículo: uma cisterna (bolsa achatada) que sai da membrana externa e se dobra em duas lâminas. A membrana do retículo é a continuação da membrana nuclear externa, e o lúmen é a continuação do espaço perinuclear: na fatia, as faixas seguem sem emenda. A cor da membrana passa do rosa ao azul em ~0,35 µm, para não sugerir duas peças coladas. Os ribossomos ficam na face voltada para o citosol, no retículo e também na membrana nuclear externa (que também os tem).
+- Cromatina: a heterocromatina é densa e fica junto ao envelope, com falhas sob os poros (as zonas livres de heterocromatina) e em volta do nucléolo. A eucromatina são fibras frouxas espalhadas no nucleoplasma.
+- Nucléolo: massa densa e irregular, sem membrana, cortada ao meio. As regiões internas (fibrilar e granular) não foram modeladas.
+- Fora do modelo: lâmina nuclear, o transporte pelos poros e a continuidade do retículo com o resto da célula.
+
+### 5.4 Cloroplasto (`cloroplasto`)
+
+| Arquivo | Para quê |
+|---|---|
+| `site/assets/modelos/cloroplasto.glb` (+ `cloroplasto.glb.js`) | 1,30 MB, 47 177 triângulos, sem Draco |
+| `site/assets/modelos/cloroplasto.blend` | Cena com câmera e luzes |
+| `site/assets/modelos/previa-cloroplasto.png` | Prévia 1200 × 800 |
+| `site/assets/modelos/fonte/cloroplasto.py` | Gerador (~30 s com prévia) |
+
+Escala: 1 unidade = 1 µm. São 5,2 µm de comprimento, 3 µm de largura e 2,4 µm de espessura, com o eixo maior em X. Corte longitudinal em z = 0 do glTF, com a metade aberta para +Z. Caixa: x de −2,63 a 2,60, y de −1,22 a 1,21, z de −1,50 a 0.
+
+| Mesh | `rotulo` | Triângulos | Cor | Notas |
+|---|---|---|---|---|
+| `membrana_externa` | Membrana externa | 6 608 | `#3FBF6A` (fotossíntese) | `opacity` 0,5, fatia escurecida |
+| `espaco_intermembranas` | Espaço intermembranas | 74 | `#1C3B38` | só a fatia |
+| `membrana_interna` | Membrana interna | 6 609 | `#3FBF6A` | lisa, sem dobras |
+| `estroma` | Estroma | 2 184 | `#2F4648` (fotossíntese + ameixa) | forro interno |
+| `tilacoides` | Tilacoides (granum) | 14 694 | `#2A9450` (grana) | 11 grana, 7 a 11 discos cada |
+| `lamelas_estromais` | Lamelas estromais | 1 496 | `#3FBF6A` | ligam discos de grana vizinhos |
+| `lumen_do_tilacoide` | Lúmen do tilacoide | 658 | `#276447` | só a fatia; um compartimento só, para discos e lamelas |
+| `dna_do_cloroplasto` | DNA do cloroplasto | 5 760 | `#9A6BFF` | 3 anéis de fita dupla |
+| `ribossomos` | Ribossomos | 7 000 | `#FFE1A6` | 70 grânulos (70S) |
+| `graos_de_amido` | Grãos de amido | 1 454 | `#FFF2D7` (creme clareado) | 3 elipsoides, um cortado |
+| `plastoglobulos` | Plastoglóbulos | 640 | `#F9C956` (amarelo-ouro + creme) | 8 gotículas |
+
+**Decisões de Biologia (cloroplasto)**
+- Envoltório com duas membranas lisas e o espaço entre elas. Ao contrário da mitocôndria, a membrana interna não tem dobras: as membranas da fotossíntese são as dos tilacoides, que formam um sistema à parte.
+- Tilacoides e lamelas estromais são uma rede de membrana só, e o lúmen é um compartimento só. Na fatia, o lúmen das lamelas entra no lúmen dos discos sem parede no meio, e os dois espaços têm o mesmo objeto e a mesma cor.
+- A membrana dos discos dos grana usa o verde de grana do guia (`#2A9450`), e a das lamelas o verde da família (`#3FBF6A`). É a mesma membrana: a diferença mostra só que nos grana ela está empilhada, como nas micrografias, onde os grana aparecem mais escuros. Se o professor preferir uma cor só, basta trocar a cor do material `lamelas_estromais`.
+- Grana: uma fileira cortada ao meio, que mostra a pilha de discos em perfil, e outra inteira mais ao fundo. As lamelas saem da borda de um disco e chegam à borda de um disco do vizinho, em outro nível. O arranjo helicoidal real das lamelas em volta do granum foi simplificado.
+- Espessuras exageradas ~2 a 3×: membrana do tilacoide com 16 nm e lúmen com 26 nm.
+- O DNA são anéis no estroma e os ribossomos são 70S, do tipo bacteriano: as mesmas evidências de endossimbiose da mitocôndria.
+- Grãos de amido no estroma (reserva da fotossíntese), pálidos como nas micrografias. Plastoglóbulos como gotículas de lipídio perto das lamelas.
+- Fora do modelo: os complexos dos fotossistemas e da ATP sintase na membrana do tilacoide (próximo passo, como na mitocôndria), além da clorofila como pigmento.
+
 ## 6. Pendências e pontos para o PM
 
 - O guia (seção 6) fala em `site/assets/icones/`; a tarefa pediu `site/assets/icons/`. Usei `icons/`. Se o diretor de arte preferir o nome em português, é só renomear a pasta e os caminhos desta página.
 - Miniaturas renderizadas dos tipos de célula (WebP 80/120 px, seção 6 do guia) ainda não existem: dependem dos modelos 3D finais do engenheiro.
 - Faltam no guia, se forem necessários depois: ícones de busca, tema claro/escuro e tela cheia.
 - Modelos 3D: o próximo passo do piloto é a célula animal completa (ver seção 5). Revisão de Biologia da mitocôndria: `docs/revisao-biologia/mitocondria-3d.md`; E1, E2 e E3 aplicadas.
+- Núcleo e cloroplasto: falta a revisão de Biologia do professor (seções 5.3 e 5.4). Sugestão para o cloroplasto: complexos da fase clara na membrana do tilacoide, como foi feito na mitocôndria.
