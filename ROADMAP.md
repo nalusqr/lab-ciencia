@@ -101,8 +101,8 @@ Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N
 4. Bioenergética (respiração, fermentação, fotossíntese e quimiossíntese): o módulo já existe; o 🔬 Taxon confere o que falta para o ENEM.
 5. Embriologia: tipos de ovos quanto à quantidade e à distribuição do vitelo; segmentação, mórula, blástula, gástrula, nêurula e organogênese; anexos embrionários (vesícula vitelínica, alantoide, córion e âmnio); gametogênese (ovulogênese e espermatogênese); embriologia humana. É um módulo novo (site/embriologia/), que reaproveita a gametogênese da Citogenética.
 6. Histologia: características gerais e fisiologia dos tecidos epiteliais, conjuntivos, musculares e nervoso. Módulo novo (site/histologia/).
-7. Taxonomia e nomenclatura. Módulo novo (site/taxonomia/).
-8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); já existe o tópico #teoria/virus na Morfofisiologia.
+7. Taxonomia e nomenclatura: publicada (site/taxonomia/, 12 tópicos, 2026-11-15).
+8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); roteiro pronto (docs/revisao-biologia/virus-roteiro.md, 13 tópicos, no branch WIP); já existe o tópico #teoria/virus na Morfofisiologia.
 9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Provavelmente um módulo por reino, ou um módulo com uma seção por reino.
 10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor.
 11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
