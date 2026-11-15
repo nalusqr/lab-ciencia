@@ -23,6 +23,12 @@ const PAGINAS = [
   ['celula', 'site/celula/index.html'],
   ['morfofisiologia', 'site/morfofisiologia/index.html'],
 ];
+// módulos novos: entram sozinhos quando estiverem marcados como prontos em scripts/modulos.json (ver scripts/abas.py)
+try {
+  for (const m of JSON.parse(require('fs').readFileSync(path.join(RAIZ, 'scripts', 'modulos.json'), 'utf8')).modulos)
+    if (m.pronto && !PAGINAS.some(p => p[0] === m.id) && require('fs').existsSync(path.join(RAIZ, 'site', m.pasta, 'index.html')))
+      PAGINAS.push([m.id, `site/${m.pasta}/index.html`]);
+} catch (e) { console.log('AVISO  não li scripts/modulos.json: ' + e.message); }
 const CELULAS = ['animal', 'vegetal', 'bacteria', 'neuronio', 'esperma', 'levedura', 'sangue', 'fago'];
 const DETALHES = ['nucleo', 'mitocondria', 'cloroplasto', 're', 'golgi', 'lisossomo', 'ribossomo', 'membrana',
   'citoesqueleto', 'centriolo', 'peroxissomo', 'vacuolo'];
