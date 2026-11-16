@@ -101,7 +101,7 @@ async function paginaRotas(nome, rel, api) {
     try {
       await page.evaluate(([a, k]) => window[a].ir(k), [api, r]);
       await quadros(page, 4);
-      const pintou = await page.evaluate(() => {
+      const pinta = () => page.evaluate(() => {
         const c = document.getElementById('cv'); if (!c || !c.width || !c.height) return false;
         const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
         for (let i = 3; i < d.length; i += 4 * 97) if (d[i]) return true;
@@ -109,6 +109,9 @@ async function paginaRotas(nome, rel, api) {
         const g = document.querySelector('#view canvas.m3-cv.on'); if (g && g.width && g.height) return true;
         const f = document.querySelector('#view iframe.cel-fr'); return !!(f && f.style.display !== 'none');
       });
+      // figuras de IA carregam o .js da imagem sob demanda: dá até cerca de 3 s antes de dizer que o palco ficou vazio
+      let pintou = await pinta();
+      for (let k = 0; !pintou && k < 10; k++) { await quadros(page, 4); await page.waitForTimeout(250); pintou = await pinta(); }
       const e = errosNovos(page, desde);
       registrar(`${nome} #${r}`, e.length === 0 && pintou, (pintou ? '' : 'canvas vazio ') + e.slice(0, 5).join(' || '), Date.now() - t);
     } catch (err) { registrar(`${nome} #${r}`, false, err.message.split('\n')[0] + ' || ' + errosNovos(page, desde).slice(0, 5).join(' || '), Date.now() - t); }
