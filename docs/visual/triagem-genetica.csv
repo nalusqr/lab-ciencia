@@ -1,0 +1,32 @@
+modulo;arquivo;rota;nota;destino;acao
+genetica;genetica__01.png;conceitos/gene;2;3d;Feito: par de homólogos em 3D (azul do pai, violeta da mãe) com o loco aceso em faixa amarela ou verde, letras dos alelos na camada 2D e a semente que mostra o fenótipo; toque em cromossomo, loco, alelo e semente.
+genetica;genetica__02.png;conceitos/fenotipo;3;manter;Três ervilhas lado a lado já ensinam genótipo e fenótipo; foto não acrescenta.
+genetica;genetica__03.png;lei1/punnett;2;3d;Feito: quadro de Punnett em 3D; cada gameta de um dos pais voa até a casa, encontra o gameta do outro e vira a semente do descendente; a legenda final dá a proporção correta (3 amarelas : 1 verde e 1 VV : 2 Vv : 1 vv no padrão).
+genetica;genetica__04.png;lei1/sorteio;3;manter;Simulador de sorteio é jogo de contagem; 2D basta.
+genetica;genetica__05.png;lei2/dihibridismo;3;manter;Quadro de 16 casas precisa ser lido de frente; 3D atrapalharia.
+genetica;genetica__06.png;lei2/gametas;2;3d;Feito: meiose em 3D com dois pares de homólogos, alinhamento sorteado na metáfase I, anáfase I, célula que se estrangula, meiose II e quatro gametas com os nomes (RV e rv, ou Rv e rV).
+genetica;genetica__07.png;variacoes/incompleta;2;figura-ia;Flor maravilha real (Mirabilis jalapa) nas três cores, vermelha, rosa e branca, ancora o fenótipo intermediário; o quadro continua em 2D.
+genetica;genetica__08.png;variacoes/codominancia;2;figura-ia;Gado Shorthorn ruão de perto, com pelos vermelhos e brancos lado a lado, mostra que não é mistura; o quadro continua em 2D.
+genetica;genetica__09.png;variacoes/letais;3;manter;Proporção 2 : 1 e camundongos em esquema já bastam.
+genetica;genetica__10.png;variacoes/pleiotropia;3;manter;Mapa de efeitos de um gene é diagrama; 2D basta.
+genetica;genetica__11.png;variacoes/abo;2;figura-ia;Lâmina de tipagem sanguínea real (gotas com anti-A, anti-B e anti-Rh, aglutinadas ou não) ensina a ler o teste; o quadro de alelos continua em 2D.
+genetica;genetica__12.png;variacoes/transfusao;3;motion;Hemácias e anticorpos animados já mostram a aglutinação; manter o motion 2D.
+genetica;genetica__13.png;variacoes/rh;3;motion;Quatro etapas animadas da eritroblastose já funcionam; manter.
+genetica;genetica__14.png;determinacao/sistemas;3;manter;Comparação XY, ZW, X0 e haplodiploidia é tabela visual; 2D basta.
+genetica;genetica__15.png;determinacao/barr;2;figura-ia;Núcleo de célula da mucosa bucal corado, com o corpúsculo de Barr visível na borda, é a imagem que cai em prova; o contador de X continua em 2D.
+genetica;genetica__16.png;sexo/daltonismo;2;3d;Feito: espermatozoides com X ou Y e óvulos com X nadam até as casas e formam zigotos com XX ou XY, alelo em faixa; rótulo de menina portadora, menino afetado e normal, e a chance final por sexo.
+genetica;genetica__17.png;sexo/hemofilia;2;3d;Feito: mesma cena 3D do daltonismo com o gene H do fator de coagulação.
+genetica;genetica__18.png;sexo/y-calvicie;3;manter;Heredograma e tabela de calvície já ensinam; foto de pessoa real expõe sem ensinar.
+genetica;genetica__19.png;heredogramas/leitura;3;manter;Heredograma é símbolo; deve ficar em 2D.
+genetica;genetica__20.png;heredogramas/exercicios;3;manter;Exercício de heredograma; 2D.
+genetica;genetica__21.png;probabilidade/e;3;manter;Área do produto é diagrama; 2D.
+genetica;genetica__22.png;probabilidade/ou;3;manter;Soma de casas é diagrama; 2D.
+genetica;genetica__23.png;biotec/recombinante;2;3d;Feito: plasmídeo e DNA humano em 3D; a enzima de restrição corta, o gene da insulina entra na abertura e a ligase cola (ou não entra, com enzimas diferentes), e a bactéria transgênica se divide de 1 a 8 soltando insulina.
+genetica;genetica__24.png;biotec/pcr;3;motion;Termociclador e gel animados já ensinam; manter.
+genetica;genetica__25.png;biotec/clonagem;2;figura-ia;Ovelha Dolly empalhada no museu e a transferência nuclear vista ao microscópio (pipeta e óvulo) dão concretude; o esquema continua em 2D.
+genetica;genetica__26.png;biotec/crispr;3;motion;Fita com a Cas9 andando já é motion; manter.
+genetica;genetica__27.png;populacoes/hardy-weinberg;3;manter;Contas e barras; 2D.
+genetica;genetica__28.png;populacoes/fatores;3;manter;Simulação de frequências; 2D.
+genetica;genetica__29.png;extras/ligacao;2;3d;Feito: bivalente com quatro cromátides em 3D, quiasma âmbar entre os genes A e B e troca de pedaços; os quatro gametas saem com parental (100 - r)/2 e recombinante r/2 cada, ligado à faixa da taxa.
+genetica;genetica__30.png;extras/interacao;2;figura-ia;Três labradores reais, preto, chocolate e amarelo, ancoram a epistasia; o quadro 9 : 3 : 4 continua em 2D.
+genetica;genetica__31.png;extras/poligenica;2;figura-ia;Fenótipos humanos reais de cor de pele em gradiente (fotos de mãos lado a lado, sem rostos) mostram a variação contínua; histograma continua em 2D.
