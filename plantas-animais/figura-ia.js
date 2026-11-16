@@ -116,6 +116,7 @@
       F.tc = agora;
       const cam = F.cam, ar = (cam.w * (img.width || 4)) / (cam.h * (img.height || 3));
       let w = box.w, h = w / ar; if (h > box.h) { h = box.h; w = h * ar; }
+      if (box.w > 700) { const k = Math.min(1.12, box.w / w); w *= k; h *= k; } // desktop: a figura ocupa mais do palco (as bordas esfumadas absorvem o excesso)
       const x0 = box.x + (box.w - w) / 2, y0 = box.y + (box.h - h) / 2;
       // entrada: opacidade 0 para 1 e escala 1,03 para 1 em 900 ms (150 ms de fade no modo reduzido)
       const e = RED ? Math.min(1, (agora - F.t0) / 150) : eOut((agora - F.t0) / 900);
