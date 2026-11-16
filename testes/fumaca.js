@@ -82,7 +82,7 @@ async function paginaSimples(nome, rel) {
 
 // módulos de canvas 2D com rotas por hash (motor da Bioenergética): abre e percorre cada rota pela API da página
 // (window[api].rotas e .ir), conferindo que não surgiu erro e que o canvas desenhou algo em cada uma
-const ROTAS_2D = { embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO', 'plantas-animais': 'LAB_PLANTAS', anatomia: 'LAB_ANATOMIA', evolucao: 'LAB_EVOLUCAO', morfofisiologia: 'LAB_MORFO' };
+const ROTAS_2D = { 'divisao-celular': 'LAB_CITOG', embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO', 'plantas-animais': 'LAB_PLANTAS', anatomia: 'LAB_ANATOMIA', evolucao: 'LAB_EVOLUCAO', morfofisiologia: 'LAB_MORFO' };
 async function paginaRotas(nome, rel, api) {
   const t0 = Date.now(); const { ctx, page } = await abrir();
   let rotas = [];

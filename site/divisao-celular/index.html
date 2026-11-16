@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Citogenética · LAB</title>
+<title>Citogenética no LAB</title>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css">
 <style>
@@ -146,6 +146,12 @@
 </div>
 
 <script src="cromossomos.js"></script>
+<script src="../biologia-molecular/mol3d.js"></script>
+<script src="cito3d.js"></script>
+<script src="cenas3d-ciclo.js"></script>
+<script src="cenas3d-divisao.js"></script>
+<script src="cenas3d-erros.js"></script>
+<script src="cenas3d-gametas.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -306,7 +312,7 @@ def('ciclo','interfase',{t:'Interfase: G1, S e G2',s:'a célula cresce e duplica
   ['S','Fase de síntese: todo o DNA é duplicado. Cada cromossomo passa a ter duas cromátides-irmãs.'],
   ['G2','A célula continua crescendo e confere se o DNA foi copiado direito. Os centrossomos já estão duplicados.'],
   ['M','Mitose e citocinese: a fase mais curta. O DNA condensado é repartido entre duas células-filhas.']],
- inf:[['DNA: 2C','um cromossomo = uma cromátide'],['DNA: 2C → 4C','duplicação em andamento'],['DNA: 4C','um cromossomo = duas cromátides'],['DNA: 4C → 2C','repartido entre as filhas']],
+ inf:[['DNA: 2C','um cromossomo = uma cromátide'],['DNA: 2C para 4C','duplicação em andamento'],['DNA: 4C','um cromossomo = duas cromátides'],['DNA: 4C para 2C','repartido entre as filhas']],
  leg:[['#4B7BFF','G1'],['#9A6BFF','S'],['#2FCFBF','G2'],['#F7C13B','M (divisão)'],[C.mat,'cromatina (DNA + proteínas)']],
  d:`<p>O <b>ciclo celular</b> é a vida de uma célula, do momento em que ela surge até se dividir. Ele tem duas partes: a <b>interfase</b>, longa, e a <b>divisão</b> (fase M), curta. Numa célula humana que se divide a cada 24&nbsp;h, a interfase ocupa cerca de 23&nbsp;h.</p><p>A interfase tem três etapas. Em <b>G1</b> a célula cresce e trabalha. Em <b>S</b> (de síntese) ela <b>duplica o DNA</b>. Em <b>G2</b> ela se prepara para dividir. Células que param de se dividir, como os neurônios, saem do ciclo e ficam em <b>G0</b>.</p><p>No anel, cada fatia tem o tamanho da duração da fase. A letra <b>C</b> mede a quantidade de DNA: C é o que há num gameta; uma célula do corpo em G1 tem 2C.</p>`,
  kv:[['Duração típica (célula humana em cultura)','cerca de 24 h'],['G1','cerca de 11 h'],['S','cerca de 8 h'],['G2','cerca de 4 h'],['M','cerca de 1 h']],
@@ -380,10 +386,10 @@ def('mitose','fases',{t:'As fases da mitose',s:'uma célula 2n forma duas célul
   ['Anáfase','Os centrômeros se dividem. As cromátides-irmãs se separam e são puxadas para polos opostos.'],
   ['Telófase','Os cromossomos chegam aos polos e se descondensam. Dois envoltórios nucleares se refazem.'],
   ['Citocinese','O citoplasma se divide. Resultado: duas células com os mesmos cromossomos da célula-mãe.']],
- inf:[['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · 8 cromátides'],['2n = 4','DNA: 4C · cromátides separadas'],['2 núcleos','DNA: 2C em cada núcleo'],['2 células · 2n = 4','DNA: 2C em cada célula']],
+ inf:[['2n = 4','DNA: 4C, 8 cromátides'],['2n = 4','DNA: 4C, 8 cromátides'],['2n = 4','DNA: 4C, 8 cromátides'],['2n = 4','DNA: 4C, cromátides separadas'],['2 núcleos','DNA: 2C em cada núcleo'],['2 células com 2n = 4','DNA: 2C em cada célula']],
  leg:LEGC,
  d:`<p>A <b>mitose</b> é a divisão do núcleo que reparte o DNA duplicado em duas partes iguais. Ela faz o corpo <b>crescer</b>, <b>repõe células</b> perdidas, cicatriza feridas e é a base da reprodução assexuada.</p><p>O segredo está na <b>anáfase</b>: cada cromossomo duplicado se abre em duas <b>cromátides-irmãs</b>, cópias idênticas, e cada polo recebe uma. Por isso as duas células-filhas têm o <b>mesmo número de cromossomos</b> e a <b>mesma informação genética</b> da célula-mãe.</p><p>A célula do desenho tem 2n&nbsp;=&nbsp;4: dois cromossomos longos e dois curtos, um de cada par vindo da mãe e outro do pai.</p>`,
- kv:[['Células formadas','2'],['Cromossomos','2n → 2n'],['Células-filhas','geneticamente iguais'],['Onde ocorre','células somáticas'],['Sequência','prófase, metáfase, anáfase, telófase']],
+ kv:[['Células formadas','2'],['Cromossomos','de 2n para 2n'],['Células-filhas','geneticamente iguais'],['Onde ocorre','células somáticas'],['Sequência','prófase, metáfase, anáfase, telófase']],
  enem:`Para identificar a fase numa figura: cromossomos <b>no meio</b> é metáfase; <b>dois grupos se afastando</b> é anáfase. O cariótipo é feito com células em <b>metáfase</b>, quando os cromossomos estão mais condensados. Substâncias que impedem o fuso (colchicina) travam a divisão nessa fase.`,
  links:[['Núcleo e centríolos em 3D, no módulo 5','../celula/index.html#centriolo'],['Da cromatina ao cromossomo, no módulo 6','../morfofisiologia/index.html#nucleo/geral']],
  draw(i,e){const a=areas(1)[0],R=rMit(a),cx=a.x+a.w/2,cy=a.y+a.h/2;runDiv(mkMitose(cx,cy,R),geo(R),i,e)}});
@@ -424,10 +430,10 @@ const MEI_PH=[['Interfase','Ponto de partida: célula 2n com o DNA já duplicado
   ['Anáfase II','Os centrômeros se dividem e as cromátides-irmãs se separam.'],
   ['Telófase II','Resultado: quatro células n, todas diferentes entre si e da célula-mãe.']];
 def('meiose','fases',{t:'Meiose I e meiose II',s:'uma célula 2n forma quatro células n',c:'#5CC8F0',ph:MEI_PH,
- inf:[['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C · homólogos pareados'],['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C · homólogos se separam'],['n = 2 por célula','DNA: 2C · cromossomos duplicados'],['n = 2 por célula','DNA: 2C'],['n = 2 por célula','DNA: 2C · cromátides se separam'],['4 células · n = 2','DNA: C em cada uma']],
+ inf:[['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C, homólogos pareados'],['2n = 4','DNA: 4C'],['2n = 4','DNA: 4C, homólogos se separam'],['n = 2 por célula','DNA: 2C, cromossomos duplicados'],['n = 2 por célula','DNA: 2C'],['n = 2 por célula','DNA: 2C, cromátides se separam'],['4 células com n = 2','DNA: C em cada uma']],
  leg:LEGC,
  d:`<p>A <b>meiose</b> reduz o número de cromossomos à metade: de <b>2n</b> (diploide) para <b>n</b> (haploide). É assim que se formam os gametas nos animais e os esporos nas plantas. Na fecundação, dois gametas n refazem o 2n.</p><p>O DNA é duplicado <b>uma vez</b> e o núcleo se divide <b>duas vezes</b>. Na <b>meiose I</b>, chamada <b>reducional</b>, separam-se os <b>cromossomos homólogos</b>: é aí que o número cai de 2n para n. Na <b>meiose II</b>, <b>equacional</b>, separam-se as <b>cromátides-irmãs</b>, como numa mitose.</p><p>Repare nas cores: depois do crossing-over, alguns cromossomos carregam um trecho materno e outro paterno. Nenhuma das quatro células finais é igual a outra.</p>`,
- kv:[['Células formadas','4'],['Cromossomos','2n → n'],['Duplicações do DNA','1'],['Divisões','2 (meiose I e II)'],['Células-filhas','geneticamente diferentes']],
+ kv:[['Células formadas','4'],['Cromossomos','de 2n para n'],['Duplicações do DNA','1'],['Divisões','2 (meiose I e II)'],['Células-filhas','geneticamente diferentes']],
  enem:`O ponto mais cobrado: <b>a redução acontece na meiose I</b>, quando os homólogos se separam. A meiose II não reduz nada, só separa cromátides. A meiose é a fonte da <b>variabilidade</b> na reprodução sexuada, e é por ela que o número de cromossomos da espécie se mantém de geração em geração.`,
  links:[['Genes e alelos no DNA, no módulo 1','../dna/index.html'],['Espermatozoide em 3D, no módulo 5','../celula/index.html#esperma']],
  draw(i,e){const a=areas(1)[0],R=rMei(a),cx=a.x+a.w/2,cy=a.y+a.h/2;runDiv(mkMeiose(cx,cy,R,{labs:true}),geo(R,{xo:true}),i,e)}});
@@ -464,7 +470,7 @@ def('meiose','crossing',{t:'Crossing-over',s:'troca de pedaços entre homólogos
   if(i===4){X.globalAlpha=e;['AB','Ab','aB','ab'].forEach((s,k)=>tx(s,xs[k],bot+20,{f:FD,s:14,w:500,c:C.txt}));tx('parental',xs[0],bot+40,{s:13,c:C.dim});tx('parental',xs[3],bot+40,{s:13,c:C.dim});tx('recombinantes',cx,bot+40,{s:13,w:600,c:C.txt});X.globalAlpha=1}}});
 
 def('meiose','segregacao',{t:'Segregação independente',s:'cada par se separa por conta própria',c:'#5CC8F0',
- ph:[['Metáfase I','Dois arranjos possíveis, com a mesma chance. À esquerda, os dois cromossomos maternos ficam do mesmo lado; à direita, em lados opostos.'],
+ ph:[['Metáfase I','Dois arranjos possíveis, com a mesma chance. No arranjo 1, os dois cromossomos maternos ficam do mesmo lado; no arranjo 2, em lados opostos.'],
   ['Anáfase I','Os homólogos de cada par se separam. O destino de um par não depende do outro.'],
   ['Fim da meiose I','Cada célula recebeu um cromossomo de cada par, numa combinação que depende do arranjo.'],
   ['Anáfase II','As cromátides-irmãs se separam.'],
@@ -485,16 +491,16 @@ def('comparar','grafico',{t:'Gráfico: DNA e cromossomos',s:'2n, n e quantidade 
   ['Primeira divisão','Mitose: separa cromátides, e cada filha fica 2n com 2C. Meiose I: separa homólogos, e cada filha fica n com 2C.'],
   ['Segunda divisão','Só na meiose: a meiose II separa as cromátides, e o DNA cai de 2C para C. As filhas da mitose já estão em G1.'],
   ['Resultado','Mitose: 2 células 2n com 2C. Meiose: 4 células n com C.']],
- inf:[['2C','2n nas duas'],['2C → 4C','2n nas duas'],['4C','2n nas duas'],['4C → 2C','mitose 2n · meiose n'],['2C → C','só na meiose'],['2C × C','mitose × meiose']],
+ inf:[['2C','2n nas duas'],['2C para 4C','2n nas duas'],['4C','2n nas duas'],['4C para 2C','mitose 2n, meiose n'],['2C para C','só na meiose'],['2C × C','mitose × meiose']],
  leg:[[C.mat,'quantidade de DNA por célula (C)'],[C.pat,'conjuntos de cromossomos (2n ou n)']],
  d:`<p>Este é o gráfico que mais aparece em provas. O eixo vertical mostra a <b>quantidade de DNA por célula</b>, em unidades <b>C</b> (C é o DNA de um gameta). Embaixo, a faixa mostra se a célula é <b>2n</b> ou <b>n</b>.</p><p>Há <b>uma subida</b> e depois <b>descidas</b>. A subida é a fase <b>S</b>, quando o DNA dobra. Cada descida é uma divisão, que reparte o DNA pela metade. A <b>mitose</b> tem uma descida e volta ao valor inicial (2C). A <b>meiose</b> tem duas descidas e termina com metade do valor inicial (C).</p><p>Atenção ao detalhe: na fase S o DNA dobra, mas o número de cromossomos <b>não</b>. Um cromossomo duplicado continua sendo um cromossomo, agora com duas cromátides.</p>`,
- kv:[['Mitose','2C → 4C → 2C'],['Meiose','2C → 4C → 2C → C'],['Número de cromossomos na mitose','2n → 2n'],['Número de cromossomos na meiose','2n → n']],
+ kv:[['Mitose','2C, 4C e 2C'],['Meiose','2C, 4C, 2C e C'],['Número de cromossomos na mitose','de 2n para 2n'],['Número de cromossomos na meiose','de 2n para n']],
  enem:`Para ler o gráfico: <b>conte os degraus de descida</b>. Um degrau é mitose; dois degraus é meiose. O trecho inclinado é sempre a fase S. Se a pergunta for "em que momento a célula se torna haploide?", a resposta é o <b>primeiro degrau da meiose</b> (fim da meiose I).`,
  links:[['Como o DNA se duplica, no módulo 1','../dna/index.html']],
  draw(i,e,f){const u=i+f,nar=W<600,x0=nar?40:64,x1=W-14,y0=54,gap=12,hh=(H-y0-10-gap)/2,cw=(x1-x0)/6;
   const drop=(u,a,hi,lo)=>hi-(hi-lo)*ss((u-(a-.62))/.3),up=u=>2+2*cl((u-1)/.7,0,1);
   const D=[{t:'Mitose',v:u=>u<1?2:u<3?up(u):u<4?drop(u,4,4,2):2,cols:nar?['G1','S','G2','M','G1','…']:['G1','S','G2','Mitose','G1 das filhas','novo ciclo'],pl:['2n','2n','2n','2n','2n','2n']},
-   {t:'Meiose',v:u=>u<1?2:u<3?up(u):u<4?drop(u,4,4,2):u<5?drop(u,5,2,1):1,cols:nar?['G1','S','G2','M I','M II','Fim']:['G1','S','G2','Meiose I','Meiose II','Gametas'],pl:['2n','2n','2n','2n→n','n','n']}];
+   {t:'Meiose',v:u=>u<1?2:u<3?up(u):u<4?drop(u,4,4,2):u<5?drop(u,5,2,1):1,cols:nar?['G1','S','G2','M I','M II','Fim']:['G1','S','G2','Meiose I','Meiose II','Gametas'],pl:['2n','2n','2n','2n para n','n','n']}];
   D.forEach((d,k)=>{const top=y0+k*(hh+gap),pt=top+26,pb=top+hh-42,Y=v=>pb-(v/4.5)*(pb-pt),Xu=q=>x0+q/6*(x1-x0);
    tx(d.t,x0+2,top+10,{a:'left',f:FTT,s:15,w:600,c:C.txt});tx('DNA por célula',x1,top+10,{a:'right',s:12.5,c:C.dim});
    X.fillStyle='rgba(255,255,255,.05)';X.fillRect(x0+i*cw,pt-2,cw,pb-pt+40);
@@ -520,7 +526,7 @@ def('comparar','lado',{t:'Lado a lado',s:'as duas divisões no mesmo passo',c:'#
  <table class="cmp"><tr><th>Característica</th><th>Mitose</th><th>Meiose</th></tr>
  <tr><td>Divisões do núcleo</td><td>1</td><td>2</td></tr>
  <tr><td>Células formadas</td><td>2</td><td>4</td></tr>
- <tr><td>Cromossomos</td><td>2n → 2n</td><td>2n → n</td></tr>
+ <tr><td>Cromossomos</td><td>de 2n para 2n</td><td>de 2n para n</td></tr>
  <tr><td>Pareamento de homólogos</td><td>não ocorre</td><td>ocorre na prófase I</td></tr>
  <tr><td>Crossing-over</td><td>não ocorre</td><td>ocorre na prófase I</td></tr>
  <tr><td>O que se separa</td><td>cromátides-irmãs</td><td>homólogos (I), depois cromátides-irmãs (II)</td></tr>
@@ -535,11 +541,11 @@ def('comparar','lado',{t:'Lado a lado',s:'as duas divisões no mesmo passo',c:'#
 
 // ---------------- 5. ALTERAÇÕES CROMOSSÔMICAS ----------------
 def('erros','naodisjuncao',{t:'Não disjunção',s:'quando os cromossomos não se separam',c:'#FF6B7D',
- ph:[['Metáfase I','À esquerda, o erro será na meiose I. À direita, na meiose II. Até aqui, tudo igual.'],
-  ['Anáfase I','Esquerda: os dois homólogos do par longo vão para o mesmo polo. Direita: separação normal.'],
-  ['Fim da meiose I','Esquerda: uma célula com um cromossomo a mais, outra com um a menos. Direita: duas células normais.'],
+ ph:[['Metáfase I','O erro será na meiose I num dos diagramas e na meiose II no outro. Até aqui, tudo igual.'],
+  ['Anáfase I','Erro na meiose I: os dois homólogos do par longo vão para o mesmo polo. Erro na meiose II: separação normal.'],
+  ['Fim da meiose I','Erro na meiose I: uma célula com um cromossomo a mais, outra com um a menos. Erro na meiose II: duas células normais.'],
   ['Metáfase II','Os cromossomos se alinham no equador de cada célula.'],
-  ['Anáfase II','Esquerda: divisão normal do que já veio errado. Direita: numa das células, as cromátides-irmãs do longo não se separam.'],
+  ['Anáfase II','Erro na meiose I: divisão normal do que já veio errado. Erro na meiose II: numa das células, as cromátides-irmãs do longo não se separam.'],
   ['Gametas','Erro na meiose I: os 4 gametas saem alterados. Erro na meiose II: 2 gametas normais e 2 alterados.']],
  inf:[['2n = 4','antes do erro'],['Erro na meiose I','homólogos não se separam'],['n + 1 e n − 1','ou n e n'],['Meiose II','segunda divisão'],['Erro na meiose II','cromátides não se separam'],['n + 1, n − 1, n','gametas']],
  leg:[[C.mat,'origem materna'],[C.pat,'origem paterna'],['#E8EDF7','n + 1: um cromossomo a mais; n − 1: um a menos']],
@@ -550,7 +556,7 @@ def('erros','naodisjuncao',{t:'Não disjunção',s:'quando os cromossomos não s
  draw(i,e){const A=areas(2),map=[2,3,4,5,6,7];divider();A.forEach((a,k)=>{const R=rMei(a,1),cx=a.x+a.w/2,cy=a.y+24+(a.h-24)/2;ptitle(a,k?'Erro na meiose II':'Erro na meiose I');const st=mkMeiose(cx,cy,R,{nd:k?'II':'I'}).filter((s,j)=>map.includes(j));runDiv(st,geo(R),i,e)})}});
 
 def('erros','aneuploidias',{t:'Aneuploidias',s:'um cromossomo a mais ou a menos',c:'#FF6B7D',
- ph:[['Gametas','Por uma não disjunção na meiose, este óvulo tem duas cópias do cromossomo 21. O espermatozoide é normal, com uma.'],
+ ph:[['Gametas','Por uma não disjunção na meiose, este gameta feminino (na verdade, um ovócito II) tem duas cópias do cromossomo 21. O espermatozoide é normal, com uma.'],
   ['Fecundação','Os núcleos se unem: 24 + 23 = 47 cromossomos. O zigoto tem três cópias do 21.'],
   ['Trissomia do 21','Cariótipo 47,XX,+21: síndrome de Down. Todas as células do corpo terão o cromossomo extra.'],
   ['Monossomia do X','Cariótipo 45,X: síndrome de Turner. Falta um cromossomo sexual.'],
@@ -588,9 +594,9 @@ def('erros','aneuploidias',{t:'Aneuploidias',s:'um cromossomo a mais ou a menos'
 
 // euploidia: conjuntos inteiros (modelo do módulo: n = 2, um cromossomo longo A e um curto B)
 const PLOI=[{k:2,n:'2n',nm:'Diploide',ex:[['Milho','20 cromossomos'],['Ser humano','46 cromossomos']],nt:'O normal na maioria dos animais e das plantas: um conjunto de cada genitor.'},
- {k:3,n:'3n',nm:'Triploide',ex:[['Banana-nanica','3 conjuntos · 33'],['Melancia sem sementes','3 conjuntos · 33']],nt:'Quase estéril: sem sementes viáveis. No ser humano (69 cromossomos) é letal.'},
- {k:4,n:'4n',nm:'Tetraploide',ex:[['Batata','4 conjuntos · 48'],['Algodão cultivado','4 conjuntos · 52']],nt:'Células e órgãos maiores; muitas plantas cultivadas são assim.'},
- {k:6,n:'6n',nm:'Hexaploide',ex:[['Trigo-comum','6 conjuntos de 7 · 42'],['Aveia','6 conjuntos · 42']],nt:'E o morango cultivado tem 8 conjuntos de 7: 56 cromossomos.'},
+ {k:3,n:'3n',nm:'Triploide',ex:[['Banana-nanica','3 conjuntos, 33 cromossomos'],['Melancia sem sementes','3 conjuntos, 33 cromossomos']],nt:'Quase estéril: sem sementes viáveis. No ser humano (69 cromossomos) é letal.'},
+ {k:4,n:'4n',nm:'Tetraploide',ex:[['Batata','4 conjuntos, 48 cromossomos'],['Algodão cultivado','4 conjuntos, 52 cromossomos']],nt:'Células e órgãos maiores; muitas plantas cultivadas são assim.'},
+ {k:6,n:'6n',nm:'Hexaploide',ex:[['Trigo-comum','6 conjuntos de 7, 42 cromossomos'],['Aveia','6 conjuntos, 42 cromossomos']],nt:'E o morango cultivado tem 8 conjuntos de 7: 56 cromossomos.'},
  {k:1,n:'n',nm:'Haploide',ex:[['Zangão das abelhas','n = 16'],['Rainha e operárias','2n = 32']],nt:'O zangão nasce de óvulo não fecundado: na abelha, isso é normal.'}];
 const SETC=['#9A6BFF','#5CC8F0','#C3A6FF','#A8E6FA','#7A4FE0','#2FA8D8'],LENS=[1,.55];
 function wrapTx(s,x,y,maxW,lh,o){X.font=`${o.w||400} ${Math.max(12,o.s||13)}px ${o.f||FT}`;const ws=s.split(' ');let ln='',yy=y;
@@ -629,7 +635,7 @@ def('erros','euploidias',{t:'Euploidias',s:'conjuntos inteiros a mais ou a menos
    for(let t=0;t<2;t++)for(let j=0;j<km;j++){const inC=j<kc,inP=j<kp,xq=inC?px(Q,kc,t,j):px(P,kp,t,j),xo=inP?px(P,kp,t,j):xq,x=lerp(xo,xq,ee),w=lerp(inP?P.w:Q.w,inC?Q.w:P.w,ee),al=inC&&inP?1:inC?ee:1-ee;
     rod(x,cy-(1-LENS[t])*L*.18,L*LENS[t],w,SETC[j],al)}
    if(LB){['A','B'].forEach((nm,t)=>{const xm=lerp(px(P,kp,t,(kp-1)/2),px(Q,kc,t,(kc-1)/2),ee);tx(nm,xm,cy+L*.5+12,{f:FD,s:12,c:C.dim})})}
-   tx(`${PLOI[ip].n}: ${kc===1?'1 conjunto':kc+' conjuntos'} · ${2*kc} cromossomos`,cx,A.y+A.h-10,{s:13,w:600,c:C.txt});
+   tx(`${PLOI[ip].n}: ${kc===1?'1 conjunto':kc+' conjuntos'}, ${2*kc} cromossomos`,cx,A.y+A.h-10,{s:13,w:600,c:C.txt});
    const pan=(pl,al)=>{if(al<.01)return;X.save();X.globalAlpha*=al;const x=B.x+B.w/2,mw=B.w-28,cmp=!wide&&B.h<210;let y=B.y+(cmp?18:Math.max(26,B.h*.14));
     tx(pl.n,x,y,{f:FTT,s:cmp?24:34,w:700,c:'#F7C13B'});y+=cmp?24:38;tx(pl.nm,x,y,{f:FTT,s:cmp?15:18,w:600,c:C.txt});y+=cmp?22:34;
     for(const[a,b]of pl.ex){if(cmp||mw<260){tx(`${a}: ${b}`,x,y,{s:13,c:C.txt});y+=cmp?18:22}else{tx(a,x,y,{s:14,w:600,c:C.txt});tx(b,x,y+18,{f:FD,s:12.5,c:C.dim});y+=42}}
@@ -663,7 +669,7 @@ function tree(N,PL,i,e,t){const y0=60,rows=5,rh=(H-y0-12)/rows,hw=Math.min(W/2-3
   if(n.nm){if(n.np==='l')tx(n.nm,14,y-r-10,{a:'left',s:13,w:600,c:C.txt});else if(n.np==='b'){X.font=`600 13px ${FT}`;const tw=X.measureText(n.nm).width/2+8;tx(n.nm,cl(x,tw,W-tw),y+r+12,{s:13,w:600,c:C.txt})}else tx(n.nm,x+r+10,y,{a:'left',s:13,w:600,c:C.txt})}
   X.globalAlpha=1}}
 def('gametogenese','espermatogenese',{t:'Espermatogênese',s:'1 célula forma 4 espermatozoides',c:'#5CC8F0',
- ph:[['Espermatogônia','Células 2n da parede dos túbulos seminíferos, no testículo. Multiplicam-se por mitose durante toda a vida, a partir da puberdade.'],
+ ph:[['Espermatogônia','Células 2n da parede dos túbulos seminíferos, no testículo. Da puberdade em diante, multiplicam-se por mitose durante toda a vida.'],
   ['Espermatócito I','Uma espermatogônia cresce, duplica o DNA e vira espermatócito primário (2n), que vai entrar em meiose.'],
   ['Meiose I','O espermatócito I se divide em dois espermatócitos secundários, já haploides (n).'],
   ['Meiose II','Cada espermatócito II se divide em duas espermátides (n). São quatro ao todo, de tamanhos iguais.'],
@@ -671,7 +677,7 @@ def('gametogenese','espermatogenese',{t:'Espermatogênese',s:'1 célula forma 4 
  inf:[['2n','espermatogônia'],['2n','espermatócito I'],['n + n','2 espermatócitos II'],['4 × n','espermátides'],['4 espermatozoides','n cada um']],
  leg:[[C.mem,'membrana'],[C.nuc,'núcleo (2n ou n)'],[C.ice,'cauda (flagelo)']],
  d:`<p><b>Gametogênese</b> é a formação dos gametas. Nos dois sexos ela passa pelas mesmas etapas: <b>multiplicação</b> (mitoses), <b>crescimento</b>, <b>maturação</b> (meiose) e, nos homens, <b>diferenciação</b>.</p><p>A <b>espermatogênese</b> ocorre nos <b>túbulos seminíferos</b> dos testículos, começa na <b>puberdade</b> e não para mais. De cada espermatócito primário saem <b>quatro espermatozoides</b>, todos funcionais e de mesmo tamanho. O processo inteiro leva cerca de 70 dias, e são produzidos milhões por dia.</p><p>A última etapa, a <b>espermiogênese</b>, não é divisão: é uma mudança de forma. O núcleo fica compacto, o complexo de Golgi forma o <b>acrossomo</b> e as mitocôndrias se concentram na base da cauda.</p>`,
- kv:[['Onde','túbulos seminíferos (testículos)'],['Início','puberdade'],['Rendimento','1 espermatócito I → 4 espermatozoides'],['Duração','cerca de 70 dias'],['Divisão do citoplasma','igual']],
+ kv:[['Onde','túbulos seminíferos (testículos)'],['Início','puberdade'],['Rendimento','1 espermatócito I forma 4 espermatozoides'],['Duração','cerca de 70 dias'],['Divisão do citoplasma','igual']],
  enem:`O que mais cai é a <b>comparação com a ovogênese</b>: aqui são <b>4 gametas</b> por célula, pequenos e móveis, produzidos continuamente da puberdade em diante. Guarde também a ordem: espermatogônia, espermatócito I, espermatócito II, espermátide, espermatozoide.`,
  links:[['Espermatozoide em 3D, no módulo 5','../celula/index.html#esperma'],['Meiose I e II','#meiose/fases']],
  draw(i,e,f,t){tree([{id:'a',row:0,x:0,r:19,pl:'2n',ph:0,nm:'Espermatogônia'},{id:'b',row:1,x:0,r:25,pl:'2n',ph:1,from:'a',nm:'Espermatócito I'},
@@ -689,7 +695,7 @@ def('gametogenese','ovogenese',{t:'Ovogênese',s:'1 célula forma 1 óvulo',c:'#
  inf:[['2n','ovogônia'],['2n','ovócito I em pausa'],['n','ovócito II + corpúsculo polar'],['n','ovócito II em metáfase II'],['1 óvulo','n, com quase todo o citoplasma']],
  leg:[[C.mem,'membrana'],[C.nuc,'núcleo (2n ou n)'],[C.ice,'espermatozoide']],
  d:`<p>A <b>ovogênese</b> acontece nos <b>ovários</b> e tem duas pausas longas. Ela começa <b>antes do nascimento</b>: as ovogônias se multiplicam e viram ovócitos primários, que iniciam a meiose e <b>param na prófase I</b>.</p><p>Da puberdade à menopausa, a cada ciclo menstrual um ovócito I retoma a meiose. A divisão do citoplasma é <b>desigual</b>: quase tudo fica com o <b>ovócito secundário</b>, e o resto vai para um <b>corpúsculo polar</b>, que degenera. O ovócito II é liberado na <b>ovulação</b>, parado na <b>metáfase II</b>.</p><p>A meiose só termina <b>se houver fecundação</b>. No fim, cada ovócito I rende <b>um único óvulo</b>, grande e cheio de reservas para o início do desenvolvimento do embrião.</p>`,
- kv:[['Onde','ovários'],['Início','vida fetal'],['Primeira pausa','prófase I (até a puberdade)'],['Segunda pausa','metáfase II (até a fecundação)'],['Rendimento','1 ovócito I → 1 óvulo'],['Divisão do citoplasma','desigual']],
+ kv:[['Onde','ovários'],['Início','vida fetal'],['Primeira pausa','prófase I (da vida fetal até a ovulação daquele ovócito, anos depois)'],['Segunda pausa','metáfase II (até a fecundação)'],['Rendimento','1 ovócito I forma 1 óvulo'],['Divisão do citoplasma','desigual']],
  enem:`Duas pegadinhas: a célula liberada na ovulação <b>não é o óvulo pronto</b>, é o <b>ovócito secundário</b>; e a mulher <b>não produz novos ovócitos</b> depois de nascer. Na comparação com a espermatogênese: 1 gameta por célula contra 4, divisão desigual contra igual, processo com pausas contra contínuo.`,
  links:[['Espermatogênese','#gametogenese/espermatogenese'],['Não disjunção e idade materna','#erros/naodisjuncao']],
  draw(i,e,f,t){tree([{id:'a',row:0,x:-.45,r:18,pl:'2n',ph:0,nm:'Ovogônia'},{id:'b',row:1,x:-.45,r:30,pl:'2n',ph:1,from:'a',nm:'Ovócito I'},
@@ -704,7 +710,8 @@ def('gametogenese','ovogenese',{t:'Ovogênese',s:'1 célula forma 1 óvulo',c:'#
 {const ext=[],K={secao(o){if(!o||!o.id||SEC.some(s=>s.id===o.id)||ext.some(s=>s.id===o.id))return;ext.push({id:o.id,t:o.t,c:o.c||'#9A6BFF'})},
   topico(sec,id,o){if(!SEC.some(s=>s.id===sec)&&!ext.some(s=>s.id===sec))throw new Error('seção desconhecida: '+sec);if(SC[sec+'/'+id])throw new Error('tópico repetido: '+sec+'/'+id);def(sec,id,o)},
   get X(){return X},get W(){return W},get H(){return H},get LB(){return LB},
-  TAU,PI,C,FT,FTT,FD,cl,lerp,ss,rgba,light,circ,line,rr,tx,arrow,lab,ctd,areas,ptitle,divider};
+  TAU,PI,C,FT,FTT,FD,cl,lerp,ss,rgba,light,circ,line,rr,tx,arrow,lab,ctd,areas,ptitle,divider,
+  SC,ORDER,mkMitose,mkMeiose,mixS:mix,geo,S0,ring,RINGC};
  for(const fn of(window.LAB_CITO||[])){try{fn(K)}catch(err){console.error('cromossomos.js:',err)}}
  const vaz=ext.filter(s=>!ORDER[s.id]);if(vaz.length)console.warn('seção sem tópicos:',vaz.map(s=>s.id).join(', '));
  SEC.unshift(...ext.filter(s=>ORDER[s.id]))}
@@ -721,7 +728,7 @@ function ui(){const o=SC[cur],i=Math.min(N-1,Math.floor(p));if(i===shown)return;
  [...$('steps').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.setAttribute('aria-current',k===i?'step':'false');if(k===i&&b.scrollIntoView&&$('steps').scrollWidth>$('steps').clientWidth)$('steps').scrollLeft=Math.max(0,b.offsetLeft-$('steps').clientWidth/2+b.offsetWidth/2)});
  cv.setAttribute('aria-label',`${o.t}. Fase ${i+1} de ${N}: ${ph[0]}. ${ph[1]}`)}
 function setP(v,keep){p=cl(v,0,N-.0001);if(!keep){playing=false;stopAt=null}if(!drag)$('rng').value=Math.round(p*100);ui();updPlay()}
-function go(key,nohash){const o=SC[key];if(!o)return;cur=key;N=o.ph.length;shown=-1;
+function go(key,nohash){const o=SC[key];if(!o)return;if(cur&&cur!==key&&SC[cur].sair)SC[cur].sair();cur=key;N=o.ph.length;shown=-1;
  [...$('secs').children].forEach(b=>{const on=b.dataset.s===o.sec;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(on&&$('secs').scrollWidth>$('secs').clientWidth)$('secs').scrollLeft=Math.max(0,b.offsetLeft-40)});
  const sec=SEC.find(s=>s.id===o.sec);
  $('tops').innerHTML=ORDER[o.sec].map((k,i)=>`<button data-k="${k}" class="${k===key?'on':''}" aria-current="${k===key?'true':'false'}"><em>${String(i+1).padStart(2,'0')}</em><span>${SC[k].t}<small>${SC[k].s}</small></span></button>`).join('');
@@ -733,7 +740,7 @@ function go(key,nohash){const o=SC[key];if(!o)return;cur=key;N=o.ph.length;shown
  $('leg').innerHTML=(o.leg||[]).map(([c,s])=>`<span><i style="background:${c}"></i>${s}</span>`).join('');
  $('rng').max=N*100;$('rng').setAttribute('aria-valuetext','');
  if(RM){setP(HOLD)}else{p=0;stopAt=null;playing=true;$('rng').value=0;ui();updPlay()}
- document.title=`${o.t} · Citogenética · LAB`;
+ document.title=`${o.t} em Citogenética no LAB`;
  if(!nohash&&decodeURIComponent(location.hash.slice(1))!==key)history.replaceState(null,'','#'+key)}
 function route(){const h=decodeURIComponent(location.hash.slice(1));const k=SC[h]?h:ORDER[h]?ORDER[h][0]:null;if(k){if(k!==cur)go(k,!!SC[h])}else if(!cur)go(ORDER[SEC[0].id][0],true)}
 addEventListener('hashchange',route);
@@ -756,6 +763,7 @@ route();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(rs);
 requestAnimationFrame(frame);
 // para testes automáticos
+window.LAB_CITOG={get rotas(){return SEC.flatMap(s=>ORDER[s.id])},ir:k=>go(k)};
 window.__lab={rotas:()=>SEC.flatMap(s=>ORDER[s.id]),fases:()=>N,fase:(i,f)=>setP(i+(f==null?HOLD:f)),tocando:()=>playing};
 })();
 </script>
