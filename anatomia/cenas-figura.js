@@ -38,19 +38,19 @@
     pref: 'anatomia', nome: 'Sistema nervoso e arco reflexo', mask: MASK,
     vistas: [
       ['a', 'nervoso-organizacao-a', 'Sistema nervoso', 'Sistema nervoso humano: encéfalo, medula espinal e nervos periféricos'],
-      ['b', 'nervoso-organizacao-b', 'Arco reflexo', 'Corte transversal da medula espinal com o arco reflexo, da pele ao músculo']
+      ['b', 'nervoso-organizacao-b2', 'Arco reflexo', 'Corte transversal da medula espinal com o arco reflexo, da pele ao músculo']
     ],
     hs: [
       { id: 'enc', c: '#FFD43B', t: 'Encéfalo', d: 'Cérebro, cerebelo e tronco encefálico, dentro do crânio. Com a medula, forma o sistema nervoso central (SNC).', em: { a: [50, 9] }, z: 3 },
       { id: 'med', c: '#FFA94D', t: 'Medula espinal', d: 'Cordão dentro da coluna vertebral. Liga o encéfalo aos nervos e comanda os reflexos. Também é parte do SNC.', em: { a: [50, 33] }, z: 2.8 },
       { id: 'plx', c: '#8FD8FF', t: 'Nervos do braço', d: 'Nervos espinais levam sensações da pele e dos músculos até a medula e trazem de volta as ordens de movimento.', em: { a: [41, 33] }, z: 2.6 },
       { id: 'cia', c: '#A9C54A', t: 'Nervo ciático', d: 'O maior nervo do corpo, na perna. Nervos e gânglios formam o sistema nervoso periférico (SNP).', em: { a: [46, 68] }, z: 2.8 },
-      { id: 'rec', c: '#F2B6C6', t: 'Receptor na pele', d: 'Capta o estímulo, como calor ou dor, e começa o impulso no neurônio sensitivo.', em: { b: [16, 78] }, z: 3 },
-      { id: 'gan', c: '#FFD43B', t: 'Gânglio da raiz dorsal', d: 'Dilatação da raiz dorsal onde ficam os corpos dos neurônios sensitivos. O impulso entra na medula por essa raiz.', em: { b: [30, 36] }, z: 3 },
-      { id: 'int', c: '#8FD8FF', t: 'Interneurônio', d: 'Neurônio de associação na substância cinzenta. Passa o sinal do neurônio sensitivo ao motor.', em: { b: [50, 36] }, z: 3 },
-      { id: 'cin', c: '#CFE0FF', t: 'Substância cinzenta', d: 'Região em forma de borboleta, com corpos de neurônios. Em volta fica a substância branca, com axônios.', em: { b: [67, 34] }, z: 2.6 },
-      { id: 'mot', c: '#FFA94D', t: 'Neurônio motor e raiz ventral', d: 'O corpo do neurônio motor fica na medula e o axônio sai pela raiz ventral rumo ao músculo.', em: { b: [56, 46] }, z: 3 },
-      { id: 'mus', c: '#F28B8B', t: 'Músculo efetor', d: 'Recebe a ordem do neurônio motor e se contrai. A resposta ocorre antes de a dor chegar ao cérebro.', em: { b: [74, 76] }, z: 3 }
+      { id: 'rec', c: '#F2B6C6', t: 'Receptor na pele', d: 'Capta o estímulo, como calor ou dor, e começa o impulso no neurônio sensitivo.', em: { b: [12, 78] }, z: 3 },
+      { id: 'gan', c: '#FFD43B', t: 'Gânglio da raiz dorsal', d: 'Dilatação da raiz dorsal onde ficam os corpos dos neurônios sensitivos. O impulso entra na medula por essa raiz.', em: { b: [33, 34] }, z: 3 },
+      { id: 'int', c: '#8FD8FF', t: 'Interneurônio', d: 'Neurônio de associação na substância cinzenta. Passa o sinal do neurônio sensitivo ao motor.', em: { b: [54.5, 32.5] }, z: 3 },
+      { id: 'cin', c: '#CFE0FF', t: 'Substância cinzenta', d: 'Região em forma de borboleta, com corpos de neurônios. Em volta fica a substância branca, com axônios.', em: { b: [68, 38] }, z: 2.6 },
+      { id: 'mot', c: '#FFA94D', t: 'Neurônio motor e raiz ventral', d: 'O corpo do neurônio motor fica na medula e o axônio sai pela raiz ventral rumo ao músculo.', em: { b: [52.5, 42.5] }, z: 3 },
+      { id: 'mus', c: '#F28B8B', t: 'Músculo efetor', d: 'Recebe a ordem do neurônio motor e se contrai. A resposta ocorre antes de a dor chegar ao cérebro.', em: { b: [48, 78] }, z: 3 }
     ]
   });
 
@@ -124,54 +124,9 @@
     X.restore();
   }
 
-  // ---------- Respiratório: hematose ----------
+  // ---------- ambiente das rotas com 3D e modos (usado pelas cenas abaixo) ----------
   const amb3 = Object.assign({}, amb, { rot3d: 'Ver modelos e 3D', dica3d: 'Troque de modo nos botões do palco' });
-  const ALVC = [[78.7, 33.4], [70, 43], [72.7, 58.6], [78.9, 65], [82.3, 42.3]];
-  const BRD = [[22.3, 38], [18.2, 43], [16.8, 49], [16.4, 57], [15.5, 66]], BRE = [[26.4, 37.5], [30, 41.5], [32.7, 47], [35, 55], [36.4, 63]];
-  const TRQ = [[24.7, 2], [24.7, 36]];
-  const CAPV = [[85.9, 1], [83.2, 9.8], [78.2, 17.1], [71.8, 21.2], [65.5, 26.1], [61.8, 37.5], [60, 48.9], [60.5, 60.3]];
-  const CAPA = [[80, 79], [87, 71], [91, 61], [92.8, 50], [92, 36], [89.5, 20], [92, 8], [95, 1]];
-  LAB_FIGALT.cena(amb3, 'respiratorio/hematose', {
-    pref: 'anatomia', nome: 'Pulmões e alvéolos', mask: SEM,
-    vistas: [['a', 'respiratorio-hematose-a', 'Pulmões e alvéolos', 'Pulmões e diafragma, e um cacho de alvéolos ampliado, envolvido por capilares']],
-    sobre(R, X, t, c) {
-      const ar = RED ? .25 : (t / 4) % 1, insp = ar < .5, s = R.s;
-      // ar nas vias aéreas: desce na inspiração e sobe na expiração
-      [TRQ, BRD, BRE].forEach((P, k) => {
-        const Q = ptsR(R, k === 0 ? TRQ : P); const n = k === 0 ? 4 : 3;
-        for (let i = 0; i < n; i++) {
-          let f = ((RED ? 0 : (ar * 2) % 1) + i / n) % 1; if (!insp && !RED) f = 1 - f; if (RED) f = (i + .5) / n;
-          const p = ao(Q, f); dot(X, p[0], p[1], 4.8, '#BDE8FF', .85 * Math.sin(PI * ((f + .02) % 1)));
-        }
-      });
-      { const g = R.pt(24, 55), k = RED ? .5 : Math.sin(PI * ar) , rr = s * 24; X.save(); X.globalCompositeOperation = 'lighter'; const gr = X.createRadialGradient(g[0], g[1], 0, g[0], g[1], rr); gr.addColorStop(0, `rgba(143,216,255,${.18 * k})`); gr.addColorStop(1, 'rgba(143,216,255,0)'); X.fillStyle = gr; X.fillRect(g[0] - rr, g[1] - rr, rr * 2, rr * 2); X.restore(); }
-      // diafragma: seta âmbar desce na inspiração e sobe na expiração
-      const d = R.pt(24, 91), off = (insp ? 1 : -1) * Math.sin(PI * ((ar * 2) % 1)) * s * 1.2;
-      seta(X, d[0], d[1] + off, insp ? PI / 2 : -PI / 2, 7, '#FFB347', .9);
-      // troca de gases: O2 do alvéolo para o sangue, CO2 no caminho contrário
-      ALVC.forEach((a, i) => {
-        const p = R.pt(a[0], a[1]), ang = i * 1.9 + .6, D = s * 6.5, u = RED ? .5 : (((t * .35 + i * .21) % 1) + 1) % 1, fd = Math.sin(PI * u);
-        dot(X, p[0] + Math.cos(ang) * D * u, p[1] + Math.sin(ang) * D * u, 4.8, '#6EC8E8', .95 * fd);
-        const u2 = RED ? .5 : (((t * .35 + i * .21 + .5) % 1) + 1) % 1;
-        dot(X, p[0] + Math.cos(ang + 2.4) * D * (1 - u2), p[1] + Math.sin(ang + 2.4) * D * (1 - u2), 4.6, '#B7C0D3', .95 * Math.sin(PI * u2));
-      });
-      // sangue: chega venoso (violeta) e fica arterial (vermelho) ao passar pelos alvéolos
-      fluxo(X, ptsR(R, CAPV), t, { n: 6, v: .12, r: 4.8, c: '#9C90F0', cf: f => mixc('#9C90F0', '#FF5A5F', f * f), a: .95 });
-      fluxo(X, ptsR(R, CAPA), t, { n: 5, v: .12, r: 4.8, c: '#FF5A5F', a: .95 });
-      leg(X, R.x + R.w - 8, R.y + R.h - 52, [['#6EC8E8', 'O₂ do ar para o sangue'], ['#B7C0D3', 'CO₂ do sangue para o ar']], c.nar, true);
-    },
-    hs: [
-      { id: 'tra', c: '#8FD8FF', t: 'Traqueia', d: 'Tubo reforçado por anéis de cartilagem. Leva o ar da laringe até os brônquios e o mantém sempre aberto.', em: { a: [24.7, 20] }, z: 2.4 },
-      { id: 'brq', c: '#6EC8E8', t: 'Brônquios', d: 'A traqueia se divide em dois brônquios, um para cada pulmão. Eles se ramificam em tubos cada vez mais finos, os bronquíolos.', em: { a: [24.7, 36] }, z: 2.6 },
-      { id: 'pd', c: '#F2B6C6', t: 'Pulmão direito', d: 'Tem três lobos. O esquerdo tem dois, com um recuo onde fica o coração.', em: { a: [10.9, 55] }, z: 2.2 },
-      { id: 'pe', c: '#F2B6C6', t: 'Pulmão esquerdo', d: 'Tem dois lobos e um recuo para o coração. Dentro de cada pulmão há centenas de milhões de alvéolos.', em: { a: [36.3, 39] }, z: 2.2 },
-      { id: 'dia', c: '#FFB347', t: 'Diafragma', d: 'Músculo sob os pulmões. Ao se contrair, desce, o volume do tórax aumenta e o ar entra. Ao relaxar, sobe e o ar sai.', em: { a: [27, 77] }, z: 2.4 },
-      { id: 'blq', c: '#9FD4EA', t: 'Bronquíolo', d: 'O tubo mais fino da árvore respiratória. Termina nos alvéolos, como um cacho de uvas.', em: { a: [82.1, 24.7] }, z: 2.8 },
-      { id: 'alv', c: '#F2BFCB', t: 'Alvéolos', d: 'Saquinhos de ar com parede de uma só camada de células. A área enorme que eles formam facilita a troca de gases.', em: { a: [72.7, 58.6] }, z: 3 },
-      { id: 'ven', c: '#8E83E6', t: 'Sangue venoso', d: 'Chega pela artéria pulmonar com muito CO₂ e pouco O₂, vindo do lado direito do coração.', em: { a: [69.8, 20.8] }, z: 2.8 },
-      { id: 'art', c: '#F28B8B', t: 'Sangue arterial', d: 'Depois da hematose, o sangue sai rico em O₂ pelas veias pulmonares rumo ao átrio esquerdo.', em: { a: [90, 34] }, z: 2.8 }
-    ]
-  });
+  // a figura da hematose agora é a viagem do ar em cenas-figura-circ-resp.js (vias respiratórias e alvéolos)
 
   // ---------- Endócrino: glândulas ----------
   const GLD = [[49.6, 15.2, '#F2A65A'], [49.5, 30, '#F28B8B'], [46.4, 55.7, '#FFD43B'], [53.9, 55.2, '#FFD43B'], [50.9, 59.1, '#FFB347'], [45.2, 74.5, '#F2B6C6'], [54.8, 74.5, '#F2B6C6']];
@@ -283,30 +238,7 @@
     ]
   });
 
-  // ---------- Nervoso: autônomo ----------
-  LAB_FIGALT.cena(amb, 'nervoso/autonomo', {
-    pref: 'anatomia', nome: 'Sistema nervoso autônomo', mask: SEM,
-    vistas: [['a', 'nervoso-autonomo-a', 'Corpo e nervos', 'Corpo humano translúcido com encéfalo, medula, nervos e órgãos controlados pelo sistema nervoso autônomo']],
-    sobre(R, X, t) {
-      // simpático (luta ou fuga) e parassimpático (repouso e digestão) se alternam a cada 6 s
-      const simp = RED ? true : (t % 12) < 6, cor = simp ? '#FFB347' : '#6EC8E8', s = R.s;
-      const co = R.pt(50, 52.6), est = R.pt(51, 70.2), int = R.pt(51.8, 84), ad1 = R.pt(45.6, 68.8), ad2 = R.pt(54.4, 68.8), pul = R.pt(42.5, 49.2), pul2 = R.pt(58, 49.2);
-      anel(X, co[0], co[1], t, cor, simp ? .55 : 1.1, s * 4, 0, .9);
-      if (simp) { [ad1, ad2].forEach((p, i) => anel(X, p[0], p[1], t, '#FFD43B', 1.6, s * 3, i * .4)); [pul, pul2].forEach((p, i) => anel(X, p[0], p[1], t, '#FFB347', 1.5, s * 4.5, i * .3, .5)); }
-      else { [est, int].forEach((p, i) => anel(X, p[0], p[1], t, '#6EC8E8', 2.2, s * 4.5, i * .7, .8)); }
-      leg(X, R.x + 10, R.y + 10, [[cor, simp ? 'Simpático: luta ou fuga' : 'Parassimpático: repouso e digestão']], R.w < 520);
-    },
-    hs: [
-      { id: 'enc', c: '#FFD43B', t: 'Encéfalo', d: 'O hipotálamo e o tronco encefálico controlam o sistema nervoso autônomo, que regula, sem a vontade, o coração, a digestão e outras funções.', em: { a: [50, 14] }, z: 2.8 },
-      { id: 'med', c: '#FFA94D', t: 'Medula espinal', d: 'Os neurônios simpáticos saem da região torácica e lombar da medula. Os parassimpáticos saem do tronco encefálico e da região sacral.', em: { a: [49.7, 29.3] }, z: 2.8 },
-      { id: 'cor', c: '#F28B8B', t: 'Coração', d: 'O simpático acelera os batimentos e aumenta a força da contração. O parassimpático, pelo nervo vago, desacelera o coração.', em: { a: [50, 52.6] }, z: 3 },
-      { id: 'pul', c: '#8FD8FF', t: 'Pulmões e brônquios', d: 'O simpático dilata os brônquios e facilita a entrada de ar. O parassimpático os estreita.', em: { a: [42.5, 49.2] }, z: 2.8 },
-      { id: 'adr', c: '#FFD43B', t: 'Adrenais', d: 'Estimuladas pelo simpático, liberam adrenalina e noradrenalina no sangue, que prolongam a resposta de luta ou fuga.', em: { a: [45.6, 68.8] }, z: 3.2 },
-      { id: 'est', c: '#A9C54A', t: 'Estômago', d: 'O parassimpático aumenta o movimento e a secreção de suco gástrico. O simpático reduz a digestão.', em: { a: [51, 70.2] }, z: 3 },
-      { id: 'int', c: '#A9C54A', t: 'Intestinos', d: 'O parassimpático estimula o peristaltismo. No estresse, o simpático o diminui e desvia o sangue para os músculos.', em: { a: [51.8, 84] }, z: 3 },
-      { id: 'bex', c: '#CFE0FF', t: 'Bexiga', d: 'O parassimpático contrai a bexiga e promove o esvaziamento. O simpático relaxa a bexiga e ajuda a reter a urina.', em: { a: [49.2, 94.5] }, z: 3 }
-    ]
-  });
+  // Nervoso: autônomo passou para cenas-figura-rim-nervo.js (viagem do impulso, com esta figura como uma das vistas).
 
   // ---------- Circulatório: sangue e linfa ----------
   const AFL = [[35, 23], [31, 52], [23, 73.5]], VFL = [[50, 82], [52, 61], [53.5, 39], [54, 19]];
