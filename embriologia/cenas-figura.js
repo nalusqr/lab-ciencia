@@ -375,4 +375,102 @@
       { id: 'amn', c: '#8FD8FF', t: 'Âmnio', d: 'Bolsa de líquido que envolve o embrião e o protege.', em: { b: [84, 47] }, z: 2.4 }
     ]
   });
+  // ================= V3: gástrula, blastóporo e nêurula (Íris e Prometeu) =================
+  // Cortes de atlas com cores convencionais: ectoderme azul, mesoderme vermelha, endoderme amarela, notocorda verde.
+  // A animação por cima ensina o processo; sem movimento (prefers-reduced-motion) fica um quadro parado.
+  const mix = (a, b, u) => a + (b - a) * u;
+  const ptoV3 = (X, x, y, r, cor, a) => { X.save(); X.globalAlpha *= a; X.fillStyle = cor; X.shadowColor = cor; X.shadowBlur = 8; X.beginPath(); X.arc(x, y, r, 0, TAU); X.fill(); X.restore(); };
+  // pontos que andam por uma linha poligonal (em % da figura); cor(u) escolhe a cor ao longo do caminho
+  function trilha(R, X, pts, n, t, vel, raio, cor, fase) {
+    const P = pts.map(p => R.pt(p[0], p[1])), seg = []; let L = 0;
+    for (let i = 1; i < P.length; i++) { const d = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); seg.push(d); L += d; }
+    for (let i = 0; i < n; i++) {
+      const f = RED ? (i + .5) / n : ((t * vel + i / n + (fase || 0)) % 1); let d = f * L, j = 0;
+      while (j < seg.length - 1 && d > seg[j]) { d -= seg[j]; j++; }
+      const u = seg[j] ? d / seg[j] : 0, x = mix(P[j][0], P[j + 1][0], u), y = mix(P[j][1], P[j + 1][1], u);
+      ptoV3(X, x, y, raio * R.s, typeof cor === 'function' ? cor(f) : cor, RED ? .85 : Math.sin(f * Math.PI) * .95);
+    }
+  }
+  const espelha = pts => pts.map(p => [100 - p[0], p[1]]);
+  function fichaCl(X, R, px, py, s, cor, a) {      // ficha que não sai da figura
+    const sz = tam(R); X.save(); X.font = `600 ${sz}px ${FT}`; const w = X.measureText(s).width / 2 + 12; X.restore();
+    ficha(X, Math.max(R.x + w, Math.min(R.x + R.w - w, px)), py, s, cor, a, sz);
+  }
+
+  // ---------- Gástrula ----------
+  const CAM_GAST = [[32, 47], [33, 61], [37.5, 74], [43, 84.5], [45, 79], [40, 68], [37.5, 55], [38, 45]];
+  LAB_FIGALT.cena(amb, 'desenvolvimento/gastrula', {
+    pref: 'embriologia', nome: 'Gástrula de anfioxo em corte', mask: MASK,
+    vistas: [['a', 'desenvolvimento-gastrula-a', 'Gástrula em corte', 'Gástrula de anfioxo em corte: ectoderme azul, endoderme amarela, mesoderme vermelha e o arquêntero aberto pelo blastóporo']],
+    hs: [
+      { id: 'ect', c: '#6FA8FF', t: 'Ectoderme', d: 'Camada de fora, de células azuis. Vai formar a epiderme e o sistema nervoso.', em: { a: [32, 44] }, z: 2.6 },
+      { id: 'end', c: '#FFD43B', t: 'Endoderme', d: 'Camada que afundou e reveste o arquêntero. Vai formar o revestimento do tubo digestório, o fígado e os pulmões.', em: { a: [38, 40] }, z: 2.6 },
+      { id: 'arq', c: '#F2B33D', t: 'Arquêntero', d: 'Cavidade nova, o intestino primitivo, formada pela invaginação. É ela que dá origem ao tubo digestório.', em: { a: [50, 50] }, z: 2.2 },
+      { id: 'bla', c: '#FF9F43', t: 'Blastóporo', d: 'Abertura do arquêntero para o lado de fora. Nos protostômios vira a boca e nos deuterostômios, o ânus.', em: { a: [50, 84] }, z: 3 },
+      { id: 'mes', c: '#FF6B6B', t: 'Mesoderme', d: 'Terceira camada, que se forma entre a ectoderme e a endoderme. Vai formar músculos, ossos, sangue e coração.', em: { a: [40, 70] }, z: 3 },
+      { id: 'bcl', c: '#8FD8FF', t: 'Blastocele', d: 'Restinho da cavidade da blástula. Ela encolhe e some, espremida pela endoderme que afunda.', em: { a: [62.3, 45] }, z: 2.6 }
+    ],
+    sobre(R, X, t) {
+      if (R.k < .6 || R.z > 1.5) return;
+      const cor = f => f < .5 ? '#7FB4FF' : '#FFE066';
+      trilha(R, X, CAM_GAST, 7, t, .12, .7, cor, 0); trilha(R, X, espelha(CAM_GAST), 7, t, .12, .7, cor, .07);
+      const k = RED ? .5 : (t * .5) % 1, [bx, by] = R.pt(50, 84.5);
+      X.save(); X.strokeStyle = 'rgba(255,159,67,A)'.replace('A', (RED ? .7 : .9 * (1 - k)).toFixed(3)); X.lineWidth = 2.2; X.beginPath(); X.ellipse(bx, by, R.s * (4 + 4 * k), R.s * (2 + 2 * k), 0, 0, TAU); X.stroke(); X.restore();
+    }
+  });
+
+  // ---------- Blastóporo: protostômio x deuterostômio ----------
+  LAB_FIGALT.cena(amb, 'desenvolvimento/blastoporo', {
+    pref: 'embriologia', nome: 'Protostômio e deuterostômio', mask: { miolo: .9, borda: 1 },
+    vistas: [['a', 'desenvolvimento-blastoporo-a', 'Duas gástrulas em corte', 'À esquerda, protostômio: o blastóporo (círculo laranja) vira a boca. À direita, deuterostômio: o blastóporo vira o ânus']],
+    hs: [
+      { id: 'p1', c: '#FF9F43', t: 'Blastóporo do protostômio', d: 'Nos protostômios (anelídeos, moluscos e artrópodes), o blastóporo vira a boca. Em grego, protostômio quer dizer boca primeiro.', em: { a: [10, 64] }, z: 3 },
+      { id: 'p2', c: '#5BE08A', t: 'Segunda abertura', d: 'Surge depois, na ponta oposta do arquêntero. No protostômio, ela vira o ânus.', em: { a: [43, 35] }, z: 3 },
+      { id: 'd1', c: '#FF9F43', t: 'Blastóporo do deuterostômio', d: 'Nos deuterostômios (equinodermos e cordados), o blastóporo vira o ânus. É o caso do ser humano.', em: { a: [57, 64] }, z: 3 },
+      { id: 'd2', c: '#5BE08A', t: 'Segunda abertura', d: 'Surge depois, na ponta oposta. No deuterostômio, ela vira a boca. Em grego, deuterostômio quer dizer boca em segundo.', em: { a: [89, 37] }, z: 3 },
+      { id: 'arq', c: '#FFD43B', t: 'Arquêntero', d: 'Cavidade revestida pela endoderme amarela. Com as duas aberturas, vira o tubo digestório completo.', em: { a: [27, 50] }, z: 2.4 },
+      { id: 'mes', c: '#FF6B6B', t: 'Mesoderme', d: 'Camada vermelha entre a ectoderme e a endoderme. Os animais triblásticos têm as três camadas.', em: { a: [23, 39] }, z: 2.4 },
+      { id: 'ect', c: '#6FA8FF', t: 'Ectoderme', d: 'Camada azul de fora, que forma a epiderme e o sistema nervoso.', em: { a: [27, 73] }, z: 2.4 }
+    ],
+    sobre(R, X, t) {
+      if (R.k < .6 || R.z > 1.5) return;
+      const ph = RED ? .75 : (t % 8) / 8, a2 = RED ? 1 : Math.min(1, Math.max(0, (ph - .35) / .15)) * (1 - Math.min(1, Math.max(0, (ph - .95) / .05)));
+      const sz = tam(R), pr = (x, y) => R.pt(x, y);
+      [[10, 64, 'boca', 'ânus', 43, 35], [57.3, 64, 'ânus', 'boca', 89.4, 37.5]].forEach(([x1, y1, s1, s2, x2, y2], i) => {
+        const p1 = pr(x1, y1), p2 = pr(x2, y2), k = RED ? .5 : (t * .7 + i * .4) % 1;
+        X.save(); X.strokeStyle = 'rgba(255,159,67,A)'.replace('A', (RED ? .6 : .85 * (1 - k)).toFixed(3)); X.lineWidth = 2; X.beginPath(); X.arc(p1[0], p1[1], R.s * (3.6 + 3 * k), 0, TAU); X.stroke(); X.restore();
+        fichaCl(X, R, p1[0] + R.s * 2, p1[1] + R.s * 11, s1, '#FF9F43', RED ? 1 : Math.min(1, a2 * 2));
+        if (a2 > .01) { X.save(); X.strokeStyle = 'rgba(91,224,138,A)'.replace('A', (.85 * (1 - k)).toFixed(3)); X.lineWidth = 2; X.beginPath(); X.arc(p2[0], p2[1], R.s * (3.2 + 3 * k), 0, TAU); X.stroke(); X.restore(); }
+        fichaCl(X, R, p2[0] - R.s * 1, p2[1] - R.s * 9, s2, '#5BE08A', a2);
+      });
+      fichaCl(X, R, pr(36, 94)[0], pr(36, 94)[1], 'Protostômio', '#C9D2E6', 1);   // títulos embaixo: em cima encostavam nas fichas verdes em 390 px
+      fichaCl(X, R, pr(86, 94)[0], pr(86, 94)[1], 'Deuterostômio', '#C9D2E6', 1);
+    }
+  });
+
+  // ---------- Nêurula ----------
+  const CAM_CRISTA = [[44, 31], [39, 35.5], [33, 39.5], [27, 43.5]];   // logo abaixo da ectoderme, sem entrar nos somitos
+  LAB_FIGALT.cena(amb, 'desenvolvimento/neurula', {
+    pref: 'embriologia', nome: 'Nêurula em corte transversal', mask: { miolo: .9, borda: 1 },
+    vistas: [['a', 'desenvolvimento-neurula-a', 'Corte transversal da nêurula', 'Corte transversal: tubo neural azul sobre a notocorda verde, somitos vermelhos dos lados e endoderme amarela embaixo']],
+    hs: [
+      { id: 'tub', c: '#6FA8FF', t: 'Tubo neural', d: 'A placa neural se dobrou e fechou como um tubo, que se separou da ectoderme. Dele surgem o encéfalo e a medula espinal.', em: { a: [47, 37] }, z: 2.8 },
+      { id: 'not', c: '#3FBF6A', t: 'Notocorda', d: 'Bastão de sustentação que induz a ectoderme acima dela a formar o tubo neural. No adulto, só restam vestígios nos discos entre as vértebras.', em: { a: [50, 51.5] }, z: 3.2 },
+      { id: 'som', c: '#FF6B6B', t: 'Somitos', d: 'Blocos pareados de mesoderme dos dois lados do tubo. Formam vértebras, músculos esqueléticos e derme.', em: { a: [42, 46] }, z: 3 },
+      { id: 'cri', c: '#5BD6D0', t: 'Crista neural', d: 'Células da borda das pregas neurais. Migram e formam nervos, gânglios e melanócitos da pele.', em: { a: [43, 33] }, z: 3.6 },
+      { id: 'ect', c: '#6FA8FF', t: 'Ectoderme', d: 'Camada de fora, que sobrou como epiderme depois que o tubo neural se soltou dela.', em: { a: [29, 37.5] }, z: 2.6 },
+      { id: 'mes', c: '#FF6B6B', t: 'Mesoderme lateral', d: 'Lâminas vermelhas que continuam para os lados dos somitos e vão envolver a cavidade do corpo.', em: { a: [13, 53.5] }, z: 2.8 },
+      { id: 'end', c: '#FFD43B', t: 'Endoderme', d: 'Camada amarela que reveste o arquêntero, o intestino primitivo. Vai formar o revestimento do tubo digestório.', em: { a: [50, 76.5] }, z: 2.6 },
+      { id: 'arq', c: '#F2B33D', t: 'Arquêntero', d: 'Cavidade do intestino primitivo, revestida pela endoderme.', em: { a: [50, 67] }, z: 2.4 }
+    ],
+    sobre(R, X, t) {
+      if (R.k < .6 || R.z > 1.5) return;
+      // a notocorda induz: ondas verdes sobem até o tubo neural
+      const k = RED ? .5 : (t * .45) % 1;
+      [0, .5].forEach(d => { const u = RED ? .5 : (k + d) % 1, [x, y] = R.pt(50, mix(47, 41, u)); ptoV3(X, x, y, R.s * 1.1 * (1 - .4 * u), '#6BE69A', RED ? .8 : Math.sin(u * Math.PI)); });
+      const [nx, ny] = R.pt(50, 51.5); X.save(); X.strokeStyle = 'rgba(107,230,154,A)'.replace('A', (RED ? .55 : .8 * (1 - k)).toFixed(3)); X.lineWidth = 2; X.beginPath(); X.arc(nx, ny, R.s * (3.2 + 3 * k), 0, TAU); X.stroke(); X.restore();
+      // a crista neural migra para os lados
+      trilha(R, X, CAM_CRISTA, 4, t, .1, .6, '#5BD6D0', 0); trilha(R, X, espelha(CAM_CRISTA), 4, t, .1, .6, '#5BD6D0', .05);
+    }
+  });
 })();
