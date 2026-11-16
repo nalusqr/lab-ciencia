@@ -6,6 +6,7 @@
    - SC: tabela de cenas do módulo; X(), W(), H(): contexto e tamanho do canvas; tela: elemento do palco
    - t(args): tempo em segundos a partir dos argumentos do draw (cada motor passa coisas diferentes)
    - plano(o3, args): desenha o 2D antigo da cena (usado só nas cenas com "manter")
+   - rot3d / dica3d (opcionais): rótulo do botão da cena antiga (padrão 'Ver em 3D') e a dica ao lado (padrão 'Arraste para girar o modelo'); rotas sem 3D usam 'Ver esquema'
    - esconder: seletores escondidos enquanto a figura está na tela (controles que só valem para o 3D)
    - manter(W, H, nar): retângulo da figura quando a cena antiga continua desenhada em volta (barras, linha do tempo, gráfico)
    Texto na tela: sem "!", sem setas ou pontos como separador. */
@@ -36,10 +37,10 @@
 @media(prefers-reduced-motion:reduce){.fa-barra button{transition:none}}`;
     document.head.appendChild(st);
   }
-  function montar(tela) {
+  function montar(tela, amb) {
     estilo();
     barra = document.createElement('div'); barra.className = 'fa-barra'; barra.hidden = true; barra.setAttribute('role', 'group'); barra.setAttribute('aria-label', 'Modo de visualização');
-    barra.innerHTML = `<div class="seg2"><button type="button" data-m="fig" aria-pressed="true">${svg('fig')}<span>Ver figura</span></button><button type="button" data-m="d3" aria-pressed="false">${svg('d3')}<span>Ver em 3D</span></button></div><span class="dica" aria-live="polite"></span>`;
+    barra.innerHTML = `<div class="seg2"><button type="button" data-m="fig" aria-pressed="true">${svg('fig')}<span>Ver figura</span></button><button type="button" data-m="d3" aria-pressed="false">${svg('d3')}<span>${(amb && amb.rot3d) || 'Ver em 3D'}</span></button></div><span class="dica" aria-live="polite"></span>`;
     barra.addEventListener('click', e => { const b = e.target.closest('button[data-m]'); if (b && ativa) ativa.modo(b.dataset.m); });
     tela.after(barra);
   }
@@ -81,7 +82,7 @@
           if (sair3) { try { sair3.call(o3); } catch (e) { console.error(e); } }
           aberta3d = false;
         }
-        barra.querySelector('.dica').textContent = m === 'd3' ? 'Arraste para girar o modelo' : '';
+        barra.querySelector('.dica').textContent = m === 'd3' ? (amb.dica3d != null ? amb.dica3d : 'Arraste para girar o modelo') : '';
       }
     };
     const desenhaFigura = function (args) {
@@ -98,8 +99,8 @@
       return R;
     };
     o3.draw = function (...args) {
-      if (!barra) montar(amb.tela);
-      if (ativa !== ctl) { if (ativa) ativa.sair(); ativa = ctl; barra.querySelectorAll('button[data-m]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === modo))); barra.querySelector('.dica').textContent = modo === 'd3' ? 'Arraste para girar o modelo' : ''; }
+      if (!barra) montar(amb.tela, amb);
+      if (ativa !== ctl) { if (ativa) ativa.sair(); ativa = ctl; barra.querySelectorAll('button[data-m]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === modo))); barra.querySelector('.dica').textContent = modo === 'd3' ? (amb.dica3d != null ? amb.dica3d : 'Arraste para girar o modelo') : ''; }
       marca = true; barra.hidden = false; ultimo = args[1] && typeof args[1] === 'object' ? args[1] : ultimo;
       if (amb.tela.nextSibling !== barra) amb.tela.after(barra);
       if (modo === 'd3') { esconder(amb.esconder, false); esconder(amb.esconderFig, false); return draw3.apply(this, args); }
