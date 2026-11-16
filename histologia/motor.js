@@ -209,7 +209,7 @@ function LAB_HISTO_iniciar() {
   const fresh = o => ({ ph: paused ? (o.still == null ? 2.5 : o.still) : 0, v: paused && o.stillV != null ? o.stillV : o.ctl.v, dt: 0 });
   function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); }
   function go(key, force, keepHash) {
-    const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
+    const o = SC[key]; if (!o) return; const re = key === cur; if (!re && SC[cur] && SC[cur].sai) try { SC[cur].sai(); } catch (err) { console.error(err); } cur = key;
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) try { o.init(S); } catch (err) { console.error(err); }
     const sec = SEC.find(s => s.id === o.sec);
     [...$('secs').children].forEach(b => { const on = b.dataset.s === o.sec; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); if (on && b.scrollIntoView && $('secs').scrollWidth > $('secs').clientWidth) $('secs').scrollLeft = Math.max(0, b.offsetLeft - 24); });

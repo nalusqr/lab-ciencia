@@ -230,7 +230,7 @@ function LAB_iniciar() {
   const fresh = o => ({ ph: paused ? (o.still == null ? 2.5 : o.still) : 0, v: o.ctl.v, dt: 0, touched: false });
   function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); }
   function go(key, force, keepHash) {
-    const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
+    const o = SC[key]; if (!o) return; const re = key === cur; if (cur && !re && SC[cur].sair) try { SC[cur].sair(); } catch (err) { console.error(err); } cur = key;
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) o.init(S);
     const sec = SEC.find(s => s.id === o.sec);
     [...$('secs').children].forEach(b => { const on = b.dataset.s === o.sec; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); if (on && b.scrollIntoView && $('secs').scrollWidth > $('secs').clientWidth) $('secs').scrollLeft = Math.max(0, b.offsetLeft - 24); });
@@ -268,6 +268,7 @@ function LAB_iniciar() {
     const dt = Math.min(.05, (now - last) / 1000); last = now; const o = SC[cur], S = ST[cur];
     S.dt = paused ? 0 : dt; S.paused = paused; S.ph += S.dt * (o.ctl.rate ? o.ctl.rate(S.v) : 1);
     if (o.ctl.auto && !S.touched && !paused) { const n = o.ctl.max - o.ctl.min + 1, v = o.ctl.min + Math.floor(S.ph / o.ctl.auto) % n; if (v !== S.v) { S.v = v; setCtl(o, S); } }
+    if (!$('ctlV').textContent) setCtl(o, S); // o navegador às vezes zera o <output> logo depois da carga
     X.clearRect(0, 0, W, H); LBS = []; X.save();
     { const c = o.ctl; if (!Number.isFinite(+S.v)) S.v = c.v; S.v = Math.min(c.max, Math.max(c.min, +S.v)); }
     try { o.draw.call(o, S.ph, S); } catch (err) { console.error(err); }

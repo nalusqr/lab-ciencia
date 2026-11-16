@@ -41,7 +41,7 @@
   const leg = (its, x, y, w) => { let cx = x, cy = y; its.forEach(([n, c]) => { const ww = mtw(n, 12, 600) + 22; if (cx + ww > x + w) { cx = x; cy += 20; } circ(cx + 6, cy, 5, c, '#0B0F1C', 1); mtx(n, cx + 16, cy + .5, { s: 12, w: 600, a: 'left', c: C.txt }); cx += ww; }); };
 
   // ===== C1: coração =====
-  const CTC1 = { cor: { l: 'Frequência', min: 40, max: 160, step: 10, v: 70, f: v => v + ' bpm', rate: v => v / 60 }, hem: NO, furo: { l: 'Furo no septo', min: 0, max: 3, step: 1, v: 0, f: v => ['fechado', 'pequeno', 'médio', 'grande'][v], rate: () => 1.15 } };
+  const CTC1 = { fig: { l: 'Frequência', min: 40, max: 160, step: 10, v: 70, f: v => v + ' bpm', rate: v => v / 60 }, cor: { l: 'Frequência', min: 40, max: 160, step: 10, v: 70, f: v => v + ' bpm', rate: v => v / 60 }, hem: NO, furo: { l: 'Furo no septo', min: 0, max: 3, step: 1, v: 0, f: v => ['fechado', 'pequeno', 'médio', 'grande'][v], rate: () => 1.15 } };
   const M5 = mk('c1', CTC1, S => { S.p = 0; S.msg = null; S.ele = false; S.rx = null; });
   function coracao(t, S, A, furo) {
     const u = fr(t), wide = !NAR, hw = Math.min(wide ? A.w * .5 : A.w * .8, 400), hh = Math.min(A.h * (furo ? .5 : .6), hw * .8), x = A.cx - hw / 2, y = A.y0 + A.h * .24, w = hw, h = hh;
@@ -67,6 +67,64 @@
     if (furo) { const ox = Math.round(100 - 17 * furo), mw = Math.min(A.w - 20, 380), my = A.y1 - 16; mtx('O₂ no sangue que vai para o corpo (valor ilustrativo)', A.cx, my - 18, { s: 13, w: 600 }); rr(A.cx - mw / 2, my - 6, mw, 14, 7, 'rgba(11,15,28,.7)', C.line, 1.2); rr(A.cx - mw / 2, my - 6, mw * ox / 100, 14, 7, ox > 80 ? O2C : AM); mtx('cerca de ' + ox + '%', A.cx + mw / 2 - 4, my - 18, { s: 12, w: 700, a: 'right', f: FD }); }
     return vs;
   }
+  // ----- C1, vista realista: figura de IA com hotspots, batimento e fluxo do sangue em motion graphics -----
+  // pontos em % da figura (1200 x 896); a cor do ponto é o código do sangue que passa ali
+  const HSC = [
+    { id: 'aorta', x: 52.5, y: 15, c: ART, t: 'Aorta', d: 'A principal artéria do corpo: sai do ventrículo esquerdo e leva sangue arterial para o corpo todo.' },
+    { id: 'pulm', x: 61, y: 32.5, c: VEN, t: 'Artéria pulmonar', d: 'Sai do ventrículo direito e leva sangue venoso aos pulmões. É artéria porque sai do coração.' },
+    { id: 'cava', x: 40.8, y: 18, c: VEN, t: 'Veia cava superior', d: 'Traz ao átrio direito o sangue venoso da cabeça, dos braços e do tronco.' },
+    { id: 'ad', x: 34.5, y: 46, c: VEN, t: 'Átrio direito', d: 'Recebe o sangue venoso das veias cavas. Nele fica o nó sinoatrial, o marca-passo natural.' },
+    { id: 'ae', x: 58, y: 41, c: ART, t: 'Átrio esquerdo', d: 'Recebe das veias pulmonares o sangue arterial, rico em O₂, que volta dos pulmões.' },
+    { id: 'vp', x: 68, y: 44, c: ART, t: 'Veias pulmonares', d: 'Trazem dos pulmões ao átrio esquerdo o sangue arterial. São veias porque chegam ao coração.' },
+    { id: 'vd', x: 43, y: 66, c: VEN, t: 'Ventrículo direito', d: 'Bombeia o sangue venoso para os pulmões pela artéria pulmonar.' },
+    { id: 've', x: 61.5, y: 72, c: ART, t: 'Ventrículo esquerdo', d: 'Tem a parede mais grossa, porque bombeia o sangue arterial para o corpo inteiro pela aorta.' },
+    { id: 'cor', x: 55.5, y: 53, c: ART, t: 'Artérias coronárias', d: 'Correm na superfície do coração e nutrem o próprio músculo. Se uma entope, acontece o infarto.' }
+  ];
+  // caminhos do fluxo, em % da figura: enchimento na diástole, ejeção na sístole
+  const FLX = [
+    { c: VEN, fase: 'enche', p: [[40.6, 4], [40.8, 14], [40.6, 25], [38.5, 34], [35.5, 43], [37, 53], [43, 62]] },
+    { c: ART, fase: 'enche', p: [[76, 43.5], [70, 43.5], [64, 42.5], [58.5, 42], [59.5, 52], [61.5, 66]] },
+    { c: VEN, fase: 'sai', p: [[43, 63], [46.5, 53], [50, 44], [54.5, 36.5], [60, 32.5], [66, 31.3], [74, 30.5]] },
+    { c: ART, fase: 'sai', p: [[61, 67], [55.5, 57], [50.5, 47], [47.5, 37], [46.8, 27], [48, 18], [51, 12.5], [53.5, 7.5], [54, 3]] }
+  ];
+  let FIGC = null;
+  const bump = (u, c, w) => Math.exp(-Math.pow((u - c) / w, 2));
+  function trilha(P, f0, f1, c, lw, a) { // trecho do caminho entre as frações f0 e f1, com cauda que esmaece
+    const n = 14; let q = along(P, cl(f0, 0, 1));
+    for (let i = 1; i <= n; i++) { const f = lerp(f0, f1, i / n); if (f < 0 || f0 > 1) continue; const r = along(P, cl(f, 0, 1)); X.globalAlpha = a * (i / n); line(q[0], q[1], r[0], r[1], c, lw); q = r; }
+    X.globalAlpha = 1;
+  }
+  function coracaoFig(t, S, A) {
+    if (!FIGC && window.LAB_FIGIA) FIGC = LAB_FIGIA({ img: 'anatomia-circulatorio-coracao', hs: HSC, mask: { miolo: .6, borda: .99 } });
+    if (!FIGC) return false;
+    const u = fr(t), vs = u > .15 && u < .5;
+    // batimento: "tum" forte no começo da sístole e "tá" mais fraco no fim, depois pausa (cerca de 70 por minuto, segue a faixa)
+    const pulso = bump(u, .17, .07) + .55 * bump(u, .5, .06);
+    const box = { x: NAR ? 4 : 24, y: NAR ? 40 : 30, w: W - (NAR ? 8 : 48), h: H - (NAR ? 40 : 30) - (NAR ? 96 : 64) };
+    const R = FIGC.desenhar(X, box, {
+      cam: NAR ? { x: .25, y: .03, w: .5, h: .92 } : { x: .2, y: .02, w: .6, h: .94 }, ox: .52, oy: .58, escala: 1 + .013 * pulso, brilho: pulso,
+      ver: () => LB,
+      sobre: R => {
+        const pt = p => p.map(q => R.pt(q[0], q[1])), lw = NAR ? 1.8 : 2.2;
+        FLX.forEach(fl => {
+          const P = pt(fl.p); X.save(); X.setLineDash([2, 5]); poly(P, rgba(fl.c, .45), 1.2); X.restore();
+          const e = P[P.length - 1], b = P[P.length - 2]; arrowHead(e[0], e[1], Math.atan2(e[1] - b[1], e[0] - b[0]), rgba(fl.c, .55), 7);
+          // a etapa do ciclo decide qual caminho corre: enchimento (diástole) ou ejeção (sístole)
+          const k = fl.fase === 'sai' ? seg(u, .15, .45) : fr(u - .5) / .65;
+          if (k <= 0 || k >= 1) return; const g = fl.fase === 'sai' ? ss(k) : k;
+          for (let i = 0; i < 3; i++) { const f = g * 1.35 - i * .2; trilha(P, f - .22, f, 'rgba(11,15,28,.55)', lw + 2.4, .9 - i * .2); trilha(P, f - .22, f, light(fl.c, .35), lw, .95 - i * .2); if (f > 0 && f < 1) { const q = along(P, f); circ(q[0], q[1], lw * 1.3, light(fl.c, .6)); } }
+        });
+        if (S.ele) { // pulso elétrico: nasce no nó sinoatrial e varre os átrios e depois os ventrículos
+          const n = R.pt(39.5, 30.5); circ(n[0], n[1], 5, AM, '#0B0F1C', 1.5);
+          X.save(); X.globalAlpha = (1 - u) * .9; circ(n[0], n[1], 6 + ss(u / .6) * R.w * .7 * R.sc, null, AM, 1.5); X.restore();
+          lab(n[0], n[1], n[0] - R.w * .3, n[1] - 10, 'nó sinoatrial (marca-passo)');
+        }
+      }
+    });
+    const p = NAR ? R.pt(30, 94) : R.pt(74, 62); if (Math.abs(u - .17) < .05) etiq('tum', p[0], p[1], AM); if (Math.abs(u - .5) < .05) etiq('tá', p[0], p[1], AM);
+    if (!NAR) leg([['sangue arterial', ART], ['sangue venoso', VEN]], A.x0 + 4, H - 82, 360);
+    return vs;
+  }
   const CAM = [['veias cavas', .14, .8, 'Comece pelas veias cavas: elas trazem o sangue venoso do corpo ao coração.'], ['átrio direito', .3, .4, 'Das veias cavas o sangue chega ao átrio direito.'], ['ventrículo direito', .3, .58, 'O átrio direito manda o sangue ao ventrículo direito.'], ['artéria pulmonar', .14, .22, 'A artéria pulmonar sai do ventrículo direito e leva <b>sangue venoso</b> aos pulmões.'], ['pulmões', .5, .08, 'Nos pulmões acontece a hematose: o sangue fica arterial.'], ['veias pulmonares', .86, .22, 'Dos pulmões o sangue volta pelas veias pulmonares, que trazem <b>sangue arterial</b>.'], ['átrio esquerdo', .7, .4, 'As veias pulmonares chegam ao átrio esquerdo.'], ['ventrículo esquerdo', .7, .58, 'O átrio esquerdo manda o sangue ao ventrículo esquerdo, de parede mais grossa.'], ['aorta', .86, .8, 'O ventrículo esquerdo bombeia o sangue pela aorta.'], ['tecidos do corpo', .5, .92, 'Nos tecidos o sangue perde O₂ e ganha CO₂: volta venoso.']];
   function caminho(t, S, A) {
     const dt = dtv(S), nw = NAR ? 84 : 116, nh = NAR ? 38 : 34, pos = i => [A.x0 + A.w * CAM[i][1], A.y0 + 6 + (A.h - 12) * CAM[i][2]];
@@ -77,16 +135,16 @@
     cap(S.msg || 'Toque, em ordem, nas estruturas por onde a hemácia passa, começando nas veias cavas.');
   }
   def('circulatorio', 'coracao', {
-    t: TXT.C1.t, s: TXT.C1.s, c: '#E5484D', loc: S => ({ cor: 'Coração aberto', hem: 'O caminho de uma hemácia', furo: 'Furo no septo' })[S.modo] || '', locNota: NOTA,
-    alt: 'o coração com quatro cavidades e valvas, o caminho de uma hemácia pelo esquema em oito e um furo no septo', still: 3,
-    get ctl() { return M5.ctl(); }, ctlVis: M5.vis, extra: [M5.extra('cor', 'Coração aberto'), M5.extra('hem', 'Caminho de uma hemácia'), M5.extra('furo', 'Furo no septo'), { t: 'Pulso elétrico', on: S => { S.ele = !S.ele; }, pressed: S => !!S.ele }],
-    init: M5.init, d: TXT.C1.d + '<p>Em "Caminho de uma hemácia", toque nas estruturas na ordem certa. O vermelho é o sangue arterial e o azul-arroxeado, o venoso; é só um código de cores.</p>', enem: TXT.C1.enem,
+    t: TXT.C1.t, s: TXT.C1.s, c: '#E5484D', loc: S => ({ fig: 'Vista de frente', cor: 'Coração aberto', hem: 'O caminho de uma hemácia', furo: 'Furo no septo' })[S.modo] || '', locNota: S => S.modo === 'fig' ? 'Ilustração, cores do sangue como código' : NOTA,
+    alt: 'o coração realista com pontos para aorta, artéria pulmonar, veia cava, átrios, ventrículos e coronárias, o coração com quatro cavidades e valvas, o caminho de uma hemácia pelo esquema em oito e um furo no septo', still: 3,
+    get ctl() { return M5.ctl(); }, ctlVis: M5.vis, extra: [M5.extra('fig', 'Coração'), M5.extra('cor', 'Coração aberto'), M5.extra('hem', 'Caminho de uma hemácia'), M5.extra('furo', 'Furo no septo'), { t: 'Pulso elétrico', on: S => { S.ele = !S.ele; }, pressed: S => !!S.ele }],
+    init: M5.init, d: TXT.C1.d + '<p>Na vista de frente, passe o mouse ou toque nos pontos para ver o nome de cada parte. Em "Caminho de uma hemácia", toque nas estruturas na ordem certa. O vermelho é o sangue arterial e o azul-arroxeado, o venoso; é só um código de cores.</p>', enem: TXT.C1.enem,
     kv: [['Cavidades', '2 átrios e 2 ventrículos'], ['Repouso', 'cerca de 60 a 100 batimentos por minuto'], ['Marca-passo', 'nó sinoatrial, no átrio direito']], links: [LK.musctipos, LK.sangue, LK.placenta, LK.comparar],
     tap(x, y, S) {
       if (S.modo !== 'hem' || !toque(S)) return; const h = hitAt(x, y); if (typeof h !== 'string' || h[0] !== 'n') return; const i = +h.slice(1);
       if (S.p >= 10) { S.p = 0; S.msg = null; } if (i === S.p) { S.p++; S.msg = S.p >= 10 ? '<b>Volta completa.</b> O sangue passou <b>duas vezes</b> pelo coração (circulação dupla) sem misturar os dois sangues (completa).' : '<b>Certo.</b> ' + CAM[i][3]; } else S.msg = '<b>Ainda não.</b> ' + CAM[S.p][3];
     },
-    draw(t, S) { const A = area(); if (S.modo === 'hem') caminho(t, S, A); else { const vs = coracao(t, S, A, S.modo === 'furo' ? S.v : 0); cap(S.modo === 'furo' ? (S.v ? '<b>Furo no septo</b>: o sangue dos dois lados se mistura e cai o O₂ que vai para o corpo, como no coração de três cavidades de anfíbios e répteis.' : 'Septo fechado: os dois sangues não se misturam. Abra o furo com a faixa.') : vs ? '<b>Sístole</b> dos ventrículos: as valvas entre átrio e ventrículo fecham (tum) e o sangue sai pela aorta e pela artéria pulmonar.' : '<b>Diástole</b>: as valvas das saídas fecham (tá) e o sangue enche as cavidades.'); } }
+    draw(t, S) { const A = area(); if (S.modo === 'hem') caminho(t, S, A); else { const vs = S.modo === 'fig' && window.LAB_FIGIA ? coracaoFig(t, S, A) : coracao(t, S, A, S.modo === 'furo' ? S.v : 0); cap(S.modo === 'furo' ? (S.v ? '<b>Furo no septo</b>: o sangue dos dois lados se mistura e cai o O₂ que vai para o corpo, como no coração de três cavidades de anfíbios e répteis.' : 'Septo fechado: os dois sangues não se misturam. Abra o furo com a faixa.') : vs ? '<b>Sístole</b> dos ventrículos: as valvas entre átrio e ventrículo fecham (tum) e o sangue sai pela aorta e pela artéria pulmonar.' : '<b>Diástole</b>: as valvas das saídas fecham (tá) e o sangue enche as cavidades.'); } }
   });
 
   // ===== C2: vasos, capilar, pressão =====

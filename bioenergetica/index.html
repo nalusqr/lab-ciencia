@@ -78,6 +78,29 @@
   .ctl{order:-1;flex:1 0 100%}
   .insp h2{font-size:21px}#desc{font-size:15px}
 }
+
+.etapas{display:flex;gap:4px;align-items:center}
+.etapas[hidden]{display:none}
+.barra .etapas button.cur{border-color:rgba(255,179,71,.5)}
+.cad-hs-host{position:absolute;inset:0;pointer-events:none;z-index:2;will-change:transform}
+.cad-hs-host[hidden]{display:none}
+.cad-hs-host .cad-hs{position:absolute;padding:0;margin:0;border:0;background:transparent;border-radius:50%;cursor:pointer;pointer-events:auto;opacity:0;transform:scale(.6);transition:opacity .16s cubic-bezier(.16,1,.3,1),transform .16s cubic-bezier(.16,1,.3,1)}
+.cad-hs-host.on .cad-hs{opacity:1;transform:scale(1)}
+.cad-hs i{position:absolute;left:50%;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:rgba(255,255,255,.92);border:1.5px solid rgba(11,15,28,.6);transition:background .09s,transform .09s}
+.cad-hs i::before{content:"";position:absolute;inset:-1.5px;border-radius:50%;border:1px solid rgba(255,255,255,.75);opacity:0}
+.cad-hs-host.on .cad-hs i::before{animation:cadp 1.2s cubic-bezier(.16,1,.3,1) 2 .6s}
+.cad-hs-host.conv .cad-hs i::before{animation:cadp 1.2s cubic-bezier(.16,1,.3,1) 1}
+@keyframes cadp{from{transform:scale(1);opacity:.6}to{transform:scale(2.2);opacity:0}}
+.cad-hs:hover i,.cad-hs.ativo i{background:#FFB347;transform:scale(1.25)}
+.cad-hs:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.cad-tip{position:absolute;padding:8px 12px;border-radius:12px;background:var(--pill);border:1px solid var(--float-line);box-shadow:var(--float-shadow);color:var(--txt);font-size:14px;line-height:1.4;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .16s cubic-bezier(.16,1,.3,1),transform .16s cubic-bezier(.16,1,.3,1)}
+.cad-tip.on{opacity:1;transform:none}
+.cad-tip b{display:block;font-family:var(--f-title);font-size:15px;margin-bottom:2px;color:#fff}
+.cad-tip span{display:block;color:#D3DAEA;font-size:13px}
+.cad-tip::after{content:"";position:absolute;left:var(--ax,50%);width:1px;height:14px;background:rgba(255,255,255,.6);top:100%}
+.cad-tip.abaixo::after{top:auto;bottom:100%}
+@media(max-width:699px){.cad-tip{font-size:13px;padding:6px 10px}.cad-tip b{font-size:14px}.etapas{order:1}}
+@media (prefers-reduced-motion:reduce){.cad-hs-host .cad-hs,.cad-tip{transition:opacity .15s linear;transform:none}.cad-hs-host.on .cad-hs i::before,.cad-hs-host.conv .cad-hs i::before{animation:none}.cad-hs i::before{opacity:.7;inset:-2px}}
 </style>
 </head>
 <body>
@@ -116,11 +139,18 @@
       <div class="hud tag fl"><i id="tagC"></i><span id="tagT">Carregando…</span></div>
       <div class="hud onde fl"><b id="ondeV"></b><small>Ilustração com cores adicionadas</small></div>
       <div class="hud leg"><p id="cap"></p></div>
+      <div class="cad-hs-host" id="cadHs" hidden></div>
     </div>
     <div class="barra">
       <button id="lbls" title="Mostrar ou esconder os nomes" aria-pressed="true"><svg aria-hidden="true"><use href="#ui-rotulos"/></svg><span class="tx">Nomes</span></button>
       <button class="sq" id="prev" title="Tópico anterior" aria-label="Tópico anterior"><svg aria-hidden="true"><use href="#ui-voltar"/></svg></button>
       <label class="ctl"><span id="ctlL">Ritmo</span><input type="range" id="ctlR"><output id="ctlV" for="ctlR"></output></label>
+      <div class="etapas" id="etapas" role="group" aria-label="Etapa da cadeia" hidden>
+        <button type="button" data-e="0" aria-pressed="false" title="Etapa 1: elétrons" aria-label="Etapa 1: elétrons">1<span class="tx">Elétrons</span></button>
+        <button type="button" data-e="1" aria-pressed="false" title="Etapa 2: bombeamento de H⁺" aria-label="Etapa 2: bombeamento de H⁺">2<span class="tx">Bombeamento</span></button>
+        <button type="button" data-e="2" aria-pressed="false" title="Etapa 3: ATP sintase" aria-label="Etapa 3: ATP sintase">3<span class="tx">ATP</span></button>
+        <button type="button" data-e="auto" aria-pressed="true" title="Etapas automáticas" aria-label="Etapas automáticas">Auto</button>
+      </div>
       <button id="pause" title="Pausar a animação" aria-label="Pausar a animação"><svg aria-hidden="true"><use href="#ui-pausar"/></svg><span class="tx">Pausar</span></button>
       <button id="reset" title="Recomeçar a animação" aria-label="Recomeçar a animação"><svg aria-hidden="true"><use href="#ui-reiniciar"/></svg><span class="tx">Recomeçar</span></button>
       <button class="sq" id="next" title="Próximo tópico" aria-label="Próximo tópico"><svg aria-hidden="true"><use href="#ui-avancar"/></svg></button>
@@ -155,6 +185,7 @@
   <footer class="foot">Ilustrações com cores adicionadas, simplificadas e fora de escala; o número de moléculas e de proteínas desenhadas é ilustrativo. Valores e conceitos conferidos em livros-texto: Alberts et al., <i>Biologia Molecular da Célula</i>; Nelson &amp; Cox, <i>Princípios de Bioquímica de Lehninger</i>; Taiz et al., <i>Fisiologia e Desenvolvimento Vegetal</i>; Reece et al., <i>Biologia de Campbell</i>; Amabis &amp; Martho, <i>Biologia das Células</i>. Rendimento de cerca de 30 a 32 ATP por glicose: Hinkle, <i>Biochim. Biophys. Acta</i> 2005. Teoria quimiosmótica: Mitchell, <i>Nature</i> 1961. Origem do O₂ na água: Ruben, Randall, Kamen &amp; Hyde, <i>J. Am. Chem. Soc.</i> 1941. Ciclo de Calvin: Bassham, Benson &amp; Calvin, 1950. CO₂ atmosférico: série de Mauna Loa (NOAA). As curvas dos gráficos são modelos didáticos, sem dados de uma espécie em particular.</footer>
 </div>
 <script src="motor.js"></script>
+<script src="cadeia.js"></script>
 <script src="cenas-a.js"></script>
 <script src="cenas-b.js"></script>
 <script src="cenas-c.js"></script>

@@ -77,6 +77,30 @@
 .cores i{width:10px;height:10px;border-radius:50%;flex:none}
 .foot{padding-top:24px}
 .foot i{font-style:italic}
+/* Sangue, elementos: figura realista com hotspots (tokens do padrão de motion, locais ao módulo) */
+.hs-layer{--m-instant:90ms;--m-fast:160ms;--e-out:cubic-bezier(.16,1,.3,1);position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hs-layer[hidden]{display:none}
+.hs{position:absolute;left:0;top:0;width:44px;height:44px;padding:0;margin:0;border:0;border-radius:50%;background:transparent;cursor:pointer;pointer-events:auto;opacity:0;visibility:hidden;will-change:transform;-webkit-tap-highlight-color:transparent}
+.hs.in{opacity:1;visibility:visible;transition:opacity var(--m-fast) var(--e-out)}
+.hs .hs-p{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:rgba(11,15,28,.5);border:2px solid rgba(255,255,255,.9);transform:scale(.6);transition:transform var(--m-fast) var(--e-out),background-color var(--m-instant),border-color var(--m-instant)}
+.hs.in .hs-p{transform:scale(1)}
+.hs:hover .hs-p,.hs.on .hs-p{border-color:var(--amber);background:var(--amber);transform:scale(1.15)}
+.hs:focus-visible{outline:none}
+.hs:focus-visible .hs-p{outline:2px solid var(--focus);outline-offset:3px}
+.hs .ring,.hs .ring2{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:1px solid rgba(255,255,255,.7);opacity:0;pointer-events:none}
+.hs.in .ring{animation:hs-pulso 1.2s var(--e-out) 2}
+.hs.idle .ring2{animation:hs-pulso 1.2s var(--e-out) 1}
+@keyframes hs-pulso{from{transform:scale(1);opacity:.6}to{transform:scale(2.6);opacity:0}}
+.hs-tip{position:absolute;left:0;top:0;width:min(270px,calc(100% - 16px));padding:10px 14px 12px;border-radius:12px;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity var(--m-fast) var(--e-out),transform var(--m-fast) var(--e-out),visibility 0s linear var(--m-fast)}
+.hs-tip.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.hs-tip b{display:block;font-family:var(--f-title);font-size:15px;font-weight:600;line-height:1.3;color:var(--txt)}
+.hs-tip p{margin-top:2px;font-size:13px;line-height:1.45;color:var(--txt)}
+.hs-tip small{display:block;margin-top:6px;font-size:12px;line-height:1.4;color:var(--dim)}
+@media(prefers-reduced-motion:reduce){
+  .hs.in .ring,.hs.idle .ring2{animation:none}
+  .hs .ring{opacity:.5;transform:scale(2)}
+  .hs.in,.hs .hs-p,.hs-tip,.hs-tip.on{transition:none}
+}
 @media(max-width:699px){
   .palco .tela{height:clamp(480px,76svh,640px)}
   .tag{top:8px;left:8px;font-size:13px;max-width:calc(100% - 16px)}.tag span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -166,6 +190,7 @@
 <script src="motor.js"></script>
 <script src="cenas-a.js"></script>
 <script src="cenas-b.js"></script>
+<script src="camadas-sangue.js"></script>
 <script src="cenas-c.js"></script>
 <script src="cenas-d.js"></script>
 <script src="cenas-e.js"></script>

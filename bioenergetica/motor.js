@@ -222,6 +222,7 @@ function LAB8_iniciar() {
     $('tagC').style.background = o.c; $('tagT').textContent = o.t; $('ondeV').textContent = o.loc || '';
     cv.setAttribute('aria-label', `Animação: ${o.t}. ${o.alt || o.s}.`); cv.classList.toggle('arr', !!o.drag);
     setCtl(o, S); capLast = null; cap('');
+    if (typeof CAD !== 'undefined') CAD.rota(key);
     document.title = `${o.t} · Bioenergética · LAB`;
     if (!keepHash) try { history.replaceState(null, '', '#' + key); } catch (e) { /* file:// em navegadores antigos */ }
   }
