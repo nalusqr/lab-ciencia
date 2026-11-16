@@ -2,7 +2,7 @@
    ajudantes de vírus (capsídeo, envelope, espículas, fago, célula hospedeira, bactéria, DNA e RNA), cartões para classificar,
    rotas por hash e controles.
    Código da equipe (Aurelius), derivado do motor da Taxonomia. Sem dependências.
-   As cenas ficam em cenas-v.js (Plantae, V1 a V6) e cenas-a.js (Animalia, A1 a A7); cada uma chama def(sec, id, o). Resumo da API: /tmp/claude-0/vir/api.md */
+   As cenas ficam em cenas-d.js (Digestório e Respiratório), cenas-c.js (Circulatório e Excretor), cenas-e.js (Endócrino e Nervoso) e cenas-r.js (Reprodutor e Locomotor); cada uma chama def(sec, id, o). As cenas 3D (cenas3d-*.js) trocam algumas delas e usam o gancho sair(). Resumo da API: /tmp/claude-0/vir/api.md */
 'use strict';
 const TAU = Math.PI * 2, PI = Math.PI;
 const $ = id => document.getElementById(id);
@@ -776,7 +776,7 @@ function LAB_ANATOMIA_iniciar() {
   function ondeSync(o, S) { const loc = val(o.loc, S) || '', n = val(o.locNota, S), nota = n == null ? 'Desenho esquemático' : n, k = loc + '\u0000' + nota; if (k === ondeUlt) return; ondeUlt = k; $('ondeV').innerHTML = loc; $('ondeS').innerHTML = nota; $('ondeS').hidden = nota === ''; $('ondeM').innerHTML = nota ? nota + '.' : ''; $('ondeM').hidden = !nota; }
   function syncExtra() { const o = SC[cur], S = ST[cur]; if (!o) return; [...$('extra').children].forEach((el, i) => { const y = o.extra && o.extra[i]; if (y) { el.setAttribute('aria-pressed', y.pressed ? !!y.pressed(S) : false); el.hidden = !!(y.vis && !y.vis(S)); } }); ctlShow(o, S); ondeSync(o, S); ajustaBarra(); }
   function go(key, force, keepHash) {
-    const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
+    const o = SC[key]; if (!o) return; const re = key === cur; if (!re && SC[cur]) { const sx = SC[cur].sair || SC[cur].sai; if (sx) try { sx.call(SC[cur]); } catch (err) { console.error(err); } } cur = key;   // cenas 3D liberam o palco WebGL
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) try { o.init(S); } catch (err) { console.error(err); }
     const sec = SEC.find(s => s.id === o.sec);
     [...$('secs').children].forEach(b => { const on = b.dataset.s === o.sec; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); if (on && b.scrollIntoView && $('secs').scrollWidth > $('secs').clientWidth) $('secs').scrollLeft = Math.max(0, b.offsetLeft - 24); });
