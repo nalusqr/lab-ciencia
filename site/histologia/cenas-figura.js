@@ -42,7 +42,7 @@
     const pre = MODULO + '-' + chave.replace('/', '-') + '-';
     const hs = [];
     pts.forEach(p => { let h = hs.find(q => q.id === p[1]); if (!h) { h = { id: p[1], c: p[2], t: p[3], d: p[4], em: {}, z: p[7] || 2.4 }; hs.push(h); } h.em[p[0]] = [p[5], p[6]]; });
-    const F = LAB_FIGIA({ nome, mask: MASK, vistas: vistas.map(v => Object.assign({ id: v[0], img: pre + v[0], nome: v[1] }, v[3] ? { recorte: v[3] } : {})), hs });
+    const F = LAB_FIGIA({ nome, mask: extra && extra.mask !== undefined ? extra.mask : MASK, vistas: vistas.map(v => Object.assign({ id: v[0], img: pre + v[0], nome: v[1] }, v[3] ? { recorte: v[3] } : {})), hs });
     const legenda = {}; vistas.forEach(v => { legenda[v[0]] = v[2]; });
     const orig = { draw: o.draw, init: o.init, sair: o.sair || o.sai };
     let modo = 'fig';
@@ -269,4 +269,28 @@
     if (R.vista !== 'a' || R.k < .6) return;
     fluxo(R, X, [[47, 54], [47, 62], [46, 70]], '#FFD23F', 6, t, .35, .45);
   });
+  // ================= V3: ossificação endocondral (Íris e Prometeu) =================
+  // Osso longo em corte: o disco epifisário mantém a cartilagem se multiplicando de um lado e virando osso do outro.
+  cena('conjuntivo/ossificacao', 'Ossificação endocondral em osso longo', [
+    ['a', 'Osso longo em crescimento', 'Osso longo de criança em corte: cartilagem azul nas pontas e nos discos epifisários, osso esponjoso e osso compacto em creme']
+  ], [
+    ['a', 'cap', '#8FB8DE', 'Cartilagem articular', 'Capa de cartilagem hialina na ponta do osso. Reveste a articulação e permanece a vida toda.', 7, 36, 2.8],
+    ['a', 'epi', '#EDE3D1', 'Osso esponjoso da epífise', 'Rede de trabéculas no centro da ponta do osso, com medula vermelha nos espaços. Foi cartilagem antes de virar osso.', 13.5, 47, 2.8],
+    ['a', 'pla', '#8FB8DE', 'Disco epifisário', 'Faixa de cartilagem de crescimento. As células se multiplicam em colunas de um lado e são trocadas por osso do outro, e o osso se alonga.', 21.7, 54.7, 3],
+    ['a', 'pl2', '#8FB8DE', 'Disco epifisário', 'Existe um em cada ponta. Quando a cartilagem acaba de virar osso, no fim da puberdade, o crescimento em altura para.', 79.5, 54.7, 3],
+    ['a', 'com', '#EDE3D1', 'Osso compacto', 'Parede densa e dura da diáfise, feita de ósteons. É a parte que dá resistência ao osso.', 51, 41.7, 2.6],
+    ['a', 'med', '#F5D98A', 'Canal medular', 'Cavidade da diáfise, aberta quando osteoclastos reabsorvem o osso do centro. Na criança guarda medula vermelha; no adulto, sobretudo medula amarela.', 51, 50, 2.4],
+    ['a', 'per', '#FFB3A7', 'Periósteo', 'Membrana de tecido conjuntivo que envolve o osso por fora. Nutre o osso e acrescenta osso novo em espessura.', 40.7, 39, 3.2]
+  ], (R, X, t) => {
+    if (R.k < .6 || R.z > 1.5) return;
+    // no disco epifisário, células deixam a cartilagem (azul) e viram osso (creme): do lado da epífise para o lado da diáfise
+    const lados = [[19.2, 24.6], [82, 77.2]], ys = [43, 49, 55, 61, 66];
+    lados.forEach(([x0, x1], li) => ys.forEach((y, i) => {
+      const f = RED ? .5 : (t * .16 + i * .21 + li * .13) % 1, [px, py] = R.pt(x0 + (x1 - x0) * f, y);
+      X.save(); X.globalAlpha = RED ? .85 : Math.sin(f * Math.PI) * .95; X.fillStyle = f < .5 ? '#BFE0FF' : '#FFF1CF'; X.shadowColor = X.fillStyle; X.shadowBlur = 8;
+      X.beginPath(); X.arc(px, py, R.s * .65, 0, TAU); X.fill(); X.restore();
+    }));
+    const k = RED ? .5 : (t * .6) % 1;
+    [[21.7, 54.7], [79.5, 54.7]].forEach(([x, y]) => anel(R, X, x, y, '#8FD8FF', k, 3));
+  }, { mask: { miolo: .94, borda: 1 } });
 })();
