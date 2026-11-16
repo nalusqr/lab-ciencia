@@ -437,7 +437,7 @@
       const k = ss(seg(p, .3, .6)); cromos(x + w / 2 - 28, my + 40, 4, EV.lima); nome('planta: 4 cromossomos', x + w / 2, my + 80, { s: 12 });
       if (k > .02) { X.save(); X.globalAlpha *= k; arrow(x + w / 2, my + 90, x + w / 2, my + 116, C.dim, 2); cromos(x + w / 2 - 50, my + 128, 8, EV.lima); nome('poliploidia: 8', x + w / 2, my + 164, { s: 12, c: C.txt }); nome('não cruza com a de origem', x + w / 2, my + 184, { s: 12 }); X.restore(); }
     }
-    cap(p < .3 ? 'Uma barreira geográfica divide a população e o fluxo gênico para.' : p < .74 ? 'Cada lado acumula mutações diferentes e sofre seleção e deriva em ambientes diferentes.' : 'Sem a barreira os grupos se encontram, mas já não cruzam: são duas espécies.');
+    cap(p < .08 ? 'Uma só população ocupa a região, com fluxo gênico livre entre todos.' : p < .3 ? 'Uma barreira geográfica divide a população e o fluxo gênico para.' : p < .74 ? 'Cada lado acumula mutações diferentes e sofre seleção e deriva em ambientes diferentes.' : 'Sem a barreira os grupos se encontram, mas já não cruzam: são duas espécies.');
   }
   const BARR = [['rio', 'rio'], ['montanha', 'montanha'], ['mar', 'mar subindo'], ['nenhuma', 'nenhuma']];
   function drawMonte(t, S, A) {

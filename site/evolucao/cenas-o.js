@@ -342,7 +342,7 @@
     cap(S.msg || (p < .3 ? 'Uma célula grande envolve uma bactéria aeróbia (a futura mitocôndria). Ela não é digerida.' : p < .6 ? 'A bactéria fica cercada por duas membranas e vira uma mitocôndria, com dobras (cristas).' : p < .86 ? 'Mais tarde, uma linhagem envolve uma cianobactéria.' : 'A cianobactéria vira o cloroplasto. As provas se marcam uma a uma; toque numa para ler.'));
   }
   // O ar do planeta
-  const GEO = [[4.6, 'a Terra se forma'], [3.8, 'primeiros sinais de vida (marcas químicas em rochas, ainda debatidas)'], [3.5, 'estromatólitos: camadas feitas por comunidades de bactérias'], [2.4, 'Grande Evento de Oxidação: o gás oxigênio passa a existir em quantidade na atmosfera'], [2.0, 'surge a célula eucariótica'], [1.0, 'aparecem os primeiros seres multicelulares'], [.6, 'animais e plantas se diversificam']];
+  const GEO = [[4.6, 'Terra jovem, formada há cerca de 4,6 bilhões de anos e ainda sem sinais de vida'], [3.8, 'primeiros sinais de vida (marcas químicas em rochas, ainda debatidas)'], [3.5, 'estromatólitos: camadas feitas por comunidades de bactérias'], [2.4, 'Grande Evento de Oxidação: o gás oxigênio passa a existir em quantidade na atmosfera'], [2.0, 'surge a célula eucariótica'], [1.0, 'aparecem os primeiros seres multicelulares'], [.6, 'animais e plantas se diversificam']];
   const O2G = ga => ga > 2.4 ? 0 : ga > .8 ? .1 : ga > .6 ? .35 : ga > .4 ? .6 : 1;
   const SEQ = [['heterotrófica', ['fermentação', 'fotossíntese', 'respiração aeróbia']], ['autotrófica', ['quimiossíntese', 'fotossíntese', 'respiração aeróbia']]];
   function drawAr(t, S, A) {
