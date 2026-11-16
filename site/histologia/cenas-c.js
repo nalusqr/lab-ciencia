@@ -515,7 +515,7 @@
         hits.push(['núcleo na periferia', bx + 16 + c * bw * .06 + 14 * k + 22 * k * 2, midY - D * (1 + .12 * c) / 2 + 3.2 * k, -1]);
         if (!NAR) hits.push(['estrias', bx + bw * .55, midY + D * .25, 1]);
       }
-      if (tw0 >= 0 && tw0 < .8) tx('contraiu!', bx + bw / 2, by + 12, { s: 12, w: 700, c: '#FFB347' });
+      if (tw0 >= 0 && tw0 < .8) tx('contraiu', bx + bw / 2, by + 12, { s: 12, w: 700, c: '#FFB347' });
     } else if (T.k === 'card') {
       const per = 1, ph = S.clk / per;   // cerca de 60 batidas por minuto, dentro do ritmo de repouso
       const L = 100 * k, D = 15 * k, gapY = 9 * k, stepY = D + gapY;
@@ -577,7 +577,7 @@
     d: `<p>O tecido muscular é feito de células alongadas, as <b>fibras musculares</b>, especializadas em <b>contração</b>. Elas têm muitas proteínas contráteis (actina e miosina) e muitas mitocôndrias. Os nomes mudam: a membrana é o <b>sarcolema</b>, o citoplasma é o <b>sarcoplasma</b> e o retículo endoplasmático liso é o <b>retículo sarcoplasmático</b>. Os três tipos vêm da <b>mesoderme</b> (ver <a href="#tecidos/visao">Os quatro tecidos</a>).</p>
 <p>O <b>estriado esquelético</b> forma os músculos presos aos ossos. Suas fibras são enormes: cada uma vem da fusão de muitas células embrionárias, então tem <b>muitos núcleos</b>, que ficam <b>na periferia</b>, logo abaixo da membrana. Ao microscópio, mostram <b>estrias transversais</b>, faixas claras e escuras. A contração é <b>voluntária</b>, rápida e forte, e cansa. O <b>estriado cardíaco</b> forma o miocárdio. Também tem estrias, mas as células são menores, <b>ramificadas</b>, com <b>1 ou 2 núcleos centrais</b>, e se ligam pelos <b>discos intercalares</b>, que têm junções comunicantes por onde o sinal elétrico passa direto de uma célula para outra. Assim o coração se contrai como um bloco. A contração é <b>involuntária</b>, rítmica e não cansa: o próprio coração gera o ritmo, no nó sinoatrial, cerca de 60 a 100 vezes por minuto em repouso.</p>
 <p>O <b>liso</b> fica na parede dos órgãos ocos e dos vasos: estômago, intestino, bexiga, útero, artérias, além da íris e dos músculos que arrepiam os pelos. As células são <b>fusiformes</b>, com <b>1 núcleo central</b>, e <b>não têm estrias</b>, porque a actina e a miosina não estão alinhadas em fileiras. A contração é <b>involuntária</b>, lenta e duradoura, como nos movimentos peristálticos do intestino. A capacidade de se regenerar também é diferente: o liso se regenera bem; o esquelético, de forma limitada, a partir das células-satélite; e o cardíaco praticamente não se regenera, e por isso a área morta num infarto vira uma cicatriz de tecido conjuntivo.</p>
-<table><thead><tr><th></th><th>Estriado esquelético</th><th>Estriado cardíaco</th><th>Liso</th></tr></thead><tbody>
+<div class="tab"><table><thead><tr><th></th><th>Estriado esquelético</th><th>Estriado cardíaco</th><th>Liso</th></tr></thead><tbody>
 <tr><td>Forma da célula</td><td>cilíndrica, muito longa</td><td>cilíndrica, ramificada</td><td>fusiforme</td></tr>
 <tr><td>Tamanho</td><td>10 a 100 µm de diâmetro; até dezenas de cm de comprimento</td><td>cerca de 15 µm × 85 a 100 µm</td><td>5 a 10 µm × 20 a 500 µm</td></tr>
 <tr><td>Núcleos</td><td>muitos, periféricos</td><td>1 ou 2, centrais</td><td>1, central</td></tr>
@@ -586,7 +586,7 @@
 <tr><td>Controle</td><td>voluntário</td><td>involuntário (ritmo próprio)</td><td>involuntário</td></tr>
 <tr><td>Contração</td><td>rápida, forte, cansa</td><td>rítmica, não cansa</td><td>lenta, duradoura</td></tr>
 <tr><td>Regeneração</td><td>limitada (células-satélite)</td><td>quase nenhuma</td><td>boa</td></tr>
-</tbody></table>
+</tbody></table></div>
 <p>Fonte do quadro: Junqueira e Carneiro, cap. 10. Mova a faixa do órgão até a célula e toque em Contrair: só o esquelético obedece ao comando; o cardíaco e o liso se contraem sozinhos.</p>`,
     enem: 'O quadro de comparação é o que mais cai: <b>esquelético</b> = voluntário, multinucleado, núcleos periféricos, com estrias; <b>cardíaco</b> = involuntário, estriado, 1 ou 2 núcleos centrais, <b>discos intercalares</b>; <b>liso</b> = involuntário, sem estrias, 1 núcleo central, fusiforme. E a ligação com saúde: o músculo cardíaco <b>não se regenera</b>, e por isso o infarto deixa cicatriz.',
     links: [['O sarcômero', '#muscular/sarcomero'], ['Tendões no conjuntivo', '#conjuntivo/propriamente']],
