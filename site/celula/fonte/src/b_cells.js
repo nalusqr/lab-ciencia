@@ -73,7 +73,7 @@ animal(){SEED=11;const s=scene({dist:7,upu:20/5,cam:V3(0,.62,1)}),G=s.g;const A=
     if(mid.distanceTo(nP)<nr+.1)mid.add(mid.clone().sub(nP).setLength(.3));const pts=[cp.clone(),mid,end];G.add(mesh(tubeG(pts,.008,60,5),cyto,'citoesqueleto'));tracks.push(new THREE.CatmullRomCurve3(pts))}
   s.anch.citoesqueleto=tracks[3].getPointAt(.7).add(V3(0,.06,0));
   const ring=()=>{const a=rr(0,TAU),R=rr(.35,.92);return V3(Math.cos(a)*A*R,rr(-.35,.35),Math.sin(a)*Cc*R)};
-  const mitos=scatter(10,.27,ring,pl).filter(p=>IN(p,.18));mitos.forEach(p=>mito(G,p,.34,.1,[rr(-.3,.3),rr(0,TAU),Math.PI/2+rr(-.3,.3)]));if(mitos[0])s.anch.mitocondria=up(mitos[0],.16);
+  const mitos=scatter(10,.27,ring,pl).filter(p=>IN(p,.18));mitos.forEach(p=>mito(G,p,.34,.1,[rr(-.3,.3),rr(0,TAU),Math.PI/2+rr(-.3,.3)]));{const mf=mitos.filter(p=>p.distanceTo(cp)>.35).sort((u,v)=>v.z-u.z)[0]||mitos[0];if(mf)s.anch.mitocondria=up(mf,.16)}
   const lys=scatter(6,.16,ring,pl).filter(p=>IN(p,.15));const lm=M('lisossomo','#fff',{vc:true,roughness:.25});lys.forEach(p=>G.add(mesh(bumpy(sphG(.1,32),.012,9,rr(0,9),C('lisossomo'),.4),lm,'lisossomo',p,null,rr(.8,1.25))));if(lys[0])s.anch.lisossomo=up(lys[0],.14);
   const per=scatter(4,.14,ring,pl).filter(p=>IN(p,.15));const pm=M('peroxissomo','#fff',{vc:true,roughness:.3});per.forEach(p=>G.add(mesh(bumpy(sphG(.085,32),.01,9,rr(0,9),C('peroxissomo'),.4),pm,'peroxissomo',p)));if(per[0])s.anch.peroxissomo=up(per[0],.12);
   const rib=ribos(G,'ribossomo',420,rndIn(A,B,Cc),p=>IN(p,.06)&&p.distanceTo(nP)>nr+.05);s.anch.ribossomo=up(rib[7].p,.06);

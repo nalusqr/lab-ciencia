@@ -13,6 +13,7 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 // ?embed=1: só a cena, sem interface, girando devagar (é a vitrine da página inicial, num iframe). Sem toque, sem
 // pontos e sem nomes; com movimento reduzido, fica parada. Avisa a página de fora (postMessage) quando já desenhou.
 const EMB=/[?&]embed=1(&|$)/.test(location.search);
+const MOLD=!EMB&&/[?&]moldura=1(&|$)/.test(location.search);
 const S={ctype:'animal',view:'celula',sel:null,hv:null,labels:!EMB,paused:RM,z:0,ver:0};
 const subs=new Set();
 function set(p){let ch=false;for(const k in p)if(S[k]!==p[k]){ch=true;break}if(!ch)return;Object.assign(S,p);S.ver++;subs.forEach(f=>f());ui()}
@@ -137,7 +138,7 @@ function World({sc}){useS();DESEMPENHO.simplificar(sc.mats);const kg=React.useRe
     for(const m of sc.mats){const k=m.userData.k;const on=k&&k===focus;const t=on?.22+.08*Math.sin(now*4):m.userData.e0;m.emissiveIntensity+=(t-m.emissiveIntensity)*Math.min(1,dt*8);
       const c0=m.userData.c0;if(!c0)continue;const dim=focus&&!on&&k!=='membrana'?1:0;m.userData.dz=(m.userData.dz||0)+(dim-(m.userData.dz||0))*Math.min(1,dt*6);
       const q=m.userData.dz;_c.copy(c0);if(q>.002){_c.getHSL(_hsl);_c.setHSL(_hsl.h,_hsl.s*(1-.4*q),_hsl.l*(1-.25*q))}m.color.copy(_c)}
-    if(EMB&&!avisou&&++quadrosEmb>3){avisou=true;document.documentElement.classList.add('pronta');try{if(parent!==window)parent.postMessage({lab:'celula-pronta'},'*')}catch(e){}}
+    if((EMB||MOLD)&&!avisou&&++quadrosEmb>3){avisou=true;document.documentElement.classList.add('pronta');try{if(parent!==window)parent.postMessage({lab:'celula-pronta'},'*')}catch(e){}}
     layoutLabels(st.camera,st.size,sc)});
   const kOf=e=>{let o=e.object;while(o&&!o.userData.k)o=o.parent;return o&&o.userData.k};
   const cell=S.view==='celula'&&!EMB;
@@ -242,6 +243,7 @@ $('lbls').onclick=()=>set({labels:!S.labels});
 $('zin').onclick=()=>set({z:Math.min(5,S.z+1)});$('zout').onclick=()=>set({z:Math.max(-2,S.z-1)});
 $('reset').onclick=()=>{stopTour();if(S.view!=='celula')back();set({sel:null,hv:null,z:0})};
 $('pause').onclick=()=>set({paused:!S.paused});
+if(MOLD)addEventListener('message',e=>{const d=e.data;if(!d||d.lab!=='celula-cmd')return;if('labels'in d)set({labels:!!d.labels});if('paused'in d)set({paused:!!d.paused});if(d.limpar){stopTour();if(S.view!=='celula')back();else set({sel:null,hv:null})}if(d.abrir&&DETB[d.abrir]&&inList(d.abrir)){stopTour();open(d.abrir)}});
 viewEl.addEventListener('wheel',e=>{if(!e.target.closest('canvas'))return;e.preventDefault();set({z:Math.max(-2,Math.min(5,S.z+(e.deltaY<0?.5:-.5)))})},{passive:false});
 addEventListener('keydown',e=>{if(e.key==='Escape'){stopTour();if(S.view!=='celula')back();else set({sel:null})}});
 // passeio guiado
@@ -266,7 +268,8 @@ function ui(){const cell=S.view==='celula';const list=S.ctype;
   $('links').innerHTML=op+o.links.map(([t,h])=>`<a class="btn" href="${h}">${t}</a>`).join('');
   const tk=!cell?S.view:(S.hv||S.sel);const tt=$('tagT'),tc=$('tagC');
   if(tk){tt.innerHTML=ORG[tk].t+(cell&&DETB[tk]?' <small>Toque de novo para ver por dentro.</small>':!cell?' <small>Em corte. Arraste para girar.</small>':'');tc.style.cssText=`display:block;background:${ORG[tk].c}`}
-  else{tt.innerHTML=`${CELLS[S.ctype][0]} <small>Toque num ponto ou arraste para girar.</small>`;tc.style.cssText='display:none'}}
+  else{tt.innerHTML=`${CELLS[S.ctype][0]} <small>Toque num ponto ou arraste para girar.</small>`;tc.style.cssText='display:none'}
+  if(MOLD){const sk2=cell?(S.sel||''):S.view;if(sk2!==ui._m){ui._m=sk2;const d=sk2?{lab:'celula-sel',k:sk2,t:o.t,sub:o.s,cor:o.c,dentro:!!(cell&&DETB[sk2]),vista:!cell}:{lab:'celula-sel',k:null};try{parent.postMessage(d,'*')}catch(e){}}}}
 $('links').onclick=e=>{const b=e.target.closest('button.open');if(b){stopTour();open(b.dataset.o);viewEl.scrollIntoView({behavior:'smooth',block:'start'})}};
 // cartão de ampliação (escala real): ampliação arredondada a 2 algarismos
 const NICE=[1,2,5];const nf=new Intl.NumberFormat('pt-BR');
