@@ -1172,7 +1172,8 @@ function syncCtl(){const o=SC[cur],S=ST[cur],c=CT(o,S),el=$('ctl');if(!c){el.hid
  const k=c.k||'';if(S.ck!==k){S.ck=k;S.v=c.v;S.touched=false}const r=$('ctlR');r.min=c.min;r.max=c.max;r.step=c.step;r.value=S.v;$('ctlL').textContent=c.l;$('ctlV').textContent=c.f(S.v);r.setAttribute('aria-valuetext',c.f(S.v));el.hidden=false}
 function pintaBotoes(){const o=SC[cur],S=ST[cur],ops=o.opts?o.opts(S):null;$('opts').hidden=!ops;$('opts').innerHTML=ops?ops.map(q=>(q.g?'<span class="og">'+q.g+'</span>':'')+'<button type="button" data-id="'+q.id+'" aria-pressed="false">'+(q.n?'<em>'+q.n+'</em>':'')+q.t+'</button>').join(''):'';if(ops)pintaOpts()}
 function escolhe(id){const o=SC[cur],S=ST[cur];S.a0=tm-S.t0;if(o.pick)o.pick(id,S);else S.o=id;if(o.dyn)pintaBotoes();else pintaOpts();syncCtl()}
-function go(key,op){const o=SC[key];if(!o)return;op=op||{};cur=key;const S=ST[key]={t0:tm,dt:0,touched:false,a0:0,ck:null,v:0};if(o.init)o.init(S);
+function go(key,op){const o=SC[key];if(!o)return;op=op||{};if(cur&&SC[cur].sair)try{SC[cur].sair()}catch(e){console.error(e)}cur=key;// cenas 3D liberam o palco WebGL
+const S=ST[key]={t0:tm,dt:0,touched:false,a0:0,ck:null,v:0};if(o.init)o.init(S);
  const sec=SEC.find(s=>s.id===o.sec),ops=o.opts?o.opts(S):null;if(ops&&!o.multi&&S.o==null)S.o=ops[0].id;
  [].forEach.call($('secs').children,b=>{const on=b.dataset.s===o.sec;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(on&&b.scrollIntoView&&$('secs').scrollWidth>$('secs').clientWidth)$('secs').scrollLeft=Math.max(0,b.offsetLeft-$('secs').offsetLeft-24)});
  $('tops').innerHTML=ORDER[o.sec].map((k,i)=>'<button type="button" data-k="'+k+'" class="'+(k===key?'on':'')+'"'+(k===key?' aria-current="true"':'')+'><em>'+String(i+1).padStart(2,'0')+'</em><span>'+SC[k].t+'<small>'+SC[k].s+'</small></span></button>').join('');
@@ -1180,7 +1181,7 @@ function go(key,op){const o=SC[key];if(!o)return;op=op||{};cur=key;const S=ST[ke
  $('kv').innerHTML=o.kv.map(q=>'<div>'+q[0]+'</div><div>'+q[1]+'</div>').join('');$('links').innerHTML=o.links.map(q=>'<a class="btn" href="'+q[1]+'">'+q[0]+'</a>').join('');
  $('tagC').style.background=o.c;$('tagT').textContent=o.t;$('ondeV').textContent=o.onde;$('ondeV').parentNode.classList.toggle('cc',!!o.ondeCurto);cv.setAttribute('aria-label','Animação: '+o.t+', '+o.s+'. A legenda abaixo descreve o que está acontecendo.');
  $('opts').setAttribute('aria-label',o.optL||'Opções');pintaBotoes();syncCtl();
- capTxt=null;document.title=o.t+' · Ecologia · LAB';try{history.replaceState(null,'','#'+key)}catch(e){}
+ capTxt=null;document.title=o.t+' | Ecologia | LAB';try{history.replaceState(null,'','#'+key)}catch(e){}
  if(op.rola){const r=$('palco').getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)$('palco').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}}
 $('tops').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.k,{rola:true})};
 $('opts').onclick=e=>{const b=e.target.closest('button');if(b)escolhe(b.dataset.id)};
@@ -1203,9 +1204,24 @@ function quadro(now){const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now
  requestAnimationFrame(quadro)}
 fit();addEventListener('resize',fit);if(window.ResizeObserver)new ResizeObserver(fit).observe(cv);
 if(RM)setP(true);
-go(rota()||'niveis/escada');
-requestAnimationFrame(quadro);
+// ganchos das cenas 3D (cenas3d-*.js): ponte para o kit e partida depois que os arquivos das cenas carregam
+window.LAB_ECO={SC,ST,ORDER,C,FT,FH,FD,PIR,F_C,F_N,F_A,tx,lab,rgba,escolhe,ctlSet,get X(){return X},set X(v){X=v},get W(){return W},get H(){return H},get M(){return M},get LB(){return LB},get paused(){return paused},get cur(){return cur}};
+let partiu=false;window.LAB_ECO_iniciar=()=>{if(partiu)return;partiu=true;go(rota()||'niveis/escada');requestAnimationFrame(quadro)};
+addEventListener('load',window.LAB_ECO_iniciar);
 })();
 </script>
+<script src="eco3d-ponte.js"></script>
+<script src="../biologia-molecular/mol3d.js"></script>
+<script src="../virus/vir3d.js"></script>
+<script src="../virus/vir3d-pecas.js"></script>
+<script src="../plantas-animais/plantas3d-pecas.js"></script>
+<script src="eco3d-pecas.js"></script>
+<script src="cenas3d-teias.js"></script>
+<script src="cenas3d-ciclos.js"></script>
+<script src="cenas3d-populacoes.js"></script>
+<script src="../biologia-molecular/figura-ia.js"></script>
+<script src="../biologia-molecular/figura-alterna.js"></script>
+<script src="cenas-figura.js"></script>
+<script>LAB_ECO_iniciar();</script>
 </body>
 </html>
