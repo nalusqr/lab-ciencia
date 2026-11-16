@@ -60,6 +60,7 @@ function mkRecomb(){
   const go=n=>{st.step=n;st.t0=T};
   const blocked=()=>st.step>=3||(st.step===2&&!same());
   const inst={
+    st,
     ui(){P=panel(()=>inst.res());
       P.pick('Enzima de restrição',[['same','Mesma enzima nos dois'],['diff','Enzimas diferentes']],v=>st.enz===v,v=>{st.enz=v;go(0)});
       P.acts('Montagem',[['Próximo passo',()=>{if(!blocked())go(st.step+1)},true,blocked],['Recomeçar',()=>go(0)]]);

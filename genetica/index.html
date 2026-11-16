@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Genética · LAB</title>
+<title>Genética | LAB</title>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css">
 <style>
@@ -16,6 +16,15 @@
 #cvw{position:relative;height:clamp(340px,52vh,470px)}
 @media(max-width:699px){#cvw{height:340px}}
 #cv{display:block;width:100%;height:100%}
+/* barra de controles da figura de IA (figura-ia.js v2, cenas-figura.js) */
+.fi2-barra{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px;border-top:1px solid var(--line);background:var(--panel)}
+.fi2-barra button{font:inherit;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;height:44px;min-width:44px;justify-content:center;padding:0 12px;border-radius:8px;border:1px solid var(--line-strong);background:var(--panel);color:var(--txt);cursor:pointer;flex:none;transition:background .15s,border-color .15s}
+.fi2-barra button:hover{background:var(--panel-2)}
+.fi2-barra button[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);background:var(--panel-2)}
+.fi2-barra button.sq{padding:0;width:44px}
+.fi2-barra svg{width:20px;height:20px;flex:none}
+@media(max-width:699px){.fi2-barra .tx{display:none}.fi2-barra button{padding:0;width:44px}.fi2-barra .vis .tx{display:inline}.fi2-barra .vis button{width:auto;padding:0 10px}}
+
 .tag{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:14px;font-weight:600;color:var(--txt);pointer-events:none;max-width:calc(100% - 24px)}
 .tag i{width:10px;height:10px;border-radius:50%;flex:none}
 .tag span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -129,6 +138,15 @@
   <footer class="foot">Esquemas com cores adicionadas; os cromossomos e as células não estão em escala. Os cruzamentos mostram as proporções <i>esperadas</i>: em famílias reais, com poucos filhos, os números observados variam ao acaso. Referências: Mendel, G. <i>Versuche über Pflanzen-Hybriden</i> (1866); Griffiths et al., <i>Introdução à Genética</i>; Snustad &amp; Simmons, <i>Fundamentos de Genética</i>; Amabis &amp; Martho, <i>Biologia das Populações</i>; Landsteiner (1901), sistema ABO; Landsteiner &amp; Wiener (1940), fator Rh; Morgan (1910–1911), herança ligada ao sexo e ligação gênica. Os exemplos de heredogramas são fictícios, feitos para este módulo.</footer>
 </div>
 <script src="novos-a.js"></script><script src="novos-b.js"></script>
+<script src="../biologia-molecular/mol3d.js"></script>
+<script src="../divisao-celular/cito3d.js"></script>
+<script src="gen3d-pecas.js"></script>
+<script src="cenas3d-mendel.js"></script>
+<script src="cenas3d-cromossomos.js"></script>
+<script src="cenas3d-biotec.js"></script>
+<script src="../biologia-molecular/figura-ia.js"></script>
+<script src="../biologia-molecular/figura-alterna.js"></script>
+<script src="cenas-figura.js"></script>
 <script>
 (()=>{
 // ================= BASE =================
@@ -217,7 +235,7 @@ const kids=(ga,gb,kid)=>{const o=[];gb.forEach(b=>ga.forEach(a=>o.push(kid(a,b))
 
 // ---------- tópico de um gene (1ª lei, dominância incompleta, codominância) ----------
 function mono(c){const st={a:c.def[0],b:c.def[1]};const opts=c.gs.map(g=>[g,gh(g)+' <small>'+c.ph(g).n+'</small>']);
-  return{ui(){pick('Um dos pais',opts,v=>st.a===v,v=>st.a=v);pick('O outro',opts,v=>st.b===v,v=>st.b=v)},
+  return{st,c,ui(){pick('Um dos pais',opts,v=>st.a===v,v=>st.a=v);pick('O outro',opts,v=>st.b===v,v=>st.b=v)},
     draw(P){punnett({ga:gam1(st.a),gb:gam1(st.b),kid:c.kid,icon:(g,x,y,r)=>c.icon(g,x,y,r),la:'gametas de '+st.a,lb:'gametas de '+st.b,P})},
     res(){const ks=kids(gam1(st.a),gam1(st.b),c.kid),tg=tally(ks),tp=tally(ks.map(g=>c.ph(g).n));
       const col=n=>c.gs.map(g=>c.ph(g)).find(p=>p.n===n).c;
@@ -247,7 +265,7 @@ const LAB={xs:[['BbEexBbEe',gh('BbEe')+' × '+gh('BbEe')],['BbEexbbee',gh('BbEe'
 // ---------- herança ligada ao X ----------
 function xl(c){const D='X^'+c.D,d='X^'+c.d,st={m:D+d,f:D+'Y'};
   const nm=g=>{const s=stX(g),male=g.endsWith('Y');return s==='af'?(male?c.afM:c.afF):s==='pt'?'portadora':'normal'};
-  return{ui(){pick('Mãe',[D+D,D+d,d+d].map(g=>[g,gh(g)+' <small>'+nm(g)+'</small>']),v=>st.m===v,v=>st.m=v);pick('Pai',[D+'Y',d+'Y'].map(g=>[g,gh(g)+' <small>'+nm(g)+'</small>']),v=>st.f===v,v=>st.f=v)},
+  return{st,c,ui(){pick('Mãe',[D+D,D+d,d+d].map(g=>[g,gh(g)+' <small>'+nm(g)+'</small>']),v=>st.m===v,v=>st.m=v);pick('Pai',[D+'Y',d+'Y'].map(g=>[g,gh(g)+' <small>'+nm(g)+'</small>']),v=>st.f===v,v=>st.f=v)},
     draw(P){const ga=[st.f.slice(0,3),'Y'],gb=[st.m.slice(0,3),st.m.slice(3)];punnett({ga,gb,kid:kidX,icon:(g,x,y,r)=>sym(x,y,r*.95,g.endsWith('Y')?'M':'F',stX(g)),la:'gametas do pai',lb:'gametas da mãe',P,bot:34});
       const y=H-12;if(H>300){let x=W/2-(W<520?150:170);[['F','no','normal'],['F','pt','portadora'],['M','af','afetado']].forEach(([s,t,l])=>{sym(x,y-2,6,s,t);tx(l,x+12,y-2,{s:12,c:DIM,a:'left'});x+=W<520?100:116})}},
     res(){const ga=[st.f.slice(0,3),'Y'],gb=[st.m.slice(0,3),st.m.slice(3)],ks=kids(ga,gb,kidX);const f=ks.filter(g=>!g.endsWith('Y')),h=ks.filter(g=>g.endsWith('Y'));
@@ -266,7 +284,7 @@ const PD={
   {p:[['a','M','af',2,0],['b','F','no',3,0],['c','M','no',1,1],['d','F','no',2,1],['e','M','no',3,1],['f','M','af',1,2],['g','F','no',2,2],['h','M','af',3,2],['i','M','no',4,2]],u:[['a','b',['c','d']],['d','e',['f','g','h','i']]],r:'xr',hl:['a','d','f','h'],
    e:'Pais normais (II-2 e II-3) com filhos afetados: <b>recessiva</b>. Só <b>homens</b> são afetados, e a característica passa do avô (I-1) aos netos <b>pela filha</b> (II-2), que é portadora sem ser afetada. Esse desenho, "pulando" uma geração pela mãe, é o típico da herança <b>recessiva ligada ao X</b>. (Uma herança autossômica recessiva não está excluída, mas exigiria que II-3, que veio de fora da família, também fosse portador.)'},
   {p:[['a','M','af',2,0],['b','F','no',3,0],['w','F','no',1,1],['c','M','af',2,1],['d','F','af',3,1],['e','M','no',4,1],['f','M','af',1,2],['g','F','no',2,2]],u:[['a','b',['c','d','e']],['w','c',['f','g']]],r:'ad',hl:['a','c','f'],
-   e:'A característica aparece em <b>todas as gerações</b>, e todo afetado tem um dos pais afetado: padrão <b>dominante</b>. Há transmissão de <b>pai para filho homem</b> (I-1 → II-2 → III-1), o que exclui a herança ligada ao X, pois o pai dá ao filho o cromossomo Y, não o X. (Recessiva também seria possível, mas exigiria que as duas pessoas de fora da família, I-2 e II-1, fossem portadoras.)'},
+   e:'A característica aparece em <b>todas as gerações</b>, e todo afetado tem um dos pais afetado: padrão <b>dominante</b>. Há transmissão de <b>pai para filho homem</b> (de I-1 para II-2 e de II-2 para III-1), o que exclui a herança ligada ao X, pois o pai dá ao filho o cromossomo Y, não o X. (Recessiva também seria possível, mas exigiria que as duas pessoas de fora da família, I-2 e II-1, fossem portadoras.)'},
   {p:[['a','M','no',2,0],['b','F','af',3,0],['c','M','no',2,1],['d','F','no',3,1],['e','M','no',4,1],['f','F','af',3,2],['g','M','no',4,2]],u:[['a','b',['c','d']],['d','e',['f','g']]],r:'ar',hl:['d','e','f'],
    e:'II-2 e II-3 são normais e têm uma filha afetada (III-1): <b>recessiva</b>. Não pode ser ligada ao X por dois motivos: a filha afetada tem pai normal, e a mãe afetada (I-2) tem um filho homem normal (II-1), quando todos os filhos homens dela seriam afetados.'}]};
 const RSP={ad:'Autossômica dominante',ar:'Autossômica recessiva',xr:'Recessiva ligada ao X'};
@@ -280,7 +298,7 @@ const SECS=[
   d:`<p>Um <b>gene</b> é um trecho do DNA com a informação para uma característica, como a cor da semente da ervilha. Ele ocupa um lugar fixo no cromossomo, o <b>loco</b>.</p><p>As versões de um mesmo gene chamam-se <b>alelos</b>. Como os cromossomos vêm em pares (um do pai, um da mãe), cada indivíduo tem <b>dois alelos</b> de cada gene, um em cada cromossomo homólogo. Se os dois são iguais, o indivíduo é <b>homozigoto</b>; se são diferentes, é <b>heterozigoto</b>.</p>`,
   enem:`Cuidado com a troca de palavras: <b>gene</b> é o trecho de DNA; <b>alelo</b> é cada versão dele. "Gene para olho azul" é jeito de falar: o certo é "alelo". Os alelos de um gene ficam no <b>mesmo loco</b> de cromossomos <b>homólogos</b>, nunca no mesmo cromossomo.`,
   links:[DNA,DIV],
-  mk(){const st={g:'Vv'};return{ui(){pick('Genótipo',[['VV',gh('VV')+' <small>homozigoto</small>'],['Vv',gh('Vv')+' <small>heterozigoto</small>'],['vv',gh('vv')+' <small>homozigoto</small>']],v=>st.g===v,v=>st.g=v)},
+  mk(){const st={g:'Vv'};return{st,ui(){pick('Genótipo',[['VV',gh('VV')+' <small>homozigoto</small>'],['Vv',gh('Vv')+' <small>heterozigoto</small>'],['vv',gh('vv')+' <small>homozigoto</small>']],v=>st.g===v,v=>st.g=v)},
    draw(P){const cx=W/2,ch=Math.min(H-150,210),yc=58+ch/2,cw=24,dx=W<520?44:60,yl=yc+ch*.2;
     [[cx-dx,BLU,st.g[0],'do pai'],[cx+dx,PNK,st.g[1],'da mãe']].forEach(([x,c,al,l],i)=>{
       box(x-cw/2,yc-ch/2,cw,ch*.38,cw/2,rgba(c,.75),c,1.5);box(x-cw/2,yc-ch/2+ch*.4,cw,ch*.6,cw/2,rgba(c,.75),c,1.5);
@@ -337,7 +355,7 @@ const SECS=[
   d:`<p>A explicação está na <b>meiose</b>. Na metáfase I, cada par de cromossomos homólogos se alinha no meio da célula <b>ao acaso</b>, sem "combinar" com os outros pares. Com dois pares, há dois alinhamentos possíveis, igualmente prováveis.</p><p>Um alinhamento produz gametas RV e rv; o outro, Rv e rV. Somando muitas células, os quatro tipos saem em <b>¼ cada</b>. Mendel não conhecia cromossomos nem meiose: chegou à lei só contando ervilhas, décadas antes.</p>`,
   enem:`A 2ª lei só vale para genes em <b>cromossomos diferentes</b> (ou muito distantes no mesmo cromossomo). É a ligação mais cobrada entre Genética e Citologia: <b>separação dos homólogos na anáfase I</b> = segregação dos alelos; <b>alinhamento ao acaso na metáfase I</b> = segregação independente.`,
   links:[DIV,DNA],
-  mk(){const st={al:0};return{ui(){pick('Alinhamento na metáfase I',[[0,'alinhamento 1'],[1,'alinhamento 2']],v=>st.al===v,v=>st.al=v)},
+  mk(){const st={al:0};return{st,ui(){pick('Alinhamento na metáfase I',[[0,'alinhamento 1'],[1,'alinhamento 2']],v=>st.al===v,v=>st.al=v)},
    draw(P0){const p=cl(A/5,0,1),sep=ss(seg(p,.25,.6)),div=ss(seg(p,.55,.85)),cx=W/2,cy=H*.44,R=Math.min(W*.2,H*.26,96),d=sep*R*(W<520?.95:1.25);
     const L=[['R','r'],st.al?['v','V']:['V','v']];
     for(const sg of[-1,1]){const x=cx+sg*d*div;X.beginPath();X.ellipse(x,cy,R*(1-.18*div),R,0,0,TAU);X.fillStyle='rgba(44,29,68,.45)';X.fill();X.strokeStyle=PNK;X.lineWidth=1.5;X.stroke()}
@@ -389,8 +407,8 @@ const SECS=[
      if(p>.75){X.globalAlpha=ss(seg(p,.75,1));tx(bad.length?'aglutinação':'compatível',cxr,cy+rh/2+40,{s:15,w:700,c:bad.length?'#FF6B7D':'#7FE0A2',f:FH});X.globalAlpha=1}
      let lx=nar?12:W/2-160;const ly=H-12;[[BLU,'antígeno A'],[YEL,'antígeno B'],['#fff','antígeno Rh']].forEach(([c,l])=>{circ(lx,ly,4,c);tx(l,lx+8,ly,{s:12,c:DIM,a:'left'});lx+=nar?108:116})},
     res(){const bad=prob();const r=ag(st.r);const acs=[!r.A&&'anti-A',!r.B&&'anti-B'].filter(Boolean);
-     return bad.length?`<p class="bad"><b>${st.d} → ${st.r}: incompatível.</b></p><p>As hemácias do doador levam ${bad.map(b=>b==='Rh'?'o antígeno <b>Rh</b>':'o antígeno <b>'+b+'</b>').join(' e ')}, que o receptor não tem. ${bad.filter(b=>b!=='Rh').length?'O plasma do receptor já tem '+acs.join(' e ')+', que aglutina essas hemácias. ':''}${bad.includes('Rh')?'O receptor Rh<sup>−</sup> passa a produzir anti-Rh depois do contato: o risco é imediato se ele já foi sensibilizado antes, e fica para as próximas transfusões se não foi.':''}</p>`
-      :`<p class="good"><b>${st.d} → ${st.r}: compatível.</b></p><p>As hemácias do doador não levam nenhum antígeno estranho ao receptor${acs.length?' (que só tem '+acs.join(' e ')+')':' (que não tem anti-A nem anti-B)'}.</p>`}}}},
+     return bad.length?`<p class="bad"><b>Doar ${st.d} para ${st.r}: incompatível.</b></p><p>As hemácias do doador levam ${bad.map(b=>b==='Rh'?'o antígeno <b>Rh</b>':'o antígeno <b>'+b+'</b>').join(' e ')}, que o receptor não tem. ${bad.filter(b=>b!=='Rh').length?'O plasma do receptor já tem '+acs.join(' e ')+', que aglutina essas hemácias. ':''}${bad.includes('Rh')?'O receptor Rh<sup>−</sup> passa a produzir anti-Rh depois do contato: o risco é imediato se ele já foi sensibilizado antes, e fica para as próximas transfusões se não foi.':''}</p>`
+      :`<p class="good"><b>Doar ${st.d} para ${st.r}: compatível.</b></p><p>As hemácias do doador não levam nenhum antígeno estranho ao receptor${acs.length?' (que só tem '+acs.join(' e ')+')':' (que não tem anti-A nem anti-B)'}.</p>`}}}},
  {id:'rh',t:'Fator Rh e eritroblastose fetal',s:'mãe Rh negativo, bebê Rh positivo',
   d:`<p>A <b>eritroblastose fetal</b> (doença hemolítica do recém-nascido) pode ocorrer quando a mãe é <b>Rh<sup>−</sup></b> (rr) e o bebê é <b>Rh<sup>+</sup></b>, alelo herdado do pai. Na primeira gestação em geral nada acontece: o sangue dos dois quase não se mistura.</p><p>No <b>parto</b>, hemácias do bebê entram na circulação da mãe, que passa a produzir <b>anticorpos anti-Rh</b> e fica sensibilizada. Numa <b>gestação seguinte</b> de bebê Rh<sup>+</sup>, esses anticorpos atravessam a placenta e destroem as hemácias do feto, causando anemia e icterícia. Previne-se aplicando na mãe <b>imunoglobulina anti-Rh</b> na gravidez e logo após o parto: ela elimina as hemácias do bebê antes que a mãe se sensibilize.</p>`,
   enem:`A combinação de risco é uma só: <b>mãe Rh<sup>−</sup> e pai Rh<sup>+</sup></b>, com filho Rh<sup>+</sup>. O <b>primeiro</b> filho Rh<sup>+</sup> costuma nascer bem; o problema aparece <b>a partir do segundo</b>. Mãe Rh<sup>+</sup> nunca tem esse problema, qualquer que seja o Rh do bebê.`,
@@ -482,7 +500,7 @@ const SECS=[
   d:`<p>Genes que ficam no <b>mesmo cromossomo</b> tendem a ser herdados <b>juntos</b>: estão em <b>ligação gênica</b> e não obedecem à 2ª lei. Um indivíduo AB/ab (A e B num cromossomo, a e b no homólogo) forma principalmente os gametas <b>parentais</b>, AB e ab.</p><p>Os gametas <b>recombinantes</b>, Ab e aB, só aparecem quando ocorre <b>permutação</b> (<i>crossing-over</i>) entre os dois genes, na prófase I da meiose. Quanto mais <b>distantes</b> os genes, mais permutações: a taxa de recombinação mede essa distância (1% = 1 unidade de recombinação, ou morganídeo) e nunca passa de 50%.</p>`,
   enem:`A pista é um cruzamento-teste de di-híbrido que <b>não</b> dá 1 : 1 : 1 : 1: duas classes grandes (parentais) e duas pequenas (recombinantes). Taxa de recombinação = <b>soma das duas classes recombinantes</b>. Com 20% de recombinação, cada recombinante vale 10% e cada parental, 40%.`,
   links:[DIV,DNA,['2ª lei de Mendel','#lei2/dihibridismo']],
-  mk(){const st={r:20};return{ui(){range('Taxa de recombinação entre os genes',0,50,1,()=>st.r,v=>st.r=v,v=>v+'%')},
+  mk(){const st={r:20};return{st,ui(){range('Taxa de recombinação entre os genes',0,50,1,()=>st.r,v=>st.r=v,v=>v+'%')},
    draw(){const nar=W<520,cx=W/2,y1=nar?84:76,L=Math.min(W-60,420),x0=cx-L/2,gap=lerp(.16,.62,st.r/50),xa=x0+L*(.5-gap/2),xb=x0+L*(.5+gap/2),sw=.5+.5*Math.sin(T*1.2),on=st.r>0;
     const ch=(y,c,la,lb)=>{box(x0,y-7,L,14,7,rgba(c,.7),c,1.5);[[xa,la],[xb,lb]].forEach(([x,l])=>{box(x-11,y-11,22,22,5,up(l)?YEL:GRN,'#0B0F1C',1.5);gtx(l,x,y,14,'#0B0F1C')})};
     ch(y1,BLU,'A','B');ch(y1+34,PNK,'a','b');
@@ -514,8 +532,11 @@ function sync(){syncs.forEach(f=>f());const h=inst.res?inst.res():'';if(out.inne
 // tópicos novos vindos de novos-a.js e novos-b.js (seções novas primeiro, depois tópicos)
 (window.GEN_EXTRA||[]).forEach(x=>{if(x.nova){const k=SECS.findIndex(s=>s.id===x.antes);SECS.splice(k<0?SECS.length:k,0,x.nova)}});
 (window.GEN_EXTRA||[]).forEach(x=>{if(x.top){const s=SECS.find(s=>s.id===x.sec);if(!s)return;const k=x.depois?s.tops.findIndex(t=>t.id===x.depois)+1:0;s.tops.splice(k>0?k:s.tops.length,0,x.top)}});
+// cenas 3D (gen3d-pecas.js e cenas3d-*.js): cada uma embrulha o tópico 2D, que vira o plano B sem WebGL
+const K3={get X(){return X},get W(){return W},get H(){return H},get T(){return T},get A(){return A},get paused(){return paused},RM};
+SECS.forEach(s=>s.tops.forEach(t=>{const w=(window.GEN_3D||{})[s.id+'/'+t.id];if(w){const m0=t.mk;t.mk=()=>{const o=m0();try{return w(o,K3)}catch(e){console.error(e);return o}}}}));
 const flat=[];SECS.forEach((s,i)=>s.tops.forEach((t,j)=>flat.push([i,j])));
-function go(i,j,push){si=i;ti=j;const s=SECS[si];cur=s.tops[ti];if(!cur._i)cur._i=cur.mk();inst=cur._i;
+function go(i,j,push){const ant=inst;si=i;ti=j;const s=SECS[si];cur=s.tops[ti];if(!cur._i)cur._i=cur.mk();inst=cur._i;if(ant&&ant!==inst&&ant.sair)try{ant.sair()}catch(e){console.error(e)}
   ui.innerHTML='';syncs=[];inst.ui();
   [...$('secs').children].forEach((b,k)=>{const on=k===si;b.classList.toggle('on',on);b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});
   $('tops').innerHTML=s.tops.map((t,k)=>`<button type="button" data-k="${k}" class="${k===ti?'on':''}"${k===ti?' aria-current="true"':''}><em>${k+1}</em><span>${t.t}<small>${t.s}</small></span></button>`).join('');
@@ -523,7 +544,7 @@ function go(i,j,push){si=i;ti=j;const s=SECS[si];cur=s.tops[ti];if(!cur._i)cur._
   $('tagC').style.background=$('iD').style.background=s.c;$('tagT').textContent=cur.t;$('iS').textContent=s.t+': '+cur.s;$('iT').textContent=cur.t;
   $('desc').innerHTML=cur.d;$('enemT').innerHTML=cur.enem;$('links').innerHTML=cur.links.map(([t,h])=>`<a href="${h}">${t}</a>`).join('');
   const n=flat.findIndex(f=>f[0]===si&&f[1]===ti);$('pos').textContent='Tópico '+(n+1)+' de '+flat.length;$('prev').disabled=n===0;$('next').disabled=n===flat.length-1;
-  document.title=cur.t+' · Genética · LAB';
+  document.title=cur.t+' | Genética | LAB';
   kick();const h='#'+s.id+'/'+cur.id;if(push!==false&&location.hash!==h){try{history.replaceState(null,'',h)}catch(e){location.hash=h}}}
 function route(){const h=decodeURIComponent(location.hash.slice(1)).split('/');let i=SECS.findIndex(s=>s.id===h[0]);if(i<0){go(0,0,!location.hash?false:true);return}let j=SECS[i].tops.findIndex(t=>t.id===h[1]);go(i,j<0?0:j,j<0)}
 $('secs').innerHTML=SECS.map((s,i)=>`<button type="button" role="tab" data-i="${i}"><i style="background:${s.c}"></i>${s.t}</button>`).join('');
@@ -538,6 +559,8 @@ let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused){T+=dt;A+=dt}
   X.clearRect(0,0,W,H);if(inst){X.save();try{inst.draw(cl(A/1.4,0,1))}finally{X.restore();X.globalAlpha=1}}
   requestAnimationFrame(frame)}
+// para testes automáticos
+window.LAB_GENETICA={get rotas(){return flat.map(([i,j])=>SECS[i].id+'/'+SECS[i].tops[j].id)},ir:k=>{location.hash='#'+k;route()}};
 route();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{});
 requestAnimationFrame(frame);
 })();
