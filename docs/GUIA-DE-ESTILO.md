@@ -326,7 +326,7 @@ Arquivo: `site/celula/index.html`. Mudanças em `site/base.css` e nas abas comun
 A Nalu aprovou o piloto (coração, moluscos, sangue e cadeia respiratória) e pediu este estilo em TODAS as animações do site. Nada de desenho chapado, de elipse com contorno ou de cara de cartum.
 
 - **Figuras realistas por IA** para órgãos, organismos, células e cenas: ilustração médica 3D, luz de estúdio suave, fundo azul-noite `#0B0F1C`, sem texto na imagem. As regras estão em `docs/visual/padrao-figuras-ia.md`.
-  - Geração: conta Higgsfield da Nalu, conectada no Claude, com o modelo Nano Banana 2 (1,5 crédito por imagem no plano gratuito). Antes de gerar, sempre mostrar o custo e pedir o ok.
+  - Geração: conta Higgsfield da Nalu, conectada no Claude, com o modelo GPT Image 2.6 em qualidade média (0,5 crédito por imagem no plano Plus; o piloto usou Nano Banana 2). Antes de gerar, sempre mostrar o custo e pedir o ok.
   - Entrega: `site/img/ia/NOME.webp` e `NOME.js`, este com data URI em `window.LAB_IMG`. O `.js` é obrigatório, porque o site abre por file://.
 - **Motion graphics** para processos (cadeias, ciclos, fluxos): volume, luz, partículas, coreografia por etapas. Tokens e regras em `docs/visual/padrao-motion.md`.
 - **Pontos clicáveis (hotspots)** sobre a figura: pulso suave e rótulo com título e uma frase, ao passar o mouse, tocar ou focar pelo teclado; Esc fecha.

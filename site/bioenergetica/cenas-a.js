@@ -179,44 +179,8 @@ def('resp', 'cadeia', {
   kv: [['Onde', 'membrana interna (cristas)'], ['Doadores de elétrons', 'NADH e FADH₂'], ['Aceptor final', 'O₂, que forma H₂O'], ['Caminho dos H⁺', 'matriz → espaço intermembranas → matriz, pela ATP sintase'], ['Rende', 'cerca de 26 a 28 ATP por glicose']],
   enem: 'É o tópico de mitocôndria mais cobrado. Guarde três ideias: o O₂ é o aceptor final dos elétrons e forma água; os H⁺ são bombeados da matriz para o espaço intermembranas; o ATP é feito pela ATP sintase quando os H⁺ voltam. Questões com cianeto (bloqueia o complexo IV) ou com desacopladores (deixam os H⁺ vazarem pela membrana, e a energia vira calor) cobram esse raciocínio.',
   links: [LK.mito, LK.origem],
-  init(S) { S.g = S.v / 100; S.r2 = S.ph; },
-  draw(t, S) {
-    const A = area(), v = S.v / 100; S.g += (v - S.g) * Math.min(1, S.dt * 1.1); S.r2 += S.dt * S.g; const g = S.g;
-    const mh = NAR ? 34 : 58, ym = A.y0 + A.h * .46, x0 = A.x0, w = A.w, mt = ym - mh / 2, mb = ym + mh / 2;
-    rr(x0, A.y0, w, ym - A.y0, 14, C.inter); rr(x0, ym, w, A.y1 - ym, 14, 'rgba(242,92,59,.17)');
-    membrane(x0, A.x1, ym, mh, C.mito);
-    tx('espaço intermembranas', x0 + 12, A.y0 + 14, { a: 'left', w: 600, c: '#E3C9C0' }); tx('matriz', x0 + 12, A.y1 - 14, { a: 'left', w: 600, c: '#E3C9C0' });
-    const px = f => x0 + w * f, pw = NAR ? 32 : 68, ph = mh + (NAR ? 20 : 36), xI = px(.1), xII = px(.26), xIII = px(.43), xIV = px(.65), xS = px(.88);
-    // gradiente: H⁺ acumulados no espaço intermembranas
-    const Rn = rng(11), N = NAR ? 30 : 70;
-    for (let i = 0; i < N; i++) { const bx = x0 + 14 + Rn() * (w - 28), by = A.y0 + 30 + Rn() * Math.max(10, mt - A.y0 - 44), k = Rn(); if (k < g * .95 + .05) hplus(bx + Math.sin(t * 1.1 + i) * 3, by + Math.cos(t * .9 + i * 2) * 3, NAR ? 5 : 6, .9); }
-    for (let i = 0; i < 4; i++) hplus(px(.18 + i * .16) + Math.sin(t + i) * 3, mb + 46 + (i % 2) * 22, NAR ? 5 : 6, .4);
-    // caminho dos elétrons
-    const ep = [[xI, mb + 30], [xI, ym + 3], [xIII, ym + 3], [xIII, mt - 9], [xIV, mt - 9], [xIV, ym], [xIV, mb + 32]];
-    poly(ep, rgba(C.e, .28), 2, [3, 5]);
-    protein(xI, ym, pw, ph, '#E9A07A', 'I'); protein(xII, ym + mh * .34, pw * .8, mh * .9, '#C98A6E', 'II'); protein(xIII, ym, pw, ph, '#E9A07A', 'III'); protein(xIV, ym, pw, ph, '#E9A07A', 'IV');
-    const qx = lerp(xII + pw * .75, xIII - pw * .8, .5 - .5 * Math.cos(t * 1.6)), cxx = lerp(xIII + pw * .8, xIV - pw * .8, .5 - .5 * Math.cos(t * 1.6 + 1.5));
-    circ(qx, ym + 3, 9, '#D7C2FF', 'rgba(11,15,28,.6)', 1); tx('Q', qx, ym + 3.5, { s: 12, w: 700, c: '#0B0F1C', bg: false });
-    circ(cxx, mt - 9, 9, '#FFB3C7', 'rgba(11,15,28,.6)', 1); tx('c', cxx, mt - 9.5, { s: 12, w: 700, c: '#0B0F1C', bg: false });
-    const on = cl(v * 4, 0, 1);
-    if (on > 0) {
-      for (let i = 0; i < 6; i++) { const f = fr(t * .2 + i / 6), [x, y] = pth(ep, f); elec(x, y, 4.5, on * Math.min(1, Math.sin(f * PI) * 4)); }
-      for (let i = 0; i < 2; i++) { const f = fr(t * .5 + i / 2); elec(xII, lerp(mb + 30, ym + 10, f), 4, on * Math.sin(f * PI)); }
-      for (const xp of [xI, xIII, xIV]) for (let j = 0; j < 2; j++) { const f = fr(t * .55 + j / 2 + xp * .013); hplus(xp + pw / 2 + 6, lerp(mb + 24, mt - 26, f), NAR ? 5 : 6, on * Math.min(1, Math.sin(f * PI) * 2.5)); }
-      for (const xp of [xI, xIII, xIV]) arrow(xp + pw / 2 + 6, mb + 8, xp + pw / 2 + 6, mt - 14, rgba(C.h, .35), 1.5);
-    }
-    tok(xI, mb + 46, 'NADH', C.nad); tok(xII, mb + 46 + (NAR ? 24 : 0), 'FADH₂', C.nad);
-    tok(xIV + (NAR ? 8 : 26), mb + 48, 'O₂', C.o2, { a: .25 + .75 * on });
-    if (on > 0) fly([[xIV - 4, mb + 50], [xIV - (NAR ? 34 : 70), A.y1 - 34]], fr(t * .25), 'H₂O', C.agua);
-    // ATP sintase
-    const sy = synthase(xS, ym, mh, 1, S.r2 * 1.6, NAR ? .9 : 1.5);
-    if (g > .03) { for (let j = 0; j < 3; j++) { const f = fr(S.r2 * .6 + j / 3); hplus(xS, lerp(mt - 30, mb + 8, f), NAR ? 5 : 6, Math.min(1, Math.sin(f * PI) * 2.5)); } fly([[xS - 6, sy.hy + sy.hr + 4], [xS - (NAR ? 26 : 60), A.y1 - 30]], fr(S.r2 * .28), 'ATP', C.atp); }
-    tok(xS - sy.hr - (NAR ? 24 : 34), sy.hy, NAR ? 'ADP' : 'ADP + Pᵢ', '#C9CFDC', { a: .9 });
-    lab(xS + 8, mt - 2, xS - 20, A.y0 + 40, 'ATP sintase'); lab(xIII, mt - ph / 2 + mh / 2 - 2, xIII - 30, A.y0 + 68, 'cadeia transportadora');
-    lab(qx, ym + 3, qx - 10, mb + (NAR ? 112 : 96), 'ubiquinona'); lab(cxx, mt - 9, cxx + 10, A.y0 + 96, 'citocromo c');
-    const st = Math.floor(t / 4.5) % 3;
-    cap(v === 0 ? 'Sem O₂ para receber os elétrons, a cadeia para: o bombeamento de H⁺ e a produção de ATP cessam' : ['1. Os elétrons do NADH e do FADH₂ passam de proteína em proteína até o O₂, que forma água', '2. A energia liberada bombeia H⁺ da matriz para o espaço intermembranas', '3. Os H⁺ voltam pela ATP sintase, que gira e forma ATP: é a quimiosmose'][st]);
-  }
+  init(S) { CAD.init(S); },
+  draw(t, S) { CAD.draw(t, S); }
 });
 
 def('resp', 'saldo', {

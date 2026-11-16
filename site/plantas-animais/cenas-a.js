@@ -452,47 +452,110 @@
   }
   const MN = [['caramujo (gastrópode)', 'uma concha em espiral'], ['mexilhão (bivalve)', 'duas valvas'], ['polvo (cefalópode)', 'tentáculos ligados à cabeça']];
   function legMol(A, y) { const L = [[CAB, 'cabeça'], [PE, 'pé'], [VIS, 'massa visceral'], [MAN, 'manto (e concha)']], cw = A.w / (NAR ? 2 : 4); L.forEach(([c, s], i) => { const x = A.x0 + (i % (NAR ? 2 : 4)) * cw, yy = y + Math.floor(i / (NAR ? 2 : 4)) * 20; rr(x, yy - 6, 12, 12, 3, c, GUT, 1); mtx(s, x + 18, yy, { s: 12, a: 'left', c: C.txt }); }); }
+  // Plano do molusco sobre a figura de IA: cada animal com 4 pontos nas cores da legenda (cabeça, pé, massa visceral, manto)
+  const HSM = [
+    { g: 0, x: 29.8, y: 48.5, c: CAB, t: 'Cabeça do caramujo', d: 'Tem tentáculos com olhos na ponta e a boca com a rádula, que raspa o alimento.' },
+    { g: 0, x: 14.5, y: 63.5, c: PE, t: 'Pé do caramujo', d: 'Músculo largo e achatado: o caramujo desliza sobre ele, numa camada de muco.' },
+    { g: 0, x: 7.5, y: 47, c: VIS, t: 'Massa visceral do caramujo', d: 'Os órgãos ficam enrolados dentro da concha em espiral.' },
+    { g: 0, x: 17.5, y: 37.5, c: MAN, t: 'Manto e concha do caramujo', d: 'O manto cobre a massa visceral e produz a concha de calcário em espiral.' },
+    { g: 1, x: 38.3, y: 52, c: CAB, t: 'Cabeça do mexilhão', d: 'Quase não existe: os bivalves não têm cabeça diferenciada nem rádula e filtram o alimento com as brânquias.' },
+    { g: 1, x: 43.5, y: 58.5, c: PE, t: 'Pé do mexilhão', d: 'Pequeno, em forma de língua: ajuda o animal a se prender ou a cavar a areia.' },
+    { g: 1, x: 50, y: 54.5, c: VIS, t: 'Massa visceral do mexilhão', d: 'Fica entre as duas valvas, ao lado das brânquias que filtram a água.' },
+    { g: 1, x: 57, y: 61.5, c: MAN, t: 'Manto e valvas do mexilhão', d: 'A borda escura é o manto, que forra e produz as duas valvas da concha.' },
+    { g: 2, x: 83.4, y: 38, c: CAB, t: 'Cabeça do polvo', d: 'Tem olhos complexos e o sistema nervoso mais desenvolvido entre os invertebrados.' },
+    { g: 2, x: 80.5, y: 62.5, c: PE, t: 'Pé do polvo', d: 'Nos cefalópodes, o pé formou os braços com ventosas, ligados à cabeça.' },
+    { g: 2, x: 90.5, y: 39, c: VIS, t: 'Massa visceral do polvo', d: 'Os órgãos ficam dentro do saco do manto, atrás da cabeça.' },
+    { g: 2, x: 87, y: 33.5, c: MAN, t: 'Manto do polvo', d: 'Forma o saco musculoso do corpo. No polvo, a concha desapareceu.' }
+  ];
+  const CAMM = [{ x: 0, y: .2, w: .38, h: .6 }, { x: .31, y: .2, w: .38, h: .6 }, { x: .6, y: .14, w: .4, h: .7 }], XM = [17, 50, 83];
+  let FIGM = null;
+  const figM = () => { if (!FIGM && window.LAB_FIGIA) FIGM = LAB_FIGIA({ img: 'plantas-animais-moluscos', hs: HSM, mask: { miolo: .7, borda: .995 } }); return FIGM; };
+  const resp = t => 1 + .005 * Math.sin(t * TAU / 4); // respiração bem leve, ciclo de 4 s
   function drawMol(t, S, A) {
-    const s = NAR ? Math.min(90, (A.h - 60) / 3.4) : Math.min(A.w / 3.6, A.h * .55);
-    for (let i = 0; i < 3; i++) {
-      const cx = NAR ? A.x0 + s * .8 : A.x0 + A.w * (i + .5) / 3, cy = NAR ? A.y0 + s * (.7 + i * 1.1) : A.y0 + s * .75;
-      molusco(i, cx, cy, s);
-      if (NAR) { wrapTx(MN[i][0], cx + s * .8, cy - 8, A.w - s * 1.6 - 8, { s: 13, w: 700, lh: 16, a: 'left', c: C.txt }); wrapTx(MN[i][1], cx + s * .8, cy + 16, A.w - s * 1.6 - 8, { s: 12, lh: 15, a: 'left', c: C.dim }); }
-      else { mtx(`<b>${MN[i][0]}</b>`, cx, cy + s * .72, { s: 14, c: C.txt }); mtx(MN[i][1], cx, cy + s * .72 + 20, { s: 13, c: C.dim }); }
-    }
-    legMol(A, A.y1 - (NAR ? 34 : 26));
-    cap('O mesmo plano de corpo, rearranjado: <b>cabeça</b>, <b>pé</b> musculoso e <b>massa visceral</b> coberta pelo <b>manto</b>, que em muitos forma a concha. Cores iguais, partes iguais.');
+    const F = figM(); if (!F) return;
+    const ani = S.ani == null ? 0 : S.ani;
+    if (NAR) { const bw = (A.w - 12) / 3; ['caramujo', 'mexilhão', 'polvo'].forEach((n, i) => btn(A.x0 + i * (bw + 6), A.y0, bw, 34, n, ANI, 'ani' + i, { on: i === ani, s: 13 })); }
+    const box = NAR ? { x: A.x0, y: A.y0 + 40, w: A.w, h: A.h - 40 - 74 } : { x: A.x0, y: A.y0 - 22, w: A.w, h: A.h - 22 };
+    const R = F.desenhar(X, box, { cam: NAR ? CAMM[ani] : { x: 0, y: .22, w: 1, h: .6 }, escala: resp(t), ver: h => LB && (!NAR || h.g === ani) });
+    if (NAR) { const y = R.y + R.h + 4; mtx(`<b>${MN[ani][0]}</b>`, A.cx, y, { s: 14, c: C.txt }); mtx(MN[ani][1], A.cx, y + 19, { s: 13, c: C.dim }); }
+    else for (let i = 0; i < 3; i++) { const p = R.pt(XM[i], 80); mtx(`<b>${MN[i][0]}</b>`, p[0], R.y + R.h - 6, { s: 14, c: C.txt }); mtx(MN[i][1], p[0], R.y + R.h + 14, { s: 13, c: C.dim }); }
+    legMol(A, A.y1 - (NAR ? 30 : 4));
+    cap('O mesmo plano de corpo, rearranjado: <b>cabeça</b>, <b>pé</b> musculoso e <b>massa visceral</b> coberta pelo <b>manto</b>, que em muitos forma a concha. Toque nos pontos: cores iguais, partes iguais.');
   }
   function drawMex(t, S, A) {
-    const s = Math.min(A.w * (NAR ? .36 : .34), A.h * .6), cx = A.cx, cy = A.cy, T = t % 20, acc = Math.min(12, Math.floor(T / 1.4));
-    molusco(1, cx, cy, s);
-    const pts = [[cx - .95 * s, cy - .75 * s], [cx - .3 * s, cy - .08 * s], [cx - .05 * s, cy + .02 * s], [cx + .5 * s, cy - .35 * s], [cx + .95 * s, cy - .8 * s]];
-    for (let i = 0; i < 18; i++) {
-      const f = fr(t * .11 + i / 18), red = i % 3 === 0; if (red && f > .5) continue;
-      const q = f * 4, j = Math.min(3, Math.floor(q)), u = q - j, x = lerp(pts[j][0], pts[j + 1][0], u), y = lerp(pts[j][1], pts[j + 1][1], u) + Math.sin(i * 3 + t) * 3;
-      circ(x, y, red ? 3.6 : 2.8, red ? C.erro : 'rgba(180,200,230,.8)', red ? '#7A1F1F' : null, 1);
-    }
-    const R0 = rng(9); for (let i = 0; i < acc; i++) circ(cx - .15 * s + R0() * .28 * s, cy - .06 * s + R0() * .1 * s, 3.4, C.erro, '#7A1F1F', 1);
-    arrow(pts[0][0] - 4, pts[0][1] - 10, pts[1][0] - 20, pts[1][1] - 6, AZUL, 1.8); arrow(pts[3][0] + 14, pts[3][1] - 6, pts[4][0] + 6, pts[4][1] + 6, AZUL, 1.8);
-    if (LB) { lab(pts[0][0] + 20, pts[0][1] - 4, A.x0 + 20, A.y0 + 20, 'água com partículas entra'); lab(pts[4][0] - 10, pts[4][1] + 4, A.x1 - 10, A.y0 + 20, 'água filtrada sai'); lab(cx - .1 * s, cy, cx - s * .1, cy + s * .75, 'toxinas ficam no corpo'); }
+    const F = figM(); if (!F) return;
+    const T = t % 20, acc = Math.min(12, Math.floor(T / 1.4)), box = { x: A.x0, y: A.y0 - 10, w: A.w, h: A.h - (NAR ? 36 : 14) };
+    const R = F.desenhar(X, box, {
+      cam: { x: .335, y: .22, w: .33, h: .56 }, escala: resp(t), ver: h => LB && h.g === 1,
+      sobre: R => {
+        // água entra pela fenda entre as valvas, passa nas brânquias e sai filtrada; as toxinas ficam no corpo
+        const pts = (NAR ? [[33, 30], [37, 47], [46, 52], [56, 45], [67, 30]] : [[27, 27], [37, 47], [46, 52], [56, 45], [72, 27]]).map(q => R.pt(q[0], q[1]));
+        X.save(); X.setLineDash([3, 6]); poly(pts, rgba(AZUL, .35), 1.2); X.restore();
+        for (let i = 0; i < 18; i++) {
+          const f = fr(t * .11 + i / 18), red = i % 3 === 0; if (red && f > .5) continue;
+          const q = f * 4, j = Math.min(3, Math.floor(q)), u = q - j, x = lerp(pts[j][0], pts[j + 1][0], u), y = lerp(pts[j][1], pts[j + 1][1], u) + Math.sin(i * 3 + t) * 3;
+          X.globalAlpha = Math.min(1, f * 6, (1 - f) * 6); circ(x, y, red ? 3.6 : 2.6, red ? C.erro : 'rgba(200,215,240,.9)', red ? '#7A1F1F' : 'rgba(11,15,28,.6)', 1); X.globalAlpha = 1;
+        }
+        const R0 = rng(9); for (let i = 0; i < acc; i++) { const p = R.pt(46 + R0() * 7, 53 + R0() * 4); circ(p[0], p[1], 3.4, C.erro, '#7A1F1F', 1); }
+        arrow(pts[0][0] - 6, pts[0][1] - 12, pts[1][0] - 18, pts[1][1] - 8, AZUL, 1.8); arrow(pts[3][0] + 16, pts[3][1] - 6, pts[4][0] + 6, pts[4][1] + 6, AZUL, 1.8);
+        if (LB) { lab(pts[0][0] + 10, pts[0][1] + 6, A.x0 + 20, A.y0 + 20, 'água com partículas entra'); lab(pts[4][0] - 10, pts[4][1] + 4, A.x1 - 10, A.y0 + 20, 'água filtrada sai'); const p = R.pt(49, 55); lab(p[0], p[1], p[0] - R.w * .1, R.y + R.h - 20, 'toxinas ficam no corpo'); }
+      }
+    });
     wrapTx('pontos cinza: partículas de alimento; pontos vermelhos: toxinas, metais e bactérias do esgoto', A.x0, A.y1 - (NAR ? 22 : 10), A.w, { s: 12, lh: 15, a: 'left', c: C.dim });
     cap('O <b>mexilhão</b> é <b>filtrador</b>: passa muita água pelas brânquias e <b>acumula</b> o que houver nela. Por isso serve para monitorar a poluição e não deve ser colhido em praia poluída.');
   }
+  // ---------- minhoca: solo em corte e o corpo em anéis com peristaltismo (motion em canvas) ----------
+  const SOLO = (() => { const R0 = rng(5), g = []; for (let i = 0; i < 260; i++) g.push([R0(), R0(), .5 + R0() * 1.8, Math.floor(R0() * 4)]); const p = []; for (let i = 0; i < 9; i++) p.push([R0(), .15 + R0() * .8, 4 + R0() * 9, 3 + R0() * 5, R0() * PI]); return { g, p }; })();
+  const GRAO = ['rgba(120,86,52,.55)', 'rgba(60,38,20,.6)', 'rgba(170,130,85,.35)', 'rgba(30,20,12,.55)'];
   function drawMin(t, S, A) {
-    const wide = !NAR, sw = wide ? A.w * .6 : A.w, sh = wide ? A.h : A.h * .55, gy = A.y0 + 34;
-    rr(A.x0, A.y0, sw, sh, 12, 'rgba(92,64,40,.5)', C.line, 1); rr(A.x0, A.y0, sw, 34, 10, rgba('#6BCB77', .2)); mtx('superfície', A.x0 + 10, A.y0 + 17, { s: 12, a: 'left', c: C.dim });
-    const R0 = rng(5); for (let i = 0; i < 50; i++) circ(A.x0 + 8 + R0() * (sw - 16), gy + R0() * (sh - 40), 1 + R0() * 1.8, 'rgba(60,40,22,.6)');
-    for (let k = 0; k < 3; k++) { X.beginPath(); for (let i = 0; i <= 24; i++) { const x = A.x0 + 20 + i * (sw - 40) / 24, y = gy + sh * (.22 + k * .22) + Math.sin(i * .7 + k * 2) * 8; i ? X.lineTo(x, y) : X.moveTo(x, y); } X.strokeStyle = 'rgba(30,20,10,.55)'; X.lineWidth = 11; X.lineCap = 'round'; X.stroke(); }
-    const f = fr(t * .06), hx = A.x0 + 20 + f * (sw - 40), N = 18; let wy = gy + sh * .44;
-    for (let i = N; i >= 0; i--) { const x = hx - i * 6.5; if (x < A.x0 + 20) continue; const y = gy + sh * .44 + Math.sin((x - A.x0) / 28 * 1 + 2.1) * 8; circ(x, y, 5.6, '#E39A94', '#8A4A45', 1); if (i === 0) wy = y; }
-    circ(hx + 2, wy - 1, 1.4, GUT);
-    for (let i = 0; i < 9; i++) { const x = hx - 30 - i * 18; if (x > A.x0 + 16) circ(x, gy + sh * .44 + 14 + (i % 3) * 3, 3, '#4B2F14'); }
-    if (LB) { lab(hx - 40, wy, A.x0 + sw * .3, A.y0 + sh * .86, 'túnel: aera o solo'); lab(hx - 100, wy + 16, A.x0 + sw * .6, A.y0 + sh * .9, 'húmus (fezes)'); }
-    // zoom
-    const zr = wide ? Math.min((A.w - sw) * .4, 100) : Math.min(A.w * .2, 70), zx = wide ? A.x0 + sw + (A.w - sw) / 2 : A.cx, zy = wide ? A.cy : A.y0 + sh + zr + 26;
-    circ(zx, zy, zr, 'rgba(11,15,28,.88)', C.amber, 2); X.save(); X.beginPath(); X.arc(zx, zy, zr - 2, 0, TAU); X.clip();
-    for (let i = 0; i < 6; i++) { const x = zx - zr * .8 + i * zr * .3; ell(x + zr * .15, zy, zr * .12, zr * .36, 0, rgba('#E39A94', .5), '#E39A94', 1.5); line(x + zr * .3, zy - zr * .5, x + zr * .3, zy + zr * .5, '#8A4A45', 1.4); }
-    line(zx - zr, zy - zr * .38, zx + zr, zy - zr * .38, C.erro, 3); X.restore();
+    const wide = !NAR, sw = wide ? A.w * .6 : A.w, sh = wide ? A.h : A.h * .58, x0 = A.x0, y0 = A.y0, gy = y0 + 30, x1 = x0 + sw;
+    const tun = x => gy + (sh - 30) * .48 + Math.sin((x - x0) / sw * TAU * 1.1 + .7) * (sh - 30) * .07;
+    X.save(); X.beginPath(); X.roundRect(x0, y0, sw, sh, 12); X.clip();
+    let g = X.createLinearGradient(0, gy, 0, y0 + sh); g.addColorStop(0, '#3B2A1B'); g.addColorStop(.35, '#4A3421'); g.addColorStop(1, '#2A1D13'); X.fillStyle = g; X.fillRect(x0, gy, sw, sh);
+    g = X.createLinearGradient(0, gy - 4, 0, gy + 26); g.addColorStop(0, 'rgba(20,14,9,.9)'); g.addColorStop(1, 'rgba(20,14,9,0)'); X.fillStyle = g; X.fillRect(x0, gy, sw, 26);
+    SOLO.g.forEach(q => circ(x0 + q[0] * sw, gy + 4 + q[1] * (sh - 34), q[2], GRAO[q[3]]));
+    SOLO.p.forEach(q => { const px = x0 + q[0] * sw, py = gy + q[1] * (sh - 30); const sg = X.createRadialGradient(px - q[2] * .3, py - q[3] * .4, 1, px, py, q[2]); sg.addColorStop(0, '#8E8273'); sg.addColorStop(1, '#4C433A'); ell(px, py, q[2], q[3], q[4], sg, 'rgba(20,14,9,.6)', 1); });
+    // raízes finas descendo da superfície
+    [[.18, .5], [.52, .34], [.83, .42]].forEach(([fx, fd], k) => { const rx = x0 + fx * sw; X.beginPath(); X.moveTo(rx, gy); X.bezierCurveTo(rx + 12, gy + sh * fd * .4, rx - 10, gy + sh * fd * .7, rx + 6 * (k - 1), gy + sh * fd); X.strokeStyle = 'rgba(214,190,150,.55)'; X.lineWidth = 1.4; X.stroke(); X.beginPath(); X.moveTo(rx + 3, gy + sh * fd * .45); X.quadraticCurveTo(rx + 18, gy + sh * fd * .55, rx + 24, gy + sh * fd * .7); X.lineWidth = .9; X.stroke(); });
+    // superfície com capim balançando
+    rr(x0, y0, sw, gy - y0, 0, 'rgba(14,20,36,.6)');
+    for (let i = 0; i < Math.floor(sw / 9); i++) { const bx = x0 + 4 + i * 9 + (i * 37 % 5), hgt = 8 + (i * 53 % 9), sway = Math.sin(t * 1.3 + i * .7) * 2.2; X.beginPath(); X.moveTo(bx, gy); X.quadraticCurveTo(bx + sway * .5, gy - hgt * .6, bx + sway, gy - hgt); X.strokeStyle = i % 3 ? '#4E9A5A' : '#3E8049'; X.lineWidth = 1.6; X.stroke(); }
+    // cabeça avança devagar; o corpo segue o túnel
+    const L0 = wide ? 10 : 7, R0w = wide ? 8.5 : 6.2, N = 30, f = fr(t * .04 + .42), hx = x0 + 20 + f * (sw + 200) - 60;
+    X.beginPath(); for (let x = x0 - 4; x <= Math.min(x1 + 4, hx + 6); x += 6) x === x0 - 4 ? X.moveTo(x, tun(x)) : X.lineTo(x, tun(x)); X.lineCap = 'round';
+    X.strokeStyle = 'rgba(120,90,58,.35)'; X.lineWidth = R0w * 3.2; X.stroke(); X.strokeStyle = 'rgba(16,10,6,.85)'; X.lineWidth = R0w * 2.5; X.stroke();
+    // húmus: bolinhas de fezes deixadas no túnel, atrás da minhoca
+    const RP = rng(11); let pel = null; for (let i = 0; i < 14; i++) { const px = x0 + 14 + i * (sw - 28) / 14 + RP() * 8; if (px > hx - N * L0 - 12) continue; const py = tun(px) + R0w * .6 - RP() * 2; ell(px, py, 3.2, 2.4, RP(), '#1E130A', 'rgba(150,110,70,.5)', .8); ell(px + 4, py - 1, 2.4, 2, RP(), '#24170D'); if (!pel) pel = [px, py]; }
+    // peristaltismo: onda de contração que corre da cabeça para a cauda (anéis encurtam e engrossam, depois esticam)
+    const pts = []; let cx = hx;
+    for (let i = 0; i < N; i++) { const c = Math.sin(TAU * (t * .9 - i / 9)), tap = i < 3 ? .62 + i * .13 : i > N - 6 ? .5 + (N - 1 - i) * .1 : 1, l = L0 * (1 - .26 * c), r = R0w * (1 + .2 * c) * tap; pts.push([cx, tun(cx), r, l, i]); cx -= l; }
+    const fa = Math.min(1, (x1 - pts[N - 1][0]) / 40, (pts[0][0] - x0) / 40 + 1);
+    X.save(); X.globalAlpha = cl(fa, 0, 1);
+    for (let k = N - 1; k >= 0; k--) {
+      const [px, py, r, l, i] = pts[k], nb = pts[Math.max(0, k - 1)], ang = k ? Math.atan2(nb[1] - py, nb[0] - px) : Math.atan2(py - pts[1][1], px - pts[1][0]);
+      const cli = i >= 7 && i <= 10, base = cli ? '#E3A08C' : '#C9786F';
+      X.save(); X.translate(px, py); X.rotate(ang);
+      const sg = X.createLinearGradient(0, -r, 0, r); sg.addColorStop(0, light(base, .35)); sg.addColorStop(.45, base); sg.addColorStop(1, dark(base, .45)); ell(0, 0, l * .78, r, 0, sg);
+      line(-l * .45, -r * .86, -l * .45, r * .86, 'rgba(90,40,36,.55)', .9);
+      X.restore();
+    }
+    // vaso dorsal visível pela pele, com o sangue pulsando
+    X.beginPath(); pts.forEach((q, k) => { const y = q[1] - q[2] * .38; k ? X.lineTo(q[0], y) : X.moveTo(q[0], y); }); X.strokeStyle = 'rgba(176,32,44,.55)'; X.lineWidth = 1.2; X.stroke();
+    const pk = Math.floor(fr(t * .7) * N); if (pts[pk]) circ(pts[pk][0], pts[pk][1] - pts[pk][2] * .38, 1.8, 'rgba(240,96,93,.9)');
+    circ(pts[0][0] + 1, pts[0][1] - 1, 1.2, '#3A1A16');
+    X.restore(); X.restore(); rr(x0, y0, sw, sh, 12, null, C.line, 1);
+    mtx('superfície', x0 + 10, y0 + 10, { s: 12, a: 'left', c: C.dim });
+    if (LB) { const tx0 = Math.max(x0 + 30, pts[N - 1][0] - 30); lab(tx0, tun(tx0), x0 + sw * .3, y0 + sh * .86, 'túnel: aera o solo'); if (pel) lab(pel[0], pel[1], x0 + sw * .62, y0 + sh * .92, 'húmus (fezes)'); }
+    // lente: anéis ampliados, com celoma em cada um e o vaso com hemoglobina
+    const zr = wide ? Math.min((A.w - sw) * .4, 100) : Math.min(A.w * .2, 70), zx = wide ? x0 + sw + (A.w - sw) / 2 : A.cx, zy = wide ? A.cy : A.y0 + sh + zr + 26;
+    circ(zx, zy, zr, 'rgba(11,15,28,.92)', C.amber, 2); X.save(); X.beginPath(); X.arc(zx, zy, zr - 2, 0, TAU); X.clip();
+    const bh = zr * .9, sg = X.createLinearGradient(0, zy - bh / 2, 0, zy + bh / 2); sg.addColorStop(0, '#E2A49C'); sg.addColorStop(.5, '#C9786F'); sg.addColorStop(1, '#7E403B');
+    const sl = zr * .42, off = (t * .25 % 1) * sl;
+    for (let i = -3; i <= 3; i++) { const sx = zx + i * sl - off, k = Math.sin(TAU * (t * .9 - i / 9)); rr(sx - sl / 2 + 1, zy - bh / 2 * (1 + .06 * k), sl - 2, bh * (1 + .06 * k), sl * .3, sg); rr(sx - sl / 2 + 5, zy - bh * .28, sl - 10, bh * .56, 4, 'rgba(60,24,22,.55)'); line(sx + sl / 2, zy - bh / 2, sx + sl / 2, zy + bh / 2, 'rgba(80,30,28,.9)', 1.6); line(sx - sl * .25, zy + bh / 2, sx - sl * .32, zy + bh / 2 + 5, '#E8C8B8', 1.2); line(sx + sl * .2, zy + bh / 2, sx + sl * .27, zy + bh / 2 + 5, '#E8C8B8', 1.2); }
+    line(zx - zr, zy - bh * .36, zx + zr, zy - bh * .36, C.erro, 3);
+    for (let i = 0; i < 5; i++) { const px = zx - zr + fr(t * .35 + i / 5) * zr * 2; circ(px, zy - bh * .36, 2.4, '#FF8A80'); }
+    X.restore();
+    if (wide) mtx('celoma', zx, zy + 1, { s: 12, w: 600, c: '#F2D7D0' });
     mtx('anéis ampliados', zx, zy - zr - 9, { s: 12, c: C.dim }); mtx('vaso com sangue vermelho (hemoglobina)', zx, zy + zr + 11, { s: 12, c: C.erro });
     cap('A <b>minhoca</b> cava túneis, engole terra e deixa <b>húmus</b>. O corpo é dividido em <b>anéis</b>, com <b>celoma</b> em cada um, e a circulação é <b>fechada</b>. Ela respira pela <b>pele úmida</b>.');
   }
@@ -516,14 +579,14 @@
   });
   def('animalia', 'moluscos-anelideos', {
     t: 'Moluscos e anelídeos', s: 'corpo mole, concha e o corpo em anéis', c: ANI,
-    loc: S => ({ mol: 'Plano do molusco', mex: 'Mexilhão filtrador', min: 'A minhoca no solo', solo: 'Solo com e sem minhoca', carta: 'Que molusco é esse?' })[S.modo] || '', locNota: S => S.modo === 'carta' ? '' : NOTA,
+    loc: S => ({ mol: 'Plano do molusco', mex: 'Mexilhão filtrador', min: 'A minhoca no solo', solo: 'Solo com e sem minhoca', carta: 'Que molusco é esse?' })[S.modo] || '', locNota: S => S.modo === 'carta' ? '' : S.modo === 'mol' || S.modo === 'mex' ? 'Ilustração, fora de escala' : NOTA,
     ctl: { l: 'Semanas', min: 0, max: 8, step: 1, v: 0, f: v => v + (v === 1 ? ' semana' : ' semanas'), rate: () => 1 }, ctlVis: S => S.modo === 'solo', stillV: 8,
-    alt: 'três moluscos em corte com as mesmas cores para cabeça, pé, massa visceral e manto, um mexilhão filtrando água com toxinas, uma minhoca no solo com os anéis ampliados, dois vasos com e sem minhoca e um jogo de classificar seis moluscos',
+    alt: 'caramujo, mexilhão e polvo realistas com pontos coloridos para cabeça, pé, massa visceral e manto, um mexilhão filtrando água com toxinas, uma minhoca no solo com os anéis ampliados, dois vasos com e sem minhoca e um jogo de classificar seis moluscos',
     still: 6, extra: [modo('mol', 'Plano do molusco'), modo('mex', 'Mexilhão'), modo('min', 'Minhoca'), modo('solo', 'Solo com e sem minhoca'), modo('carta', 'Que molusco é esse?')],
-    init(S) { S.modo = 'mol'; MOL.zera(S); },
-    d: TXT.A4.d + '<p>Compare os três moluscos, veja o mexilhão filtrar e a minhoca no solo. Avance as semanas nos vasos e classifique os seis moluscos.</p>', enem: TXT.A4.enem,
+    init(S) { S.modo = 'mol'; S.ani = 0; MOL.zera(S); },
+    d: TXT.A4.d + '<p>Toque nos pontos coloridos de cada molusco para ver as partes do corpo. Compare os três moluscos, veja o mexilhão filtrar e a minhoca no solo. Avance as semanas nos vasos e classifique os seis moluscos.</p>', enem: TXT.A4.enem,
     links: [LK.ecologia],
-    tap(x, y, S) { if (S.modo === 'carta') MOL.tap(x, y, S); },
+    tap(x, y, S) { if (S.modo === 'carta') MOL.tap(x, y, S); else if (S.modo === 'mol') { const h = hitAt(x, y); if (typeof h === 'string' && h.slice(0, 3) === 'ani') S.ani = +h.slice(3); } },
     grab(x, y, S) { return S.modo === 'carta' && MOL.grab(x, y, S); }, grabMove(x, y, S) { MOL.grabMove(x, y, S); }, grabEnd(x, y, S) { MOL.grabEnd(x, y, S); },
     draw(t, S) { const A = area(); if (S.modo === 'mol') drawMol(t, S, A); else if (S.modo === 'mex') drawMex(t, S, A); else if (S.modo === 'min') drawMin(t, S, A); else if (S.modo === 'solo') drawSolo(t, S, A); else cartas(MOL, S, A, 6, 'Leve cada molusco ao seu grupo.', NAR ? 2 : 3, NAR ? 44 : 50); }
   });
