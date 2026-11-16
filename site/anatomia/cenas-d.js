@@ -39,7 +39,7 @@
   TXT.R2 = {"t": "Quem manda respirar: CO₂ e pH", "s": "o que dispara a respiração é o excesso de gás carbônico, não a falta de oxigênio", "d": "<p>A respiração é controlada por um centro no <b>bulbo</b>, a parte mais baixa do encéfalo (veja Nervoso, organização). Dá para prender a respiração por um tempo, mas não para sempre: o bulbo assume. O que ele mede principalmente não é o O₂, e sim o <b>CO₂</b> e o <b>pH</b> do sangue e do líquido em volta do encéfalo. O CO₂ reage com a água e forma <b>ácido carbônico</b>, que se separa em <b>bicarbonato</b> e íons <b>H⁺</b>: CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻. Quanto mais CO₂, mais H⁺ e <b>menor o pH</b> (sangue mais ácido). A reação no sangue é acelerada pela enzima <b>anidrase carbônica</b>, nas hemácias; é assim, como <b>bicarbonato</b>, que a maior parte do CO₂ viaja até o pulmão.</p><p>No <b>exercício</b>, os músculos fazem mais respiração celular e soltam mais CO₂; o pH do sangue tende a cair; o bulbo percebe e aumenta a <b>frequência e a profundidade</b> da respiração, que joga fora o CO₂ e devolve o pH ao normal, perto de <b>7,4</b>. Se o esforço é muito intenso, os músculos também fazem <b>fermentação lática</b> e o ácido lático ajuda a baixar o pH (ver Bioenergética). Ao contrário, quem <b>respira rápido demais</b> (ansiedade, por exemplo) perde CO₂ demais, e o pH sobe: pode sentir tontura e formigamento. Quem prende a respiração acumula CO₂ e sente uma vontade cada vez mais forte de respirar.</p><p>Também há sensores de <b>O₂</b> em artérias do pescoço e do tórax, que pesam mais em situações extremas. Na <b>altitude</b>, o ar tem a mesma porcentagem de O₂, mas a <b>pressão</b> é menor, então entra menos O₂ a cada respiração. Primeiro, a pessoa respira mais rápido e o coração acelera; em alguns dias a semanas, o rim libera mais <b>eritropoietina</b>, a medula produz <b>mais hemácias</b> e o sangue passa a carregar mais O₂. É a base do treino de atletas em altitude. Pessoas com doenças pulmonares crônicas podem precisar de <b>oxigênio suplementar</b>, sempre com indicação médica.</p>", "enem": "O ponto central: o principal estímulo da respiração é o <b>aumento de CO₂</b> (e a queda do pH), percebido pelo <b>bulbo</b>. Caem questões sobre <b>exercício físico</b> (por que a respiração acelera), <b>altitude</b> (adaptação com mais hemácias, eritropoietina, atletas) e a equação do <b>ácido carbônico</b> ligando CO₂ ao pH."};
   // ===== D1: enzimas e pH ao longo do tubo =====
   const CTD1 = { viagem: RITMO, tubo: NO, cartoes: NO };
-  const M1 = mk('d1', CTD1, S => { S.e = 0; S.s = 0; S.ph = 7; S.bile = false; S.fe = false; S.tm = 0; S.run = false; BD1.zera(S); });
+  const M1 = mk('d1', CTD1, S => { S.e = 0; S.s = 0; S.pht = 7; S.bile = false; S.fe = false; S.tm = 0; S.run = false; BD1.zera(S); });
   const BD1 = baralho({
     nome: 'd1', alvos: [{ t: 'boca', c: CARB }, { t: 'estômago', c: PROT }, { t: 'duodeno', c: LIP }],
     cartas: [{ t: 'amido', k: 0, t2: 'amido: amilase salivar, vira maltose' }, { t: 'proteínas', k: 1, t2: 'proteínas: pepsina, viram peptídeos' }, { t: 'gorduras', k: 2, t2: 'gorduras: lipase, viram ácidos graxos e glicerol' }, { t: 'ácido clorídrico (HCl)', k: 1, t2: 'HCl: pH cerca de 2, ativa a pepsina' }, { t: 'bile (não é enzima)', k: 2, t2: 'bile: emulsiona a gordura' }, { t: 'bicarbonato do pâncreas', k: 2, t2: 'bicarbonato: neutraliza o ácido' }],
@@ -64,10 +64,10 @@
     cap(CAPD1[st]);
   }
   function tubo(t, S, A) {
-    const dt = dtv(S), casa = S.e === S.s, phok = EP[S.e] === S.ph, k = S.fe ? 0 : casa && phok ? .5 * (S.bile && S.e === 2 ? 1.8 : 1) : 0;
+    const dt = dtv(S), casa = S.e === S.s, phok = EP[S.e] === S.pht, k = S.fe ? 0 : casa && phok ? .5 * (S.bile && S.e === 2 ? 1.8 : 1) : 0;
     if (S.run) S.tm = Math.min(10, S.tm + dt * S.rt);
     const cw = NAR ? A.w : A.w * .5, bh = NAR ? 36 : 36, lw = NAR ? 62 : 80, g = 6;
-    const R = [['Enzima', ENZ.map((n, i) => [n, 'e' + i, S.e === i])], ['Substrato', SUB.map((n, i) => [n, 's' + i, S.s === i, SUBC[i]])], ['pH', [2, 7, 8].map(n => ['pH ' + n, 'p' + n, S.ph === n])]];
+    const R = [['Enzima', ENZ.map((n, i) => [n, 'e' + i, S.e === i])], ['Substrato', SUB.map((n, i) => [n, 's' + i, S.s === i, SUBC[i]])], ['pH', [2, 7, 8].map(n => ['pH ' + n, 'p' + n, S.pht === n])]];
     R.forEach((r, i) => { const y = A.y0 + i * (bh + g); mtx(r[0], A.x0, y + bh / 2, { s: 12, a: 'left', c: C.dim }); fila(A.x0 + lw, y, cw - lw, bh, r[1], AM); });
     fila(A.x0, A.y0 + 3 * (bh + g), cw, bh, [['adicionar bile', 'bile', S.bile], ['ferver a enzima', 'ferv', S.fe], ['ligar o relógio', 'go', S.run]], AM);
     const cx = NAR ? A.x0 : A.x0 + A.w * .54, cy = NAR ? A.y0 + 4 * (bh + g) + 4 : A.y0, cwd = NAR ? A.w : A.w * .46, chh = NAR ? A.y1 - cy : A.h;
@@ -78,7 +78,7 @@
     const rem = Math.exp(-k * S.tm); circ(gx + gw * S.tm / 10, gy + gh * (1 - rem), 5, col, '#0B0F1C', 1.5);
     const tx0 = cx + 14; rr(tx0 - 6, gy, 12, gh, 4, 'rgba(11,15,28,.6)', C.line, 1.2); rr(tx0 - 6, gy + gh * (1 - rem), 12, gh * rem, 4, rgba(col, .8));
     mtx(S.run || S.tm > 0 ? 'restam cerca de ' + Math.round(rem * 100) + '%' : 'ligue o relógio', gx + gw / 2, gy + gh * .4, { s: 14, w: 700, c: C.txt });
-    cap(S.fe ? 'A enzima <b>fervida</b> desnatura e não funciona, mesmo no substrato e no pH certos.' : !casa ? 'Essa enzima <b>não corta esse substrato</b>: cada enzima tem o seu substrato.' : !phok ? `A enzima encaixa, mas <b>pH ${S.ph} não é o ótimo</b> dela: quase nada acontece.` : S.bile && S.e === 2 ? 'Com <b>bile</b> a gordura vira gotinhas e a lipase acha mais superfície: a digestão fica mais rápida.' : 'Substrato, enzima e pH combinam: a digestão acontece.');
+    cap(S.fe ? 'A enzima <b>fervida</b> desnatura e não funciona, mesmo no substrato e no pH certos.' : !casa ? 'Essa enzima <b>não corta esse substrato</b>: cada enzima tem o seu substrato.' : !phok ? `A enzima encaixa, mas <b>pH ${S.pht} não é o ótimo</b> dela: quase nada acontece.` : S.bile && S.e === 2 ? 'Com <b>bile</b> a gordura vira gotinhas e a lipase acha mais superfície: a digestão fica mais rápida.' : 'Substrato, enzima e pH combinam: a digestão acontece.');
   }
   def('digestorio', 'enzimas', {
     t: TXT.D1.t, s: TXT.D1.s, c: '#F2A65A', loc: S => ({ viagem: 'Viagem do sanduíche', tubo: 'Tubo de ensaio', cartoes: 'Onde cada coisa começa' })[S.modo] || '', locNota: NOTA,
@@ -89,7 +89,7 @@
     tap(x, y, S) {
       if (S.modo === 'cartoes') { BD1.tap(x, y, S); return; } if (S.modo !== 'tubo' || !toque(S)) return; const h = hitAt(x, y); if (typeof h !== 'string') return;
       const a = h[0], n = +h.slice(1);
-      if (a === 'e') S.e = n; else if (a === 's') S.s = n; else if (a === 'p') S.ph = n; else if (h === 'bile') S.bile = !S.bile; else if (h === 'ferv') S.fe = !S.fe; else if (h === 'go') { S.run = true; S.tm = 0; S.rt = 1; return; }
+      if (a === 'e') S.e = n; else if (a === 's') S.s = n; else if (a === 'p') S.pht = n; else if (h === 'bile') S.bile = !S.bile; else if (h === 'ferv') S.fe = !S.fe; else if (h === 'go') { S.run = true; S.tm = 0; S.rt = 1; return; }
       S.tm = 0; S.run = false;
     },
     grab(x, y, S) { return S.modo === 'cartoes' && BD1.grab(x, y, S); }, grabMove(x, y, S) { BD1.grabMove(x, y, S); }, grabEnd(x, y, S) { BD1.grabEnd(x, y, S); },
