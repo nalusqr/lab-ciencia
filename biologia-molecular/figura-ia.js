@@ -255,9 +255,9 @@
         um(vis(F.vista), e, s * (1 - e), RED ? 1 : 1.04 - .04 * e);          // a que entra chega do outro lado, com fade
       } else um(vis(F.vista), 1, 0, 1);
       if (vu) { const gv = g.createRadialGradient(vu[0] * d, vu[1] * d, 30 * d, vu[0] * d, vu[1] * d, Math.max(140, w * .32) * d); gv.addColorStop(0, 'rgba(11,15,28,0)'); gv.addColorStop(1, `rgba(11,15,28,${.34 * vu[2]})`); g.fillStyle = gv; g.fillRect(0, 0, W2, H2); }
-      g.globalCompositeOperation = 'destination-in'; g.save(); g.translate(W2 / 2, H2 / 2); g.scale(W2 / 2, H2 / 2);
+      if (cfg.mask !== false) { g.globalCompositeOperation = 'destination-in'; g.save(); g.translate(W2 / 2, H2 / 2); g.scale(W2 / 2, H2 / 2);
       const m = cfg.mask || {}, gr = g.createRadialGradient(0, 0, 0, 0, 0, 1); gr.addColorStop(0, '#000'); gr.addColorStop(m.miolo || .62, '#000'); gr.addColorStop(m.borda || .98, 'rgba(0,0,0,0)');
-      g.fillStyle = gr; g.fillRect(-1, -1, 2, 2); g.restore(); g.globalCompositeOperation = 'source-over';
+      g.fillStyle = gr; g.fillRect(-1, -1, 2, 2); g.restore(); g.globalCompositeOperation = 'source-over'; }
       return off;
     }
 
@@ -285,7 +285,7 @@
       F.parA = F.parA.map((v, i) => v + ((zoom ? 0 : F.par[i]) - v) * .08);
       const sc = RED ? 1 : 1.03 - .03 * ent, ox = x0 + w / 2 + F.parA[0], oy = y0 + h / 2 + F.parA[1];
       const c = F.cam, pt = (xp, yp) => [ox + (w * ((xp / 100 - Q[0]) / Q[2] - c.u) * c.z) * sc, oy + (h * ((yp / 100 - Q[1]) / Q[3] - c.v) * c.z) * sc];
-      const M = cfg.mask || {}, MI = M.miolo || .62, MB = M.borda || .98, LIM = Math.min(.95, (MI + MB) / 2 + .08);
+      const M = cfg.mask || {}, MI = M.miolo || .62, MB = M.borda || .98, LIM = cfg.mask === false ? 9 : Math.min(.95, (MI + MB) / 2 + .08);
       const R = F.R = { x: x0, y: y0, w, h, cx: x0 + w / 2, cy: y0 + h / 2, pt, s: w * c.z * sc / 100, k: e, ent, vista: F.vista, z: c.z, pronto: cur.ok,
         dentro: (xp, yp) => { const [sx, sy] = pt(xp, yp), a = (sx - ox) / (w * sc / 2), b = (sy - oy) / (h * sc / 2); return a * a + b * b < LIM * LIM; },
         // véu com o formato da máscara: escurece a figura sem marcar um retângulo no palco

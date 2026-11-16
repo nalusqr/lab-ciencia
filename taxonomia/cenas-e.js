@@ -136,7 +136,19 @@
   const BORB = { bb: { x0: -.12, y0: -.05, x1: 1.05, y1: 1.15 } };
 
   // desenha um membro: hl = tipo em destaque (u, r, m) ou null para todos
+  // pontos tocáveis por osso homólogo (só na comparação pela origem): posição em px da tela, cor fixa por osso
+  let PTS = null;
+  function pontosMembro(m) {
+    if (!PTS) return;
+    const T_ = X.getTransform(), d = window.devicePixelRatio || 1, vis = {};
+    for (const o of m.b) {
+      const ty = o[5], L = Math.hypot(o[2] - o[0], o[3] - o[1]);
+      if (!vis[ty] || L > vis[ty].L) vis[ty] = { L, x: (o[0] + o[2]) / 2, y: (o[1] + o[3]) / 2 };
+    }
+    for (const ty in vis) { const q = vis[ty]; PTS.push({ ty, x: (T_.a * q.x + T_.c * q.y + T_.e) / d, y: (T_.b * q.x + T_.d * q.y + T_.f) / d }); }
+  }
   function desenhaMembro(m, k, hl) {
+    if (window.TAXO3D && TAXO3D.prop('membro', m.bb.x0, m.bb.y0, m.bb.x1 - m.bb.x0, m.bb.y1 - m.bb.y0, { m, k, hl, cores: CORK })) { pontosMembro(m); return; }
     const ink = 'rgba(11,15,28,.75)';
     X.lineCap = 'round'; X.lineJoin = 'round';
     // partes moles: penas, membrana, pele da nadadeira e a "carne" em volta dos ossos
@@ -165,6 +177,7 @@
     for (const o of m.b) { X.globalAlpha = al(o[5]); X.beginPath(); X.moveTo(o[0], o[1]); X.lineTo(o[2], o[3]); X.strokeStyle = CORK[o[5]]; X.lineWidth = o[4]; X.stroke(); }
     for (const q of m.c || []) { X.globalAlpha = al('m'); disco(q[0], q[1], q[2], CORK.m); }
     X.globalAlpha = 1; X.lineCap = 'butt';
+    pontosMembro(m);
   }
   // asa de borboleta: dobra da parede do corpo, com nervuras e sem ossos
   function desenhaBorb() {
@@ -225,7 +238,7 @@
   }
   // ---------- dados de K3 ----------
   const NOME = {
-    hum: ['ser humano', 'braço'], bal: ['baleia', 'nadadeira'], mor: ['morcego', 'asa'], ave: ['ave', 'asa'], cao: ['cão', 'pata'],
+    hum: ['ser humano', 'braço'], bal: ['baleia', 'nadadeira'], mor: ['morcego', 'asa'], ave: ['ave', 'asa'], cao: ['gato', 'pata'],
     bor: ['borboleta', 'asa, sem ossos'], balc: ['baleia', 'nadadeira (mamífero)'], tub: ['tubarão', 'nadadeira (peixe)'], gol: ['golfinho', 'nadadeira (mamífero)']
   };
   const SILH = { balc: { bb: { x0: -1.02, y0: -.4, x1: 1.02, y1: .78 }, f: d => baleiaCorpo(d) }, tub: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => tubarao(d) }, gol: { bb: { x0: -1.02, y0: -.52, x1: 1.02, y1: .52 }, f: d => golfinho(d) } };
@@ -255,13 +268,16 @@
 
   function k3Origem(t, S, A) {
     const ks = ['hum', 'bal', 'mor', 'ave', 'cao'].concat(S.bor ? ['bor'] : []);
-    const nf = FASES.length + (S.bor ? 1 : 0), fi = Math.floor(t / 2.8) % nf, hl = fi < FASES.length ? FASES[fi][0] : null;
+    const nf = FASES.length + (S.bor ? 1 : 0), fc = Math.floor(t / 2.8) % nf, fixo = S.fix != null;
+    const fi = fixo ? FASES.findIndex(f => f[0] === S.fix) : fc, hl = fi < FASES.length ? FASES[fi][0] : null;
+    const fixa = ty => () => { S.fix = S.fix === ty ? null : ty; };
     // legenda das cores no alto
     const nomes = [['u', P.umero, 'úmero'], ['r', P.radio, 'rádio e ulna'], ['m', P.mao, 'punho e dedos']], csz = NAR ? 12 : 13;
     const ws = nomes.map(n => tw(n[2], csz, 600) + 34), tot = ws.reduce((a, b) => a + b, 0) + 16;
     let yc = A.y0 + 14;
-    if (tot <= A.w) { let x = A.cx - tot / 2; nomes.forEach((n, i) => { chip(x, yc, n[1], n[2], hl === n[0], csz); x += ws[i] + 8; }); }
-    else { let x = A.cx - (ws[0] + ws[1] + 8) / 2; chip(x, yc, nomes[0][1], nomes[0][2], hl === 'u', csz); chip(x + ws[0] + 8, yc, nomes[1][1], nomes[1][2], hl === 'r', csz); yc += 32; chip(A.cx - ws[2] / 2, yc, nomes[2][1], nomes[2][2], hl === 'm', csz); }
+    const chipT = (x, y, n, w) => { chip(x, y, n[1], n[2], hl === n[0], csz); hit(S, x, y - 16, w, 32, fixa(n[0])); };
+    if (tot <= A.w) { let x = A.cx - tot / 2; nomes.forEach((n, i) => { chipT(x, yc, n, ws[i]); x += ws[i] + 8; }); }
+    else { let x = A.cx - (ws[0] + ws[1] + 8) / 2; chipT(x, yc, nomes[0], ws[0]); chipT(x + ws[0] + 8, yc, nomes[1], ws[1]); yc += 32; chipT(A.cx - ws[2] / 2, yc, nomes[2], ws[2]); }
     const top = yc + 24, foot = 22, nomeH = 40;
     const cols = NAR ? 3 : ks.length, rows = Math.ceil(ks.length / cols);
     const cw = A.w / cols, ch = (A.y1 - foot - top) / rows;
@@ -271,10 +287,18 @@
       const pad = NAR ? 6 : 14, fh = ch - nomeH - 6;
       const dest = k === 'bor' && fi === FASES.length;
       if (dest) rr(x + 2, y - 2, cw - 4, ch - 2, 10, 'rgba(255,179,71,.06)', rgba(P.amber, .7), 1.5);
+      PTS = k === 'bor' ? null : [];
       figura(k, x + pad, y + 4, cw - 2 * pad, fh, k === 'bor' ? null : hl);
+      // um ponto por osso homólogo, sempre na mesma cor; tocar fixa o destaque nesse osso
+      (PTS || []).forEach(p => {
+        const on = hl === p.ty, r = on ? 7.5 : 6;
+        circ(p.x, p.y, r + 2.5, 'rgba(11,15,28,.55)'); circ(p.x, p.y, r, CORK[p.ty], on ? '#fff' : 'rgba(255,255,255,.7)', on ? 2 : 1.2);
+        hit(S, p.x - 18, p.y - 18, 36, 36, fixa(p.ty));
+      });
+      PTS = null;
       rotulo(k, x + cw / 2, y + fh + 16, cw - 8);
     });
-    tx('desenho esquemático; cores indicam ossos homólogos', A.cx, A.y1 - 8, { s: 12, c: P.dim, bg: false });
+    tx(fixo ? 'toque de novo no ponto para soltar o destaque' : 'toque num ponto colorido para fixar um osso', A.cx, A.y1 - 8, { s: 12, c: P.dim, bg: false });
     cap(fi < FASES.length ? FASES[fi][1] : 'A asa da borboleta não tem nenhum desses ossos: é uma dobra da parede do corpo. Ela é <b>análoga</b> à asa da ave (convergência).');
   }
 
@@ -346,13 +370,13 @@
 
   const oK3 = {
     t: 'Homologia e analogia', s: 'mesma origem ou mesma função', loc: 'Membros anteriores de vertebrados', still: 8.5,
-    alt: 'Os membros anteriores de ser humano, baleia, morcego, ave e cão lado a lado, com os ossos nas mesmas cores: úmero em âmbar, rádio e ulna em azul, punho e dedos em verde. Botões mostram a asa da borboleta, sem nenhum desses ossos, agrupam as estruturas pela função (voar, nadar) e abrem um teste de homólogo ou análogo',
+    alt: 'Os membros anteriores de ser humano, baleia, morcego, ave e gato lado a lado, com os ossos nas mesmas cores: úmero em âmbar, rádio e ulna em azul, punho e dedos em verde. Botões mostram a asa da borboleta, sem nenhum desses ossos, agrupam as estruturas pela função (voar, nadar) e abrem um teste de homólogo ou análogo',
     extra: [
       { t: 'Comparar com a borboleta', on: S => { S.bor = !S.bor; if (S.bor) S.modo = 'origem'; }, pressed: S => !!S.bor && S.modo !== 'funcao' && S.modo !== 'quiz' },
       { t: 'Agrupar pela função', on: S => { S.modo = S.modo === 'funcao' ? 'origem' : 'funcao'; }, pressed: S => S.modo === 'funcao' },
       { t: 'Homólogo ou análogo?', on: S => { S.modo = S.modo === 'quiz' ? 'origem' : 'quiz'; S.qr = null; }, pressed: S => S.modo === 'quiz' }
     ],
-    d: `<p>Estruturas <b>homólogas</b> têm a <b>mesma origem</b> evolutiva e embrionária, mesmo que hoje tenham funções diferentes. O braço humano, a nadadeira da baleia, a asa do morcego, a asa da ave e a pata do cão têm os mesmos ossos na mesma ordem (<b>úmero</b>, <b>rádio e ulna</b>, ossos do punho e dos dedos), porque vêm do membro anterior de um ancestral comum. Cada linhagem adaptou esse membro a um modo de vida: é a <b>divergência</b> (ou <b>irradiação adaptativa</b>). Só as homologias revelam parentesco e entram na construção do cladograma.</p>
+    d: `<p>Estruturas <b>homólogas</b> têm a <b>mesma origem</b> evolutiva e embrionária, mesmo que hoje tenham funções diferentes. O braço humano, a nadadeira da baleia, a asa do morcego, a asa da ave e a pata do gato têm os mesmos ossos na mesma ordem (<b>úmero</b>, <b>rádio e ulna</b>, ossos do punho e dos dedos), porque vêm do membro anterior de um ancestral comum. Cada linhagem adaptou esse membro a um modo de vida: é a <b>divergência</b> (ou <b>irradiação adaptativa</b>). Só as homologias revelam parentesco e entram na construção do cladograma.</p>
 <p>Estruturas <b>análogas</b> têm a <b>mesma função</b>, mas <b>origens diferentes</b>. A asa de uma borboleta (uma dobra da parede do corpo, sem ossos) e a asa de uma ave (um membro com ossos) servem para voar, mas surgiram de forma independente. O formato hidrodinâmico do tubarão (peixe), do golfinho (mamífero) e do extinto ictiossauro (réptil) também é análogo. É a <b>convergência evolutiva</b>: ambientes parecidos selecionam soluções parecidas em linhagens que não são próximas. Atenção: a asa da ave e a asa do morcego são <b>homólogas como membros anteriores</b> (os mesmos ossos), mas <b>análogas como asas</b>, porque o voo surgiu separadamente nas duas linhagens (na ave, a asa é sustentada por penas; no morcego, por uma pele esticada entre os dedos).</p>
 <p>Use os botões para comparar com a asa da borboleta, agrupar as estruturas pela função e testar os pares no "Homólogo ou análogo?". Desenho esquemático; cores indicam ossos homólogos.</p>`,
     enem: '<b>Homologia</b> = mesma <b>origem</b>, função pode mudar (braço, nadadeira da baleia, asa do morcego): indica <b>ancestral comum</b> e <b>divergência</b>. <b>Analogia</b> = mesma <b>função</b>, origens diferentes (asa de inseto e de ave; corpo do tubarão e do golfinho): indica <b>convergência</b>, e <b>não</b> indica parentesco. A prova costuma mostrar o desenho dos ossos do membro e perguntar qual conceito ele ilustra.',
@@ -401,6 +425,7 @@
 
   // ---------- ícones dos animais (traço próprio, coordenadas de -1 a 1) ----------
   function icone(k, x, y, s, o = {}) {
+    if (window.TAXO3D && TAXO3D.ator(k, x, y, 2 * s, o)) return;   // miniatura 3D (taxo3d.js); sem WebGL, o desenho abaixo
     X.save(); X.translate(x, y); X.scale(s, s);
     const lw = Math.max(1.3, s * .055) / s, ink = o.c || P.txt;
     X.lineWidth = lw; X.lineCap = 'round'; X.lineJoin = 'round'; X.strokeStyle = ink;
