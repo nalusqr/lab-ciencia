@@ -85,6 +85,7 @@
     mula: { c: '#8E6A4E', m: '#3A2A20', ear: .21, foc: '#C9B49E', rabo: .6 }
   };
   function equino(x, y, u, k) {
+    if (window.TAXO3D && TAXO3D.ator(k, x + .1 * u, y - .02 * u, 1.45 * u, { flip: k === 'jumento' })) return;   // miniatura 3D (taxo3d.js); sem WebGL, o desenho abaixo
     const P = EQ[k], st = 'rgba(11,15,28,.65)';
     X.save(); X.translate(x, y); X.lineCap = 'round';
     // pernas (as de trás mais escuras)
@@ -109,6 +110,7 @@
     X.restore();
   }
   function cao(x, y, u, grande) {
+    if (window.TAXO3D && TAXO3D.ator('cao', x + .05 * u, y + .05 * u, 1.3 * u)) return;
     const c = grande ? '#9A8C80' : '#D9B58A', st = 'rgba(11,15,28,.6)'; X.save(); X.translate(x, y); X.lineCap = 'round';
     const lg = grande ? .55 : .3;
     [-.3, -.18, .22, .32].forEach(lx => line(lx * u, .05 * u, lx * u, lg * u, c, .07 * u));
@@ -120,6 +122,7 @@
     X.restore();
   }
   function felino(x, y, u, leo) {
+    if (window.TAXO3D && TAXO3D.ator(leo ? 'leao' : 'onca', x - .05 * u, y + .02 * u, 1.4 * u)) return;
     const c = leo ? '#C99A5B' : '#D9A441', st = 'rgba(11,15,28,.6)'; X.save(); X.translate(x, y); X.lineCap = 'round';
     [-.32, -.2, .22, .34].forEach(lx => line(lx * u, .05 * u, lx * u, .4 * u, c, .08 * u));
     X.beginPath(); X.moveTo(-.42 * u, -.02 * u); X.quadraticCurveTo(-.7 * u, -.05 * u, -.68 * u, -.32 * u); X.strokeStyle = c; X.lineWidth = .05 * u; X.stroke();
@@ -135,6 +138,7 @@
     X.restore();
   }
   function humano(x, y, u) {
+    if (window.TAXO3D && TAXO3D.ator('humano', x, y, 1.2 * u)) return;
     const sk = '#D9A882', st = 'rgba(11,15,28,.6)'; X.save(); X.translate(x, y); X.lineCap = 'round';
     line(-.08 * u, .15 * u, -.12 * u, .55 * u, '#5B6C99', .09 * u); line(.08 * u, .15 * u, .12 * u, .55 * u, '#5B6C99', .09 * u);
     line(-.15 * u, -.25 * u, -.25 * u, .1 * u, sk, .07 * u); line(.15 * u, -.25 * u, .25 * u, .1 * u, sk, .07 * u);
@@ -143,6 +147,7 @@
     X.restore();
   }
   function milho(x, y, u) {
+    if (window.TAXO3D && TAXO3D.ator('milho', x, y, 1.25 * u)) return;
     X.save(); X.translate(x, y); X.rotate(-.35);
     shape([[0, .5 * u], [-.2 * u, .1 * u], [-.16 * u, -.3 * u], [-.05 * u, .1 * u]], '#6FAE5A', 'rgba(11,15,28,.5)', 1);
     ell(0, -.05 * u, .13 * u, .42 * u, 0, '#F2CF5B', 'rgba(11,15,28,.5)', 1);
@@ -152,6 +157,7 @@
     X.restore();
   }
   function mosquito(x, y, u) {
+    if (window.TAXO3D && TAXO3D.ator('mosquito', x - .03 * u, y + .05 * u, 1.05 * u)) return;
     X.save(); X.translate(x, y); X.lineCap = 'round';
     ell(-.05 * u, -.2 * u, .3 * u, .1 * u, -.5, 'rgba(200,215,240,.25)', 'rgba(200,215,240,.6)', 1);
     ell(.05 * u, -.22 * u, .3 * u, .1 * u, -.9, 'rgba(200,215,240,.25)', 'rgba(200,215,240,.6)', 1);
@@ -428,6 +434,7 @@
     const pj = (lo, la) => [mx + (lo + 75) / 42 * ms, my + (6 - la) / 42 * ms];
     const mapA = 1 - .55 * ss(seg(T, 4.5, 6.5));
     X.save(); X.globalAlpha = mapA;
+    if (window.TAXO3D && TAXO3D.prop('mapa', mx, my, ms, ms, { br: BR, zon: ZON })) X.restore(); else {
     X.beginPath(); BR.forEach((p, i) => { const q = pj(p[0], p[1]); i ? X.lineTo(q[0], q[1]) : X.moveTo(q[0], q[1]); }); X.closePath();
     X.fillStyle = 'rgba(40,52,82,.9)'; X.fill(); X.save(); X.clip();
     ZON.forEach(z => { const q = pj(z.lo, z.la), r = z.r / 42 * ms * 1.3, g = X.createRadialGradient(q[0], q[1], 0, q[0], q[1], r); g.addColorStop(0, rgba(z.c, .5)); g.addColorStop(1, rgba(z.c, 0)); X.fillStyle = g; X.fillRect(q[0] - r, q[1] - r, 2 * r, 2 * r); });
@@ -435,10 +442,19 @@
     X.beginPath(); BR.forEach((p, i) => { const q = pj(p[0], p[1]); i ? X.lineTo(q[0], q[1]) : X.moveTo(q[0], q[1]); }); X.closePath();
     X.strokeStyle = 'rgba(200,215,240,.55)'; X.lineWidth = 1.5; X.stroke();
     X.restore();
+    }
+    // a planta: mandioca em 3D (sem WebGL, fica só o mapa)
+    if (window.TAXO3D) {
+      if (NAR) TAXO3D.ator('mandioca', mx + ms * .86, my + ms * .78, ms * .3, { c: '#E8A33D' });
+      else TAXO3D.ator('mandioca', lx, A.y0 + Math.min(A.h * .2, 95), Math.min(130, A.h * .3), { c: '#E8A33D' });
+    }
     // nota do mapa
     const nota = 'regiões aproximadas; os nomes variam também dentro de cada região';
+    // a nota sai de cena enquanto os balões voam, para não ficarem um sobre o outro (volta quando eles somem)
+    X.save(); X.globalAlpha *= 1 - (ss(seg(T, 4.2, 4.8)) - ss(seg(T, 6.4, 7)));
     if (NAR) tx('regiões aproximadas; os nomes variam', A.cx, my + ms + 4, { s: 12, c: K('dim'), bg: false });
     else wrapR(nota, mx + ms * .02, my + ms * .9, ms * .34, { s: 12, a: 'left', c: K('dim'), lh: 15 });
+    X.restore();
     // balões aparecem, depois voam e se fundem
     const fly = ss(seg(T, 4.5, 6.5)), sz = NAR ? 12 : 14;
     BAL.forEach(b => {
