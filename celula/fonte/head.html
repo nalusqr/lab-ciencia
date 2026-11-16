@@ -120,7 +120,19 @@ html.embed #view>*:not(#stage){display:none!important}
 html.embed #view.fade #stage{animation:none}
 html.embed #stage canvas{pointer-events:none;touch-action:auto}   /* não captura toque nem rolagem */
 </style>
-<script>if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add('embed')</script>
+<script>if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add('embed');if(/[?&]moldura=1(&|$)/.test(location.search))document.documentElement.classList.add('moldura')</script>
+<style>
+/* ?moldura=1: o palco interativo dentro de outro módulo (a Morfofisiologia mostra a célula animal num iframe). Toque, giro,
+   aproximação e vista por dentro continuam; nomes e pausa vêm da página de fora (postMessage), e a seleção volta para ela. */
+html.moldura,html.moldura body{background:transparent;min-height:0;overflow:hidden}
+html.moldura .wrap{max-width:none;padding:0;margin:0}
+html.moldura .wrap>*:not(#view){display:none!important}
+html.moldura #view{position:fixed;inset:0;height:auto;min-height:0;border:0;border-radius:0;background:transparent}
+html.moldura #tag,html.moldura #mag,html.moldura #lbls,html.moldura #pause,html.moldura #tour{display:none!important}
+html.moldura .tool{left:auto;right:16px;top:50%;bottom:auto;transform:translateY(-50%);flex-direction:column}
+html.moldura #back{top:64px}
+@media(max-width:699px){html.moldura .tool{right:8px}html.moldura #back{top:56px}}
+</style>
 </head>
 <body>
 <!--SPRITE-->
