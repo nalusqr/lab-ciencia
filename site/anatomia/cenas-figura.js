@@ -128,115 +128,11 @@
   const amb3 = Object.assign({}, amb, { rot3d: 'Ver modelos e 3D', dica3d: 'Troque de modo nos botões do palco' });
   // a figura da hematose agora é a viagem do ar em cenas-figura-circ-resp.js (vias respiratórias e alvéolos)
 
-  // ---------- Endócrino: glândulas ----------
-  const GLD = [[49.6, 15.2, '#F2A65A'], [49.5, 30, '#F28B8B'], [46.4, 55.7, '#FFD43B'], [53.9, 55.2, '#FFD43B'], [50.9, 59.1, '#FFB347'], [45.2, 74.5, '#F2B6C6'], [54.8, 74.5, '#F2B6C6']];
-  LAB_FIGALT.cena(amb3, 'endocrino/glandulas', {
-    pref: 'anatomia', nome: 'Glândulas endócrinas', mask: SEM,
-    vistas: [['a', 'endocrino-glandulas-a', 'Glândulas endócrinas', 'Corpo humano translúcido com as glândulas endócrinas acesas: hipotálamo e hipófise, tireoide, adrenais, pâncreas e ovários']],
-    sobre(R, X, t) {
-      const s = R.s;
-      GLD.forEach((g, i) => {
-        const p = R.pt(g[0], g[1]);
-        anel(X, p[0], p[1], t, g[2], 3.4, s * 4.2, i * .47);
-        if (RED) return;
-        for (let k = 0; k < 4; k++) { // hormônio solto no sangue: pontinhos que se afastam da glândula
-          const u = (((t / 3.4) + i * .13 + k * .25) % 1), a = i * 2.1 + k * 1.57 + .5, D = s * 6 * u;
-          dot(X, p[0] + Math.cos(a) * D, p[1] + Math.sin(a) * D, 2.2, g[2], .85 * (1 - u));
-        }
-      });
-    },
-    hs: [
-      { id: 'hip', c: '#F2A65A', t: 'Hipotálamo e hipófise', d: 'O hipotálamo, no encéfalo, liga o sistema nervoso ao endócrino. Ele comanda a hipófise, que libera hormônios que regulam outras glândulas e produz hormônios como o do crescimento.', em: { a: [49.6, 15.2] }, z: 3 },
-      { id: 'tir', c: '#F28B8B', t: 'Tireoide e paratireoides', d: 'A tireoide, no pescoço, produz T3 e T4, que regulam o metabolismo. Atrás dela ficam as paratireoides, que controlam o cálcio do sangue.', em: { a: [49.5, 30] }, z: 3 },
-      { id: 'adr', c: '#FFD43B', t: 'Adrenais (suprarrenais)', d: 'Ficam sobre os rins. A medula produz adrenalina, de ação rápida no estresse, e o córtex produz cortisol e aldosterona.', em: { a: [46.4, 55.7] }, z: 3 },
-      { id: 'pan', c: '#FFB347', t: 'Pâncreas', d: 'Glândula mista: libera insulina e glucagon no sangue, que controlam a glicemia, e enzimas digestivas no duodeno.', em: { a: [51.5, 60] }, z: 3 },
-      { id: 'ova', c: '#F2B6C6', t: 'Ovários', d: 'Produzem estrógeno e progesterona. Nos homens, o equivalente são os testículos, que produzem testosterona.', em: { a: [45.2, 74.5] }, z: 3 }
-    ]
-  });
+  // Endócrino: glândulas passou para cenas-figura-endo-loco.js (viagem do hormônio, com esta figura como vista A).
 
-  // ---------- Reprodutor ----------
-  const OVO = [[88, 38.5], [92.5, 39], [95, 35], [95.5, 30], [93, 26], [89, 26.5], [85, 29], [80, 30.5], [76.5, 34], [74.5, 40], [73.5, 47]];
-  const ESP = [[73.8, 76], [73.8, 66], [73.6, 59], [73.5, 50], [73, 42], [70, 34], [66, 31], [61, 30], [57, 27.5], [53, 26], [51.8, 29], [52.5, 36]];
-  const ESM = [[20.5, 78], [20.8, 66], [19.5, 58], [18.2, 50], [17.2, 42], [17, 36], [18.5, 32], [24, 30.5], [29.5, 31.5], [31.2, 36], [30, 42], [27, 47], [25.8, 52], [18, 53], [12, 56], [9.5, 65], [9, 74]];
-  const HSREP = [
-    { id: 'tes', c: '#F28B8B', t: 'Testículo', d: 'Produz os espermatozoides nos túbulos seminíferos e a testosterona nas células intersticiais. Fica fora do abdome, na bolsa escrotal, onde a temperatura é cerca de 2 °C menor.', em: { a: [19.6, 74.2] }, z: 3 },
-    { id: 'def', c: '#FFB347', t: 'Ducto deferente', d: 'Leva os espermatozoides do epidídimo até a uretra. Passa por cima da bexiga.', em: { a: [17.3, 42] }, z: 3 },
-    { id: 'ves', c: '#FFD43B', t: 'Vesícula seminal', d: 'Produz parte do sêmen, um líquido rico em frutose que nutre os espermatozoides. A próstata também contribui com líquido.', em: { a: [32.7, 37.8] }, z: 3 },
-    { id: 'pro', c: '#F2A65A', t: 'Próstata', d: 'Glândula em volta da uretra, logo abaixo da bexiga. Produz um líquido alcalino que compõe o sêmen.', em: { a: [25.4, 45.6] }, z: 3 },
-    { id: 'bex', c: '#8FD8FF', t: 'Bexiga urinária', d: 'Guarda a urina. A uretra, que sai dela, passa pela próstata e pelo pênis, e leva urina e sêmen, nunca juntos.', em: { a: [24.7, 33.9] }, z: 2.8 },
-    { id: 'ova', c: '#F2B6C6', t: 'Ovário', d: 'Guarda os folículos, libera o ovócito na ovulação e produz estrógeno e progesterona.', em: { a: [88, 38.5] }, z: 3 },
-    { id: 'tub', c: '#FFB347', t: 'Tuba uterina', d: 'Recolhe o ovócito com as fímbrias e o leva ao útero. A fecundação costuma ocorrer aqui.', em: { a: [57, 28] }, z: 3 },
-    { id: 'ute', c: '#F28B8B', t: 'Útero', d: 'Órgão muscular com a parede interna, o endométrio, que engrossa a cada ciclo. É onde o embrião se implanta.', em: { a: [73.4, 39] }, z: 2.8 },
-    { id: 'col', c: '#CFE0FF', t: 'Colo do útero', d: 'Parte inferior e estreita do útero, que se abre para a vagina. O muco do colo muda ao longo do ciclo.', em: { a: [73.6, 60] }, z: 3 },
-    { id: 'vag', c: '#F2B6C6', t: 'Vagina', d: 'Canal que liga o colo do útero ao exterior. Recebe o sêmen e é o canal do parto.', em: { a: [73.8, 72.9] }, z: 2.8 }
-  ];
-  LAB_FIGALT.cena(amb, 'reprodutor/ciclo', {
-    pref: 'anatomia', nome: 'Sistemas genitais masculino e feminino', mask: SEM,
-    vistas: [['a', 'reprodutor-ciclo-a', 'Cortes dos sistemas genitais', 'Corte do sistema genital masculino, de lado, e do feminino, de frente, com o caminho dos gametas']],
-    sobre(R, X, t) {
-      const Pf = ptsR(R, OVO), Ps = ptsR(R, ESP), Pm = ptsR(R, ESM);
-      [[Pm, '#8FD8FF'], [Ps, '#8FD8FF'], [Pf, '#FFB347']].forEach(([P, c]) => trilhaTenue(X, P, c, .35, 1.3));
-      cometa(X, Pm, t, { c: '#8FD8FF', v: .09, r: 3.6 }); cometa(X, Pm, t, { c: '#8FD8FF', v: .09, off: .5, r: 3.6, par: .3 });
-      cometa(X, Ps, t, { c: '#8FD8FF', v: .09, r: 3.6, off: .15 });
-      cometa(X, Pf, t, { c: '#FFB347', v: .09, r: 4.4, off: .1, par: .6 });
-      const o = R.pt(88, 38.5); anel(X, o[0], o[1], t, '#FFB347', 4, R.s * 4, 0);
-      if (R.w > 520) leg(X, R.x + R.w - 188, R.y + R.h - 58, [['#8FD8FF', 'espermatozoides'], ['#FFB347', 'ovócito']]);
-    },
-    hs: HSREP
-  });
-  LAB_FIGALT.cena(amb, 'reprodutor/prevencao', {
-    pref: 'anatomia', nome: 'Onde os métodos agem', mask: SEM,
-    vistas: [['a', 'reprodutor-ciclo-a', 'Cortes dos sistemas genitais', 'Sistemas genitais masculino e feminino, com os pontos em que cada tipo de método impede o encontro dos gametas ou a gravidez']],
-    sobre(R, X, t) {
-      const Pf = ptsR(R, OVO), Ps = ptsR(R, ESP);
-      trilhaTenue(X, Ps, '#8FD8FF', .35, 1.3); trilhaTenue(X, Pf, '#FFB347', .35, 1.3);
-      cometa(X, Ps, t, { c: '#8FD8FF', v: .09, r: 3.6 }); cometa(X, Pf, t, { c: '#FFB347', v: .09, r: 4.4, off: .1, par: .6 });
-      // os métodos acendem um a um: ovulação, barreira no colo, útero, tubas e ducto deferente
-      const alvo = [[88, 38.5, '#F28B8B'], [73.6, 60, '#CFE0FF'], [73.4, 38, '#FFD43B'], [57, 28, '#FFB347'], [17.3, 42, '#8FD8FF']];
-      alvo.forEach((a, i) => { const p = R.pt(a[0], a[1]); anel(X, p[0], p[1], t, a[2], 5, R.s * 4.4, i * 1, .9); });
-    },
-    hs: [
-      { id: 'ova', c: '#F28B8B', t: 'Ovário: métodos hormonais', d: 'Pílula, injeção, adesivo, anel e implante impedem a ovulação. Sem ovócito liberado, não há o que fecundar.', em: { a: [88, 38.5] }, z: 3 },
-      { id: 'tub', c: '#FFB347', t: 'Tuba uterina: laqueadura', d: 'Na laqueadura, método cirúrgico, as tubas são cortadas ou fechadas. O ovócito e os espermatozoides não se encontram.', em: { a: [57, 28] }, z: 3 },
-      { id: 'ute', c: '#FFD43B', t: 'Útero: DIU', d: 'O DIU, colocado dentro do útero, dificulta a passagem e a sobrevivência dos espermatozoides. O DIU hormonal também afina o endométrio.', em: { a: [73.4, 39] }, z: 2.8 },
-      { id: 'col', c: '#CFE0FF', t: 'Colo do útero: barreira', d: 'Camisinha feminina e diafragma são barreiras que impedem a entrada dos espermatozoides. A camisinha, masculina ou feminina, também protege contra ISTs.', em: { a: [73.6, 60] }, z: 3 },
-      { id: 'def', c: '#8FD8FF', t: 'Ducto deferente: vasectomia', d: 'Na vasectomia, método cirúrgico, os ductos deferentes são cortados. O sêmen deixa de levar espermatozoides, mas a ejaculação continua.', em: { a: [17.3, 42] }, z: 3 },
-      { id: 'pen', c: '#CFE0FF', t: 'Pênis: camisinha masculina', d: 'A camisinha masculina cobre o pênis e retém o sêmen. Com a feminina, é o único tipo de método que também previne a maioria das ISTs, como HIV e sífilis.', em: { a: [11.6, 63.8] }, z: 3 }
-    ]
-  });
+  // ---------- Reprodutor: ciclo e prevenção agora em cenas-figura-repro.js (viagens sobre figuras novas) ----------
 
-  // ---------- Locomotor: bíceps e tríceps ----------
-  LAB_FIGALT.cena(amb, 'locomotor/movimento', {
-    pref: 'anatomia', nome: 'Braço: bíceps e tríceps', mask: SEM,
-    vistas: [['a', 'locomotor-movimento-a', 'Músculos do braço', 'Braço dobrado com bíceps, tríceps, úmero, rádio e ulna, vistos de lado']],
-    sobre(R, X, t) {
-      // ciclo de 6 s: flexão (bíceps contrai, tríceps relaxa) e extensão (o contrário)
-      const u = RED ? .25 : (t / 6) % 1, flex = u < .5, k = Math.sin(PI * ((u * 2) % 1));
-      const B = ptsR(R, [[30, 29], [39, 46], [48, 65]]), T = ptsR(R, [[24.5, 37], [33, 57], [43, 76]]);
-      X.save(); X.globalCompositeOperation = 'lighter'; X.lineCap = 'round';
-      const brilho = (P, cor, a, lw) => { X.strokeStyle = rgba(cor, a); X.lineWidth = lw; X.beginPath(); P.forEach((p, i) => i ? X.lineTo(p[0], p[1]) : X.moveTo(p[0], p[1])); X.stroke(); };
-      brilho(B, '#FF9A3C', (flex ? .45 * k : .06) + (RED ? .25 : 0), R.s * 5.2);
-      brilho(T, '#6EC8E8', (flex ? .04 : .4 * k) + (RED ? .2 : 0), R.s * 4.6);
-      X.restore();
-      // seta de puxão ao longo do bíceps e do tríceps e arco do antebraço em volta do cotovelo
-      const cot = R.pt(44.5, 73);
-      const a0 = flex ? .02 : -.9, a1 = flex ? -.9 : .02, ang = RED ? -.45 : a0 + (a1 - a0) * (k < 0 ? 0 : k), r = R.s * 17;
-      X.save(); X.strokeStyle = rgba(flex ? '#FFB347' : '#6EC8E8', .85); X.lineWidth = 2; X.setLineDash([5, 5]); X.beginPath(); X.arc(cot[0], cot[1], r, a0, ang, a1 < a0); X.stroke(); X.setLineDash([]);
-      const ex = cot[0] + Math.cos(ang) * r, ey = cot[1] + Math.sin(ang) * r; seta(X, ex, ey, ang + (a1 < a0 ? -PI / 2 : PI / 2), 7, flex ? '#FFB347' : '#6EC8E8', .95); X.restore();
-      const pb = ao(B, .72); seta(X, pb[0], pb[1], pb[2] - PI, 7, '#FFB347', flex ? .95 : .25);
-      const pt2 = ao(T, .72); seta(X, pt2[0], pt2[1], pt2[2] + PI, 7, '#6EC8E8', flex ? .25 : .95);
-      leg(X, R.x + R.w - 232, R.y + 10, [[flex ? '#FFB347' : '#6EC8E8', flex ? 'Flexão: bíceps contrai' : 'Extensão: tríceps contrai']], R.w < 520);
-    },
-    hs: [
-      { id: 'bic', c: '#FFB347', t: 'Bíceps braquial', d: 'Fica na frente do braço e tem duas cabeças, presas na escápula. Seu tendão prende no rádio. Ao contrair, flexiona o cotovelo.', em: { a: [39, 45] }, z: 2.6 },
-      { id: 'tri', c: '#6EC8E8', t: 'Tríceps braquial', d: 'Fica atrás do braço e tem três cabeças. Seu tendão prende no olécrano da ulna. Ao contrair, estende o cotovelo.', em: { a: [27.5, 47] }, z: 2.6 },
-      { id: 'umr', c: '#FFD43B', t: 'Úmero', d: 'Osso do braço. Ao dobrar e esticar o cotovelo ele fica parado, e quem se move como alavanca são o rádio e a ulna, puxados pelos tendões.', em: { a: [29.5, 36.6] }, z: 2.6 },
-      { id: 'esc', c: '#CFE0FF', t: 'Escápula', d: 'Osso da cintura escapular. É onde começam as cabeças do bíceps e uma cabeça do tríceps.', em: { a: [15, 30] }, z: 2.6 },
-      { id: 'olc', c: '#F28B8B', t: 'Olécrano da ulna', d: 'A ponta do cotovelo. Recebe o tendão do tríceps. O ponto de apoio da alavanca é a articulação do cotovelo, logo ao lado.', em: { a: [42.7, 79] }, z: 3 },
-      { id: 'tbi', c: '#FFB347', t: 'Tendão do bíceps', d: 'Liga o bíceps ao rádio. Quando o músculo encurta, o tendão puxa o antebraço para cima.', em: { a: [48, 66] }, z: 3 },
-      { id: 'ant', c: '#A9C54A', t: 'Músculos do antebraço', d: 'Movem o punho e os dedos por meio de tendões longos. Cada músculo só puxa, por isso o movimento contrário usa outro músculo.', em: { a: [67, 68] }, z: 2.6 }
-    ]
-  });
+  // Locomotor: movimento passou para cenas-figura-endo-loco.js (viagem do comando motor, com esta figura como vista A).
 
   // Nervoso: autônomo passou para cenas-figura-rim-nervo.js (viagem do impulso, com esta figura como uma das vistas).
 
