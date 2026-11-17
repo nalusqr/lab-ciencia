@@ -54,25 +54,7 @@
     ]
   });
 
-  LAB_FIGALT.cena(amb, 'locomotor/esqueleto', {
-    pref: 'anatomia', nome: 'Esqueleto humano e osso longo', mask: MASK,
-    vistas: [
-      ['a', 'locomotor-esqueleto-a', 'Esqueleto adulto', 'Esqueleto humano adulto completo, visto de frente'],
-      ['b', 'locomotor-esqueleto-b', 'Osso longo em corte', 'Osso longo cortado no comprimento, com osso compacto, esponjoso e medula']
-    ],
-    hs: [
-      { id: 'cra', c: '#FFD43B', t: 'Crânio', d: 'Protege o encéfalo. Faz parte do esqueleto axial, junto com a coluna e a caixa torácica.', em: { a: [50, 10] }, z: 2.8 },
-      { id: 'cos', c: '#8FD8FF', t: 'Costelas', d: 'O adulto tem 12 pares: 7 verdadeiras, presas ao esterno, 3 falsas e 2 flutuantes. Protegem o coração e os pulmões.', em: { a: [46, 29] }, z: 2.6 },
-      { id: 'col', c: '#F28B8B', t: 'Coluna vertebral', d: 'Formada por vértebras, protege a medula espinal e sustenta o corpo. Tem curvaturas que ajudam a amortecer o peso.', em: { a: [50, 40] }, z: 2.6 },
-      { id: 'pel', c: '#A9C54A', t: 'Pelve', d: 'Os ossos do quadril formam a cintura pélvica. Ela liga a coluna às pernas e sustenta o peso do tronco.', em: { a: [50, 47] }, z: 2.8 },
-      { id: 'fem', c: '#FFA94D', t: 'Fêmur', d: 'Osso da coxa. É o maior e o mais resistente do corpo, e pertence ao esqueleto apendicular.', em: { a: [45, 60] }, z: 2.6 },
-      { id: 'cmp', c: '#FFD43B', t: 'Osso compacto', d: 'Tecido ósseo denso nas paredes da diáfise. Dá resistência e rigidez ao osso.', em: { b: [40, 42] }, z: 3 },
-      { id: 'esp', c: '#F28B8B', t: 'Osso esponjoso e medula vermelha', d: 'Nas epífises, o osso esponjoso tem trabéculas com espaços. A medula óssea vermelha ali produz as células do sangue.', em: { b: [18, 38] }, z: 3 },
-      { id: 'cav', c: '#FFA94D', t: 'Cavidade medular', d: 'Canal no centro da diáfise. No adulto ele guarda a medula amarela, rica em gordura e reserva de energia.', em: { b: [54, 49] }, z: 3 },
-      { id: 'dis', c: '#CFE0FF', t: 'Epífise distal', d: 'A ponta do osso é de osso esponjoso, que distribui o impacto da articulação.', em: { b: [85, 50] }, z: 3 },
-      { id: 'car', c: '#8FD8FF', t: 'Cartilagem articular', d: 'Capa lisa sobre as pontas do osso. Reduz o atrito e amortece o choque na articulação.', em: { b: [6, 59] }, z: 3.2 }
-    ]
-  });
+  // locomotor/esqueleto saiu daqui: a viagem do cálcio está em cenas-figura-esqueleto.js
 
   // =====================================================================
   // Figuras de IA v2 para as telas que eram desenho fraco (Íris + Aurelius).
