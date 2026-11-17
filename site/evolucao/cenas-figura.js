@@ -216,28 +216,7 @@
     }
   });
 
-  // ---------- Especiação alopátrica: esquilos dos dois lados do Grande Cânion (a cena 3D fica no botão) ----------
-  LAB_FIGALT.cena(amb3, 'especiacao/modos', {
-    pref: 'evolucao', nome: 'Esquilos-antílope do Grande Cânion', mask: false,
-    vistas: [['a', 'especiacao-modos-a', 'Cânion como barreira', 'Dois esquilos-antílope em lados opostos de um cânion com um rio no fundo']],
-    hs: [
-      { id: 'esq', c: '#6FB1FF', t: 'População de um lado', d: 'No lado sul do Grande Cânion vive o esquilo-antílope de Harris. Isolado do outro grupo, ele acumula mutações e passa por seleção própria.', em: { a: [22, 30] }, z: 2.6 },
-      { id: 'dir', c: '#FFA94D', t: 'População do outro lado', d: 'No lado norte vive o esquilo-antílope de cauda branca. Sem cruzar com o grupo do outro lado, o fluxo gênico é interrompido.', em: { a: [80, 29] }, z: 2.6 },
-      { id: 'can', c: '#F7C13B', t: 'Barreira geográfica', d: 'O cânion e o rio separam as populações. Isolamento geográfico é o primeiro passo da especiação alopátrica.', em: { a: [50, 50] }, z: 2 },
-      { id: 'rio', c: '#8FD8FF', t: 'Rio no fundo', d: 'Esquilos pequenos de solo não atravessam o vale. A barreira vale para cada espécie: para uma ave, o mesmo cânion não separaria nada.', em: { a: [49, 76] }, z: 2.4 },
-      { id: 'esp', c: '#A9C54A', t: 'Duas espécies', d: 'Com o tempo as diferenças se acumulam. Se os grupos voltarem a se encontrar e não cruzarem ou não tiverem filhotes férteis, já são espécies diferentes.', em: { a: [50, 22] }, z: 2 }
-    ],
-    sobre(R, X, t) {
-      const T = tt(t), P = R.pt.bind(R), a = P(26, 30), b = P(76, 30), ph = (T % 10) / 10, fluxo = RED ? 0 : 1 - ez(sg(ph, .42, .5)), dif = RED ? 1 : ez(sg(ph, .5, .8)), esc = RED ? 1 : 1 - ez(sg(ph, .92, 1));
-      if (fluxo > 0) for (let i = 0; i < 8; i++) {
-        const u = fr(T * .18 + i / 8), d = i % 2 ? 1 - u : u, x = a[0] + (b[0] - a[0]) * d, y = a[1] + (b[1] - a[1]) * d - Math.sin(d * Math.PI) * R.s * 15;
-        pto(X, x, y, R.s * .75, '#FFE08A', fluxo * Math.sin(d * Math.PI));
-      }
-      if (RED) { const x = (a[0] + b[0]) / 2; X.save(); X.strokeStyle = 'rgba(240,96,93,.8)'; X.lineWidth = 2.4; X.setLineDash([4, 5]); X.beginPath(); X.moveTo(a[0] + R.s * 4, a[1] - R.s * 6); X.quadraticCurveTo(x, a[1] - R.s * 20, b[0] - R.s * 4, b[1] - R.s * 6); X.stroke(); X.restore(); }
-      else if (ph > .42) { const x = (a[0] + b[0]) / 2, ap = ez(sg(ph, .42, .5)) * esc; X.save(); X.globalAlpha *= ap; X.strokeStyle = 'rgba(240,96,93,.85)'; X.lineWidth = 2.4; X.setLineDash([4, 5]); X.beginPath(); X.moveTo(a[0] + R.s * 4, a[1] - R.s * 6); X.quadraticCurveTo(x, a[1] - R.s * 20, b[0] - R.s * 4, b[1] - R.s * 6); X.stroke(); X.restore(); }
-      brilho(X, a[0], a[1], R.s * 11, '#6FB1FF', .32 * dif * esc); brilho(X, b[0], b[1], R.s * 11, '#FFA94D', .32 * dif * esc);
-    }
-  });
+  // ---------- especiacao/modos: a figura e a viagem estão em cenas-figura-especiacao.js ----------
 
   // ---------- Endossimbiose: bactérias que viraram organelas (a cena 3D fica no botão) ----------
   LAB_FIGALT.cena(amb3, 'origem/primeiras-celulas', {

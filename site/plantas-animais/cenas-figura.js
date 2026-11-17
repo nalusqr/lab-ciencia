@@ -1,4 +1,5 @@
 /* LAB Plantas e animais: figura de IA por padrão em 4 rotas sem 3D (Aurelius).
+   Briófitas e angiospermas saíram daqui: as duas rotas estão em cenas-figura-plantas.js, com a viagem por cima da figura.
    Figura (figura-ia.js v2, vistas A e B, pontos e zoom) abre primeiro; o botão "Ver esquema" mostra a cena 2D antiga e "Ver figura" volta.
    O .js de cada imagem só entra na página quando a cena abre. Usa os globais do motor (SC, X, W, H, NAR, cap).
    Carregar antes de LAB_PLANTAS_iniciar(). */
@@ -14,21 +15,6 @@
   };
 
   // ================= PLANTAE =================
-  LAB_FIGALT.cena(amb, 'plantae/briofitas', {
-    pref: 'plantas-animais', nome: 'Musgo com esporófitos', mask: MASK,
-    vistas: [
-      ['a', 'plantae-briofitas-a', 'Musgo no barranco', 'Musgo em barranco úmido, com hastes e cápsulas dos esporófitos'],
-      ['b', 'plantae-briofitas-b', 'Cápsulas de perto', 'Detalhe do musgo: cápsulas com opérculo no alto das hastes']
-    ],
-    hs: [
-      { id: 'cap', c: '#FFA94D', t: 'Cápsula', d: 'Dentro da cápsula se formam os esporos, por meiose. É a parte reprodutiva do esporófito.', em: { a: [46, 19], b: [56, 21] }, z: 2.8 },
-      { id: 'seta', c: '#F28B8B', t: 'Haste (seta)', d: 'A haste ergue a cápsula acima do musgo, o que ajuda a dispersar os esporos pelo vento.', em: { a: [46, 30], b: [47, 43] }, z: 2.8 },
-      { id: 'ope', c: '#FFD43B', t: 'Opérculo', d: 'A tampa da cápsula se solta e libera os esporos.', em: { b: [69, 25] }, z: 3.2 },
-      { id: 'gam', c: '#A9C54A', t: 'Gametófito verde', d: 'A parte verde e folhosa é o gametófito (n), a fase duradoura e dominante da briófita. Faz fotossíntese e sustenta o esporófito.', em: { a: [45, 60], b: [30, 80] }, z: 2.4 },
-      { id: 'umi', c: '#8FD8FF', t: 'Ambiente úmido', d: 'As briófitas não têm vasos condutores e o anterozoide precisa de uma película de água para nadar até a oosfera. Por isso vivem em lugares úmidos e são pequenas.', em: { a: [30, 86] }, z: 2.4 }
-    ]
-  });
-
   LAB_FIGALT.cena(amb, 'plantae/gimnospermas', {
     pref: 'plantas-animais', nome: 'Araucária, pinha e gralha-azul', mask: MASK,
     vistas: [
@@ -165,33 +151,6 @@
       const s = P(73, 20), pu = RED ? .5 : .5 + .5 * Math.sin(T * 2);
       brilho(X, s[0], s[1], R.s * (13 + 3 * pu), '#CFE0FF', .1 + .12 * pu);
       const h = P(84, 52), kk = f1(T * .4); anel(X, h[0], h[1], R.s * (2 + 4 * kk), '#A9C54A', RED ? .4 : .7 * (1 - kk), 1.6);
-    }
-  });
-
-  // ---------- Angiospermas: flor com cálice, corola, androceu e gineceu ----------
-  LAB_FIGALT.cena(amb3, 'plantae/angiospermas', {
-    pref: 'plantas-animais', nome: 'Flor em corte longitudinal', mask: MASK,
-    vistas: [['a', 'plantae-angiospermas-a', 'Flor em corte', 'Flor cortada ao meio, com sépalas, pétalas, estames e o carpelo com óvulos']],
-    hs: [
-      { id: 'est', c: '#F28B8B', t: 'Estigma', d: 'Ponta do carpelo, em geral pegajosa, que recebe o grão de pólen. A chegada do pólen ao estigma é a polinização.', em: { a: [50, 9] }, z: 3 },
-      { id: 'sty', c: '#FFD43B', t: 'Estilete', d: 'Tubo que liga o estigma ao ovário. O tubo polínico cresce por dentro dele até chegar aos óvulos.', em: { a: [50, 33] }, z: 3 },
-      { id: 'ova', c: '#A9C54A', t: 'Ovário com óvulos', d: 'Guarda os óvulos. Depois da fecundação, o óvulo vira semente e o ovário vira fruto. Só as angiospermas têm fruto.', em: { a: [50, 64] }, z: 3 },
-      { id: 'ant', c: '#FFA94D', t: 'Antera', d: 'Parte do estame que produz os grãos de pólen. O conjunto dos estames forma o androceu, a parte masculina da flor.', em: { a: [57, 21] }, z: 3 },
-      { id: 'fil', c: '#C9AEFF', t: 'Filete', d: 'Haste fina que sustenta a antera.', em: { a: [53, 39] }, z: 3 },
-      { id: 'pet', c: '#F2B6C6', t: 'Pétalas', d: 'Formam a corola. Com cores e perfume, atraem polinizadores. Em outras flores, o vento poliniza e as pétalas são pequenas.', em: { a: [69, 39] }, z: 2.4 },
-      { id: 'sep', c: '#8FD8FF', t: 'Sépalas', d: 'Folhas verdes e pequenas na base da flor. Formam o cálice e protegem o botão ainda fechado.', em: { a: [36, 66] }, z: 2.8 }
-    ],
-    sobre(R, X, t) {
-      const T = tt(t), P = R.pt.bind(R), ph = (T % 9) / 9;
-      const ants = [[41, 17], [44, 17], [57, 21], [59, 22]].map(q => P(q[0], q[1])), est = P(50, 9), ov = P(50, 64);
-      if (RED) { ants.forEach((a, i) => { const u = .3 + i * .1; pto(X, a[0] + (est[0] - a[0]) * u, a[1] + (est[1] - a[1]) * u - R.s * 4 * Math.sin(u * Math.PI), R.s * .8, '#FFE08A', .8); }); }
-      else {
-        const v = ez(sg(ph, 0, .35));
-        ants.forEach((a, i) => { if (v > 0 && v < 1) { const u = ez(v), x = a[0] + (est[0] - a[0]) * u, y = a[1] + (est[1] - a[1]) * u - Math.sin(u * Math.PI) * R.s * 7; pto(X, x, y, R.s * .8, '#FFE08A', Math.sin(u * Math.PI)); } });
-        const tubo = ez(sg(ph, .38, .8)); if (tubo > 0 && tubo < 1) { const y = est[1] + (ov[1] - est[1]) * tubo; X.save(); X.strokeStyle = 'rgba(255,224,138,.8)'; X.lineWidth = 2.2; X.beginPath(); X.moveTo(est[0], est[1]); X.lineTo(est[0], y); X.stroke(); X.restore(); pto(X, est[0], y, R.s * 1, '#FFF2B8', 1); }
-        const fe = ez(sg(ph, .8, .9)) * (1 - ez(sg(ph, .92, 1))); brilho(X, ov[0], ov[1], R.s * 9, '#A9C54A', .5 * fe); anel(X, ov[0], ov[1], R.s * (3 + 5 * fe), '#E8FFA8', .6 * fe, 1.8);
-      }
-      brilho(X, est[0], est[1], R.s * 5, '#F28B8B', RED ? .3 : .1 + .2 * sg(ph, .1, .4) * (1 - sg(ph, .5, .6)));
     }
   });
 

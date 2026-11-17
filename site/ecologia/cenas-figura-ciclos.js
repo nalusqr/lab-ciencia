@@ -10,7 +10,7 @@
    A cena antiga fica atrás de "Ver em 3D" (ou "Ver esquema" sem WebGL), pelo alternador LAB_FIGALT (figura-alterna.js).
    Com prefers-reduced-motion nada anda sozinho: etapas por botão e quadro parado.
    Substitui os blocos antigos de impactos/estufa (cenas-figura-v2.js) e impactos/eutrofizacao (cenas-figura.js).
-   Carregar depois de cenas-figura-v2.js. Texto na tela: sem "!", sem setas ou pontos como separador. */
+   Carregar depois de cenas-figura-v2.js. Exporta o motor em window.LAB_ECO_VG (usado por cenas-figura-ciclos2.js). Texto na tela: sem "!", sem setas ou pontos como separador. */
 'use strict';
 (function () {
   const E = window.LAB_ECO;
@@ -654,4 +654,7 @@
       if (e === 5) [[36, 73.5], [57, 68], [48.5, 64.5]].forEach((q, i) => { const p = R.pt(q[0], q[1]), u = RED ? .5 : (t * .5 + i * .3) % 1; X.beginPath(); X.arc(p[0], p[1], R.s * (2 + 3 * u), 0, TAU); X.strokeStyle = `rgba(255,122,122,${.8 * (1 - u)})`; X.lineWidth = 2; X.stroke(); });
     }
   });
+
+  // o motor fica disponível para cenas-figura-ciclos2.js (água, magnificação e chuva ácida): mesma barra de etapas e mesmo painel
+  window.LAB_ECO_VG = { viagem, FORMA, bola, mol, brilho, txt, pastilha, quebra };
 })();

@@ -1,4 +1,5 @@
 /* LAB Vírus: figura de IA por padrão em 3 rotas sem 3D (Aurelius).
+   Arboviroses saiu daqui: a rota está em cenas-figura-arboviroses.js, com as viagens por cima da figura.
    Figura (figura-ia.js v2, vistas A e B, pontos e zoom) abre primeiro; o botão "Ver esquema" mostra a cena 2D antiga e "Ver figura" volta.
    O .js de cada imagem só entra na página quando a cena abre. Usa os globais do motor (SC, X, W, H, NAR, cap).
    Carregar antes de LAB_VIRUS_iniciar(). */
@@ -31,23 +32,6 @@
   });
 
   // ================= DOENÇAS =================
-  LAB_FIGALT.cena(amb, 'doencas/arboviroses', {
-    pref: 'virus', nome: 'Mosquito Aedes aegypti e criadouros', mask: MASK,
-    vistas: [
-      ['a', 'doencas-arboviroses-a', 'Aedes aegypti', 'Aedes aegypti: o mosquito que transmite dengue, zika e chikungunya'],
-      ['b', 'doencas-arboviroses-b', 'Criadouros', 'Água parada em pneu, vaso e caixa-d\'água: lugares onde o mosquito põe ovos']
-    ],
-    hs: [
-      { id: 'lira', c: '#FFD43B', t: 'Desenho em forma de lira', d: 'Faixas brancas no dorso do tórax identificam o Aedes aegypti.', em: { a: [51, 40] }, z: 2.8 },
-      { id: 'pat', c: '#CFE0FF', t: 'Patas listradas', d: 'Anéis brancos nas patas dão ao mosquito o aspecto de listrado. Ele costuma picar de dia, principalmente de manhã e no fim da tarde.', em: { a: [53, 70] }, z: 2.6 },
-      { id: 'prob', c: '#F28B8B', t: 'Fêmea que pica', d: 'Só a fêmea suga sangue, que ela precisa para amadurecer os ovos. Ao picar, transmite o vírus.', em: { a: [33, 34] }, z: 2.8 },
-      { id: 'asa', c: '#8FD8FF', t: 'Asas', d: 'O Aedes voa pouco, em geral algumas centenas de metros. Por isso o foco costuma estar perto de onde a pessoa mora.', em: { a: [65, 39] }, z: 2.6 },
-      { id: 'pneu', c: '#FFA94D', t: 'Pneu com água', d: 'A água da chuva fica parada dentro do pneu. Os ovos ficam na parede e eclodem quando a água sobe.', em: { b: [17, 76] }, z: 2.6 },
-      { id: 'vaso', c: '#A9C54A', t: 'Prato de vaso', d: 'Basta um pouco de água no pratinho. Encher de areia ou virar o recipiente evita o criadouro.', em: { b: [48, 64] }, z: 2.8 },
-      { id: 'cx', c: '#8FD8FF', t: 'Caixa-d\'água aberta', d: 'Caixa sem tampa acumula larvas. Mantê-la vedada e eliminar a água parada interrompe o ciclo do mosquito.', em: { b: [76, 48] }, z: 2.4 }
-    ]
-  });
-
   LAB_FIGALT.cena(amb, 'doencas/hepatites-hpv', {
     pref: 'virus', nome: 'Fígado e lesão causada pelo HPV', mask: MASK,
     vistas: [

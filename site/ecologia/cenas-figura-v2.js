@@ -1,5 +1,5 @@
 /* LAB Ecologia: figura de IA por padrão em 8 rotas que tinham desenho 2D ou 3D de primitivas fraco (Íris e Dry).
-   impactos/estufa foi para cenas-figura-ciclos.js.
+   impactos/estufa foi para cenas-figura-ciclos.js; impactos/chuva, para cenas-figura-ciclos2.js.
    Mesmo padrão de cenas-figura.js (figura-ia v2: figura como visão padrão, pontos tocáveis, botão para a cena antiga).
    Diferenças: aqui a cena antiga roda escondida por baixo (cfg.oculto) para manter o estado (faixas, simulação, legenda),
    e uma animação leve é desenhada por cima da figura, ligada à faixa da própria cena quando ela existe.
@@ -204,21 +204,6 @@
     [[36, 56, 1], [55, 60, 0], [68, 22, 1], [80, 47, 0]].forEach(q => { const p = P(R, q[0], q[1]); sinal(X, p[0], p[1], !!q[2]); });
   }
 
-  // ---------- 8. impactos/chuva: gases sobem, viram ácido na nuvem e caem ----------
-  function sobreChuva(R, X, t, c) {
-    const S = c.S || {}, v = cl((S.v == null ? 6 : S.v) / 10, 0, 1), tt = tempo(t), n = 5 + Math.round(v * 14);
-    for (let i = 0; i < n; i++) {                               // SO₂ e NOₓ das chaminés até a nuvem
-      const u = (tt * .1 + i / n) % 1, o = hash(i, 4), x = lerp(12 + o * 6, 46 + o * 10, u), y = lerp(46, 20, u) - Math.sin(u * Math.PI) * 6 + Math.sin(tt * 1.2 + i) * 1.2, p = P(R, x, y);
-      brilho(X, p[0], p[1], 8, i % 2 ? 'rgba(255,169,77,.95)' : 'rgba(247,193,59,.95)', Math.sin(u * Math.PI) * .9);
-    }
-    const nd = 8 + Math.round(v * 34), [ux, uy] = px(R);
-    for (let i = 0; i < nd; i++) {                              // gotas ácidas
-      const u = (tt * .55 + hash(i, 7)) % 1, x = 47 + hash(i, 8) * 36 + u * -4, y = lerp(30, 80, u), p = P(R, x, y);
-      X.save(); X.globalAlpha = (1 - u * .3) * .8; X.strokeStyle = '#E6F08A'; X.lineWidth = 2; X.lineCap = 'round'; X.beginPath(); X.moveTo(p[0], p[1]); X.lineTo(p[0] - 2, p[1] + 10); X.stroke(); X.restore();
-      if (u > .96 && x > 55 && x < 84) { const q = P(R, x, 81); X.save(); X.globalAlpha = .5; X.strokeStyle = '#E6F08A'; X.lineWidth = 1.5; X.beginPath(); X.ellipse(q[0], q[1], 7, 3, 0, 0, TAU); X.stroke(); X.restore(); }
-    }
-  }
-
   // ---------- 9. relacoes/polinizacao: pólen brilha nas flores e a cutia leva a semente ----------
   function sobrePolin(R, X, t, c) {
     const tt = tempo(t);
@@ -292,15 +277,6 @@
         { id: 'der', c: '#A9C54A', t: 'Parasitismo', d: 'A erva-de-passarinho faz fotossíntese, mas retira água e sais minerais da seiva da árvore. Ela ganha (+) e o hospedeiro perde (−).', em: { a: [68, 29] }, z: 2.8 },
         { id: 'dar', c: '#F28B8B', t: 'Árvore hospedeira', d: 'O hospedeiro enfraquece, mas em geral não morre logo. Parasitas costumam depender dele vivo.', em: { a: [94.5, 54.7] }, z: 2.6 },
         { id: 'dag', c: '#8FD8FF', t: 'Rio', d: 'Onças caçam junto à água. Esta cena mostra relações entre espécies diferentes. Competição na mesma espécie e canibalismo estão no esquema.', em: { a: [76, 82] }, z: 2.2 }
-      ] }],
-    ['impactos/chuva', { pref: 'ecologia', nome: 'Chuva ácida', mask: false, ctl: true, oculto: true, sobre: sobreChuva,
-      vistas: [['a', 'impactos-chuva-a', 'Região industrial', 'Fábricas, nuvem de tempestade e floresta danificada pela chuva ácida, com lago ao lado']],
-      hs: [
-        { id: 'cch', c: '#FFA94D', t: 'Chaminés', d: 'A queima de carvão e de derivados de petróleo libera SO₂ e NOₓ na atmosfera.', em: { a: [11, 54] }, z: 2.6 },
-        { id: 'cnu', c: '#CFE0FF', t: 'Nuvem', d: 'Os gases reagem com a água e formam ácido sulfúrico (H₂SO₄) e ácido nítrico (HNO₃). A chuva fica com pH menor que 5,6.', em: { a: [59, 15] }, z: 2.4 },
-        { id: 'cfl', c: '#F28B8B', t: 'Floresta danificada', d: 'A chuva ácida queima folhas e acidifica o solo, que perde nutrientes. As árvores enfraquecem e morrem.', em: { a: [89, 42] }, z: 2.6 },
-        { id: 'cla', c: '#8FD8FF', t: 'Lago', d: 'Com pH baixo, peixes e outros seres aquáticos morrem. Rochas calcárias no fundo ajudam a neutralizar a acidez.', em: { a: [67, 82] }, z: 2.4 },
-        { id: 'cvi', c: '#A9C54A', t: 'Árvores que resistem', d: 'Algumas árvores aguentam mais a acidez. Em áreas muito afetadas, a comunidade inteira muda.', em: { a: [63, 56] }, z: 2.8 }
       ] }],
     ['relacoes/polinizacao', { pref: 'ecologia', nome: 'Polinização e dispersão', mask: false, oculto: true, sobre: sobrePolin, estatico: 'Abelha, beija-flor e morcego levam o pólen de flor em flor. A cutia enterra castanhas e esquece parte delas, que germinam. Use Ver esquema para testar o que acontece sem cada animal.',
       vistas: [['a', 'relacoes-polinizacao-a', 'Floresta', 'Abelha, beija-flor e morcego polinizando flores, e cutia enterrando castanhas ao pé de uma castanheira']],

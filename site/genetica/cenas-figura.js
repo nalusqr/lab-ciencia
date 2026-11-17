@@ -94,22 +94,7 @@
     ]
   });
 
-  reg('biotec/clonagem', {
-    nome: 'Clonagem e transferência nuclear',
-    vistas: [
-      ['a', 'biotec-clonagem-a', 'Ovelhas', 'Ovelha Finn Dorset branca, tipo Dolly, com ovelha Scottish Blackface de cara preta'],
-      ['b', 'biotec-clonagem-b', 'Transferência nuclear', 'Transferência nuclear ao microscópio, com pipeta de fixação, óvulo e micropipeta']
-    ],
-    hs: [
-      { id: 'fin', c: GL, t: 'Finn Dorset', d: 'Raça de cara branca. Dolly nasceu de um núcleo tirado de uma célula da glândula mamária de uma Finn Dorset.', em: { a: [27, 54] }, z: 2.2 },
-      { id: 'cara', c: AZ, t: 'Cara branca', d: 'Dolly era branca como a doadora do núcleo, e não como a ovelha que gestou o embrião.', em: { a: [46, 68] }, z: 2.6 },
-      { id: 'blk', c: LJ, t: 'Scottish Blackface', d: 'Raça de cara preta. Uma Blackface forneceu o óvulo, que teve o núcleo retirado, e outra serviu de mãe de aluguel.', em: { a: [65, 66] }, z: 2.4 },
-      { id: 'fix', c: AZ, t: 'Pipeta de fixação', d: 'Segura o óvulo parado com leve sucção, para que a outra pipeta possa trabalhar.', em: { b: [20, 49] }, z: 2.6 },
-      { id: 'ovu', c: RS, t: 'Óvulo', d: 'Célula grande, de onde o núcleo próprio foi retirado. O citoplasma fica e é ele que reprograma o núcleo doador.', em: { b: [45, 38] }, z: 2.4 },
-      { id: 'mic', c: V, t: 'Micropipeta', d: 'Agulha muito fina que leva o núcleo de uma célula do corpo (somática) para dentro do óvulo.', em: { b: [78, 50] }, z: 2.6 },
-      { id: 'nuc', c: VM, t: 'Núcleo doador', d: 'Traz o material genético diploide do animal a ser clonado. O clone é geneticamente quase idêntico ao doador.', em: { b: [53, 50] }, z: 3.4 }
-    ]
-  });
+  // biotec/clonagem: a figura e a viagem da Dolly estão em cenas-figura-clonagem.js
 
   reg('extras/interacao', {
     nome: 'Labradores e epistasia',
