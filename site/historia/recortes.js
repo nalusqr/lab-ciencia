@@ -485,7 +485,6 @@ I['cerco']={fundo:'petroleo',nome:'Cerco assírio a uma cidade',art(u){
     pth('M6 -14 C20 -14 22 6 12 16 C8 18 4 14 4 6 Z','#8a7f68',T,2.4)+tinta('M-14 -30 L-14 30',2.2)+pth('M-14 -36 L-18 -28 H-10Z',T)+'</g>';
   s+=sold(118,150,.85)+sold(146,160,.85)+sold(172,170,.85);
   // escudo de cerco em cima da rampa: flechas
-  s+=tinta('M100 90 C104 96 106 102 106 110',1.6)+tinta('M120 70 C124 78 126 86 126 94',1.6)+tinta('M140 84 C144 92 146 100 146 108',1.6);
   s+=pth('M6 190 H194','none',T,3);
   return s;
 }};
@@ -538,6 +537,365 @@ I['cunha-passos']={fundo:'coral',nome:'Do desenho da espiga ao sinal em cunha',a
   s+=cunha(54,170,1)+cunha(68,170,1)+cunha(82,170,1)+'<path d="M100 170 l9 5 l-9 5 z M108 175 h12" fill="'+T+'" stroke="'+T+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+cunha(128,170,1)+cunha(142,170,1);
   return s;
 }};
+
+/* ---------- Egito: recortes novos ---------- */
+I['nilometro']={fundo:'petroleo',nome:'Nilômetro: escada de pedra com marcas do nível da cheia',art(u){
+  let s=pth('M10 150 C40 140 70 160 100 150 C130 140 160 160 190 150 V192 H10Z','#8ec3e8',T,3)+'<path d="M10 160 C40 150 70 170 100 160 C130 150 160 170 190 160" fill="none" stroke="'+T+'" stroke-width="1.5" opacity=".5"/>';
+  const deg=[[28,40],[52,64],[76,88],[100,112],[124,136]];
+  deg.forEach((d,i)=>{s+=pth('M'+d[0]+' '+d[1]+' H196 V'+(d[1]+24)+' H'+d[0]+'Z','#efe4cf',T,3)+'<path d="M'+(d[0])+' '+(d[1]+12)+' H196" stroke="'+T+'" stroke-width="1" opacity=".4"/>';});
+  s+=pth('M10 16 H28 V160 H10Z','#efe4cf',T,3);
+  [30,54,78,102,126].forEach(y=>{s+=tinta('M10 '+y+' H28',2);});
+  s+=pth('M6 150 H34','none',T,3)+tinta('M44 50 l8 8 l-8 8',2.4)+tinta('M44 12 C60 4 74 20 90 12',2);
+  return s;}};
+I['cartucho']={fundo:'amarelo',nome:'Cartucho com hieróglifos',art(u){
+  let s=pth('M44 30 H156 C180 30 180 170 156 170 H44 C20 170 20 30 44 30Z',P,T,4)+pth('M100 24 V176','none',T,0)+tinta('M170 40 V160',3);
+  // falcão
+  s+=pth('M54 70 C54 56 70 50 80 58 C86 62 84 72 80 74 L84 92 H60 L62 76 C56 76 54 72 54 70Z',P,T,3)+'<circle cx="68" cy="62" r="2.4" fill="'+T+'"/>'+tinta('M60 92 L56 100 M84 92 L88 100',3);
+  // sol
+  s+='<circle cx="118" cy="68" r="14" fill="var(--coral)" stroke="'+T+'" stroke-width="3"/><circle cx="118" cy="68" r="3.4" fill="'+T+'"/>';
+  // água
+  s+=tinta('M44 128 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10',3.2)+tinta('M44 146 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10',3.2);
+  s+=pth('M96 108 H138','none',T,3);
+  return s;}};
+I['roseta']={fundo:'coral',nome:'Pedra de Roseta: três escritas na mesma laje',art(u){
+  const lj='M40 190 L34 70 C34 40 60 18 100 18 C140 18 166 40 166 70 L160 190Z';
+  let s='<defs>'+clip(u+'r',lj)+'</defs>'+pth(lj,'#cfcac0')+'<g clip-path="url(#'+u+'r)"><path d="M120 0 H200 V200 H120Z" fill="url(#cm-h1)" opacity=".5"/>';
+  const faixas=[[26,78,'hieróglifos'],[82,128,'demótico'],[132,184,'grego']];
+  faixas.forEach((f,i)=>{
+    s+=tinta('M30 '+f[0]+' H170',1.8);
+    for(let y=f[0]+10;y<f[1]-4;y+=11){let d='M44 '+y;for(let x=44;x<156;x+=9)d+=' l4.5 '+(i===0?-4:i===1?1:3)+' l4.5 '+(i===0?4:-1)+' ';s+=tinta(d,i===2?1.3:1.8);}
+  });
+  s+='</g>'+tinta('M30 76 H170 M30 130 H170',2.4)+pth(lj,'none',T,3.4)+pth('M110 20 L128 34 L116 46 L124 60','none',T,2);
+  return s;}};
+I['coroas']={fundo:'amarelo',nome:'Coroa branca, coroa vermelha e coroa dupla',art(u){
+  const branca=(x,y,k,f)=>pth('M'+x+' '+(y+70*k)+' C'+(x-12*k)+' '+(y+60*k)+' '+(x-10*k)+' '+(y+20*k)+' '+x+' '+y+' C'+(x+10*k)+' '+(y+20*k)+' '+(x+12*k)+' '+(y+60*k)+' '+x+' '+(y+70*k)+'Z',f||P,T,3)+pth('M'+x+' '+y+' m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0',f||P,T,2.4);
+  const verm=(x,y,k)=>pth('M'+(x-22*k)+' '+(y+70*k)+' L'+(x-16*k)+' '+(y+30*k)+' L'+(x+6*k)+' '+(y+30*k)+' L'+(x+4*k)+' '+y+' L'+(x+10*k)+' '+y+' L'+(x+24*k)+' '+(y+70*k)+'Z','var(--coral)',T,3)+tinta('M'+(x+10*k)+' '+(y+4)+' C'+(x+34*k)+' '+(y-10*k)+' '+(x+36*k)+' '+(y+10*k)+' '+(x+24*k)+' '+(y+16*k),2.6);
+  let s=branca(40,48,1.5)+tinta('M20 156 H60',1)+verm(112,50,1.4)+'<g transform="translate(0 0)">'+pth('M24 190 H176','none',T,3)+'</g>';
+  // dupla: vermelha com branca por dentro
+  s+=verm(158,118,.8).replace('var(--coral)','var(--coral)')+branca(150,100,.6);
+  return s+pth('M12 184 H188','none',T,3);}};
+I['aton']={fundo:false,nome:'Disco solar de Aton, com raios que terminam em mãos',art(u){
+  let s='';
+  for(let i=0;i<14;i++){const a=i*Math.PI/7,c=Math.cos(a),n=Math.sin(a),x1=100+c*34,y1=100+n*34,x2=100+c*70,y2=100+n*70;
+    s+=pth('M'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+x2.toFixed(1)+' '+y2.toFixed(1),'none',T,4.4);
+    const g=a*180/Math.PI;
+    // mão: palma e três dedos, apontando para fora
+    s+='<g transform="translate('+x2.toFixed(1)+' '+y2.toFixed(1)+') rotate('+g.toFixed(1)+')">'+pth('M0 -6 C8 -7 11 -5 11 0 C11 5 8 7 0 6Z',P,T,2.4)+tinta('M9 -3 L19 -6 M10 0 L21 0 M9 3 L19 6',2.2)+'</g>';}
+  return s+'<circle cx="100" cy="100" r="36" fill="var(--amarelo)" stroke="'+T+'" stroke-width="4.5"/><circle cx="100" cy="100" r="22" fill="#ffe27a" stroke="'+T+'" stroke-width="2"/>';}};
+I['sol']={fundo:'amarelo',nome:'Disco solar: Shamash, deus do Sol e da justiça',art(u){
+  let s='';for(let i=0;i<8;i++){const a=i*Math.PI/4;s+=pth('M'+(100+Math.cos(a)*44).toFixed(1)+' '+(100+Math.sin(a)*44).toFixed(1)+' L'+(100+Math.cos(a)*84).toFixed(1)+' '+(100+Math.sin(a)*84).toFixed(1),'none',T,5);}
+  for(let i=0;i<8;i++){const a=i*Math.PI/4+Math.PI/8,d='M100 100';let w='M'+(100+Math.cos(a)*42).toFixed(1)+' '+(100+Math.sin(a)*42).toFixed(1);for(let k=1;k<=4;k++){const r=42+k*9,o=k%2?5:-5;w+=' L'+(100+Math.cos(a)*r-Math.sin(a)*o).toFixed(1)+' '+(100+Math.sin(a)*r+Math.cos(a)*o).toFixed(1);}s+=tinta(w,3);}
+  return s+pth('M100 100 m-34 0 a34 34 0 1 0 68 0 a34 34 0 1 0 -68 0',P,T,4.4)+'<circle cx="100" cy="100" r="16" fill="var(--coral)" stroke="'+T+'" stroke-width="3"/>';}};
+I['mumia']={fundo:'petroleo',nome:'Mumificação em três quadros: órgãos em vasos, corpo no natrão, faixas de linho',art(u){
+  let s='';
+  const q=(x)=>pth('M'+x+' 24 H'+(x+58)+' V176 H'+x+'Z',P,T,3);
+  s+=q(8)+q(71)+q(134);
+  // vasos
+  [[22,60],[22,100],[22,140]].forEach(a=>{});
+  [[36,52],[36,98],[36,144]].forEach((a,i)=>{s+=pth('M'+(a[0]-14)+' '+(a[1]+22)+' C'+(a[0]-16)+' '+(a[1]-6)+' '+(a[0]+16)+' '+(a[1]-6)+' '+(a[0]+14)+' '+(a[1]+22)+'Z',i%2?'#e9ddc2':P,T,2.6)+pth('M'+(a[0]-10)+' '+(a[1]-2)+' H'+(a[0]+10)+' L'+(a[0]+8)+' '+(a[1]-12)+' H'+(a[0]-8)+'Z',P,T,2.4);});
+  // corpo no natrão
+  s+=pth('M78 120 H122 V150 H78Z','url(#cm-h2)',T,2.6)+pth('M80 100 C80 88 120 88 120 100 L118 120 H82Z',P,T,2.6)+'<circle cx="100" cy="84" r="9" fill="'+P+'" stroke="'+T+'" stroke-width="2.6"/>';
+  // faixas
+  s+=pth('M154 60 C150 40 170 40 166 60 L170 150 H150Z',P,T,2.6);
+  for(let y=68;y<150;y+=9)s+=tinta('M152 '+y+' L168 '+(y-6),1.6);
+  s+=tinta('M30 24 V176 M0 0',0)+'';
+  return s;}};
+I['narmer']={fundo:'coral',nome:'Paleta de Narmer, desenhada em traço',art(u){
+  const pal='M62 190 C62 150 40 140 40 110 C40 90 56 84 60 70 C52 56 56 30 74 26 C80 18 120 18 126 26 C144 30 148 56 140 70 C144 84 160 90 160 110 C160 140 138 150 138 190Z';
+  let s='<defs>'+clip(u+'p',pal)+'</defs>'+pth(pal,'#b9b4a6')+'<g clip-path="url(#'+u+'p)"><path d="M104 0 H200 V200 H104Z" fill="url(#cm-h1)" opacity=".5"/>';
+  // rei com coroa branca, golpeando
+  s+=pth('M96 62 C88 46 100 44 98 60 L102 90 H92Z',P,T,2.4)+pth('M86 90 H108 L112 140 H84Z',P,T,2.4)+tinta('M108 98 L126 78 M126 78 l6 -10',2.8)+tinta('M90 140 L86 170 M104 140 L110 170',2.8)+
+     pth('M60 150 H76 L74 176 H62Z',P,T,2.4)+tinta('M64 126 C70 120 78 120 82 126',2);
+  s+='</g>'+tinta('M70 40 H130 M70 56 H130',0)+pth(pal,'none',T,3.4)+pth('M82 30 a18 8 0 0 0 36 0','none',T,2.4)+'<circle cx="100" cy="44" r="10" fill="none" stroke="'+T+'" stroke-width="2.4"/>';
+  return s;}};
+function perfil(u,tipo){
+  let s='<circle cx="100" cy="100" r="92" fill="'+P+'" stroke="'+T+'" stroke-width="3"/><defs>'+clip(u+'c','M100 100 m-92 0 a92 92 0 1 0 184 0 a92 92 0 1 0 -184 0')+'</defs><g clip-path="url(#'+u+'c)"><rect width="200" height="200" fill="url(#cm-hh)" opacity=".5"/>';
+  s+=pth('M20 200 C26 168 60 156 100 156 C140 156 176 168 180 200Z',P,T,3);
+  if(tipo==='hat'){ // nemes e barba postiça
+    s+=pth('M58 70 C58 34 82 24 104 24 C128 24 144 44 142 74 L156 160 H128 L122 112 L74 112 L66 160 H44 L58 74Z','var(--amarelo)',T,3)+tinta('M64 70 H140 M60 90 H142 M58 110 H138',0);
+    for(let y=34;y<156;y+=9)s+='<path d="M'+(52+y*0.06)+' '+y+' H'+(150-y*0.06)+'" stroke="'+T+'" stroke-width="1.2" opacity=".35"/>';
+  }
+  s+=pth('M74 54 C80 44 112 44 118 56 C122 70 120 92 114 104 C108 114 90 116 82 106 C74 96 72 70 74 54Z',P,T,3);
+  if(tipo==='hat')s+=pth('M96 112 H110 L108 142 H98Z','var(--amarelo)',T,2.4)+pth('M70 50 C82 42 112 42 120 54 L120 62 C100 54 80 56 70 62Z','var(--amarelo)',T,2.4);
+  else s+=pth('M66 56 C70 34 112 30 124 52 C130 66 124 92 120 108 L112 90 L108 56 L74 60 L72 100 L66 90Z','url(#cm-h3)',T,3)+pth('M72 52 H122','none',T,2.6)+'<circle cx="97" cy="48" r="5" fill="var(--coral)" stroke="'+T+'" stroke-width="2"/>';
+  s+=pth('M86 78 C90 74 98 74 102 78 C98 82 90 82 86 78Z',P,T,2)+'<circle cx="94" cy="78" r="2" fill="'+T+'"/>'+tinta('M82 70 C88 66 98 66 104 70',2.2)+tinta('M118 80 L124 90 L118 94',2.2)+tinta('M96 98 C102 100 108 98 112 96',2.2);
+  return s+'</g><circle cx="100" cy="100" r="92" fill="none" stroke="'+T+'" stroke-width="3.4"/>';
+}
+I['hatshepsut']={fundo:'amarelo',nome:'Hatshepsut, em traço',art(u){return perfil(u,'hat');}};
+I['cleopatra']={fundo:'petroleo',nome:'Cleópatra VII, em traço',art(u){return perfil(u,'cle');}};
+
+/* ---------- Tópico 4: Fenícios, hebreus e persas ---------- */
+const tufo=(cx,cy,n,r)=>{let s='';for(let i=0;i<n;i++){const a=-Math.PI+i/(n-1)*Math.PI;s+=tinta('M'+cx+' '+cy+' L'+(cx+Math.cos(a)*r).toFixed(1)+' '+(cy+Math.sin(a)*r).toFixed(1),1.6);}return s;};
+const elip=(cx,cy,rx,ry,f,w)=>'<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+(f||'none')+'" stroke="'+T+'" stroke-width="'+(w||1.5)+'"/>';
+I['cedro']={fundo:false,nome:'Tronco de cedro cortado, com os anéis visíveis na ponta',art(u){
+  const corpo='M46 70 H152 C168 70 178 82 178 100 C178 118 168 130 152 130 H46Z';
+  let s='<defs>'+clip(u+'c',corpo)+'</defs>'+pth(corpo,P)+'<g clip-path="url(#'+u+'c)"><path d="M0 104 H200 V140 H0Z" fill="url(#cm-h1)" opacity=".6"/></g>';
+  s+=tinta('M64 78 C90 76 118 80 168 78 M58 92 C92 90 130 94 176 92 M60 108 C94 106 136 110 176 108 M64 122 C96 120 130 124 168 122',1.5)+pth(corpo,'none',T,3.4);
+  s+=pth('M46 70 C30 70 22 82 22 100 C22 118 30 130 46 130 C62 130 70 118 70 100 C70 82 62 70 46 70Z','#efe2bd',T,3.4);
+  [[19,24],[14,19],[9,13],[4,7]].forEach(q=>{s+=elip(46,100,q[0]+2,q[1]+4,'none',1.4);});
+  s+=tinta('M118 70 C118 52 128 40 146 32',3.2)+tufo(146,32,8,20)+tufo(128,50,6,15)+tufo(160,54,6,14);
+  return s;}};
+I['vidro']={fundo:false,nome:'Frasco de vidro fenício, com faixas onduladas',art(u){
+  const corpo='M86 34 H114 V50 C114 62 130 70 138 92 C150 120 144 152 124 166 C112 174 88 174 76 166 C56 152 50 120 62 92 C70 70 86 62 86 50Z';
+  let s='<defs>'+clip(u+'v',corpo)+'</defs>'+pth(corpo,P)+'<g clip-path="url(#'+u+'v)"><path d="M104 0 H200 V200 H104Z" fill="url(#cm-h1)" opacity=".5"/>';
+  for(let k=0;k<4;k++){const y=98+k*18;s+=tinta('M40 '+y+' C60 '+(y-12)+' 74 '+(y+12)+' 95 '+y+' S130 '+(y-12)+' 160 '+y,2.2);}
+  s+='</g>'+pth(corpo,'none',T,3.4)+pth('M80 34 C80 26 120 26 120 34 C120 40 80 40 80 34Z',P,T,3)+tinta('M68 110 C66 124 70 138 76 148',2.4);
+  return s;}};
+I['murex']={fundo:false,nome:'Concha de múrex, o molusco que dava a púrpura',art(u){
+  const w1='M58 118 C56 92 76 80 100 80 C128 80 146 96 144 122 C142 142 128 154 110 156 C84 158 60 144 58 118Z';
+  let s=pth('M96 150 C104 168 108 184 104 198 C92 186 80 170 74 150Z',P,T,3.2)+tinta('M92 156 L100 188 M84 154 L92 178',1.6);
+  s+=pth(w1,P,T,3.4)+'<path d="M112 84 C134 90 144 108 142 128 C140 146 128 154 112 156 C124 140 128 108 112 84Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=pth('M66 78 C64 58 80 46 98 46 C118 46 130 58 128 76 C112 70 84 70 66 78Z',P,T,3.2)+pth('M76 46 C76 32 90 24 102 26 C114 28 120 38 116 48 C104 44 90 44 76 46Z',P,T,3)+pth('M88 28 C90 14 104 12 108 22 C104 24 96 26 88 28Z',P,T,2.6);
+  s+=tinta('M70 112 C84 104 110 104 134 112 M68 128 C86 122 112 122 138 128 M74 66 C90 62 108 62 122 66 M82 38 C94 35 104 36 112 40',1.8);
+  [[58,110],[56,124],[62,138],[68,148],[144,112],[146,128],[138,144]].forEach(q=>{const dx=q[0]<100?-9:9;s+=pth('M'+q[0]+' '+(q[1]-5)+' L'+(q[0]+dx)+' '+q[1]+' L'+q[0]+' '+(q[1]+5),P,T,2);});
+  return s;}};
+I['purpura']={fundo:false,nome:'Retalho de tecido tingido de púrpura',art(u){
+  const pano='M26 50 C56 38 88 60 120 48 C148 38 168 48 176 54 L170 150 C142 160 112 144 82 156 C60 164 40 156 26 148Z';
+  let s='<defs>'+clip(u+'p',pano)+'</defs>'+pth(pano,'#7c2a6e')+'<g clip-path="url(#'+u+'p)">'+
+    '<path d="M60 40 C70 80 52 120 66 170 M104 40 C112 80 96 120 110 170 M146 40 C154 80 138 120 152 170" fill="none" stroke="#3f0f3a" stroke-width="7" stroke-opacity=".38"/>'+
+    '<path d="M76 40 C86 80 68 120 82 170 M120 40 C128 80 112 120 126 170 M160 40 C166 80 150 120 164 170" fill="none" stroke="#e7b6df" stroke-width="4" stroke-opacity=".3"/></g>'+pth(pano,'none',T,3.4);
+  for(let x=36;x<170;x+=9)s+=tinta('M'+x+' '+(x<90?154:158)+' l-2 12',2);
+  return s;}};
+const glifo=(x,y,k)=>{switch(k%6){
+  case 0:return '<circle cx="'+x+'" cy="'+y+'" r="4.4" fill="none" stroke="'+T+'" stroke-width="1.8"/><circle cx="'+x+'" cy="'+y+'" r="1.2" fill="'+T+'"/>';
+  case 1:return tinta('M'+(x-2.5)+' '+(y-5)+' V'+(y+5)+' M'+(x+2.5)+' '+(y-5)+' V'+(y+5),1.9);
+  case 2:return tinta('M'+(x-5)+' '+(y+3)+' L'+(x-2)+' '+(y-3)+' L'+(x+1)+' '+(y+3)+' L'+(x+4)+' '+(y-3),1.9);
+  case 3:return tinta('M'+(x-5)+' '+(y+3)+' A5 5 0 0 1 '+(x+5)+' '+(y+3)+' Z',1.9);
+  case 4:return elip(x,y+1,4.6,2.8,'none',1.8)+'<circle cx="'+(x+4.5)+'" cy="'+(y-3)+'" r="1.8" fill="'+T+'"/>';
+  default:return tinta('M'+(x-5)+' '+y+' H'+(x+5)+' M'+x+' '+(y-4)+' V'+(y+4),1.9);}};
+I['estela']={fundo:'amarelo',nome:'Estela de pedra com hieróglifos ilegíveis',art(u){
+  const lap='M52 190 V72 C52 38 74 16 100 16 C126 16 148 38 148 72 V190Z';
+  let s='<defs>'+clip(u+'e',lap)+'</defs>'+pth(lap,P)+'<g clip-path="url(#'+u+'e)"><path d="M118 0 H200 V200 H118Z" fill="url(#cm-h1)" opacity=".5"/></g>';
+  s+='<circle cx="100" cy="42" r="8" fill="none" stroke="'+T+'" stroke-width="2.4"/>'+tinta('M92 42 C82 38 72 40 64 47 M108 42 C118 38 128 40 136 47',2.4);
+  const r=C.rng('merneptah');
+  [68,82,96,110,140,154,168].forEach(y=>{for(let x=64;x<=136;x+=12)s+=glifo(x,y,Math.floor(r()*6));});
+  s+=tinta('M66 128 C70 120 82 120 88 125',2.4)+'<circle cx="99" cy="119" r="2.6" fill="none" stroke="'+T+'" stroke-width="1.8"/>'+tinta('M99 122 V132 M95 126 H103',1.8)+'<circle cx="112" cy="119" r="2.6" fill="none" stroke="'+T+'" stroke-width="1.8"/>'+tinta('M112 122 L108 132 H116Z',1.8)+tinta('M124 118 V132 M130 118 V132 M136 118 V132',2.2);
+  return s+pth(lap,'none',T,3.6);}};
+I['rolo-tora']={fundo:'amarelo',nome:'Rolo da Torá aberto, com linhas de texto ilegível',art(u){
+  let s='';
+  [[28,'L'],[172,'R']].forEach(q=>{const x=q[0];s+=pth('M'+(x-8)+' 42 H'+(x+8)+' V160 H'+(x-8)+'Z','#cfa968',T,3)+pth('M'+(x-12)+' 34 H'+(x+12)+' V44 H'+(x-12)+'Z',P,T,3)+pth('M'+(x-12)+' 158 H'+(x+12)+' V168 H'+(x-12)+'Z',P,T,3)+'<circle cx="'+x+'" cy="26" r="8" fill="'+P+'" stroke="'+T+'" stroke-width="3"/><circle cx="'+x+'" cy="176" r="8" fill="'+P+'" stroke="'+T+'" stroke-width="3"/>'+tinta('M'+x+' 44 V158',1.6);});
+  s+=pth('M36 50 H164 V152 H36Z','#f6edd0',T,3)+'<path d="M36 50 H52 V152 H36Z M148 50 H164 V152 H148Z" fill="url(#cm-h1)" opacity=".55"/>';
+  const r=C.rng('tora');
+  for(let y=62;y<=142;y+=11){let x=144;while(x>58){const w=7+Math.floor(r()*22);s+=tinta('M'+x+' '+y+' H'+Math.max(58,x-w),3);x-=w+7;}}
+  return s;}};
+I['cilindro']={fundo:'coral',nome:'Cilindro de Ciro: barril de argila coberto de cunhas',art(u){
+  const corpo='M44 60 H168 V144 H44 C32 144 26 124 26 102 C26 80 32 60 44 60Z';
+  let s='<defs>'+clip(u+'y',corpo)+'</defs>'+pth(corpo,'#e8d9b4')+'<g clip-path="url(#'+u+'y)"><path d="M0 112 H200 V150 H0Z" fill="url(#cm-h1)" opacity=".55"/>';
+  const r=C.rng('ciro'),cu=(x,y,a)=>'<path transform="translate('+x+' '+y+') rotate('+a+')" d="M-5 -2.6 L2 0 L-5 2.6Z M2 0 H6" fill="'+T+'" stroke="'+T+'" stroke-width="1.4" stroke-linejoin="round"/>';
+  for(let y=72;y<=138;y+=13)for(let x=48;x<=160;x+=13){const n=1;for(let k=0;k<n;k++)s+=cu(x+k*3,y+(k?2:0),[0,90,45,0,135][Math.floor(r()*5)]);}
+  s+='</g>'+pth(corpo,'none',T,3.4)+pth('M168 60 C180 60 186 80 186 102 C186 124 180 144 168 144 C176 124 176 80 168 60Z','#d6c595',T,3.2);
+  return s;}};
+I['darico']={fundo:'amarelo',nome:'Dárico: moeda de ouro com o grande rei ajoelhado, de perfil, com arco e lança',art(u){
+  const r=C.rng('darico');let d='';for(let a=0;a<24;a++){const t=a/24*Math.PI*2,rr=80+(r()-.5)*5;d+=(a?'L':'M')+(100+Math.cos(t)*rr).toFixed(1)+' '+(100+Math.sin(t)*rr).toFixed(1);}d+='Z';
+  let s=pth(d.replace(/(\d+\.\d) (\d+\.\d)/g,(m,x,y)=>(+x+4).toFixed(1)+' '+(+y+5).toFixed(1)),'#c99a1c',T,3)+pth(d,'#f2c94c',T,4)+'<path d="'+d+'" fill="url(#cm-h1)" opacity=".3"/>';
+  // rei de perfil, olhando para a esquerda, ajoelhado em corrida
+  s+=pth('M54 48 C38 70 38 106 54 128',null,T,4.5)+tinta('M54 48 L54 128',1.6);               // arco na mão da frente
+  s+=pth('M122 54 L104 138',null,T,3.4)+pth('M122 54 L120 46 L126 50Z',T,T,1.6);                    // lança
+  s+=pth('M82 118 L66 122 L64 144 L74 146',null,T,5)+pth('M98 120 L120 130 L136 142',null,T,5);     // pernas: joelho à frente, outra ao chão
+  s+=pth('M82 66 L102 64 L106 94 L86 98Z','#f6edd0',T,3.4)+pth('M86 98 L106 94 L112 118 L80 122Z','#e8dfc6',T,3.4)+tinta('M86 104 L108 100 M84 112 L110 110',1.6); // túnica
+  s+=pth('M88 74 L66 84',null,T,4.5)+pth('M102 72 L116 88 L106 104',null,T,4.5);                  // braços
+  s+='<ellipse cx="86" cy="52" rx="9" ry="10.5" fill="#f1d9ab" stroke="'+T+'" stroke-width="3"/>'+pth('M78 56 C76 70 86 72 90 64 C84 66 80 62 78 56Z',T,T,1.4);  // cabeça e barba
+  s+=pth('M77 44 L78 32 L82 38 L86 29 L90 38 L94 32 L95 44Z','#fffbe8',T,2.6);                  // coroa de ameias
+  return s;}};
+I['disco-alado']={fundo:'petroleo',nome:'Símbolo alado dos relevos persas: disco com figura de meio corpo, asas em penas e cauda em leque',art(u){
+  let s='';
+  // asas em fileiras de penas
+  [-1,1].forEach(d=>{const X=x=>100+d*x;
+    [[96,86,'#fffbe8'],[107,74,P],[118,60,'#fffbe8']].forEach((q,i)=>{const y=q[0],len=q[1],f=q[2];
+      s+=pth('M'+X(18)+' '+(y-7)+' H'+X(len-6)+' Q'+X(len+8)+' '+y+' '+X(len-6)+' '+(y+7)+' H'+X(18)+'Z',f,T,2.6);
+      for(let k=26;k<len-6;k+=9)s+=tinta('M'+X(k)+' '+(y-6)+' V'+(y+6),1.4);});
+    // fitas que caem dos lados
+    s+=pth('M'+X(14)+' 116 C'+X(26)+' 130 '+X(34)+' 146 '+X(26)+' 164 L'+X(34)+' 160 L'+X(38)+' 170 C'+X(46)+' 150 '+X(34)+' 128 '+X(20)+' 112Z',P,T,2.4);});
+  // cauda em leque
+  s+=pth('M86 120 H114 L124 140 H76Z','#fffbe8',T,2.6)+pth('M76 140 H124 L132 158 H68Z',P,T,2.6)+pth('M68 158 H132 L138 176 H62Z','#fffbe8',T,2.6);
+  for(let k=-2;k<=2;k++)s+=tinta('M'+(100+k*9)+' 122 L'+(100+k*13)+' 176',1.4);
+  // disco e figura barbada saindo dele
+  s+='<circle cx="100" cy="108" r="17" fill="#fffbe8" stroke="'+T+'" stroke-width="3.2"/><circle cx="100" cy="108" r="10" fill="none" stroke="'+T+'" stroke-width="2.2"/>';
+  s+=pth('M86 98 L88 80 H112 L114 98Z','#fffbe8',T,2.6)+pth('M112 84 L130 70',null,T,3)+'<circle cx="133" cy="67" r="5" fill="none" stroke="'+T+'" stroke-width="2.6"/>'+pth('M88 86 L76 92',null,T,3);
+  s+='<ellipse cx="100" cy="68" rx="9" ry="10" fill="#fffbe8" stroke="'+T+'" stroke-width="2.8"/>'+pth('M92 72 C92 86 108 86 108 72 C104 78 96 78 92 72Z',T,T,1.4)+pth('M91 62 L92 52 L96 57 L100 50 L104 57 L108 52 L109 62Z','#fffbe8',T,2.2);
+  return s;}};
+I['alef']={fundo:'coral',nome:'Letra fenícia alef, derivada da cabeça de um boi',art(u){
+  let s=pth('M30 30 H170 V170 H30Z','#fbf4de',T,3.2)+'<path d="M30 30 H62 V170 H30Z" fill="url(#cm-h1)" opacity=".4"/>';
+  s+='<path d="M72 36 V164 M72 98 L132 40 M72 98 L124 164 M72 56 L100 36" fill="none" stroke="'+T+'" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>';
+  return s;}};
+
+I['altar-fogo']={fundo:'coral',nome:'Altar de pedra em degraus com a chama sagrada do zoroastrismo',art(u){
+  let s=pth('M44 172 H156 V156 H44Z','#d9d0bb',T,3)+pth('M56 156 H144 V136 H56Z','#e6dfcc',T,3)+pth('M70 136 H130 V112 H70Z','#d9d0bb',T,3)+pth('M62 112 H138 L130 98 H70Z','#efe9d8',T,3);
+  s+=tinta('M44 164 H156 M56 146 H144 M70 124 H130',1.4)+tinta('M52 172 V156 M70 156 V136 M88 136 V112',1.2);
+  s+=pth('M100 100 C84 86 88 70 96 58 C98 66 104 68 104 76 C112 66 110 54 104 44 C124 58 128 84 114 98 C110 102 106 102 100 100Z','#e8573a',T,3);
+  s+=pth('M100 100 C92 92 94 82 100 74 C106 82 108 92 100 100Z','#fbd24d',T,2.2);
+  return s;}};
+I['rolo-colunas']={fundo:'amarelo',nome:'Rolo de couro com o texto em colunas estreitas',art(u){
+  let s=pth('M40 50 H160 V150 H40Z','#f1e4c1',T,3)+'<path d="M40 50 H56 V150 H40Z" fill="url(#cm-h1)" opacity=".5"/>';
+  [[22,'L'],[178,'R']].forEach(q=>{const x=q[0];s+=pth('M'+(x-14)+' 42 H'+(x+14)+' V158 H'+(x-14)+'Z','#d8b878',T,3)+'<ellipse cx="'+x+'" cy="42" rx="14" ry="6" fill="#efe2bd" stroke="'+T+'" stroke-width="3"/>'+'<ellipse cx="'+x+'" cy="158" rx="14" ry="6" fill="#c9a460" stroke="'+T+'" stroke-width="3"/>'+tinta('M'+(x-5)+' 50 V150',1.4);});
+  const r=C.rng('rolo');
+  [[132,150],[100,128],[68,96]].forEach(c=>{for(let y=62;y<=140;y+=9){const w=8+Math.floor(r()*20);s+=tinta('M'+(c[0]-2)+' '+y+' H'+Math.max(c[1]-30,c[0]-w-2),2.6);}});
+  s+=tinta('M118 56 V146 M86 56 V146',1.2);
+  return s;}};
+/* ---------- Grécia (tópico 5): ícones desenhados em código ---------- */
+const GREGO='font-family="Georgia,\'Times New Roman\',serif" font-weight="700" fill="'+T+'"';
+I['palacio-creta']={fundo:'coral',nome:'Planta de um palácio cretense, com o grande pátio central e salas ao redor',art(u){
+  let s=pth('M26 38 H174 V162 H26Z','#efe6cc',T,3.4)+'<path d="M26 38 H48 V162 H26Z" fill="url(#cm-h1)" opacity=".4"/>';
+  s+=pth('M74 66 H128 V134 H74Z','#d9a35a',T,3)+'<path d="M74 66 H128 V134 H74Z" fill="url(#cm-hh)" opacity=".7"/>';
+  s+=tinta('M26 74 H74 M26 106 H60 M26 134 H74 M128 74 H174 M128 104 H152 M128 134 H174 M74 38 V66 M102 38 V66 M128 38 V66 M74 134 V162 M102 134 V162 M128 134 V162 M48 74 V134 M152 74 V134',2.2);
+  s+=tinta('M34 84 H44 M34 94 H44 M32 142 H66 M110 144 H122 M138 84 H148 M138 94 H148 M158 114 H168',1.6);
+  [[36,116],[50,116],[36,152],[52,152],[160,150],[168,150]].forEach(q=>{s+=elip(q[0],q[1],5,6.2,'#c98f4f',1.6);});
+  s+=tinta('M88 80 L116 80 M88 120 L116 120 M82 74 V126 M122 74 V126',1.2);
+  s+=pth('M174 100 H190 V118 H174',null,T,3)+tinta('M178 100 V118 M184 100 V118',1.4);
+  return s;}};
+I['acropole']={fundo:'amarelo',nome:'Colina da acrópole com um templo de colunas no alto',art(u){
+  const colina='M6 186 C16 176 28 160 46 150 C54 142 56 128 70 122 H132 C146 128 150 142 158 150 C176 160 186 176 194 186Z';
+  let s='<defs>'+clip(u+'c',colina)+'</defs>'+pth(colina,P)+'<g clip-path="url(#'+u+'c)"><path d="M110 100 H200 V200 H100Z" fill="url(#cm-h1)" opacity=".7"/><path d="M0 170 H200 V200 H0Z" fill="url(#cm-h3)" opacity=".5"/></g>';
+  s+=tinta('M20 176 C40 170 60 174 80 166 M110 168 C134 172 160 168 182 176 M62 138 C80 146 100 140 122 146',1.6)+pth(colina,'none',T,3.2);
+  s+=pth('M64 122 H138 V112 H64Z',P,T,2.8)+pth('M70 112 H132 V104 H70Z',P,T,2.8);
+  for(let i=0;i<7;i++){const x=76+i*8.6;s+=pth('M'+x+' 104 V62 H'+(x+5)+' V104Z',P,T,1.8);}
+  s+=pth('M66 62 H136 V54 H66Z',P,T,2.8)+pth('M62 54 L101 28 L140 54Z',P,T,3)+'<path d="M72 52 L101 34 L130 52Z" fill="url(#cm-h1)" opacity=".5"/>';
+  s+=tinta('M50 150 L58 138 M150 150 L142 138',2);
+  return s;}};
+I['marco-hipoteca']={fundo:'coral',nome:'Marco de pedra baixo, cravado no chão, de uma terra hipotecada, riscado em vermelho, e uma corrente que se parte',art(u){
+  const ped='M40 150 V104 C40 90 48 82 62 80 L138 80 C152 82 160 90 160 104 V150Z';
+  let s='<defs>'+clip(u+'m',ped)+'</defs>'+pth('M14 152 C50 146 150 146 186 152 V176 H14Z','#cfc6ae',T,3)+pth(ped,P)+'<g clip-path="url(#'+u+'m)"><path d="M112 70 H170 V160 H112Z" fill="url(#cm-h1)" opacity=".6"/></g>';
+  s+=pth(ped,'none',T,3.4)+tinta('M52 92 C70 86 90 90 110 86 M60 140 L82 134',1.6)+'<text x="100" y="124" text-anchor="middle" font-size="30" letter-spacing="2" '+GREGO+'>ΟΡΟΣ</text>';
+  s+=tinta('M20 158 L26 148 M32 160 L36 152 M168 158 L174 149 M178 160 L182 152',2.2);
+  s+='<path d="M52 72 L148 150 M148 72 L52 150" fill="none" stroke="#c4452b" stroke-width="10" stroke-linecap="round"/>';
+  const elo=(x,y,a)=>'<g transform="translate('+x+' '+y+') rotate('+a+')"><rect x="-12" y="-6" width="24" height="12" rx="6" fill="none" stroke="'+T+'" stroke-width="3.2"/></g>';
+  s+=elo(30,186,-10)+elo(50,184,8)+elo(150,184,-8)+elo(172,187,10)+tinta('M84 184 L90 176 M92 190 L100 192 M82 192 L76 198',2.2);
+  return s;}};
+I['ostraco']={fundo:'coral',nome:'Óstraco: caco irregular de vaso de cerâmica, com o nome Temístocles riscado em letras gregas',art(u){
+  const caco='M30 66 C54 38 112 26 166 44 L176 70 L160 88 L178 116 L150 128 L154 156 L112 150 L92 176 L66 150 L44 142 L50 112 L28 98Z';
+  let s='<defs>'+clip(u+'o',caco)+'</defs>'+pth(caco,'#c9743b')+'<g clip-path="url(#'+u+'o)"><path d="M120 0 L200 0 V200 H100Z" fill="url(#cm-h1)" opacity=".5"/><path d="M0 128 C50 118 120 138 200 124 V200 H0Z" fill="#9c5223" opacity=".4"/><path d="M26 70 C60 40 120 32 170 50 L172 58 C120 44 64 52 32 80Z" fill="#e6a56a" opacity=".7"/></g>';
+  s+=tinta('M44 118 C56 112 66 116 76 110 M118 142 C128 138 136 140 146 134',1.3)+pth(caco,'none',T,3.2);
+  s+='<g transform="rotate(-5 100 100)" fill="#3a2314" opacity=".92"><text x="100" y="92" text-anchor="middle" font-size="21" letter-spacing="1.2" '+GREGO+'>ΘΕΜΙΣΤΟ-</text><text x="100" y="120" text-anchor="middle" font-size="21" letter-spacing="1.2" '+GREGO+'>ΚΛΗΣ</text></g>';
+  return s;}};
+I['escudo-hoplita']={fundo:'petroleo',nome:'Escudo redondo e côncavo de bronze de um hoplita, visto por dentro, com a alça de couro, e uma lança',art(u){
+  let s=pth('M20 188 L168 14',null,'#6b4a24',7)+pth('M168 14 L158 40 L186 36Z','#cfd3d6',T,2.6);
+  s+='<circle cx="104" cy="108" r="82" fill="#a96f2c" stroke="'+T+'" stroke-width="3.4"/><circle cx="104" cy="108" r="64" fill="#8c5a22" stroke="'+T+'" stroke-width="3"/>';
+  s+='<defs><radialGradient id="'+u+'g" cx=".42" cy=".4" r=".7"><stop offset="0" stop-color="#e0b25c"/><stop offset="1" stop-color="#a06a28"/></radialGradient></defs><circle cx="104" cy="108" r="60" fill="url(#'+u+'g)"/>';
+  s+='<path d="M104 52 C130 56 154 80 160 108" fill="none" stroke="#fff4cf" stroke-width="4" opacity=".7" stroke-linecap="round"/>';
+  s+=pth('M54 100 H154 V118 H54Z','#6b3f1c',T,3)+'<circle cx="64" cy="109" r="3.6" fill="#d9d3c0" stroke="'+T+'" stroke-width="1.6"/><circle cx="144" cy="109" r="3.6" fill="#d9d3c0" stroke="'+T+'" stroke-width="1.6"/>';
+  s+=pth('M98 66 C104 62 112 62 118 66 V100 H98Z','#6b3f1c',T,2.8);
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;s+='<circle cx="'+(104+Math.cos(a)*73).toFixed(1)+'" cy="'+(108+Math.sin(a)*73).toFixed(1)+'" r="1.7" fill="'+T+'"/>';}
+  return s;}};
+I['templo-apolo']={fundo:'amarelo',nome:'Templo de Apolo em Delos, onde ficava o tesouro da Liga, com moedas diante dos degraus',art(u){
+  let s=pth('M24 168 H176 V180 H24Z',P,T,3)+pth('M34 156 H166 V168 H34Z',P,T,3)+pth('M42 146 H158 V156 H42Z',P,T,3);
+  for(let i=0;i<6;i++){const x=50+i*20;s+=pth('M'+x+' 146 V80 H'+(x+13)+' V146Z',P,T,2)+tinta('M'+(x+5)+' 84 V142',1.2);}
+  s+=pth('M44 80 H156 V68 H44Z',P,T,3)+pth('M38 68 L100 30 L162 68Z',P,T,3.2)+'<path d="M58 66 L100 40 L142 66Z" fill="url(#cm-h1)" opacity=".5"/><circle cx="100" cy="56" r="7" fill="#f4c935" stroke="'+T+'" stroke-width="2.2"/>';
+  [[40,190],[62,194],[84,190],[116,192],[140,190],[162,194]].forEach(q=>{s+='<ellipse cx="'+q[0]+'" cy="'+q[1]+'" rx="9" ry="4.4" fill="#e3bf55" stroke="'+T+'" stroke-width="2"/>';});
+  return s;}};
+const fustes=(x0,x1,y0,y1,n)=>{let s=pth('M'+x0+' '+y0+' H'+x1+' V'+y1+' H'+x0+'Z',P,T,3)+'<path d="M'+(x1-(x1-x0)*.34)+' '+y0+' H'+x1+' V'+y1+' H'+(x1-(x1-x0)*.34)+'Z" fill="url(#cm-h1)" opacity=".6"/>';
+  for(let i=1;i<n;i++){const x=x0+(x1-x0)*i/n;s+=tinta('M'+x+' '+y0+' V'+y1,1.5);}return s;};
+I['capitel-dorico']={fundo:'coral',nome:'Capitel dórico: abaco liso sobre um equino em curva e fuste com estrias',art(u){
+  let s=fustes(68,132,128,196,5);
+  s+=tinta('M68 140 H132',1.2);
+  s+=pth('M64 128 H136 L130 112 C126 104 74 104 70 112Z',P,T,3)+'<path d="M112 128 H136 L130 112 C128 108 120 106 114 106Z" fill="url(#cm-h1)" opacity=".6"/>'+tinta('M66 120 H134',1.4);
+  s+=pth('M54 90 H146 V108 C130 102 70 102 54 108Z',P,T,3.2)+'<path d="M126 90 H146 V108 C140 106 132 104 126 103Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=pth('M44 64 H156 V90 H44Z',P,T,3.4)+tinta('M44 77 H156',1.2)+'<path d="M130 64 H156 V90 H130Z" fill="url(#cm-h1)" opacity=".5"/>';
+  return s;}};
+I['capitel-jonico']={fundo:'amarelo',nome:'Capitel jônico: abaco fino sobre duas volutas em espiral e fuste com estrias',art(u){
+  let s=fustes(72,128,132,196,5);
+  s+=pth('M66 132 H134 L130 118 H70Z',P,T,3);
+  s+=pth('M34 80 H166 V94 C150 100 138 106 130 118 H70 C62 106 50 100 34 94Z',P,T,3.2);
+  [[48,100,1],[152,100,-1]].forEach(q=>{s+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="17" fill="'+P+'" stroke="'+T+'" stroke-width="3.2"/>'+tinta(espiral(q[0],q[1],14,2.4,q[2]),2.2)+'<circle cx="'+q[0]+'" cy="'+q[1]+'" r="2.6" fill="'+T+'"/>';});
+  s+=tinta('M72 112 H128',1.4);
+  for(let i=0;i<5;i++){const x=78+i*11;s+=pth('M'+x+' 104 C'+(x-4)+' 112 '+(x+4)+' 114 '+x+' 118','none',T,1.4);}
+  s+=pth('M32 62 H168 V80 H32Z',P,T,3.4)+'<path d="M140 62 H168 V80 H140Z" fill="url(#cm-h1)" opacity=".5"/>'+tinta('M32 71 H168',1.2);
+  return s;}};
+I['capitel-corintio']={fundo:'petroleo',nome:'Capitel coríntio: sino coberto de folhas de acanto, com pequenas volutas nos cantos',art(u){
+  let s=fustes(72,128,150,196,5);
+  s+=pth('M66 150 H134 L132 140 H68Z',P,T,3);
+  const folha=(cx,y0,w,h)=>pth('M'+(cx-w/2)+' '+y0+' C'+(cx-w/2-4)+' '+(y0-h*.4)+' '+(cx-w/3)+' '+(y0-h*.7)+' '+(cx-w/5)+' '+(y0-h*.8)+' C'+(cx-w/12)+' '+(y0-h*1.05)+' '+(cx+w/12)+' '+(y0-h*1.05)+' '+(cx+w/5)+' '+(y0-h*.8)+' C'+(cx+w/3)+' '+(y0-h*.7)+' '+(cx+w/2+4)+' '+(y0-h*.4)+' '+(cx+w/2)+' '+y0+'Z',P,T,2.4)+tinta('M'+cx+' '+y0+' V'+(y0-h*.85)+' M'+(cx-w/4)+' '+y0+' L'+(cx-w/6)+' '+(y0-h*.6)+' M'+(cx+w/4)+' '+y0+' L'+(cx+w/6)+' '+(y0-h*.6),1.4);
+  s+=pth('M66 140 C58 112 54 92 48 70 H152 C146 92 142 112 134 140Z',P,T,3)+'<path d="M118 70 H152 C146 92 142 112 134 140 H124 C128 112 124 92 118 70Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=folha(82,140,28,40)+folha(118,140,28,40)+folha(100,140,30,50)+folha(66,118,26,34)+folha(134,118,26,34);
+  [[52,84,1],[148,84,-1]].forEach(q=>{s+=tinta(espiral(q[0],q[1],11,1.8,q[2]),2.2);});
+  s+=pth('M40 50 C70 58 130 58 160 50 V68 C130 62 70 62 40 68Z',P,T,3.2)+'<path d="M140 52 L160 50 V68 C152 66 146 64 140 62Z" fill="url(#cm-h1)" opacity=".5"/>';
+  return s;}};
+I['mascara-tragica']={fundo:'petroleo',nome:'Máscara de teatro trágica, com a boca aberta para baixo',art(u){
+  const rosto='M46 56 C46 30 154 30 154 56 C158 100 146 150 100 170 C54 150 42 100 46 56Z';
+  let s='<defs>'+clip(u+'t',rosto)+'</defs>'+pth('M42 50 C30 70 34 120 44 150 C34 110 36 80 52 56Z',T)+pth('M158 50 C170 70 166 120 156 150 C166 110 164 80 148 56Z',T)+pth(rosto,'#eee3c6')+'<g clip-path="url(#'+u+'t)"><path d="M120 20 C168 70 156 150 108 196 H200 V20Z" fill="url(#cm-h1)" opacity=".7"/></g>';
+  s+=pth('M46 56 C48 36 152 36 154 56 C150 50 140 44 100 44 C60 44 50 50 46 56Z',T)+tinta('M52 50 C60 60 70 62 78 56 M122 56 C130 62 140 60 148 50',2);
+  s+=pth('M60 80 C72 70 86 74 90 84 C84 90 66 92 60 80Z','#1b1a17',T,2)+pth('M140 80 C128 70 114 74 110 84 C116 90 134 92 140 80Z','#1b1a17',T,2);
+  s+=pth('M58 70 C70 62 84 64 92 72',null,T,3.4)+pth('M142 70 C130 62 116 64 108 72',null,T,3.4)+tinta('M100 88 C96 102 94 108 100 112',2);
+  s+=pth('M68 140 C76 118 124 118 132 140 C124 134 112 130 100 130 C88 130 76 134 68 140Z','#1b1a17',T,2.4);
+  s+=tinta('M70 100 C72 112 72 118 70 124 M130 100 C128 112 128 118 130 124',1.6);
+  return s;}};
+I['mascara-comica']={fundo:'amarelo',nome:'Máscara de teatro cômica, com a boca aberta num largo sorriso',art(u){
+  const rosto='M44 62 C44 34 156 34 156 62 C160 106 148 148 100 166 C52 148 40 106 44 62Z';
+  let s='<defs>'+clip(u+'c',rosto)+'</defs>'+pth(rosto,'#f1e6c8')+'<g clip-path="url(#'+u+'c)"><path d="M120 20 C170 70 158 150 108 196 H200 V20Z" fill="url(#cm-h1)" opacity=".7"/></g>';
+  s+=pth('M44 62 C46 40 154 40 156 62 C146 52 128 48 100 48 C72 48 54 52 44 62Z',T)+'<circle cx="46" cy="64" r="12" fill="'+T+'"/><circle cx="40" cy="82" r="10" fill="'+T+'"/><circle cx="154" cy="64" r="12" fill="'+T+'"/><circle cx="160" cy="82" r="10" fill="'+T+'"/><circle cx="70" cy="40" r="10" fill="'+T+'"/><circle cx="100" cy="36" r="11" fill="'+T+'"/><circle cx="130" cy="40" r="10" fill="'+T+'"/>';
+  s+=pth('M58 82 C70 68 86 72 92 82 C84 90 66 92 58 82Z','#1b1a17',T,2)+pth('M142 82 C130 68 114 72 108 82 C116 90 134 92 142 82Z','#1b1a17',T,2);
+  s+=pth('M56 66 C68 54 84 56 92 64',null,T,3.4)+pth('M144 66 C132 54 116 56 108 64',null,T,3.4)+tinta('M100 88 C96 100 94 104 100 108',2);
+  s+=pth('M60 112 C76 150 124 150 140 112 C128 124 114 126 100 126 C86 126 72 124 60 112Z','#1b1a17',T,2.6)+pth('M74 128 C86 136 114 136 126 128 C118 124 82 124 74 128Z','#f6f1e4',T,1.6);
+  s+=tinta('M58 100 C62 108 64 112 68 114 M142 100 C138 108 136 112 132 114',1.6);
+  return s;}};
+
+/* ---------- Roma: recortes novos ---------- */
+I['loba']={fundo:'amarelo',nome:'Loba amamentando dois gêmeos, a lenda de Rômulo e Remo',art(u){
+  const corpo='M22 94 C24 86 34 80 44 76 C52 72 60 68 70 68 C94 60 128 58 150 66 C164 70 172 84 170 100 C170 118 170 140 174 154 L158 158 L152 156 C152 140 150 126 146 114 C128 120 104 120 86 114 C88 130 90 144 90 156 L72 160 L68 156 C70 140 70 126 62 114 C56 110 52 102 44 102 C34 102 26 100 22 94 Z';
+  const cauda='M166 76 C186 80 194 106 190 132 C186 120 178 108 168 100 Z';
+  const perna2='M98 114 C98 130 100 144 100 156 L112 158 L112 154 C110 140 110 128 112 116 Z';
+  let s='<defs>'+clip(u+'c',corpo)+'</defs>';
+  s+=pth(perna2,'#b5ad99',T,2.4)+pth(cauda,'#cfc7b4',T,2.8)+pth(corpo,'#d8d0bc');
+  s+='<g clip-path="url(#'+u+'c)"><path d="M70 100 C100 112 130 108 150 100 L150 160 L60 160Z" fill="url(#cm-h1)" opacity=".8"/><path d="M80 66 C110 58 140 58 168 74 L168 86 C140 72 110 70 80 78Z" fill="url(#cm-h3)" opacity=".8"/></g>';
+  s+=pth(corpo,'none',T,3.2);
+  s+=pth('M50 74 L52 50 L66 68 Z','#d8d0bc',T,2.8)+tinta('M54 66 L56 58',1.6);
+  s+='<circle cx="39" cy="86" r="3" fill="'+T+'"/><circle cx="23" cy="93" r="3.4" fill="'+T+'"/>'+tinta('M36 96 C42 98 48 96 52 94',1.6)+tinta('M66 72 C70 80 74 84 78 86 M82 70 C84 78 88 82 92 84 M100 66 C102 74 106 78 110 80',1.4)+tinta('M148 70 C152 80 154 88 152 98',1.4);
+  // gêmeos mamando
+  const bebe=(x,g)=>'<g transform="translate('+x+' -77) scale(1.5) rotate('+g+' 0 154)"><circle cx="0" cy="138" r="7" fill="#f2dcc0" stroke="'+T+'" stroke-width="2.4"/><path d="M-9 160 C-9 150 -5 146 0 146 C6 146 9 150 9 160 Z" fill="#f2dcc0" stroke="'+T+'" stroke-width="2.4"/><path d="M-4 144 C-6 134 -6 128 -3 122" fill="none" stroke="'+T+'" stroke-width="2.4" stroke-linecap="round"/><path d="M4 142 C6 134 7 128 5 122" fill="none" stroke="'+T+'" stroke-width="2.4" stroke-linecap="round"/><circle cx="1.5" cy="137" r="1.2" fill="'+T+'"/></g>';
+  s+=bebe(122,6)+bebe(138,-4);
+  s+=tinta('M20 160 H186',2)+tinta('M30 166 H60 M110 168 H170',1.2);
+  return s;}};
+
+I['coroa-etrusca']={fundo:'amarelo',nome:'Diadema de ouro dos reis etruscos, riscado em vermelho',art(u){
+  let s='';
+  const top=x=>104+22*(1-Math.pow((x-100)/60,2));
+  let sp='';for(let i=0;i<7;i++){const x=46+i*18.0,y=top(x);sp+='M'+(x-9)+' '+(y+2).toFixed(1)+' L'+x+' '+(y-36).toFixed(1)+' L'+(x+9)+' '+(y+2).toFixed(1)+' Z ';}
+  s+=pth(sp,'#e3a82b',T,2.8);
+  s+=pth('M40 104 C40 132 160 132 160 104 L160 132 C160 160 40 160 40 132 Z','#e3a82b',T,3.2)+pth('M44 118 C60 142 140 142 156 118','none',T,1.6);
+  [64,100,136].forEach((x,i)=>{const y=top(x)+22;s+='<circle cx="'+x+'" cy="'+y.toFixed(1)+'" r="6" fill="#c93a2a" stroke="'+T+'" stroke-width="2.2"/>';});
+  s+='<g class="rsc"><path d="M34 34 L168 170" fill="none" stroke="#d63a22" stroke-width="12" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1"/><path d="M168 36 L36 168" fill="none" stroke="#d63a22" stroke-width="12" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1"/></g>';
+  s+='<style>.cm-icone:not(.fora) .rsc path{animation:cm-rsc .6s ease-out forwards}.cm-icone:not(.fora) .rsc path:first-child{animation-delay:2.4s}.cm-icone:not(.fora) .rsc path+path{animation-delay:3s}@keyframes cm-rsc{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){.cm-icone .rsc path{stroke-dashoffset:0!important;animation:none!important}}</style>';
+  return s;}};
+
+I['tabua-bronze']={fundo:'amarelo',nome:'Tábua de bronze com a lei escrita, em linhas ilegíveis',art(u){
+  const t='M30 36 L170 30 L174 166 L34 172 Z';
+  let s='<defs>'+clip(u+'t',t)+'</defs>'+pth(t,'#b98a43')+'<g clip-path="url(#'+u+'t)"><path d="M120 24 L180 24 L180 180 L130 180Z" fill="url(#cm-h1)" opacity=".55"/><path d="M24 150 L180 140 L180 180 L24 180Z" fill="url(#cm-h3)" opacity=".4"/>';
+  const r=C.rng('tabua');
+  for(let c=0;c<2;c++)for(let l=0;l<9;l++){const y=54+l*12.5+c*0,x0=44+c*66,w=50+r()*12-(l===8?30:0);
+    s+='<path d="M'+x0+' '+(y+(c?1:0))+' h'+w.toFixed(0)+'" stroke="'+T+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(5+r()*5).toFixed(0)+' 3 '+(8+r()*8).toFixed(0)+' 3"/>';}
+  s+='</g>'+pth(t,'none',T,3.4)+pth('M40 46 L160 41','none',T,1.4);
+  s+='<circle cx="42" cy="44" r="3" fill="'+P+'" stroke="'+T+'" stroke-width="1.6"/><circle cx="162" cy="40" r="3" fill="'+P+'" stroke="'+T+'" stroke-width="1.6"/><circle cx="44" cy="160" r="3" fill="'+P+'" stroke="'+T+'" stroke-width="1.6"/><circle cx="164" cy="156" r="3" fill="'+P+'" stroke="'+T+'" stroke-width="1.6"/>';
+  s+=pth('M96 28 L104 28 L104 20 L96 20Z','#b98a43',T,2);
+  return s;}};
+
+I['saco-trigo']={fundo:'amarelo',nome:'Saco de trigo com espigas',art(u){
+  const saco='M62 62 C48 82 40 118 46 150 C50 172 74 182 100 182 C126 182 150 172 154 150 C160 118 152 82 138 62 C128 70 72 70 62 62 Z';
+  let s='<defs>'+clip(u+'s',saco)+'</defs>';
+  // espigas saindo da boca do saco
+  [[-14,92,0],[0,100,-1],[14,106,1]].forEach(e=>{const x=100+e[0]*2.2,gr=e[0]*1.1;
+    s+='<g transform="translate('+x+' 62) rotate('+gr+')"><path d="M0 0 V-44" stroke="'+T+'" stroke-width="2.4"/>'+[0,1,2,3,4].map(k=>'<path d="M0 '+(-14-k*8)+' C-9 '+(-18-k*8)+' -10 '+(-26-k*8)+' -6 '+(-30-k*8)+' C-2 '+(-24-k*8)+' 0 '+(-20-k*8)+' 0 '+(-14-k*8)+' Z M0 '+(-14-k*8)+' C9 '+(-18-k*8)+' 10 '+(-26-k*8)+' 6 '+(-30-k*8)+' C2 '+(-24-k*8)+' 0 '+(-20-k*8)+' 0 '+(-14-k*8)+'Z" fill="#e8c24a" stroke="'+T+'" stroke-width="1.6"/>').join('')+'</g>';});
+  s+=pth(saco,'#e6d6b0')+'<g clip-path="url(#'+u+'s)"><path d="M118 52 C150 90 152 140 138 190 H170 V40Z" fill="url(#cm-h1)" opacity=".8"/><path d="M40 130 C80 142 130 142 170 126 V190 H40Z" fill="url(#cm-h3)" opacity=".35"/>'+tinta('M70 90 C66 120 68 150 78 172 M100 76 C98 120 100 160 100 178 M130 90 C134 120 132 150 122 172',1.2)+'</g>'+pth(saco,'none',T,3.2);
+  s+=pth('M66 70 C84 78 118 78 136 70 L134 80 C116 88 86 88 68 80 Z','#b5532b',T,2.6)+tinta('M72 82 L70 98 M128 82 L130 98',2.4);
+  return s;}};
+
+I['capacete-gladiador']={fundo:'petroleo',nome:'Capacete de gladiador, com crista e viseira de grade',art(u){
+  const cupula='M52 120 C48 72 76 46 100 46 C124 46 152 72 148 120 Z';
+  let s='<defs>'+clip(u+'k',cupula)+'</defs>';
+  s+=pth('M64 58 C78 22 128 14 150 44 L144 54 C124 34 96 38 84 66 Z','#9a9486',T,3);
+  s+=pth(cupula,'#bdb7a8')+'<g clip-path="url(#'+u+'k)"><path d="M118 40 C150 66 150 104 140 130 H160 V40Z" fill="url(#cm-h1)"/><path d="M44 98 H156" stroke="'+T+'" stroke-width="1.6" stroke-opacity=".6"/></g>'+pth(cupula,'none',T,3.2);
+  s+=pth('M40 120 H160 L154 132 H46 Z','#9a9486',T,3);
+  const viseira='M58 132 H142 V150 C142 166 124 178 100 178 C76 178 58 166 58 150 Z';
+  s+='<defs>'+clip(u+'v',viseira)+'</defs>'+pth(viseira,'#cfc9ba')+'<g clip-path="url(#'+u+'v)">'+[0,1,2,3,4,5,6,7,8].map(i=>'<path d="M'+(64+i*9)+' 132 V180" stroke="'+T+'" stroke-width="2"/>').join('')+'<path d="M60 150 H142" stroke="'+T+'" stroke-width="2"/></g>'+pth(viseira,'none',T,3.2);
+  s+='<rect x="68" y="136" width="26" height="8" rx="3" fill="'+T+'"/><rect x="106" y="136" width="26" height="8" rx="3" fill="'+T+'"/>';
+  s+=pth('M96 46 V30','none',T,2.4)+'<circle cx="100" cy="120" r="3.4" fill="'+P+'" stroke="'+T+'" stroke-width="1.8"/>';
+  return s;}};
+
+I['coroa-louros']={fundo:'amarelo',nome:'Coroa de louros do primeiro imperador',art(u){
+  let s='';const cx=100,cy=100,R=60;
+  [-1,1].forEach(lado=>{for(let i=0;i<9;i++){const a=(90+lado*(14+i*17))*Math.PI/180,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R,g=a*180/Math.PI+(lado>0?20:-20);
+    [-1,1].forEach(k=>{s+='<g transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+(g+k*34).toFixed(1)+')"><path d="M0 0 C6 -8 6 -20 0 -28 C-6 -20 -6 -8 0 0Z" fill="#6f9a4a" stroke="'+T+'" stroke-width="2.2"/><path d="M0 -3 V-24" stroke="'+T+'" stroke-width="1.2"/></g>';});}});
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+T+'" stroke-width="2" stroke-dasharray="1 0" opacity=".0"/>';
+  s+=pth('M86 164 L100 154 L114 164 L120 184 L106 176 L100 186 L94 176 L80 184 Z','#c93a2a',T,2.6)+'<circle cx="100" cy="160" r="6" fill="#c93a2a" stroke="'+T+'" stroke-width="2.4"/>';
+  return s;}};
 
 C.ICONES=Object.keys(I);
 
@@ -666,7 +1024,342 @@ C.tipos.tributo=p=>{
   // bonecos: dias de trabalho
   const bon=(x,y)=>'<g transform="translate('+x+' '+y+')" fill="none" stroke="'+T+'" stroke-width="3" stroke-linecap="round"><circle cx="0" cy="-12" r="7" fill="#fbf9f1"/><path d="M0 -5 V14 M-9 4 H9 M0 14 L-7 28 M0 14 L7 28"/></g>';
   s+=bon(262,370)+bon(300,330)+bon(640,330)+bon(680,300)+bon(720,270);
-  s+='<text x="740" y="420" class="cm-tx" font-weight="700">dias de trabalho</text>';
-  return {cls:'cm-esq cm-tributo',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema: aldeias entregam cevada e dias de trabalho ao templo e ao palácio, que devolvem rações')+'"><style>.cm-tx{font:600 30px "Caveat","Segoe Print",cursive;fill:'+T+'}</style>'+s+'</svg>'};
+  s+='<text x="880" y="430" text-anchor="end" class="cm-tx" font-weight="700">dias de trabalho</text>';
+  return {cls:'cm-esq cm-tributo',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema: aldeias entregam cevada e dias de trabalho ao templo e ao palácio, que devolvem rações')+'"><style>.cm-tx{font:600 36px "Caveat","Segoe Print",cursive;fill:'+T+'}</style>'+s+'</svg>'};
 };
+
+/* Egito e Kush: esquema do Nilo (do delta a Meroé), com cataratas numeradas e manchas que entram por etapa (data-et) */
+C.tipos.nilosul=p=>{
+  const W=520,H=900,et=p.etapa!=null?p.etapa:8;
+  const rio='M300 70 C300 150 320 260 330 330 S350 420 350 440 S330 540 300 580 S230 600 240 640 S300 720 330 790 L340 860';
+  let s='<style>.cm-nilosul .ev{opacity:0;transition:opacity .9s}.cm-nilosul .ev.on{opacity:1}.cm-nilosul .ev.d1.on{transition-delay:1s}.cm-nilosul .ev.d2.on{transition-delay:3s}'+
+    '.cm-nilosul .nv.on{opacity:0;animation:cm-nv 7s 3s ease-in-out forwards}@keyframes cm-nv{0%{opacity:0}18%{opacity:.85}62%{opacity:.85}100%{opacity:0}}'+
+    '.cm-nilosul .pe.on{transition-delay:8s}.cm-nilosul text{font:700 24px var(--sans,sans-serif);fill:'+T+'}.cm-nilosul text.p{font-size:26px;font-weight:600}'+
+    '@media (prefers-reduced-motion:reduce){.cm-nilosul .ev,.cm-nilosul .ev.on{transition:none!important}.cm-nilosul .nv.on{animation:none;opacity:.85}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#f6efdc"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".35"/>';
+  const E='data-et="'+et+'"';
+  // manchas
+  s+='<path class="ev d1" '+E+' d="M250 560 L370 560 L400 640 L380 860 L270 880 L220 700Z" fill="#b0793a" fill-opacity=".8"/><path class="ev d1" '+E+' d="M250 560 L370 560 L400 640 L380 860 L270 880 L220 700Z" fill="url(#cm-h1)"/>';
+  s+='<path class="ev nv" '+E+' d="M250 50 L370 50 L400 330 L400 560 L270 560 L250 330Z" fill="#b0793a" fill-opacity=".85"/><path class="ev nv" '+E+' d="M250 50 L370 50 L400 330 L400 560 L270 560 L250 330Z" fill="url(#cm-h1)"/>';
+  s+='<path class="ev pe" '+E+' d="M20 30 L520 30 L520 470 L20 470Z" fill="#1fa39a" fill-opacity=".6"/>';
+  // rio e delta
+  s+='<path d="M300 70 L246 30 M300 70 L300 24 M300 70 L356 30" fill="none" stroke="#2f77b5" stroke-width="7" stroke-linecap="round"/><path d="'+rio+'" fill="none" stroke="#2f77b5" stroke-width="9" stroke-linecap="round"/>';
+  // cataratas
+  [[350,452],[342,520],[298,592],[246,656],[292,732],[330,826]].forEach((c,i)=>{s+='<path d="M'+(c[0]-18)+' '+c[1]+' h36" stroke="'+T+'" stroke-width="5" stroke-linecap="round"/><circle cx="'+(c[0]+44)+'" cy="'+(c[1]-2)+'" r="17" fill="#fff" stroke="'+T+'" stroke-width="2.6"/><text class="p" x="'+(c[0]+44)+'" y="'+(c[1]+8)+'" text-anchor="middle">'+(i+1)+'</text>';});
+  // cidades
+  const cid=(x,y,t,lado)=>'<circle cx="'+x+'" cy="'+y+'" r="9" fill="'+T+'" stroke="#fff" stroke-width="3"/><text x="'+(lado==='e'?x-18:x+18)+'" y="'+(y+8)+'" text-anchor="'+(lado==='e'?'end':'start')+'">'+t+'</text>';
+  s+=cid(300,120,'Gizé','e')+cid(330,330,'Tebas','d')+cid(350,438,'Assuã','d').replace('x="368"','x="400"')+cid(240,640,'Napata','e')+cid(330,790,'Meroé','d');
+  // pirâmides
+  [[300,150],[218,672],[354,822]].forEach((a,i)=>{s+='<path class="ev d1" '+E+' d="M'+(a[0]-18)+' '+a[1]+' L'+a[0]+' '+(a[1]-26)+' L'+(a[0]+18)+' '+a[1]+'Z" fill="'+P+'" stroke="'+T+'" stroke-width="3"/>';});
+  // rótulos
+  s+='<text x="40" y="200">Egito</text><text x="60" y="720" class="ev d1" '+E+' style="font-size:30px">Kush</text><text x="400" y="600" class="p ev nv" '+E+'>728 a.C.</text><text x="40" y="410" class="p ev pe" '+E+'>persas, 525 a.C.</text>';
+  return {cls:'cm-esq cm-nilosul',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema do Nilo, do delta a Meroé, com as cataratas numeradas e o reino de Kush')+'">'+s+'</svg>'};
+};
+
+/* Fenícios: moeda que gira uma vez ao entrar */
+C.tipos.darico=p=>{let h=C.icone('darico',{fundo:p.fundo,rotulo:p.rotulo});if(p.giraEm)h=h.replace('<svg','<svg style="animation-delay:'+p.giraEm+'ms"');return {cls:'cm-icone cm-gira',html:h};};
+
+/* Fenícios: do alef ao alfa e ao A, e uma linha de consoantes sem vogais (esquema desenhado em código) */
+C.tipos.alfabeto=p=>{
+  const W=900,H=600,sans='var(--sans,sans-serif)',serif='var(--serif,Georgia,serif)';
+  const tx=(x,y,t,sz,w,fam,anc)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+(anc||'middle')+'" style="font:'+(w||700)+' '+sz+'px '+(fam||sans)+';fill:'+T+'">'+esc(t)+'</text>';
+  let s='';
+  const card=(x,rot,tit,leg)=>'<g transform="translate('+x+' 24) rotate('+rot+' 120 150)"><rect width="240" height="300" fill="#fffdf6" stroke="'+T+'" stroke-width="3"/><rect width="240" height="46" fill="#f2d28f" stroke="'+T+'" stroke-width="3"/>'+tx(120,35,tit,34)+
+    '<rect y="254" width="240" height="46" fill="#eee6cf" stroke="'+T+'" stroke-width="3"/>'+tx(120,289,leg,34,600)+'</g>';
+  s+=card(30,-1.5,'fenício','alef: boi')+card(330,1,'grego','alfa')+card(630,-1,'latino','A');
+  s+='<g transform="translate(30 24) rotate(-1.5 120 150)"><path d="M72 84 V226 M72 160 L156 80 M72 160 L148 226 M72 104 L112 78" fill="none" stroke="'+T+'" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></g>';
+  s+='<g transform="translate(330 24) rotate(1 120 150)">'+tx(120,200,'Α α',130,400,serif)+'</g>';
+  s+='<g transform="translate(630 24) rotate(-1 120 150)">'+tx(120,214,'A',180,400,sans)+'</g>';
+  const seta=(x0,x1)=>'<path d="M'+x0+' 170 C'+(x0+14)+' 132 '+(x1-14)+' 132 '+(x1-6)+' 166" fill="none" stroke="var(--seta)" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 9"/><path d="M'+(x1-26)+' 160 L'+(x1-4)+' 170 L'+(x1-10)+' 146" fill="none" stroke="var(--seta)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+=seta(276,326)+seta(576,626);
+  // linha fenícia: só consoantes, escrita da direita para a esquerda (alef, bet, gimel, dalet, he)
+  s+='<rect x="30" y="364" width="840" height="206" fill="#fffdf6" stroke="'+T+'" stroke-width="3"/><rect x="30" y="364" width="840" height="44" fill="#eadfc3" stroke="'+T+'" stroke-width="3"/>'+tx(450,395,'só consoantes, da direita para a esquerda',34);
+  const gl=[[770,'M18 -32 V32 M18 -2 L-20 -30 M18 -2 L-14 30 M4 -18 L-4 -34'],[590,'M16 30 V-30 H-14 Q-24 -30 -24 -16 Q-24 -2 -14 -2 H16'],[410,'M14 30 L18 -28 L-18 -24'],[230,'M18 -30 L-20 0 L18 30Z M18 -30 L26 -36']];
+  gl.forEach((g,i)=>{s+='<g transform="translate('+g[0]+' 474)"><path d="'+g[1]+'" fill="none" stroke="'+T+'" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g>';if(i<gl.length-1)s+='<rect x="'+(g[0]-106)+'" y="456" width="32" height="34" rx="4" fill="none" stroke="var(--seta)" stroke-width="3" stroke-dasharray="5 5"/>';});
+  s+=tx(450,550,'quadrinhos tracejados: vogais não escritas',34,400,sans);
+  return {cls:'cm-esq cm-alfabeto',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Da letra fenícia alef ao alfa grego e ao A latino, e uma linha fenícia só com consoantes')+'">'+s+'</svg>'};
+};
+
+/* ---------- Grécia (tópico 5): esquemas desenhados em código ---------- */
+const gTx=(x,y,t,sz,w,anc,fill)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+(anc||'middle')+'" style="font:'+(w||700)+' '+sz+'px var(--sans,sans-serif);fill:'+(fill||T)+'">'+esc(t)+'</text>';
+/* pessoa de pictograma: cabeça redonda e corpo; vestido para as mulheres */
+const gPessoa=(x,y,k,sz,fill,cls,estilo)=>{
+  const f=fill||T,h=sz||1;
+  const corpo=k==='m'?'M-17 8 H17 L24 74 H-24Z':'M-15 8 H15 L19 44 H11 V86 H-11 V44 H-19Z';
+  const bracos=k==='m'?'':'M-15 12 L-30 50 M15 12 L30 50';
+  return '<g transform="translate('+x+' '+y+') scale('+h+')"><g class="'+(cls||'')+'" style="'+(estilo||'')+'" fill="'+f+'" stroke="'+f+'"><circle cx="0" cy="-14" r="14" stroke="none"/><path d="'+corpo+'" stroke-width="3" stroke-linejoin="round"/>'+(bracos?'<path d="'+bracos+'" fill="none" stroke-width="9" stroke-linecap="round"/>':'')+'</g></g>';};
+
+/* genos: círculo de pessoas em volta de um campo único; o campo se racha em lotes e alguns ficam de fora */
+C.tipos.genos=p=>{
+  const W=900,H=760,cx=450,cy=340,R=170;
+  let s='<style>.cm-genos .lote{stroke-dasharray:1;stroke-dashoffset:1;stroke:#6d4a1d;stroke-width:6;fill:none;stroke-linecap:round}'+
+    '.cm-genos:not(.fora) .lote{animation:cm-gl 1.4s ease-out 7s forwards}'+
+    '.cm-genos .elite{fill:#e3a82b;fill-opacity:0}.cm-genos:not(.fora) .elite{animation:cm-ge 1.2s ease-out 9s forwards}'+
+    '.cm-genos .sai{opacity:1}.cm-genos:not(.fora) .sai{animation:cm-gs 2.4s ease-in-out 10s forwards}'+
+    '.cm-genos .t-fim{opacity:0}.cm-genos:not(.fora) .t-fim{animation:cm-gt 1s ease-out 12.5s forwards}.cm-genos .t-ini{opacity:1}.cm-genos:not(.fora) .t-ini{animation:cm-gt2 .8s ease-out 6.5s forwards}'+
+    '@keyframes cm-gl{to{stroke-dashoffset:0}}@keyframes cm-ge{to{fill-opacity:.75}}@keyframes cm-gs{to{transform:translate(var(--dx),var(--dy))}}@keyframes cm-gt{to{opacity:1}}@keyframes cm-gt2{to{opacity:0}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-genos .lote{stroke-dashoffset:0!important;animation:none!important}.cm-genos .elite{fill-opacity:.75!important;animation:none!important}.cm-genos .sai{animation:none!important;transform:translate(var(--dx),var(--dy))}.cm-genos .t-fim{opacity:1!important;animation:none!important}.cm-genos .t-ini{opacity:0!important;animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".25"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="#e9dc9f" stroke="'+T+'" stroke-width="4"/><circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="url(#cm-hh)" opacity=".7"/>';
+  // lotes: raios e arcos; a elite fica com os melhores (dois lotes amarelos)
+  const lotes=[[-90,-30],[-30,30],[30,90],[90,150],[150,210],[210,270]];
+  const pt=(a,r)=>[(cx+Math.cos(a*Math.PI/180)*r).toFixed(1),(cy+Math.sin(a*Math.PI/180)*r).toFixed(1)];
+  [[-90,-30],[-30,30]].forEach(l=>{const a=pt(l[0],R-3),b=pt(l[1],R-3);s+='<path class="elite" d="M'+cx+' '+cy+' L'+a[0]+' '+a[1]+' A'+(R-3)+' '+(R-3)+' 0 0 1 '+b[0]+' '+b[1]+'Z"/>';});
+  lotes.forEach(l=>{const a=pt(l[0],R);s+='<path class="lote" pathLength="1" d="M'+cx+' '+cy+' L'+a[0]+' '+a[1]+'"/>';});
+  s+='<circle class="lote" pathLength="1" cx="'+cx+'" cy="'+cy+'" r="'+(R*.52)+'"/>';
+  // pessoas em volta
+  const n=14,fica=[0,1,2,3,4,5,6,7,8,9,10],saem=[11,12,13];
+  for(let i=0;i<n;i++){const a=(i/n*360-80),q=pt(a,R+66),sai=saem.indexOf(i)>=0;
+    const dx=sai?(i===11?150:i===12?170:120):0,dy=sai?(i===11?150:i===12?60:190):0;
+    s+=gPessoa(+q[0],+q[1]-30,i%3===0?'f':'m',.62,sai?'#7d5a2d':T,sai?'sai':'','--dx:'+dx+'px;--dy:'+dy+'px');}
+  s+='<g class="t-ini"><rect x="'+(cx-130)+'" y="'+(cy-34)+'" width="260" height="98" fill="#fffdf6" fill-opacity=".92"/>'+gTx(cx,cy+8,'um só campo',44,700)+gTx(cx,cy+52,'terra de todos',38,600)+'</g>';
+  s+='<g class="t-fim"><rect x="'+(cx-150)+'" y="'+(cy-34)+'" width="300" height="98" fill="#fffdf6" fill-opacity=".92"/>'+gTx(cx,cy+8,'lotes',44,700)+gTx(cx,cy+52,'os melhores, de poucos',32,600)+'</g>';
+  s+=gTx(cx,H-24,'genos: famílias chefiadas pelo pater',40,700);
+  return {cls:'cm-esq cm-genos',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema: pessoas em volta de um campo único; o campo se divide em lotes e alguns ficam de fora')+'">'+s+'</svg>'};
+};
+
+/* escada de Atenas: quatro degraus que se acendem em sequência */
+C.tipos.escada=p=>{
+  const W=1500,H=860,deg=[
+    ['rei (basileu)','monarquia',60,590],['arcontes','os nobres, por um ano',400,470],['leis escritas','Drácon e Sólon',740,350],['Clístenes','democracia, 508 a.C.',1080,230]];
+  let s='<style>.cm-escada .dg{fill:#fffdf6}.cm-escada:not(.fora) .dg{animation:cm-eg .9s ease-out var(--a) forwards}@keyframes cm-eg{from{fill:#fffdf6}to{fill:#f4c935}}'+
+    '.cm-escada .dt{opacity:.35}.cm-escada:not(.fora) .dt{animation:cm-ed .8s ease-out var(--a) forwards}@keyframes cm-ed{to{opacity:1}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-escada .dg{fill:#f4c935!important;animation:none!important}.cm-escada .dt{opacity:1!important;animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  const atr=[2,12,21,30];
+  deg.forEach((d,i)=>{const x=d[2],y=d[3];
+    s+='<path d="M'+x+' '+y+' H'+(x+340)+' V'+(H-40)+' H'+x+'Z" class="dg" style="--a:'+atr[i]+'s" stroke="'+T+'" stroke-width="5"/><path d="M'+(x+300)+' '+y+' H'+(x+340)+' V'+(H-40)+' H'+(x+300)+'Z" fill="url(#cm-h1)" opacity=".35"/>';
+    s+='<g class="dt" style="--a:'+atr[i]+'s">'+gTx(x+160,y+82,d[0],48,700)+gTx(x+160,y+130,d[1],30,500)+'</g>';
+  });
+  return {cls:'cm-esq cm-escada',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Escada em quatro degraus: rei, arcontes, leis escritas e Clístenes')+'">'+s+'</svg>'};
+};
+
+/* organograma da democracia ateniense */
+C.tipos.organograma=p=>{
+  const W=1300,H=860;
+  const cx=(x,y,w,h,t,sub,cor,sz)=>'<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/>'+gTx(x+w/2,y+h/2-4,t,sz||60,700)+gTx(x+w/2,y+h/2+44,sub,38,500)+'</g>';
+  let s='<style>.cm-org .ar{stroke-dasharray:1;stroke-dashoffset:0}.cm-org:not(.fora) .ar{animation:cm-oa 1.2s ease-out var(--a) both}@keyframes cm-oa{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}'+
+    '.cm-org .bx{opacity:1}.cm-org:not(.fora) .bx{animation:cm-ob .8s ease-out var(--a) both}@keyframes cm-ob{from{opacity:0}to{opacity:1}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-org .ar,.cm-org .bx{animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  s+='<g class="bx" style="--a:.4s">'+cx(300,50,700,190,'Eclésia','todos os cidadãos votam','#f6dc6a',70)+'</g>';
+  s+='<g class="bx" style="--a:2.5s">'+cx(40,340,520,190,'Bulé','conselho sorteado e pago','#f0e6c8')+'</g>';
+  s+='<g class="bx" style="--a:5.5s">'+cx(300,640,700,170,'Magistrados','executam o que a Eclésia decide','#f0e6c8')+'</g>';
+  const seta=(d,pt,a)=>'<path class="ar" style="--a:'+a+'s" pathLength="1" d="'+d+'" fill="none" stroke="var(--seta)" stroke-width="7" stroke-linecap="round" stroke-dasharray="1"/><path class="bx" style="--a:'+(a+1)+'s" d="'+pt+'" fill="none" stroke="var(--seta)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+=seta('M300 450 C240 380 280 300 420 240','M382 246 L424 238 L412 280',3.4);
+  s+=seta('M650 240 C660 380 660 500 650 636','M616 598 L650 640 L684 598',4.8);
+  s+=seta('M300 500 C340 560 380 610 420 640','M376 624 L424 646 L408 600',6.6);
+  s+=gTx(40,262,'prepara',38,600,'start','#3a3935')+gTx(40,306,'os projetos',38,600,'start','#3a3935')+gTx(700,430,'decide',40,700,'start')+gTx(60,640,'fiscaliza',38,600,'start','#3a3935');
+  s+=gTx(1020,120,'cerca de 40',36,600,'start','#3a3935')+gTx(1020,164,'reuniões por ano',36,600,'start','#3a3935');
+  return {cls:'cm-esq cm-org',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Organograma da democracia ateniense: a Eclésia decide, a Bulé prepara os projetos e fiscaliza, os magistrados executam')+'">'+s+'</svg>'};
+};
+
+/* gráfico de bonequinhos: 31 pessoas, cada uma cerca de 10 mil; 4 cidadãos */
+C.tipos.bonecos=p=>{
+  const W=1700,H=940;
+  // 31 figuras: 4 cidadãos, 11 mulheres e crianças, 3 metecos, 13 escravos
+  const tipos=[].concat(Array(4).fill('c'),Array(11).fill('f'),Array(3).fill('t'),Array(13).fill('e'));
+  const cor={c:T,f:'#e8573a',t:'#1fa39a',e:'#7a4b2a'},cinza='#9d978a';
+  let s='<style>.cm-bon .bn{opacity:1}.cm-bon:not(.fora) .bn{animation:cm-bn .5s ease-out var(--a) both}@keyframes cm-bn{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}'+
+    '.cm-bon .bf{transition:none}.cm-bon:not(.fora) .bf{animation:cm-bf 1.2s ease-out 8s both}@keyframes cm-bf{from{fill:#9d978a;stroke:#9d978a}to{fill:var(--c);stroke:var(--c)}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-bon .bn,.cm-bon .bf{animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  const gx=135,pos=[];
+  // cidadãos: bloco 2 x 2; mulheres e crianças: 6 + 5; metecos: 3; escravos: 7 + 6
+  [[200,170],[350,170],[200,330],[350,330]].forEach(q=>pos.push(q));
+  for(let k=0;k<11;k++)pos.push([560+(k%6)*gx,k<6?130:290]);
+  for(let k=0;k<3;k++)pos.push([560+k*gx,450]);
+  for(let k=0;k<13;k++)pos.push([560+(k%7)*gx,k<7?610:770]);
+  tipos.forEach((k,i)=>{
+    const pessoa=gPessoa(pos[i][0],pos[i][1],k==='f'?'f':'m',1.05,k==='c'?T:cinza,k==='c'?'':'bf',k==='c'?'':'--c:'+cor[k]);
+    s+='<g class="bn" style="--a:'+(.2+i*.16).toFixed(2)+'s">'+pessoa+'</g>';
+  });
+  s+=gTx(W-40,H-30,'cada boneco: cerca de 10 mil pessoas, por volta de 430 a.C.',40,700,'end');
+  return {cls:'cm-esq cm-bon',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Gráfico de bonequinhos: de 31 pessoas, só 4 eram cidadãos; as demais eram mulheres e crianças, metecos e escravos')+'">'+s+'</svg>'};
+};
+
+
+/* ---------- Roma: esquemas desenhados em código ---------- */
+const RSTYLE='<style>.cm-rm .bx{opacity:1}.cm-rm:not(.fora) .bx{animation:cm-rmb .8s ease-out var(--a) both}'+
+  '.cm-rm .ar{stroke-dasharray:1;stroke-dashoffset:0}.cm-rm:not(.fora) .ar{animation:cm-rma 1.1s ease-out var(--a) both}'+
+  '.cm-rm:not(.fora) .cai{animation:cm-rmc .7s ease-out var(--a) both}.cm-rm:not(.fora) .sl{animation:cm-rms .9s ease-out var(--a) both}'+
+  '.cm-rm .mv{transform:translate(var(--x0),var(--y0))}.cm-rm:not(.fora) .mv{animation:cm-rmx 3.2s ease-in-out var(--a) both}@keyframes cm-rmx{from{transform:translate(var(--x0),var(--y0))}to{transform:translate(var(--x1),var(--y1))}}'+
+  '.cm-rm .lz{fill:#fffdf6}.cm-rm:not(.fora) .lz{animation:cm-rml .9s ease-out var(--a) forwards}'+
+  '.cm-rm .sel{opacity:0;transition:opacity .6s}.cm-rm .sel.on{opacity:1}'+
+  '@keyframes cm-rmb{from{opacity:0}to{opacity:1}}@keyframes cm-rma{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}'+
+  '@keyframes cm-rmc{from{opacity:0;transform:translateY(-70px) rotate(-6deg)}to{opacity:1;transform:none}}@keyframes cm-rml{from{fill:#fffdf6}to{fill:#f4c935}}'+
+  '@keyframes cm-rms{from{opacity:0;transform:translateX(-380px)}to{opacity:1;transform:none}}@keyframes cm-rmq{from{opacity:0;transform:scale(2.2) rotate(-18deg)}to{opacity:1;transform:scale(1) rotate(-8deg)}}'+
+  '@keyframes cm-rmd{to{transform:translateY(240px) rotate(14deg);opacity:.22}}'+
+  '@media (prefers-reduced-motion:reduce){.cm-rm .bx,.cm-rm .ar,.cm-rm .cai{animation:none!important}.cm-rm .lz{fill:#f4c935!important;animation:none!important}.cm-rm .sai2{animation:none!important;transform:translateY(240px) rotate(14deg);opacity:.22}.cm-rm .mv{animation:none!important;transform:translate(var(--x1),var(--y1))}.cm-rm .sl{animation:none!important}}</style>';
+const rRect=(x,y,w,h,cor,sw,cls,a)=>'<rect'+(cls?' class="'+cls+'"':'')+(a!=null?' style="--a:'+a+'s"':'')+' x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+cor+'" stroke="'+T+'" stroke-width="'+(sw||5)+'"/>';
+const rTx=(x,y,ls,sz,w,anc,fill,lh)=>(Array.isArray(ls)?ls:[ls]).map((l,i)=>gTx(x,y+i*(lh||Math.round(sz*1.18)),l,sz,w,anc,fill)).join('');
+const rFundo=(W,H)=>'<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+const rSeta=(d,pt,a,cor,w)=>'<path class="ar" style="--a:'+a+'s" pathLength="1" d="'+d+'" fill="none" stroke="'+(cor||'var(--seta)')+'" stroke-width="'+(w||7)+'" stroke-linecap="round"/><path class="bx" style="--a:'+(a+1)+'s" d="'+pt+'" fill="none" stroke="'+(cor||'var(--seta)')+'" stroke-width="'+((w||7)+1)+'" stroke-linecap="round" stroke-linejoin="round"/>';
+const rPont=(d,a,w)=>'<path class="bx" style="--a:'+a+'s" d="'+d+'" fill="none" stroke="'+T+'" stroke-width="'+(w||4)+'" stroke-linecap="round" stroke-dasharray="14 12" stroke-opacity=".7"/>';
+const rEsq=(p,W,H,cls,corpo,rot)=>({cls:'cm-esq cm-rm '+cls,style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||rot)+'">'+RSTYLE+rFundo(W,H)+corpo+'</svg>'});
+
+/* faixa de papel colorido da fita do tempo; o selo acende nas etapas de data-et */
+C.tipos.faixa=p=>{
+  const W=p.W||700,H=p.H||110;
+  let s=RSTYLE+'<path d="M4 8 L'+(W-6)+' 4 L'+(W-2)+' '+(H-6)+' L6 '+(H-2)+' Z" fill="'+C.cor(p.cor||'amarelo')+'" stroke="'+T+'" stroke-width="4"/>'+
+    gTx(p.selo?(W-(p.seloW||200))/2:W/2,H/2+(p.selo?-4:14),p.texto,p.tam||52,700);
+  if(p.selo){const sw=p.seloW||200;s+='<g class="sel" data-et="'+(p.seloEt||'')+'"><path d="M'+(W-sw)+' 8 L'+(W-6)+' 4 L'+(W-2)+' '+(H-6)+' L'+(W-sw)+' '+(H-4)+' Z" fill="#d63a22" stroke="'+T+'" stroke-width="4"/>'+gTx(W-sw/2,H/2+14,p.selo,p.tamSelo||40,700,'middle','#fff')+'</g>';}
+  return {cls:'cm-icone cm-rm',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||p.texto)+'" style="overflow:visible">'+s+'</svg>'};
+};
+
+/* cartão de retrato em silhueta (sem rosto inventado); cai, é riscado ou ganha destaque */
+C.tipos.silhueta=p=>{
+  const W=520,H=640,cor=p.fundo||'#e9dc9f';
+  let s=RSTYLE+'<style>.cm-rm:not(.fora) .sai2{animation:cm-rmd 1.4s ease-in var(--s,99s) forwards}</style>';
+  s+='<g class="'+(p.sai!=null?'sai2':'')+'" style="--s:'+(p.sai!=null?p.sai/1000:99)+'s">';
+  s+='<rect x="6" y="6" width="'+(W-12)+'" height="'+(H-12)+'" fill="#fffdf6" stroke="'+T+'" stroke-width="5"/>';
+  s+='<circle cx="260" cy="232" r="190" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/><circle cx="260" cy="232" r="190" fill="url(#cm-hh)" opacity=".5"/>';
+  s+='<clipPath id="'+C.esc(p.id)+'-sl"><circle cx="260" cy="232" r="186"/></clipPath><g clip-path="url(#'+C.esc(p.id)+'-sl)" fill="#3a3935">';
+  // busto de perfil neutro: cabeça, pescoço e ombros com a dobra da toga
+  s+='<path d="M130 440 C130 350 190 320 232 314 L232 290 C214 280 206 258 208 232 C208 196 232 168 266 168 C300 168 320 196 318 232 C318 258 306 280 288 290 L288 314 C330 320 390 350 390 440 Z"/>';
+  if(p.cabelo==='curto')s+='<path d="M206 226 C200 180 232 150 268 152 C306 152 328 182 318 226 C312 200 296 184 268 184 C240 184 220 196 206 226Z" fill="#1b1a17"/>';
+  if(p.cabelo==='calvo')s+='<path d="M212 214 C216 190 236 172 266 172 C296 172 314 190 316 214 C300 196 232 196 212 214Z" fill="#55524b"/>';
+  s+='<path d="M170 440 C196 372 232 350 260 350 C292 350 330 372 354 440" fill="none" stroke="#fffdf6" stroke-opacity=".5" stroke-width="5"/><path d="M200 440 C214 392 240 372 260 372" fill="none" stroke="#fffdf6" stroke-opacity=".4" stroke-width="4"/></g>';
+  if(p.louros!=null){let l='';[-1,1].forEach(lado=>{for(let i=0;i<7;i++){const a=(-90+lado*(28+i*17))*Math.PI/180,x=262+Math.cos(a)*74,y=214+Math.sin(a)*70,g=a*180/Math.PI+90+lado*18;
+      [-1,1].forEach(k=>{l+='<g transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+(g+k*30).toFixed(1)+')"><path d="M0 0 C11 -12 11 -34 0 -48 C-11 -34 -11 -12 0 0Z" fill="#6f9a4a" stroke="'+T+'" stroke-width="3.6"/><path d="M0 -6 V-42" stroke="'+T+'" stroke-width="2"/></g>';});}});
+    s+='<g class="lau" style="animation-delay:'+(p.louros/1000)+'s">'+l+'</g><style>.cm-rm .lau{opacity:0}.cm-rm:not(.fora) .lau{animation:cm-lau .8s ease-out forwards}@keyframes cm-lau{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}@media (prefers-reduced-motion:reduce){.cm-rm .lau{opacity:1!important;animation:none!important}}</style>';}
+  s+=rTx(260,525,p.nome,p.tam||70,700);
+  if(p.sub)s+=rTx(260,580,p.sub,p.tamSub||40,500,'middle','#3a3935');
+  if(p.risco!=null)s+='<g style="--a:'+(p.risco/1000)+'s"><path class="ar" style="--a:'+(p.risco/1000)+'s" pathLength="1" d="M70 60 L450 470" stroke="#d63a22" stroke-width="16" stroke-linecap="round" fill="none"/><path class="ar" style="--a:'+(p.risco/1000+.5)+'s" pathLength="1" d="M450 60 L70 470" stroke="#d63a22" stroke-width="16" stroke-linecap="round" fill="none"/></g>';
+  s+='</g>';
+  return {cls:'cm-esq cm-rm cm-sc',style:'background:none;padding:0;--clip:none;',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||('Retrato em silhueta: '+p.nome))+'" style="overflow:visible">'+s+'</svg>'};
+};
+
+/* organograma da República romana: Senado, cinco magistraturas, tribuno com veto e a plebe que o escolhe */
+C.tipos.orgroma=p=>{
+  const W=1640,H=900;
+  let s='';
+  s+='<g class="bx" style="--a:.4s">'+rRect(500,20,640,170,'#f6dc6a',6)+gTx(820,98,'Senado',74,700)+gTx(820,146,'anciãos patrícios',40,500,'middle','#3a3935')+'</g>';
+  s+='<g class="bx" style="--a:11s">'+rRect(1200,40,400,150,'#f0e6c8',5)+gTx(1400,100,'pontífice máximo',42,700)+gTx(1400,148,'religião',38,500,'middle','#3a3935')+'</g>';
+  s+=rPont('M1140 115 H1200',11.5,4);
+  // linhas do Senado para os cinco cartões (centros em 170, 490, 810, 1130, 1450)
+  s+=rPont('M820 190 V250 M170 250 H1450 M170 250 V300 M490 250 V300 M810 250 V300 M1130 250 V300 M1450 250 V300',2.6,4);
+  const cs=[['cônsules',['sempre dois:','governo, exército','e propostas de lei'],'#f6dc6a',3.2],['pretor',['justiça'],'#f0e6c8',4.4],['censor',['conta a população','pela renda'],'#f0e6c8',5.4],['questor',['finanças'],'#f0e6c8',6.4],['edil',['cidade e obras','públicas'],'#f0e6c8',7.4]];
+  cs.forEach((c,i)=>{const x=20+i*320;
+    s+='<g class="bx" style="--a:'+c[3]+'s">'+rRect(x,300,300,250,c[2],5)+gTx(x+150,356,c[0],54,700)+rTx(x+150,410,c[1],30,500,'middle','#3a3935',38)+'</g>';});
+  // tribuno da plebe entra por baixo e veta o Senado, pela fresta entre os cartões
+  s+='<g class="sl" style="--a:14s"><rect x="330" y="660" width="520" height="170" fill="#f9d9c8" stroke="'+T+'" stroke-width="5"/>'+gTx(590,730,'tribuno da plebe',54,700)+gTx(590,784,'escolhido pelos plebeus',38,500,'middle','#3a3935')+'</g>';
+  s+=rSeta('M590 656 V250','M562 296 L590 244 L618 296',16,'#d63a22',10);
+  s+='<g class="bx" style="--a:18s"><g transform="translate(250 112) rotate(-8)"><rect x="-130" y="-52" width="260" height="104" fill="#fffdf6" stroke="#d63a22" stroke-width="9"/><text x="0" y="22" text-anchor="middle" style="font:700 80px var(--sans);fill:#d63a22;letter-spacing:.06em">VETO</text></g></g>';
+  s+='<g class="bx" style="--a:20s">'+rRect(910,690,700,140,'#fffdf6',4)+gTx(1260,742,'assembleias da plebe',50,700)+gTx(1260,792,'escolhem os tribunos',42,500,'middle','#3a3935')+'</g>';
+  s+=rPont('M910 760 H850',20.5,5);
+  return rEsq(p,W,H,'cm-orgr',s,'Organograma da República romana: o Senado no topo; cônsules, pretor, censor, questor e edil abaixo; pontífice máximo ao lado; o tribuno da plebe veta o Senado');
+};
+
+/* causa e consequência da crise da República */
+C.tipos.causaroma=p=>{
+  const W=1100,H=860;
+  const c=(x,y,w,h,t,cor,a)=>'<g class="bx" style="--a:'+a+'s">'+rRect(x,y,w,h,cor,5)+rTx(x+w/2,y+h/2-((Array.isArray(t)?t.length:1)-1)*27+17,t,50,700,'middle',T,56)+'</g>';
+  let s='';
+  s+=c(330,20,440,130,'conquistas','#f6dc6a',.4);
+  s+=c(30,260,470,150,['escravos','baratos'],'#f0e6c8',1.6);
+  s+=c(600,260,470,150,'latifúndios','#f0e6c8',2.6);
+  s+=c(280,500,540,150,['camponês perde','a terra'],'#f9d9c8',4.6);
+  s+=c(30,730,490,110,'êxodo para Roma','#f0e6c8',6.6);
+  s+=c(580,730,490,110,'crise','#f4a58f',8);
+  s+=rSeta('M440 150 C400 200 330 220 280 256','M318 228 L276 260 L330 266',1.2);
+  s+=rSeta('M660 150 C700 200 770 220 820 256','M782 228 L824 260 L770 266',2.1);
+  s+=rSeta('M260 410 C280 450 320 480 350 496','M312 476 L354 498 L318 512',4);
+  s+=rSeta('M840 410 C820 450 780 480 750 496','M788 476 L746 498 L782 512',4.4);
+  s+=rSeta('M400 650 C380 690 340 710 300 724','M340 700 L296 726 L348 736',6.2);
+  s+=rSeta('M700 650 C720 690 760 710 800 724','M760 700 L804 726 L752 736',7.2);
+  return rEsq(p,W,H,'cm-cau',s,'Esquema de causa e consequência: as conquistas trazem escravos baratos e latifúndios, o camponês perde a terra, migra para Roma e a República entra em crise');
+};
+
+/* êxodo rural: lotes de um campo e camponeses que se amontoam num quarteirão de Roma */
+C.tipos.exodo=p=>{
+  const W=1100,H=700;
+  let s='';
+  // campo em lotes
+  s+='<g class="bx" style="--a:.3s">';
+  for(let i=0;i<3;i++)for(let j=0;j<3;j++)s+='<rect x="'+(40+i*150)+'" y="'+(110+j*130)+'" width="140" height="120" fill="'+((i+j)%2?'#d7c27a':'#bcae6a')+'" stroke="'+T+'" stroke-width="4"/>'+'<path d="M'+(52+i*150)+' '+(130+j*130)+' h116 M'+(52+i*150)+' '+(152+j*130)+' h116 M'+(52+i*150)+' '+(174+j*130)+' h116" stroke="'+T+'" stroke-opacity=".35" stroke-width="3"/>';
+  s+='</g>'+gTx(245,70,'o campo',46,700)+gTx(245,540,'grandes latifúndios',38,600,'middle','#3a3935');
+  // quarteirão de Roma
+  s+='<g class="bx" style="--a:.6s">';
+  for(let i=0;i<4;i++)for(let j=0;j<3;j++){const x=700+i*95,y=130+j*110;s+='<rect x="'+x+'" y="'+y+'" width="85" height="95" fill="#efe3c4" stroke="'+T+'" stroke-width="4"/><path d="M'+(x-4)+' '+y+' L'+(x+42)+' '+(y-30)+' L'+(x+90)+' '+y+'Z" fill="#c9563a" stroke="'+T+'" stroke-width="4" stroke-linejoin="round"/><rect x="'+(x+30)+'" y="'+(y+50)+'" width="22" height="45" fill="#6b4a2a"/>';}
+  s+='</g>'+gTx(880,70,'Roma',50,700);
+  // camponeses saem do campo e se amontoam em Roma
+  const gente=[[250,150,520,500],[280,190,590,510],[300,300,640,540],[190,260,560,545],[330,410,700,520],[130,350,610,550],[230,430,660,545],[350,220,740,535]];
+  gente.forEach((g,i)=>{
+    s+='<g class="mv" style="--x0:'+g[0]+'px;--y0:'+g[1]+'px;--x1:'+g[2]+'px;--y1:'+g[3]+'px;--a:'+(2+i*.55).toFixed(2)+'s"><g transform="scale(.92)" fill="'+(i%3===0?'#7a4b2a':'#1b1a17')+'" stroke="'+(i%3===0?'#7a4b2a':'#1b1a17')+'"><circle cx="0" cy="-14" r="13" stroke="none"/><path d="M-13 0 H13 L10 40 H-10Z" stroke-width="3" stroke-linejoin="round"/><path d="M-13 6 L-26 36 M13 6 L26 36" fill="none" stroke-width="8" stroke-linecap="round"/></g></g>';});
+  s+=rSeta('M440 330 C500 280 560 280 650 330','M610 296 L654 332 L600 342',2.2,'var(--seta)',8);
+  s+=gTx(550,670,'camponeses sem terra viram plebe pobre',40,700);
+  return rEsq(p,W,H,'cm-exo',s,'Esquema: camponeses saem dos lotes do campo e se amontoam num quarteirão de Roma');
+};
+
+/* corrente da crise do século III: cada elo acende em sequência */
+C.tipos.corrente=p=>{
+  const W=1800,H=470,el=[['fim das','conquistas'],['menos','escravos'],['escravos','caros'],['produção','cai']];
+  let s='';
+  el.forEach((e,i)=>{const x=40+i*440,a=(2+i*3.2).toFixed(1);
+    s+='<g><rect class="lz" style="--a:'+a+'s" x="'+x+'" y="110" width="360" height="200" rx="90" fill="#fffdf6" stroke="'+T+'" stroke-width="7"/><rect x="'+(x+26)+'" y="136" width="308" height="148" rx="66" fill="none" stroke="'+T+'" stroke-opacity=".35" stroke-width="4"/>'+rTx(x+180,206,e,54,700,'middle',T,62)+'</g>';
+    if(i<3)s+='<g class="bx" style="--a:'+(+a+1.4)+'s"><path d="M'+(x+360)+' 210 H'+(x+440)+'" stroke="'+T+'" stroke-width="9" stroke-linecap="round"/><path d="M'+(x+404)+' 190 L'+(x+444)+' 210 L'+(x+404)+' 230" fill="none" stroke="'+T+'" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g>';});
+  s+=gTx(40,368,'a crise do escravismo,',46,700,'start','#3a3935')+gTx(40,420,'a partir do século III d.C.',46,700,'start','#3a3935');
+  s+=gTx(40,64,'cada elo puxa o seguinte',48,600,'start','#3a3935');
+  return rEsq(p,W,H,'cm-cor',s,'Corrente da crise do escravismo: fim das conquistas, menos escravos, escravos caros, produção cai');
+};
+
+/* colono preso ao lote */
+C.tipos.colono=p=>{
+  const W=1000,H=640;
+  let s='<g class="bx" style="--a:.3s"><path d="M80 560 L260 250 L920 250 L930 570 Z" fill="#cdbd78" stroke="'+T+'" stroke-width="6" stroke-linejoin="round"/>';
+  for(let i=0;i<6;i++)s+='<path d="M'+(110+i*8)+' '+(520-i*52)+' L'+(900+i*4)+' '+(526-i*52)+'" stroke="'+T+'" stroke-opacity=".4" stroke-width="4" fill="none"/>';
+  s+='</g>'+gTx(650,214,'lote do dono da terra',44,700);
+  // colono com enxada
+  s+='<g class="bx" style="--a:1.2s"><g transform="translate(250 470) scale(2.5)" fill="#7a4b2a" stroke="#7a4b2a"><circle cx="0" cy="-14" r="13" stroke="none"/><path d="M-13 0 H13 L10 42 H-10Z" stroke-width="3" stroke-linejoin="round"/><path d="M-13 6 L-26 34 M13 6 L40 -14" fill="none" stroke-width="8" stroke-linecap="round"/><path d="M40 -14 L52 54" fill="none" stroke-width="5" stroke-linecap="round"/><path d="M44 52 L66 58 L56 70" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g></g>';
+  s+=gTx(250,395,'colono',46,700);
+  // linha tracejada fina do colono ao lote: preso por dependência, não por corrente
+  s+='<g class="bx" style="--a:2.4s"><path d="M330 520 C420 470 520 420 640 400" fill="none" stroke="'+T+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="16 14"/><circle cx="650" cy="398" r="11" fill="#fffdf6" stroke="'+T+'" stroke-width="5"/></g>';
+  s+=gTx(960,612,'preso ao lote, mas livre',46,700,'end','#3a3935');
+  return rEsq(p,W,H,'cm-col',s,'Esquema: o colono, livre perante a lei, preso ao lote do dono da terra');
+};
+
+/* pares de deuses gregos e romanos */
+C.tipos.pares=p=>{
+  const W=1400,H=800,par=[['Zeus','Júpiter'],['Dionísio','Baco'],['Ares','Marte'],['Afrodite','Vênus']];
+  let s=gTx(280,70,'deuses gregos',58,700,'middle','#3a3935')+gTx(1120,70,'deuses romanos',58,700,'middle','#3a3935');
+  par.forEach((q,i)=>{const y=130+i*165,a=(1.5+i*3).toFixed(1);
+    s+='<g class="bx" style="--a:'+a+'s">'+rRect(60,y,440,120,'#f0e6c8',5)+gTx(280,y+78,q[0],62,700)+'</g>';
+    s+=rSeta('M520 '+(y+60)+' C640 '+(y+30)+' 760 '+(y+30)+' 880 '+(y+60),'M846 '+(y+30)+' L884 '+(y+60)+' L840 '+(y+88),+a+.8,'var(--seta)',7);
+    s+='<g class="bx" style="--a:'+(+a+1.6)+'s">'+rRect(900,y,440,120,'#f6dc6a',5)+gTx(1120,y+78,q[1],62,700)+'</g>';});
+  return rEsq(p,W,H,'cm-par',s,'Pares de deuses: Zeus e Júpiter, Dionísio e Baco, Ares e Marte, Afrodite e Vênus');
+};
+
+/* árvore das línguas: o latim na raiz */
+C.tipos.arvore=p=>{
+  const W=1200,H=840;
+  let s='<g class="bx" style="--a:.3s"><path d="M520 790 C530 700 540 640 520 560 L680 560 C660 640 670 700 680 790 Z" fill="#8b6a3a" stroke="'+T+'" stroke-width="6" stroke-linejoin="round"/><path d="M560 780 C566 700 572 640 560 570 M620 780 C614 700 608 640 620 570" stroke="'+T+'" stroke-opacity=".4" stroke-width="4" fill="none"/></g>';
+  const gal=[['português',190,150,'M560 580 C440 520 280 420 200 300'],['espanhol',600,90,'M600 560 C600 440 600 340 600 255'],['italiano',1010,150,'M640 580 C760 520 920 420 1000 300']];
+  gal.forEach((g,i)=>{const a=(1.6+i*2.2).toFixed(1);
+    s+='<path class="ar" style="--a:'+a+'s" pathLength="1" d="'+g[3]+'" fill="none" stroke="#8b6a3a" stroke-width="26" stroke-linecap="round"/>';
+    s+='<g class="bx" style="--a:'+(+a+.9)+'s"><circle cx="'+g[1]+'" cy="'+(g[2]+60)+'" r="108" fill="#8fb36a" stroke="'+T+'" stroke-width="5"/><circle cx="'+g[1]+'" cy="'+(g[2]+60)+'" r="108" fill="url(#cm-h1)" opacity=".35"/>'+gTx(g[1],g[2]+80,g[0],46,700)+'</g>';});
+  s+='<g class="bx" style="--a:.6s">'+rRect(430,640,340,110,'#fffdf6',5)+gTx(600,716,'latim',62,700)+'</g>';
+  s+=gTx(600,826,'a língua de Roma deu origem a várias outras',46,600,'middle','#3a3935');
+  return rEsq(p,W,H,'cm-arv',s,'Árvore: o latim, na raiz, dá origem ao português, ao espanhol e ao italiano');
+};
+
+/* aqueduto: arcos sobrepostos em traço de tinta */
+C.tipos.aqueduto=p=>{
+  const W=1400,H=440;
+  let s='<defs><pattern id="aqh" width="30" height="22" patternUnits="userSpaceOnUse"><path d="M0 11 H30 M15 0 V11 M0 22 V11" stroke="'+T+'" stroke-opacity=".28" stroke-width="2" fill="none"/></pattern></defs>';
+  // fileira de baixo: 7 arcos grandes; de cima: 14 arcos menores; canal no topo
+  const base=410,topo=250,pier=34,aw=150;
+  s+='<rect x="30" y="'+topo+'" width="'+(1340)+'" height="'+(base-topo)+'" fill="#e6d9b8" stroke="'+T+'" stroke-width="5"/><rect x="30" y="'+topo+'" width="1340" height="'+(base-topo)+'" fill="url(#aqh)"/>';
+  for(let i=0;i<7;i++){const x0=30+pier/2+i*(aw+pier*0.78)+ 8;s+='<path d="M'+x0+' '+base+' V'+(topo+78)+' A'+(aw/2)+' '+(aw/2)+' 0 0 1 '+(x0+aw)+' '+(topo+78)+' V'+base+'Z" fill="#fbf9f1" stroke="'+T+'" stroke-width="5"/>';}
+  s+='<rect x="30" y="110" width="1340" height="140" fill="#e6d9b8" stroke="'+T+'" stroke-width="5"/><rect x="30" y="110" width="1340" height="140" fill="url(#aqh)"/>';
+  for(let i=0;i<14;i++){const x0=52+i*95;s+='<path d="M'+x0+' 250 V190 A28 28 0 0 1 '+(x0+56)+' 190 V250Z" fill="#fbf9f1" stroke="'+T+'" stroke-width="4"/>';}
+  s+='<rect x="20" y="70" width="1360" height="46" fill="#d9c9a0" stroke="'+T+'" stroke-width="5"/><path d="M40 92 H1360" stroke="#2f77b5" stroke-width="12" stroke-linecap="round" stroke-dasharray="40 18"><animate attributeName="stroke-dashoffset" from="0" to="-116" dur="3s" repeatCount="indefinite"/></path>';
+  s+=gTx(20,50,'a água corre no alto',54,700,'start','#3a3935');
+  return {cls:'cm-icone cm-rm',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Aqueduto romano com duas fileiras de arcos e a água correndo no alto')+'" style="overflow:visible">'+s+'</svg>'};
+};
+
+
+/* tamanho de letra opcional (fs, em px da mesa) para notas e etiquetas postas em quadros largos do mapa */
+['nota','etiqueta'].forEach(k=>{const f0=C.tipos[k];C.tipos[k]=p=>{const r=f0(p);if(p.fs)r.style=(r.style||'')+'font-size:'+p.fs+'px;';if(p.corTexto)r.style=(r.style||'')+'color:'+C.cor(p.corTexto)+';';return r;};});
+
 })();

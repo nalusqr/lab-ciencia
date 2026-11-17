@@ -265,7 +265,7 @@ a{color:inherit}
 .cm-sumario{background:#fff;border:2px dashed rgba(27,26,23,.3);border-radius:6px;padding:14px 20px;margin:0 0 2em;font:600 1rem/1.4 var(--sans)}
 .cm-sumario ol{margin:0;padding-left:1.4em}
 .cm-sumario li{padding:3px 0}
-.cm-sumario a{color:var(--tinta);text-underline-offset:3px;display:inline-block;min-height:28px}
+.cm-sumario a{color:var(--tinta);text-underline-offset:3px;display:inline;padding:4px 0}
 .cm-sec{scroll-margin-top:16px}
 .cm-sec h3{font:400 clamp(1.5rem,3.5vw,1.9rem)/1.15 var(--serif);margin:1.6em 0 .5em}
 .cm-leitura p{margin:0 0 1em}
@@ -289,3 +289,36 @@ a{color:inherit}
 
 .cm-leitura ul{margin:0 0 1em;padding-left:1.3em}.cm-leitura li{padding:3px 0}
 .cm-txt ul{margin:0 0 .7em;padding-left:1.2em}
+
+/* ---------- Tópico 4: fita do tempo grande, notas clara e escura, moeda que gira ---------- */
+.cm-tempo .marco em{position:absolute;left:50%;top:64px;transform:translateX(-50%);font:italic 400 15px/1.1 var(--sans);white-space:nowrap;color:var(--tinta2)}
+.cm-tempo.grande .marco b{font-size:25px;top:36px}
+.cm-tempo.grande .marco em{font-size:21px;top:72px}
+.cm-tempo.grande .aviso{font-size:21px}
+.cm-nota.escura{background:#2b2a27;color:#fff}
+.cm-nota.clara{background:#fffdf6}
+.cm-gira:not(.fora) svg{animation:cm-gira 2.2s ease-in-out 1.4s 1 both;transform-origin:50% 50%}
+@keyframes cm-gira{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+@media (prefers-reduced-motion:reduce){.cm-gira:not(.fora) svg{animation:none}}
+@media (max-width:860px){
+  .cm-g .cm-tempo.grande .marco b{font-size:29px}
+  .cm-g .cm-tempo.grande .marco em{font-size:25px}
+  .cm-g .cm-tempo.grande .aviso{font-size:24px}
+}
+
+/* fonte grande no celular (peça com grande:true) e aviso da fita longe da borda rasgada */
+.cm-tempo.grande .aviso{left:auto;right:120px;max-width:500px;text-align:right;line-height:1.15}
+@media (max-width:860px){
+  .cm-g .cm-fonte.grande .tag{font-size:24px}
+  .cm-g .cm-fonte.grande cite{font-size:25px}
+  .cm-g .cm-fonte.grande .perg{font-size:26px}
+}
+
+.cm-mapa .regiao2{font:italic 700 34px var(--serif);fill:#10302d;paint-order:stroke;stroke:#fbf6e8;stroke-width:7px;stroke-linejoin:round}
+@media (max-width:860px){
+  .cm-g .cm-tempo.grande .marco b{font-size:30px}
+  .cm-g .cm-tempo.grande .marco em{font-size:28px}
+}
+
+.cm-tempo .aviso[data-et]{opacity:0;transition:opacity .5s}
+.cm-tempo .aviso[data-et].on{opacity:1}
