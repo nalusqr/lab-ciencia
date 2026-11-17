@@ -19,7 +19,7 @@ C.hash=hash;C.rng=rng;C.esc=esc;
 /* texto do aluno: parágrafos separados por linha em branco (ou array), ==palavra== vira marca-texto, **x** vira negrito */
 function marcar(txt,k0){
   const ps=Array.isArray(txt)?txt:String(txt||'').split(/\n\s*\n/);let k=k0||0;
-  const fmt=t=>esc(t.trim()).replace(/==(.+?)==/g,(_,w)=>'<mark style="--md:'+(0.35+0.6*(k++)).toFixed(2)+'s">'+w+'</mark>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  const fmt=t=>esc(t.trim()).replace(/==(.+?)==/g,(_,w)=>'<mark style="--md:'+(0.35+0.6*(k++)).toFixed(2)+'s">'+w+'</mark>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*\w])\*(?![\s*])([^*]+?)\*(?![*\w])/g,'$1<i>$2</i>');
   // linhas que começam com "- " viram lista; o resto do bloco vira parágrafo
   return ps.filter(p=>p.trim()).map(p=>{
     const ls=p.trim().split('\n');let out='',par=[],li=[];
@@ -89,7 +89,7 @@ C.tipos.fonte=p=>({cls:'cm-fonte rasgado'+(p.grande?' grande':''),style:'--clip:
   '<span class="tag">Fonte histórica</span><blockquote>'+esc(p.texto)+'</blockquote><cite>'+esc(p.ref)+'</cite>'+
   '<span class="perg">'+esc(p.pergunta||'O que essa fonte mostra?')+'</span>'});
 
-C.tipos.tempo=p=>({cls:'cm-tempo'+(p.grande?' grande':'')+' rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+(p.aviso?'<span class="aviso"'+(p.avisoEt?' data-et="'+p.avisoEt+'"':'')+'>'+esc(p.aviso)+'</span>':'')+
+C.tipos.tempo=p=>({cls:'cm-tempo'+(p.grande?' grande':'')+(p.gg?' gg':'')+(p.prog?' prog':'')+' rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+(p.aviso?'<span class="aviso"'+(p.avisoEt?' data-et="'+p.avisoEt+'"':'')+'>'+esc(p.aviso)+'</span>':'')+
   (p.marcos||[]).map((m,i)=>'<span class="marco" data-m="'+i+'" style="left:'+m.p+'%'+(m.cor?';--cor:'+cor(m.cor):'')+'"><i></i><b>'+esc(m.t)+'</b>'+(m.s?'<em>'+esc(m.s)+'</em>':'')+'</span>').join('')});
 
 C.tipos.nota=p=>({cls:'cm-nota'+(p.escura?' escura':'')+(p.clara?' clara':''),html:esc(p.texto)});
@@ -324,9 +324,13 @@ C.montar=function(T){
     if(x0>x1)return [0,0,W,H];
     const m=e.margem!=null?e.margem:40;return [x0-m,y0-m,x1-x0+2*m,y1-y0+2*m];
   }
+  let camAnt=null;
   function camera(){
     const r=palco.getBoundingClientRect();if(!r.width)return;
     const [x,y,w,h]=focoDe(at);const s=Math.min(r.width/w,r.height/h)*.96;
+    const cx=x+w/2,cy=y+h/2,dd=camAnt?Math.hypot((cx-camAnt[0])/w,(cy-camAnt[1])/h)+Math.abs(Math.log(s/camAnt[2]))+Math.abs(Math.log(w/camAnt[3]))*0:0;
+    if(camAnt&&!reduz)mesa.style.transitionDuration=Math.max(.6,Math.min(1.6,.6+dd*.55)).toFixed(2)+'s';
+    camAnt=[cx,cy,s,w];
     mesa.style.transform='translate('+(r.width/2-(x+w/2)*s).toFixed(1)+'px,'+(r.height/2-(y+h/2)*s).toFixed(1)+'px) scale('+s.toFixed(4)+')';
   }
   function visCamada(L,i){return L.etapas?L.etapas.includes(i):(i>=(L.desde||0)&&(L.ate==null||i<=L.ate));}
@@ -347,7 +351,12 @@ C.montar=function(T){
       el.classList.toggle('fora',!v);el.classList.toggle('atual',v&&(p.ir===at));
       if(el.getAttribute('role')==='button'){el.tabIndex=v?0:-1;el.setAttribute('aria-hidden',v?'false':'true');}
       // marcos da fita do tempo
-      if(p.tipo==='tempo')el.querySelectorAll('.marco').forEach(m=>{const mm=p.marcos[+m.dataset.m];m.classList.toggle('on',mm.etapa===at||(Array.isArray(mm.etapa)&&mm.etapa.includes(at)));});
+      if(p.tipo==='tempo'){
+        // fita progressiva (prog:true): só os marcos já vistos (d <= etapa) e o próximo, esmaecido
+        let prox=-1;if(p.prog)p.marcos.forEach((mm,i)=>{if(prox<0&&(mm.d||0)>at)prox=i;});
+        el.querySelectorAll('.marco').forEach(m=>{const i=+m.dataset.m,mm=p.marcos[i];m.classList.toggle('on',mm.etapa===at||(Array.isArray(mm.etapa)&&mm.etapa.includes(at)));
+          if(p.prog){m.classList.toggle('vis',(mm.d||0)<=at);m.classList.toggle('prox',i===prox);}});
+      }
       // marcas que acendem em certas etapas (data-et="0,3")
       el.querySelectorAll('[data-et]').forEach(m=>m.classList.toggle('on',m.dataset.et.split(',').includes(String(at))));
       // realces dentro de esquemas
@@ -361,7 +370,7 @@ C.montar=function(T){
           g.style.setProperty('--d',dd.toFixed(2)+'s');g.style.transitionDelay=dd.toFixed(2)+'s';
           g.querySelectorAll('.desenha').forEach(x=>x.style.transitionDelay=dd.toFixed(2)+'s');
           g.classList.toggle('on',on);vis[li]=on;
-          const ultima=L.etapas?!L.etapas.includes(at+1):(L.ate===at);
+          const ultima=L.etapas?!L.etapas.includes(at+1):(L.ate==null?at===E.length-1:L.ate===at);
           if(on&&L.dura&&ultima)timers.push(setTimeout(()=>{g.style.transitionDelay='0s';g.classList.remove('on');vis[li]=false;},dd*1000+L.dura));
         });
         mapaVis[p.id]=vis;

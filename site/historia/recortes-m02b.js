@@ -31,6 +31,7 @@ const SERIF='var(--serif,Georgia,serif)';
   '.m2-pal{display:flex;align-items:center;justify-content:center;font:400 150px/1 var(--serif);color:var(--tinta);filter:none}'+
   '.m2-pal span{position:relative;padding:0 .12em;background:linear-gradient(100deg,transparent 0 2%,#ffd83d 2% 98%,transparent 98%) no-repeat 0 62%/100% 62%}'+
   '.m2-tx{filter:none}'+
+  '.cl.reg path[fill^="url"]{stroke:#b8891a;stroke-width:3px}'+
   '@media (prefers-reduced-motion:no-preference){'+
     '.cm-m2 .ap{opacity:0}.cm-m2:not(.fora) .ap{animation:m2-t .8s ease-out var(--a,0s) forwards}'+
     '.cm-m2 .ar{stroke-dasharray:1;stroke-dashoffset:1}.cm-m2:not(.fora) .ar{animation:m2-d 1.1s ease-out var(--a,0s) forwards}'+
@@ -109,7 +110,7 @@ reg('cavaleiro','petroleo','Cavaleiro a cavalo',u=>{
   s+=cavalo('#b88a58',28,68,.96,true);
   s+=pth('M88 70 L84 100','none',T,13)+pth('M88 70 L84 100','none','#7c8189',8);
   s+=pth('M80 56 L110 56 L112 92 L78 92Z','#aab0b8',T,3.2)+hach('M100 56 L110 56 L112 92 L98 92Z','cm-h1',.5);
-  s+=pth('M64 60 L88 60 L88 92 L76 110 L64 92Z','#fffdf6',T,3)+pth('M76 62 V104 M66 78 H86','none','#d63a22',5);
+  s+=pth('M64 60 L88 60 L88 92 L76 110 L64 92Z','#c9a24a',T,3)+pth('M64 60 L88 92 L88 80 L72 60Z','#5f7f90')+pth('M64 60 L88 60 L88 92 L76 110 L64 92Z','none',T,3);
   s+=circ(96,42,15,'#aab0b8',T,3.2)+pth('M96 28 V56 M86 40 H106','none',T,2.6)+pth('M88 30 L96 22 L104 30','#aab0b8',T,2.4);
   return s;});
 
@@ -133,10 +134,16 @@ reg('mapa-partido','coral','Mapa partido em cinco pedaços',u=>{
   return s;});
 
 /* frasco de óleo da sagração */
-reg('frasco-oleo','amarelo','Frasco de óleo da unção',u=>{
-  let s=pth('M86 28 H114 L112 44 H88Z',WOOD,T,3)+pth('M88 44 H112 V64 C146 78 160 128 134 160 C116 184 84 184 66 160 C40 128 54 78 88 64Z',GOLD,T,3.4);
-  s+=hach('M120 70 C146 90 150 140 128 166 L114 176 C140 150 140 96 112 66Z','cm-h1',.5)+pth('M70 112 C72 96 82 84 96 80','none','#fff8d8',7)+pth('M80 130 C96 140 118 138 130 124','none',T,2.2);
-  s+=pth('M96 112 C96 120 90 124 90 130 A8 8 0 0 0 106 130 C106 124 100 120 100 112Z','#7a5a1c',T,2);
+reg('frasco-oleo','amarelo','Ampola de óleo da unção',u=>{
+  let s=pth('M92 16 H108 V40 H92Z',WOOD,T,3)+pth('M94 40 H106 V70 C132 84 140 122 128 150 C118 176 82 176 72 150 C60 122 68 84 94 70Z',GOLD,T,3.4);
+  s+=hach('M112 76 C132 94 134 132 120 156 L108 168 C124 140 124 98 104 72Z','cm-h1',.5)+pth('M80 112 C82 98 88 90 96 86','none','#fff8d8',6);
+  s+=pth('M100 188 C100 180 94 176 94 170 A6 6 0 0 0 106 170 C106 176 100 180 100 188Z','#7a5a1c',T,2);
+  return s;});
+
+reg('coroa-aro','petroleo','Coroa de aro e pontas',u=>{
+  let s=pth('M30 140 L30 70 L66 104 L100 50 L134 104 L170 70 L170 140Z',GOLD,T,3.6)+hach('M130 104 L170 70 L170 140 H130Z','cm-h1',.5);
+  s+=rect(26,138,148,26,'#c99a24',T,3.6)+pth('M40 150 H160','none','#fff3b0',3);
+  [[30,66],[100,46],[170,66]].forEach(q=>{s+=circ(q[0],q[1],8,'#fff3b0',T,3);});
   return s;});
 
 /* o toque real: mão sobre a cabeça de um doente */
@@ -161,7 +168,7 @@ reg('selo-papal','coral','Selo papal com duas chaves cruzadas',u=>{
 /* igreja românica de aldeia, com torre e cruz */
 reg('igreja','amarelo','Igreja de pedra com cruz',u=>{
   let s=pth('M24 170 V104 H110 V170Z',STONE,T,3.4)+pth('M110 170 V54 H150 V170Z',STONE,T,3.4);
-  s+=pth('M20 106 L64 70 L114 106Z','#c76a4b',T,3.4)+pth('M106 54 L130 28 L154 54Z','#c76a4b',T,3.4);
+  s+=pth('M20 106 L64 76 L114 106Z','#8f8c82',T,3.4)+pth('M106 54 L130 34 L154 54Z','#8f8c82',T,3.4);
   s+=pth('M130 28 V6 M122 14 H138','none',T,4)+pth('M54 170 V140 A12 12 0 0 1 78 140 V170Z','#4a3a2a',T,3)+pth('M34 128 V118 A6 6 0 0 1 46 118 V128Z','#4a3a2a',T,2.4)+pth('M88 128 V118 A6 6 0 0 1 100 118 V128Z','#4a3a2a',T,2.4);
   s+=pth('M122 90 V80 A8 8 0 0 1 138 80 V90Z','#4a3a2a',T,2.4)+hach('M138 54 H150 V170 H138Z','cm-h1',.5)+hach('M98 104 H110 V170 H98Z','cm-h1',.4)+tinta('M26 150 H110 M112 120 H148',1.6);
   s+=pth('M8 172 H192','none',T,3.4);
@@ -197,6 +204,31 @@ reg('vela','coral','Vela acesa',u=>{
   s+=pth('M88 96 C92 108 90 116 88 124','none',T,1.6);
   return s;});
 
+/* mão-morta: o senhor leva a melhor cabeça do rebanho da herança */
+reg('mao-morta','coral','Mão do senhor levando um boi',u=>{
+  let s=pth('M148 122 C160 128 168 140 164 158','none',T,4);
+  s+=pth('M56 134 V176 M78 134 V176 M126 134 V176 M146 134 V176','none',T,11)+pth('M56 134 V176 M78 134 V176 M126 134 V176 M146 134 V176','none','#9a6c40',6);
+  s+=pth('M54 92 C54 66 88 60 124 64 C156 66 168 84 164 106 L162 138 L54 138Z','#b88a58',T,3.6)+hach('M130 66 C158 72 168 90 164 106 L162 138 L136 138Z','cm-h1',.5);
+  s+=pth('M54 88 C34 86 22 100 24 120 L44 134 L58 110Z','#b88a58',T,3.4)+pth('M30 90 L22 70 M48 86 L54 68','none',T,5)+circ(38,106,3,T)+pth('M26 124 C22 118 24 112 28 112','none',T,2.4);
+  s+=pth('M26 122 C12 132 10 146 16 156','none',T,3.4)+pth('M2 150 C8 142 22 144 28 154 L22 170 C10 172 2 166 2 150Z',SKIN,T,3.2)+pth('M8 156 L20 162','none',T,2);
+  return s;});
+
+/* moinho de água de aldeia */
+reg('moinho-agua','petroleo','Moinho de água',u=>{
+  let s=pth('M14 168 H188','none',T,3.4);
+  s+=pth('M30 168 V84 H110 V168Z',STONE,T,3.4)+pth('M22 88 L70 44 L118 88Z','#8f8c82',T,3.4)+pth('M54 168 V132 H86 V168Z','#4a3a2a',T,2.6)+hach('M96 84 H110 V168 H96Z','cm-h1',.5)+pth('M44 112 V100 A6 6 0 0 1 56 100 V112Z','#4a3a2a',T,2.2);
+  s+=circ(138,134,36,'none',T,5)+circ(138,134,36,'none',WOOD,2.6)+circ(138,134,6,WOOD,T,2.4);
+  for(let i=0;i<8;i++){const a=i*Math.PI/4;s+=pth('M'+(138+Math.cos(a)*6)+' '+(134+Math.sin(a)*6)+' L'+(138+Math.cos(a)*36)+' '+(134+Math.sin(a)*36),'none',WOOD,3)+pth('M'+(138+Math.cos(a)*36-3)+' '+(134+Math.sin(a)*36-3)+' l6 6','none',T,5);}
+  s+=pth('M96 176 C120 184 160 184 192 174','none','#2f77b5',3.4);
+  return s;});
+
+/* carrinho de esterco: o adubo */
+reg('carrinho','amarelo','Carrinho de esterco',u=>{
+  let s=pth('M24 96 H170 L152 144 H46Z','#a77a4b',T,3.6)+hach('M138 96 H170 L152 144 H134Z','cm-h1',.5);
+  s+=pth('M34 96 C40 70 64 62 84 70 C100 56 132 58 142 80 C152 84 160 90 160 96Z','#5a3d24',T,3.2)+pth('M60 82 H70 M104 76 H116 M130 90 H140','none','#8a6a44',3);
+  s+=pth('M24 96 L2 78 M2 78 L-6 92','none',T,6)+circ(98,160,22,'none',T,6)+circ(98,160,22,'none',WOOD,3)+circ(98,160,4,T)+pth('M98 140 V180 M78 160 H118','none',WOOD,2.4)+pth('M46 144 L98 160','none',T,3);
+  return s;});
+
 /* cruz latina de pedra */
 reg('cruz','amarelo','Cruz latina',u=>{
   let s=pth('M86 16 H114 V70 H168 V98 H114 V184 H86 V98 H32 V70 H86Z',GOLD,T,3.6)+hach('M100 16 H114 V70 H168 V98 H114 V184 H100Z','cm-h1',.4);
@@ -218,7 +250,7 @@ reg('moinho-forno','petroleo','Moinho de água e forno de pão',u=>{
   s+=circ(94,134,34,'none',T,5)+circ(94,134,34,'none',WOOD,2.4)+circ(94,134,6,WOOD,T,2.4);
   for(let i=0;i<8;i++){const a=i*Math.PI/4;s+=pth('M'+(94+Math.cos(a)*6)+' '+(134+Math.sin(a)*6)+' L'+(94+Math.cos(a)*34)+' '+(134+Math.sin(a)*34),'none',WOOD,3)+pth('M'+(94+Math.cos(a)*34-3)+' '+(134+Math.sin(a)*34-3)+' l6 6','none',T,5);}
   s+=pth('M92 168 C112 176 146 176 168 168','none','#2f77b5',3);
-  s+=pth('M126 168 C126 130 188 130 188 168Z','#d8b988',T,3.4)+hach('M168 140 C184 148 188 160 188 168 H170Z','cm-h1',.5)+pth('M146 168 V152 A10 10 0 0 1 166 152 V168Z','#3a2a1c',T,2.4)+pth('M150 166 C150 158 154 156 156 150 C160 156 164 158 164 166Z','#ff9a2e',T,1.6);
+  s+=pth('M112 170 C108 100 196 100 192 170Z','#d49a58',T,3.6)+hach('M170 118 C188 130 192 154 192 170 H172Z','cm-h1',.5)+pth('M126 128 C140 118 164 118 178 128 M118 148 H186','none',T,1.8)+pth('M138 170 V150 A14 14 0 0 1 166 150 V170Z','#2a1c10',T,2.6)+pth('M146 168 C146 158 152 156 152 148 C158 156 162 158 160 168Z','#ff9a2e',T,1.8)+pth('M110 172 H196','none',T,3.4);
   return s;});
 
 /* charrua puxada por cavalo */
@@ -251,7 +283,7 @@ reg('mitra','coral','Mitra de bispo e livro',u=>{
 
 /* elmo e espada: os que lutam */
 reg('elmo-espada','petroleo','Elmo e espada',u=>{
-  let s=pth('M100 20 L100 180','none',T,14)+pth('M100 20 L100 180','none','#c9ccd0',8)+pth('M70 150 H130','none',T,12)+pth('M70 150 H130','none',GOLD,6)+pth('M100 158 V184','none',T,10)+circ(100,188,6,GOLD,T,2.4);
+  let s='<g transform="rotate(52 100 100)">'+pth('M100 14 L100 176','none',T,14)+pth('M100 14 L100 176','none','#c9ccd0',8)+pth('M70 146 H130','none',T,12)+pth('M70 146 H130','none',GOLD,6)+pth('M100 154 V182','none',T,10)+circ(100,186,6,GOLD,T,2.4)+'</g>';
   s+=pth('M54 110 C50 60 74 34 100 34 C126 34 150 60 146 110 L146 126 H54Z','#aab0b8',T,3.6)+pth('M100 34 V126','none',T,3)+hach('M124 40 C142 60 146 90 146 110 V126 H124Z','cm-h1',.5);
   s+=pth('M84 70 H116 V104 H84Z','#2b2a27',T,2.6)+pth('M92 76 H108 M92 84 H108 M92 92 H108','none','#aab0b8',2);
   return s;});
@@ -293,6 +325,10 @@ C.tipos.bilhete=p=>({cls:'m2-bil',html:
   '<span class="cm-fita" style="--fx:'+(p.fita!=null?p.fita:38)+'%;--fg:'+(p.fg!=null?p.fg:-4)+'deg"></span>'+
   '<div class="ic">'+C.icone(p.icone,{fundo:p.fundo,rotulo:p.rotuloIcone||p.texto})+'</div><span class="t">'+esc(p.texto)+'</span>'});
 
+/* ---------- nota amarela e etiqueta branca com tamanho de letra em px da mesa ---------- */
+C.tipos.notag=p=>({cls:'cm-nota',style:'font-size:'+(p.tam||40)+'px;line-height:1.22;',html:esc(p.texto)});
+C.tipos.etq2=p=>({cls:'cm-etq',style:'font-size:'+(p.tam||40)+'px;line-height:1.2;padding:16px 22px!important;',html:'<span class="cm-fita" style="--fx:'+(p.fita!=null?p.fita:12)+'%;--fg:-5deg"></span><span>'+esc(p.texto)+'</span>'});
+
 /* ---------- palavra com marca-texto ---------- */
 C.tipos.palavra=p=>({cls:'m2-pal',style:'--a:'+(p.marcaEm!=null?p.marcaEm:3)+'s;'+(p.tam?'font-size:'+p.tam+'px;':''),html:'<span>'+esc(p.texto)+'</span>'});
 
@@ -304,7 +340,7 @@ function pessoa(x,y,k,cor,o){
   o=o||{};
   return '<g transform="translate('+x+' '+y+') scale('+k+')">'+
     pth('M-14 8 L14 8 L20 62 L-20 62Z',cor||WOOL,T,3.2)+circ(0,-6,14,SKIN,T,3)+(o.chapeu?pth('M-15 -8 C-14 -26 14 -26 15 -8 C8 -13 -8 -13 -15 -8Z','#7a5a3a',T,2.4):'')+
-    (o.escudo?circ(-18,28,16,'#fffdf6',T,3)+pth('M-18 14 V42 M-32 28 H-4','none','#d63a22',3):'')+
+    (o.escudo?circ(-18,28,16,'#c9a36a',T,3)+circ(-18,28,5,'#8a8d92',T,2)+circ(-18,28,11,'none',T,1.6):'')+
     (o.lanca?pth('M22 70 L22 -34','none',T,3.4)+pth('M22 -34 L17 -22 L27 -22Z','#9a9da2',T,2):'')+'</g>';
 }
 C.tipos.jigsaw=p=>{
@@ -353,11 +389,12 @@ C.tipos.quadrinho=p=>{
   const chao='<rect y="340" width="580" height="80" fill="#e3cf93"/><rect y="340" width="580" height="80" fill="url(#cm-hh)" opacity=".5"/>'+tinta('M0 340 H580',3);
   /* 1: homenagem. O vassalo ajoelhado, com as mãos entre as do senhor */
   const c1=chao+
-    pth('M330 150 L440 150 L462 360 L312 360Z','#8e1e2c',T,4)+hach('M410 150 H440 L462 360 H420Z','cm-h1',.45)+pth('M322 300 H452','none',GOLD,6)+circ(386,110,38,SKIN,T,4)+pth('M350 96 C352 64 420 64 422 96','#3a2a1c',T,3)+pth('M356 70 L362 54 L378 66 L386 50 L394 66 L410 54 L416 70','none',GOLD,5)+
-    pth('M330 176 C304 200 290 226 282 252','none',T,22)+pth('M330 176 C304 200 290 226 282 252','none','#8e1e2c',14)+
-    pth('M130 340 C124 290 150 250 192 244 C226 240 240 262 236 292 L262 318 L262 340Z','#5f7f90',T,4)+pth('M120 340 L130 318 L190 316 L196 340Z','#4a6878',T,3.4)+circ(206,212,32,SKIN,T,4)+pth('M176 202 C178 176 234 176 238 202 C224 196 194 196 176 202Z','#3a2a1c',T,3)+
-    pth('M226 270 C246 270 266 264 282 256','none',T,22)+pth('M226 270 C246 270 266 264 282 256','none','#5f7f90',14)+
-    pth('M262 238 C274 232 296 236 304 248 C300 262 280 268 264 262Z',SKIN,T,4)+tinta('M272 246 L296 252 M274 256 L296 258',2.4)+
+    pth('M392 150 L492 150 L524 360 L368 360Z','#8e1e2c',T,4)+hach('M462 150 H492 L524 360 H480Z','cm-h1',.45)+pth('M380 292 H512','none',GOLD,6)+circ(442,108,38,SKIN,T,4)+pth('M406 94 C408 62 476 62 478 94','#3a2a1c',T,3)+pth('M412 68 L418 52 L434 64 L442 48 L450 64 L466 52 L472 68','none',GOLD,5)+
+    pth('M96 340 L108 322 L250 322 L264 340Z','#4a6878',T,3.6)+pth('M92 322 C88 268 108 214 148 192 C190 180 222 204 220 246 L240 322Z','#5f7f90',T,4)+pth('M110 318 H236','none',T,2.6)+circ(172,150,34,SKIN,T,4)+pth('M140 140 C142 112 202 112 206 140 C192 134 158 134 140 140Z','#3a2a1c',T,3)+
+    pth('M206 220 C236 224 266 228 296 232','none',T,22)+pth('M206 220 C236 224 266 228 296 232','none','#5f7f90',14)+
+    pth('M410 176 C384 190 360 204 344 226','none',T,24)+pth('M410 176 C384 190 360 204 344 226','none','#8e1e2c',16)+
+    pth('M294 266 C288 232 298 204 314 198 C330 204 336 232 330 266Z',SKIN,T,3.6)+pth('M312 204 V258 M304 214 V258 M322 214 V258','none',T,2)+
+    pth('M276 262 C268 236 276 210 292 204 L300 214 C296 234 298 252 304 268Z',SKIN,T,3.6)+pth('M340 206 C356 212 362 238 354 262 L330 270 C338 250 340 230 336 214Z',SKIN,T,3.6)+
     '';
   /* 2: fidelidade. Mão sobre a Bíblia aberta */
   const c2=chao+
@@ -381,17 +418,17 @@ C.tipos.quadrinho=p=>{
 
 /* ---------- pacto: suserano, vassalo e a cadeia de dependências ---------- */
 C.tipos.pacto=p=>{
-  const W=1420,H=1000;let s='';
-  const card=(y,t,sub,a,cor)=>ap('cai',a,'<g filter="url(#cm-sombra)"><path d="M394 '+(y+4)+' L1016 '+y+' L1020 '+(y+138)+' L390 '+(y+142)+'Z" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/></g>'+sTx(705,y+66,t,58,700,'middle',T)+sTx(705,y+116,sub,38,500,'middle','#2f2e2a'));
+  const W=1000,H=1000;let s='';
+  const card=(y,t,sub,a,cor)=>ap('cai',a,'<g filter="url(#cm-sombra)"><path d="M214 '+(y+4)+' L786 '+y+' L790 '+(y+138)+' L210 '+(y+142)+'Z" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/></g>'+sTx(500,y+64,t,54,700,'middle',T)+sTx(500,y+114,sub,40,500,'middle','#2f2e2a'));
   s+=card(30,'suserano','pode ser o rei',0.4,'#fffdf6')+card(390,'vassalo e suserano','de nobres menores',1.2,'#fff4c2')+card(750,'vassalo','de um senhor maior',2,'#fffdf6');
   const par=(y0,a)=>{
     const yA=y0+142,yB=y0+360;let g='';
-    g+=seta('M310 '+(yA+10)+' C280 '+(yA+80)+' 280 '+(yB-90)+' 310 '+(yB-14),T,7,a+.2);
-    g+=ap('ap',a+1.1,ponta(310,yB-12,Math.PI/2+.1,T,7))+
-      ap('ap',a+.4,sTx(260,yA+84,'feudo',60,700,'end',T)+sTx(260,yA+132,'terra, cargo',38,500,'end','#2f2e2a')+sTx(260,yA+176,'ou renda',38,500,'end','#2f2e2a'));
-    g+=seta('M1100 '+(yB-14)+' C1130 '+(yB-90)+' 1130 '+(yA+80)+' 1100 '+(yA+12),'#c93a2a',7,a+.6);
-    g+=ap('ap',a+1.5,ponta(1100,yA+10,-Math.PI/2-.1,'#c93a2a',7))+
-      ap('ap',a+.8,sTx(1130,yA+84,'lealdade',60,700,'start',T)+sTx(1130,yA+132,'e serviço',38,500,'start','#2f2e2a')+sTx(1130,yA+176,'militar',38,500,'start','#2f2e2a'));
+    g+=seta('M130 '+(yA+14)+' C104 '+(yA+80)+' 104 '+(yB-90)+' 130 '+(yB-16),T,7,a+.2);
+    g+=ap('ap',a+1.1,ponta(130,yB-14,Math.PI/2+.1,T,7))+
+      ap('ap',a+.4,sTx(178,yA+80,'feudo',58,700,'start',T)+sTx(178,yA+130,'terra, cargo',44,500,'start','#2f2e2a')+sTx(178,yA+178,'ou renda',44,500,'start','#2f2e2a'));
+    g+=seta('M870 '+(yB-16)+' C896 '+(yB-90)+' 896 '+(yA+80)+' 870 '+(yA+14),'#c93a2a',7,a+.6);
+    g+=ap('ap',a+1.5,ponta(870,yA+12,-Math.PI/2-.1,'#c93a2a',7))+
+      ap('ap',a+.8,sTx(822,yA+80,'lealdade',58,700,'end',T)+sTx(822,yA+130,'e serviço',44,500,'end','#2f2e2a')+sTx(822,yA+178,'militar',44,500,'end','#2f2e2a'));
     return g;};
   s+=par(30,2.6)+par(390,4.4);
   return esq(p,W,H,s,'Esquema do pacto feudo-vassálico: o suserano dá o feudo, o vassalo devolve lealdade e serviço militar, e o vassalo pode ser suserano de outro nobre');
@@ -412,46 +449,50 @@ C.tipos.ordens=p=>{
 
 /* ---------- calendário da corveia ---------- */
 C.tipos.calendario=p=>{
-  const W=1280,H=620,dias=['seg','ter','qua','qui','sex','sáb','dom'];let s=sTx(60,92,'a semana do servo',72,400,'start',T,SERIF)+tinta('M60 116 H600',3);
-  dias.forEach((d,i)=>{const x=40+i*172;
-    s+='<g filter="url(#cm-sombra)"><rect x="'+x+'" y="160" width="160" height="230" fill="#fffdf6" stroke="'+T+'" stroke-width="4"/></g>'+rect(x,160,160,62,'#e6dfcf',T,4)+sTx(x+80,206,d,44,700,'middle',T)+rect(x,160,160,230,'url(#cm-hh)',null,0,' opacity=".14"');
-    if(i<3)s+=ap('ap',1+i*1.1,rect(x+8,230,144,152,'#ffd83d',T,3.4)+sTx(x+80,300,'corveia',36,700,'middle',T)+pth('M'+(x+40)+' 334 L'+(x+64)+' 358 L'+(x+120)+' 318','none','#c93a2a',8));
+  const W=900,H=920,dias=['seg','ter','qua','qui','sex','sáb','dom'];let s=sTx(60,96,'a semana do servo',72,400,'start',T,SERIF)+tinta('M60 120 H620',3);
+  dias.forEach((d,i)=>{const x=50+(i%4)*205,y=160+Math.floor(i/4)*260;
+    s+='<g filter="url(#cm-sombra)"><rect x="'+x+'" y="'+y+'" width="190" height="236" fill="'+(i===6?'#d9d6cc':'#fffdf6')+'" stroke="'+T+'" stroke-width="4"/></g>'+rect(x,y,190,64,'#e6dfcf',T,4)+sTx(x+95,y+48,d,46,700,'middle',T)+rect(x,y,190,236,'url(#cm-hh)',null,0,' opacity=".14"');
+    if(i<3)s+=ap('ap',1+i*1.1,rect(x+8,y+72,174,156,'#ffd83d',T,3.4)+sTx(x+95,y+138,'corveia',40,700,'middle',T)+pth('M'+(x+54)+' '+(y+172)+' L'+(x+80)+' '+(y+198)+' L'+(x+138)+' '+(y+158),'none','#c93a2a',9));
+    if(i===6)s+=sTx(x+95,y+140,'dia santo',38,700,'middle','#4a463e')+sTx(x+95,y+186,'descanso',38,500,'middle','#4a463e');
   });
-  s+=rect(60,440,60,44,'#ffd83d',T,3.6)+sTx(140,476,'corveia: trabalho gratuito nas terras do senhor',40,700,'start',T)+
-     rect(60,516,60,44,'#fffdf6',T,3.6)+sTx(140,552,'resto da semana: manso servil e descanso',40,500,'start','#2f2e2a')+
-     sTx(60,600,'cerca de três dias por semana',36,500,'start','#4a463e');
-  return esq(p,W,H,s,'Calendário de uma semana, com três dias marcados em amarelo: a corveia');
+  s+=rect(60,690,60,44,'#ffd83d',T,3.6)+sTx(140,726,'corveia: trabalho gratuito',42,700,'start',T)+
+     rect(60,752,60,44,'#fffdf6',T,3.6)+sTx(140,788,'resto: manso servil e descanso',42,500,'start','#2f2e2a')+
+     sTx(60,860,'cerca de três dias por semana',42,700,'start','#4a463e');
+  return esq(p,W,H,s,'Calendário de uma semana, com três dias marcados em amarelo, a corveia, e o domingo em cinza, dia santo');
 };
 
 /* ---------- obrigações: mesa de contas com os ícones ---------- */
 C.tipos.obrigacoes=p=>{
-  const W=1300,H=820;let s='';
+  const W=900,H=1340;let s='';
   s+=rect(0,0,W,H,'#efe6cc',T,4);
-  /* pano xadrez da mesa de contas */
-  let x0='';for(let i=0;i<14;i++)for(let j=0;j<9;j++)if((i+j)%2===0)x0+='<rect x="'+(i*100-50)+'" y="'+(j*100-40)+'" width="100" height="100"/>';
+  let x0='';for(let i=0;i<10;i++)for(let j=0;j<14;j++)if((i+j)%2===0)x0+='<rect x="'+(i*100-50)+'" y="'+(j*100-40)+'" width="100" height="100"/>';
   s+='<g fill="#d7c79a" opacity=".55">'+x0+'</g>'+rect(0,0,W,H,'none',T,6);
-  const cards=[['trigo','talha e champart','parte da colheita'],['denario','censo','renda fixa'],['moinho-forno','banalidades','moinho e forno'],['vela','mão-morta','taxa na herança'],['cruz','dízimo','a décima parte']];
-  const pos=[[40,40],[460,40],[880,40],[250,430],[670,430]];
+  const cards=[['trigo','talha','parte da colheita'],['denario','censo','renda fixa'],['moinho-forno','banalidades','moinho e forno'],['mao-morta','mão-morta','taxa na herança']];
+  const pos=[[40,40],[460,40],[40,430],[460,430]];
   cards.forEach((c,i)=>{const x=pos[i][0],y=pos[i][1];
-    s+=ap('cai',0.6+i*1.1,'<g filter="url(#cm-sombra)"><path d="M'+x+' '+(y+4)+' L'+(x+380)+' '+y+' L'+(x+384)+' '+(y+350)+' L'+(x-2)+' '+(y+354)+'Z" fill="#fffdf6" stroke="'+T+'" stroke-width="4"/></g>'+
-      ico(c[0],x+90,y+6,200,{})+sTx(x+190,y+264,c[1],46,700,'middle',T)+sTx(x+190,y+312,c[2],36,500,'middle','#2f2e2a'));});
-  return esq(p,W,H,s,'Mesa de contas com as obrigações do servo: talha e champart, censo, banalidades, mão-morta e dízimo',{fundo:false});
+    s+=ap('cai',0.6+i*1.1,'<g filter="url(#cm-sombra)"><path d="M'+x+' '+(y+4)+' L'+(x+400)+' '+y+' L'+(x+404)+' '+(y+350)+' L'+(x-2)+' '+(y+354)+'Z" fill="#fffdf6" stroke="'+T+'" stroke-width="4"/></g>'+
+      ico(c[0],x+100,y+6,200,{})+sTx(x+200,y+264,c[1],46,700,'middle',T)+sTx(x+200,y+312,c[2],38,500,'middle','#2f2e2a'));});
+  s+=ap('cai',5,'<g transform="rotate(-2 120 420)"><rect x="30" y="800" width="440" height="90" fill="#ffd83d" stroke="'+T+'" stroke-width="3"/>'+sTx(250,838,'champart: nome francês',36,700,'middle',T)+sTx(250,876,'de uma parte da colheita',36,700,'middle',T)+'</g>');
+  /* o dízimo vai à Igreja, não ao senhor: cartão à parte, com seta até a igreja */
+  s+=ap('cai',6.2,'<g filter="url(#cm-sombra)"><path d="M40 930 L440 926 L444 1276 L38 1280Z" fill="#fff4c2" stroke="'+T+'" stroke-width="4"/></g>'+ico('cruz',140,936,200,{})+sTx(240,1194,'dízimo',46,700,'middle',T)+sTx(240,1242,'a décima parte',38,500,'middle','#2f2e2a'));
+  s+=ap('ap',7.2,'<path d="M456 1100 H540" fill="none" stroke="#c93a2a" stroke-width="8" stroke-linecap="round"/>'+ponta(548,1100,0,'#c93a2a',8,30)+ico('igreja',560,940,300,{})+sTx(710,1252,'à Igreja,',40,700,'middle',T)+sTx(710,1298,'não ao senhor',40,700,'middle',T));
+  return esq(p,W,H,s,'Mesa de contas com as obrigações do servo: talha, censo, banalidades e mão-morta, devidas ao senhor, e o dízimo, devido à Igreja',{fundo:false});
 };
 
 /* ---------- balança: escravo, servo e trabalhador livre ---------- */
 C.tipos.balanca3=p=>{
-  const W=1300,H=860;let s='';
-  s+=tinta('M650 30 V120',5)+circ(650,24,14,'none',T,5);
-  s+=pth('M120 140 L650 120 L1180 140','none',T,10)+pth('M120 140 L650 120 L1180 140','none','#8a8d92',5)+circ(650,122,18,GOLD,T,4);
+  const W=1000,H=860;let s='';
+  s+=tinta('M500 30 V120',5)+circ(500,24,14,'none',T,5);
+  s+=pth('M30 140 L500 120 L970 140','none',T,10)+pth('M30 140 L500 120 L970 140','none','#8a8d92',5)+circ(500,122,18,GOLD,T,4);
   const pan=(x,y,cor,t,l1,l2,l3,a,gr)=>ap('cai',a,
     '<path d="M'+x+' 142 L'+(x-130)+' '+y+' M'+x+' 142 L'+(x+130)+' '+y+'" fill="none" stroke="'+T+'" stroke-width="3.4"/>'+
     '<path d="M'+(x-150)+' '+y+' H'+(x+150)+' C'+(x+130)+' '+(y+56)+' '+(x-130)+' '+(y+56)+' '+(x-150)+' '+y+'Z" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/>'+
-    sTx(x,y+130,t,gr?64:56,700,'middle',T)+sTx(x,y+184,l1,38,500,'middle','#2f2e2a')+sTx(x,y+228,l2,38,500,'middle','#2f2e2a')+sTx(x,y+272,l3,38,500,'middle','#2f2e2a'));
-  s+=pan(230,300,'#e6dfcf','escravo','propriedade','do senhor','sem proteção legal',0.5)+
-     pan(650,300,'#ffd83d','servo','preso à terra,','com proteção e','terra para si',1.4,true)+
-     pan(1070,300,'#e6dfcf','trabalhador livre','pode partir e','vende o trabalho','por salário',2.3);
-  s+=ap('ap',3.2,sTx(650,800,'o servo está no meio',46,700,'middle','#c93a2a'));
-  return esq(p,W,H,s,'Balança com três pratos: o escravo, o servo no meio e o trabalhador livre',{fundo:false});
+    sTx(x,y+130,t,gr?64:56,700,'middle',T)+sTx(x,y+184,l1,40,500,'middle','#2f2e2a')+sTx(x,y+228,l2,40,500,'middle','#2f2e2a')+sTx(x,y+272,l3,40,500,'middle','#2f2e2a'));
+  s+=pan(170,300,'#e6dfcf','escravo','propriedade','de um dono,','sem direitos',0.5)+
+     pan(500,300,'#ffd83d','servo','preso à terra,','com proteção e','terra para si',1.4,true)+
+     pan(830,300,'#e6dfcf','livre','vilão: paga','renda, mas não','é preso à terra',2.3);
+  s+=ap('ap',3.2,'<path d="M500 700 V640" fill="none" stroke="#c93a2a" stroke-width="7" stroke-linecap="round"/>'+ponta(500,632,-Math.PI/2,'#c93a2a',7,26)+sTx(500,756,'o servo está no meio',50,700,'middle','#c93a2a'));
+  return esq(p,W,H,s,'Balança com três pratos: o escravo, o servo no meio e o livre, que pode ser vilão ou assalariado',{fundo:false});
 };
 
 /* ---------- a Igreja do nascimento à morte ---------- */
@@ -459,10 +500,10 @@ C.tipos.igrejavida=p=>{
   const W=1400,H=1060;let s='';
   const lig=(x,y,a)=>'<path d="M700 520 C700 570 '+x+' '+(y-120)+' '+x+' '+(y-30)+'" fill="none" stroke="'+T+'" stroke-width="5" stroke-dasharray="12 12" stroke-linecap="round" opacity=".8" style="--a:'+a+'s"/>';
   s+=ap('ap',0.2,ico('igreja',500,120,400,{}));
-  s+=ap('ap',0.9,ico('livro-cadeado',50,150,260,{})+sTx(180,450,'escrita',52,700,'middle',T)+sTx(180,498,'só o clero lia',36,500,'middle','#2f2e2a')+'<path d="M300 280 C380 290 430 300 500 330" fill="none" stroke="'+T+'" stroke-width="4" stroke-dasharray="11 11"/>');
+  s+=ap('ap',0.9,ico('livro-cadeado',50,150,260,{})+sTx(180,450,'escrita',52,700,'middle',T)+sTx(180,498,'só o clero lia',40,500,'middle','#2f2e2a')+'<path d="M300 280 C380 290 430 300 500 330" fill="none" stroke="'+T+'" stroke-width="4" stroke-dasharray="11 11"/>');
   const it=[['pia',210,'batismo','nasce',2.0],['aliancas',700,'casamento','vive',3.2],['vela',1190,'extrema-unção','morre',4.4]];
-  it.forEach(q=>{s+=lig(q[1],740,q[4]-.4)+ap('ap',q[4],ico(q[0],q[1]-130,720,260,{})+sTx(q[1],1030,q[2],48,700,'middle',T));});
-  s+=ap('ap',5.6,'<path d="M120 640 H1280" fill="none" stroke="#c93a2a" stroke-width="8" stroke-linecap="round"/>'+ponta(1280,640,0,'#c93a2a',8,36)+rect(430,590,540,70,'#ffd83d',T,4)+sTx(700,640,'do nascimento à morte',48,700,'middle',T));
+  it.forEach(q=>{s+=lig(q[1],740,q[4]-.4)+ap('ap',q[4],ico(q[0],q[1]-130,740,260,{})+sTx(q[1],1030,q[2],48,700,'middle',T));});
+  s+=ap('ap',5.6,'<path d="M120 690 H1280" fill="none" stroke="#c93a2a" stroke-width="8" stroke-linecap="round"/>'+ponta(1280,690,0,'#c93a2a',8,36)+rect(430,570,540,70,'#ffd83d',T,4)+sTx(700,620,'do nascimento à morte',48,700,'middle',T));
   return esq(p,W,H,s,'A Igreja acompanhava a vida: batismo, casamento e extrema-unção, e guardava a escrita',{fundo:false});
 };
 
@@ -483,7 +524,7 @@ C.tipos.poder=p=>{
     const e=P(486);
     s+=ap('ap',2.6+i*.25,'<g transform="translate('+(e[0]-24)+' '+(e[1]-26)+')">'+pth('M0 52 V16 H10 V24 H18 V16 H30 V24 H38 V16 H48 V52Z','#e6dfcf',T,3.4)+pth('M16 52 V38 A8 8 0 0 1 32 38 V52Z','#3a2a1c',T,2.4)+'</g>');
   });
-  s+=circ(cx,cy,150,'#fffdf6',T,5)+ico('coroa',cx-92,cy-136,184,{fundo:false})+sTx(cx,cy+106,'o rei',60,700,'middle',T);
+  s+=circ(cx,cy,150,'#fffdf6',T,5)+ico('coroa-aro',cx-92,cy-136,184,{fundo:false})+sTx(cx,cy+106,'o rei',60,700,'middle',T);
   return esq(p,W,H,s,'A coroa no centro, com setas de poder que se partem no meio do caminho e terminam em castelos de senhores locais',{fundo:false});
 };
 
@@ -500,16 +541,16 @@ function clipSemi(poly,a,b){ /* mantém o lado de a mais próximo de a do que de
   return out;
 }
 C.tipos.retalhos=p=>{
-  const W=1340,H=1040,r=C.rng('retalhos'+(p.id||''));
+  const W=1380,H=1040,r=C.rng('retalhos'+(p.id||''));
   const contorno=[[270,50],[700,40],[930,250],[920,700],[640,990],[260,940],[70,590],[100,220]];
   const sites=[];
-  for(let j=0;j<7;j++)for(let i=0;i<6;i++){sites.push([120+i*150+(j%2?70:0)+(r()-.5)*70,90+j*135+(r()-.5)*60]);}
+  for(let j=0;j<5;j++)for(let i=0;i<5;i++){sites.push([110+i*200+(j%2?90:0)+(r()-.5)*60,100+j*205+(r()-.5)*50]);}
   const dentro=q=>{ /* contorno é convexo: dentro se está do mesmo lado de todas as arestas */
     let sg=0;for(let i=0;i<contorno.length;i++){const a=contorno[i],b=contorno[(i+1)%contorno.length];const c=(b[0]-a[0])*(q[1]-a[1])-(b[1]-a[1])*(q[0]-a[0]);if(!c)continue;if(!sg)sg=Math.sign(c);else if(Math.sign(c)!==sg)return false;}return true;};
   const S=sites.filter(q=>dentro([q[0],q[1]]));
   const cores=['#f1e6c9','#e7e8d6','#efd9cf','#e3dcc4','#f4eed8','#e2e6dd','#f0dfc0'];
   let s='';
-  const rei=S.reduce((m,q,i)=>(Math.abs(q[0]-400)+Math.abs(q[1]-330)<Math.abs(S[m][0]-400)+Math.abs(S[m][1]-330)?i:m),0);
+  const rei=S.reduce((m,q,i)=>(Math.abs(q[0]-760)+Math.abs(q[1]-300)<Math.abs(S[m][0]-760)+Math.abs(S[m][1]-300)?i:m),0);
   S.forEach((a,i)=>{
     let poly=contorno.map(q=>q.slice());
     S.forEach((b,j)=>{if(i!==j&&poly.length)poly=clipSemi(poly,a,b);});
@@ -517,13 +558,13 @@ C.tipos.retalhos=p=>{
     const d='M'+poly.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L')+'Z';
     const del=(0.4+((i*37)%S.length)/S.length*3.4).toFixed(2);
     let g='<path d="'+d+'" fill="'+(i===rei?'#ffd83d':cores[i%cores.length])+'" stroke="'+T+'" stroke-width="4"/>';
-    if(i!==rei)g+='<g transform="translate('+(a[0]-15)+' '+(a[1]-16)+')">'+pth('M0 32 V10 H6 V15 H11 V10 H19 V15 H24 V10 H30 V32Z','#fffdf6',T,2.6)+pth('M11 32 V24 A4 4 0 0 1 19 24 V32Z',T,T,1)+'</g>';
+    if(i!==rei)g+='<g transform="translate('+(a[0]-24)+' '+(a[1]-25)+') scale(1.6)">'+pth('M0 32 V10 H6 V15 H11 V10 H19 V15 H24 V10 H30 V32Z','#fffdf6',T,2.6)+pth('M11 32 V24 A4 4 0 0 1 19 24 V32Z',T,T,1)+'</g>';
     s+=ap('ap',del,g);
   });
   const a=S[rei];
-  s+=ap('ap',4.6,'<g filter="url(#cm-sombra)"><circle cx="'+a[0]+'" cy="'+(a[1]-6)+'" r="52" fill="#fffdf6" stroke="'+T+'" stroke-width="4"/></g>'+ico('coroa',a[0]-48,a[1]-54,96,{fundo:false}));
-  s+=ap('ap',5.4,'<path d="M'+(a[0]+56)+' '+(a[1]-30)+' C'+(a[0]+300)+' '+(a[1]-180)+' 1000 160 1010 250" fill="none" stroke="'+T+'" stroke-width="5" stroke-dasharray="11 10"/>'+
-    rect(960,250,360,150,'#fffdf6',T,4)+sTx(1140,310,'o rei governava',44,700,'middle',T)+sTx(1140,362,'só o seu pedaço',44,700,'middle',T));
+  s+=ap('ap',4.6,'<g filter="url(#cm-sombra)"><circle cx="'+a[0]+'" cy="'+(a[1]-6)+'" r="52" fill="#fffdf6" stroke="'+T+'" stroke-width="4"/></g>'+ico('coroa-aro',a[0]-48,a[1]-54,96,{fundo:false}));
+  s+=ap('ap',5.4,'<path d="M'+(a[0]+56)+' '+(a[1]-20)+' L900 300" fill="none" stroke="'+T+'" stroke-width="5" stroke-dasharray="11 10"/>'+
+    rect(900,240,470,170,'#fffdf6',T,4)+sTx(1135,310,'o rei governava',54,700,'middle',T)+sTx(1135,372,'só o seu pedaço',54,700,'middle',T));
   return esq(p,W,H,s,'O reino dividido em dezenas de senhorios com castelinhos; a coroa fica pequena em um dos pedaços',{fundo:false});
 };
 
@@ -534,6 +575,7 @@ const SEN={
   campoSenhor:[[478,138],[524,124],[600,94],[740,90],[880,102],[880,254],[806,238],[762,200],[706,184],[640,172],[560,154]],
   servil:[[466,378],[560,334],[650,298],[722,284],[880,298],[880,491],[560,491],[420,436],[402,392]],
   horta:[[462,306],[520,290],[560,318],[500,336]],
+  casas:[[236,226],[330,206],[466,214],[484,292],[446,352],[330,352],[240,306]],
   pasto:[[0,196],[112,202],[190,226],[196,322],[150,362],[0,366]],
   bosque1:[[0,50],[104,40],[150,70],[134,122],[82,160],[0,172]],
   bosque2:[[314,44],[480,50],[880,40],[880,88],[600,92],[470,102],[330,92]],
@@ -544,15 +586,20 @@ C.tipos.senhorio=p=>{
   const E=(et,d)=>'data-et="'+et+'"'+(d?' style="--a:'+d+'s"':'');
   let s='<defs><pattern id="sl-l" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="22" height="22" fill="#f8e7a0" fill-opacity=".9"/><rect width="10" height="22" fill="#f2c230"/></pattern></defs>';
   s+='<g class="lay" '+E('5,6',0.5)+'><path d="'+poly(SEN.castelo)+'" fill="#ec6f5e" fill-opacity=".62" stroke="#c94d3d" stroke-width="2.6" style="mix-blend-mode:multiply"/><path d="'+poly(SEN.campoSenhor)+'" fill="#ec6f5e" fill-opacity=".6" stroke="#c94d3d" stroke-width="2.6" style="mix-blend-mode:multiply"/></g>';
-  s+='<g class="lay" '+E('5,6',2)+'><path d="'+poly(SEN.servil)+'" fill="url(#sl-l)" fill-opacity=".78" stroke="#c94d3d" stroke-width="2.6" style="mix-blend-mode:multiply"/><path d="'+poly(SEN.horta)+'" fill="url(#sl-l)" fill-opacity=".78" stroke="#c94d3d" stroke-width="2.2" style="mix-blend-mode:multiply"/></g>';
+  s+='<g class="lay" '+E('5,6',2)+'><path d="'+poly(SEN.servil)+'" fill="url(#sl-l)" fill-opacity=".78" stroke="#c94d3d" stroke-width="2.6" style="mix-blend-mode:multiply"/><path d="'+poly(SEN.horta)+'" fill="url(#sl-l)" fill-opacity=".78" stroke="#c94d3d" stroke-width="2.2" style="mix-blend-mode:multiply"/><path d="'+poly(SEN.casas)+'" fill="url(#sl-l)" fill-opacity=".42" stroke="#c94d3d" stroke-width="2" stroke-dasharray="6 4" style="mix-blend-mode:multiply"/></g>';
   s+='<g class="lay" '+E('5',3.6)+'>'+[SEN.pasto,SEN.bosque1,SEN.bosque2,SEN.bosque3].map(q=>'<path d="'+poly(q)+'" fill="#6f9a4a" fill-opacity=".5" stroke="#3f6a2a" stroke-width="2.4" stroke-dasharray="7 5" style="mix-blend-mode:multiply"/>').join('')+'</g>';
   const lbl=(x,y,t,w,et,a)=>'<g class="lay" '+E(et,a)+'><rect x="'+x+'" y="'+y+'" width="'+w+'" height="34" fill="#fffdf6" stroke="'+T+'" stroke-width="1.6"/>'+sTx(x+w/2,y+25,t,22,700,'middle',T)+'</g>';
-  s+=lbl(100,10,'manso senhorial',186,'5,6',1.2)+lbl(618,448,'manso servil',150,'5,6',2.8)+lbl(16,204,'manso comunal',176,'5',4.4);
+  s+=lbl(100,10,'manso senhorial',186,'5,6',1.2)+lbl(618,448,'manso servil',150,'5,6',2.8)+lbl(16,204,'manso comunal',176,'5',4.4)+lbl(196,356,'casas e hortas dos servos',296,'5,6',3.4);
+  /* círculos do moinho, da igreja e do forno, com o nome da obrigação */
+  s+=lbl(548,296,'igreja: dízimo',176,'6',19.2)+lbl(588,150,'moinho: banalidade',206,'6',20.2)+lbl(372,292,'forno: banalidade',200,'6',21.2);
+  /* legenda fixa dos três mansos */
+  const chip=(x,fill,t,w,et)=>'<g class="lay" '+E(et,0.2)+'><rect x="'+x+'" y="451" width="22" height="22" fill="'+fill+'" stroke="'+T+'" stroke-width="1.6"/><rect x="'+(x+26)+'" y="446" width="'+w+'" height="32" fill="#fffdf6" fill-opacity=".92" stroke="'+T+'" stroke-width="1.4"/>'+sTx(x+26+w/2,470,t,20,700,'middle',T)+'</g>';
+  s+=chip(14,'#ec6f5e','senhorial',108,'5,6')+chip(160,'url(#sl-l)','servil',76,'5,6')+chip(274,'#6f9a4a','comunal',96,'5');
   /* camponês que vai do manso servil ao manso senhorial: a corveia */
-  const trilha='M560 410 C480 372 420 300 384 214 C366 190 352 182 348 176';
-  const fig='<g><circle cx="0" cy="-16" r="30" fill="#fffdf6" fill-opacity=".85" stroke="'+T+'" stroke-width="2"/>'+pth('M-9 -6 L9 -6 L12 16 L-12 16Z',WOOL,T,2)+circ(0,-14,6.5,SKIN,T,2)+pth('M-7 -16 C-7 -24 7 -24 7 -16Z','#7a5a3a',T,1.6)+pth('M-5 16 L-6 28 M5 16 L6 28','none',T,3)+pth('M12 -6 L20 -22','none',WOOD,3)+pth('M17 -22 L26 -20','none','#7c8189',3)+'</g>';
-  s+='<g class="lay" '+E('6',0.4)+'><path d="'+trilha+'" fill="none" stroke="#c93a2a" stroke-width="3.4" stroke-dasharray="9 8" stroke-linecap="round"/>'+
-    (C.reduz?'<g transform="translate(440 330)">'+fig+'</g>':'<g>'+fig+'<animateMotion dur="8s" repeatCount="indefinite" path="'+trilha+'" rotate="0"/></g>')+'</g>';
+  const trilha='M556 404 C490 370 424 300 388 220 C372 196 358 184 350 176';
+  const fig='<g transform="translate(540 392)"><circle cx="0" cy="-16" r="30" fill="#fffdf6" fill-opacity=".9" stroke="'+T+'" stroke-width="2"/>'+pth('M-9 -6 L9 -6 L12 16 L-12 16Z',WOOL,T,2)+circ(0,-14,6.5,SKIN,T,2)+pth('M-7 -16 C-7 -24 7 -24 7 -16Z','#7a5a3a',T,1.6)+pth('M-5 16 L-6 28 M5 16 L6 28','none',T,3)+pth('M12 -6 L20 -22','none',WOOD,3)+pth('M17 -22 L26 -20','none','#7c8189',3)+'</g>';
+  s+='<g class="lay" '+E('6',0.4)+'><path d="'+trilha+'" fill="none" stroke="#c93a2a" stroke-width="3.6" stroke-dasharray="9 8" stroke-linecap="round"/>'+pth('M340 196 L350 174 L368 188','none','#c93a2a',4.4)+fig+
+    '<rect x="574" y="326" width="176" height="52" fill="#fffdf6" fill-opacity=".94" stroke="'+T+'" stroke-width="1.6"/>'+sTx(662,348,'corveia: trabalho',19,700,'middle',T)+sTx(662,370,'na terra do senhor',19,700,'middle',T)+'</g>';
   return {cls:'cm-foto m2-sen',html:'<div class="in rasgado" style="--clip:'+C.rasgo(p.id,1.6)+'"><img alt="" src="'+src+'"><svg viewBox="0 0 880 491" preserveAspectRatio="none" role="img" aria-label="'+esc(p.rotulo||'Senhorio medieval visto do alto: castelo, aldeia, campos e bosque, com os três mansos pintados por cima')+'">'+s+'</svg></div>'+
     (p.fita===false?'':'<span class="cm-fita" style="--fx:'+(p.fita&&p.fita.x!=null?p.fita.x:40)+'%;--fg:-4deg"></span>')};
 };
@@ -562,7 +609,7 @@ C.tipos.senhorio=p=>{
 
 /* ---------- sistema trienal: três campos que giram entre trigo, legumes e descanso ---------- */
 C.tipos.trienal=p=>{
-  const W=1100,H=760;
+  const W=1100,H=960,oy=70;
   let s=sTx(550,84,'sistema trienal',76,400,'middle',T,SERIF)+tinta('M300 108 H800',3);
   const est=[['trigo','#e6c456'],['legumes','#8fb56a'],['descanso','#dcd2ad']];
   const marcas=(k,x,y)=>{
@@ -573,15 +620,23 @@ C.tipos.trienal=p=>{
     return g;
   };
   [0,1,2].forEach(i=>{
-    const x=60+i*350,y=170,w=300,h=380,d='-'+(i*3)+'s';
+    const x=60+i*350,y=170+oy,w=300,h=380,d='-'+(i*3)+'s';
     s+='<g filter="url(#cm-sombra)"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+est[i][1]+'" stroke="'+T+'" stroke-width="5" class="m2cf" style="animation-delay:'+d+'"/></g>'+rect(x,y,w,h,'url(#cm-hv)',null,0,' opacity=".5"');
     [0,1,2].forEach(k=>{s+='<g class="m2k m2k'+k+'" style="animation-delay:'+d+'"'+(k===i?'':' opacity="0"')+'>'+marcas(k,x,y)+rect(x-14,y+h+26,w+28,74,'#fffdf6',T,3.6)+sTx(x+w/2,y+h+80,est[k][0],52,700,'middle',T)+'</g>';});
   });
-  s+=sTx(550,690,'cada campo gira: um terço sempre em descanso',40,700,'middle','#2f2e2a');
+  /* o rodízio: setas de um campo ao seguinte, e a volta ao início */
+  const yt=170+oy-14;
+  s+=pth('M210 '+yt+' C260 '+(yt-62)+' 510 '+(yt-62)+' 556 '+(yt-6),'none',T,6)+ponta(560,yt-2,Math.PI/2+.5,T,6,26);
+  s+=pth('M560 '+yt+' C610 '+(yt-62)+' 860 '+(yt-62)+' 906 '+(yt-6),'none',T,6)+ponta(910,yt-2,Math.PI/2+.5,T,6,26);
+  s+=pth('M910 '+(yt-18)+' C840 '+(yt-120)+' 280 '+(yt-120)+' 214 '+(yt-18),'none','#c93a2a',5,' stroke-dasharray="12 12"')+ponta(212,yt-8,Math.PI/2-.6,'#c93a2a',5,24);
+  s+=sTx(550,822,'cada campo gira: um terço sempre em descanso',44,700,'middle','#2f2e2a');
+  /* antes: sistema bienal, metade parada */
+  s+=sTx(550,892,'antes: dois campos, e metade parada',44,700,'middle','#4a463e')+
+     rect(380,908,150,36,'#e6c456',T,3.4)+rect(550,908,150,36,'#dcd2ad',T,3.4);
   const css='<style>@media (prefers-reduced-motion:no-preference){.m2cf{animation:m2-cor 9s steps(1,end) infinite}.m2k{animation:m2-k 9s steps(1,end) infinite}.m2k1{animation-name:m2-k1}.m2k2{animation-name:m2-k2}'+
     '@keyframes m2-cor{0%{fill:#e6c456}33.4%{fill:#8fb56a}66.7%{fill:#dcd2ad}}'+
     '@keyframes m2-k{0%{opacity:1}33.4%{opacity:0}66.7%{opacity:0}}@keyframes m2-k1{0%{opacity:0}33.4%{opacity:1}66.7%{opacity:0}}@keyframes m2-k2{0%{opacity:0}33.4%{opacity:0}66.7%{opacity:1}}}</style>';
-  return esq(p,W,H,css+s,'Três campos que giram entre trigo, legumes e descanso, ano após ano: o sistema trienal');
+  return esq(p,W,H,css+s,'Três campos que giram entre trigo, legumes e descanso, ano após ano, com setas de rodízio; embaixo, o sistema antigo, com metade parada');
 };
 
 /* ---------- igrejas: românica e gótica ---------- */
@@ -590,10 +645,10 @@ const arco=(cx,y0,w,h,f)=>'<path d="M'+(cx-w/2)+' '+(y0+h)+' V'+(y0+w/2)+' A'+(w
 C.tipos.romanica=p=>{
   const W=760,H=560;let s='';
   s+='<ellipse cx="380" cy="508" rx="360" ry="22" fill="#d8cfb4" opacity=".7"/>';
-  s+=pedra(80,170,160,330)+pth('M80 170 H240 L196 128 H124Z','#b98a6a',T,4);
-  s+=pedra(240,260,430,240)+pth('M232 264 L330 214 H580 L678 264Z','#b98a6a',T,4)+hach('M232 264 L330 214 H580 L678 264Z','cm-h3',.2);
+  s+=pedra(80,170,160,330)+pth('M80 170 H240 L196 128 H124Z','#8f8c82',T,4);
+  s+=pedra(240,260,430,240)+pth('M232 264 L330 214 H580 L678 264Z','#8f8c82',T,4)+hach('M232 264 L330 214 H580 L678 264Z','cm-h3',.2);
   [[110,210],[190,210],[110,300],[190,300]].forEach(q=>{s+=arco(q[0],q[1],26,48);});
-  s+=arco(160,420,100,80,'#2b2a27')+arco(160,420,74,80,'#3b342b')+pth('M110 420 A50 50 0 0 1 210 420','none',T,6);
+  s+=arco(160,408,124,92,'#e1dacb')+arco(160,416,100,84,'#cfc8b6')+arco(160,424,76,76,'#2b2a27')+pth('M98 408 A62 62 0 0 1 222 408','none',T,5);
   [300,370,440,510,580,640].forEach(x=>{s+=arco(x,326,22,44);});
   s+=hach('M600 262 L670 264 V500 H640Z','cm-h1',.35);
   /* friso de arcos cegos sob o beiral */
@@ -609,16 +664,16 @@ C.tipos.gotica=p=>{
   s+='<ellipse cx="350" cy="860" rx="320" ry="22" fill="#d8cfb4" opacity=".7"/>';
   const ponte=(cx,y0,w,h,f)=>'<path d="M'+(cx-w/2)+' '+(y0+h)+' V'+(y0+w*.7)+' Q'+(cx-w/2)+' '+(y0+w*.2)+' '+cx+' '+y0+' Q'+(cx+w/2)+' '+(y0+w*.2)+' '+(cx+w/2)+' '+(y0+w*.7)+' V'+(y0+h)+'Z" fill="'+(f||'#2b2a27')+'" stroke="'+T+'" stroke-width="3.4"/>';
   /* contrafortes voadores */
-  s+=pedra(10,560,34,280)+pedra(656,560,34,280)+pth('M44 570 Q80 540 112 470 M44 650 Q80 620 112 560 M656 570 Q620 540 588 470 M656 650 Q620 620 588 560','none',T,7);
+  s+=pedra(10,560,34,280)+pedra(656,560,34,280)+pth('M44 570 Q80 540 112 470 M44 650 Q80 620 112 560 M656 570 Q620 540 588 470 M656 650 Q620 620 588 560','none',T,13)+pth('M44 570 Q80 540 112 470 M44 650 Q80 620 112 560 M656 570 Q620 540 588 470 M656 650 Q620 620 588 560','none','#e1dacb',6);
   s+=pedra(110,330,150,510)+pedra(440,330,150,510)+pedra(250,420,200,420);
   s+=pth('M110 330 L185 60 L260 330Z','#b9b3a4',T,4)+pth('M440 330 L515 60 L590 330Z','#b9b3a4',T,4)+hach('M222 60 L260 330 H215Z','cm-h1',.4)+hach('M552 60 L590 330 H545Z','cm-h1',.4);
   s+=pth('M185 60 V28 M175 40 H195 M515 60 V28 M505 40 H525','none',T,4);
   s+=pth('M250 420 L350 300 L450 420Z','#cfc8b6',T,4)+pth('M350 300 V276 M340 288 H360','none',T,4);
   [[185,130],[185,220],[515,130],[515,220]].forEach(q=>{s+=ponte(q[0],q[1],36,70);});
   /* rosácea: o vitral é a única cor da cena */
-  const rc=[350,395,'#e0a82e'],cores=['#c93a2a','#2f6fb5','#e8c64a','#3d8f5a','#c93a2a','#2f6fb5','#e8c64a','#3d8f5a'];
+  const rc=[350,395,'#e0a82e'],cores=['#6d1d2a','#23406b','#a87a24','#3b2a4a','#6d1d2a','#23406b','#a87a24','#1f4a45','#6d1d2a','#23406b','#a87a24','#3b2a4a'];
   s+=circ(350,395,82,'#fffdf6',T,5);
-  for(let i=0;i<8;i++){const a0=i*Math.PI/4,a1=(i+1)*Math.PI/4;s+=pth('M350 395 L'+(350+Math.cos(a0)*70).toFixed(1)+' '+(395+Math.sin(a0)*70).toFixed(1)+' A70 70 0 0 1 '+(350+Math.cos(a1)*70).toFixed(1)+' '+(395+Math.sin(a1)*70).toFixed(1)+'Z',cores[i],T,2.6);}
+  for(let i=0;i<12;i++){const a0=i*Math.PI/6,a1=(i+1)*Math.PI/6,m=(a0+a1)/2,R1=(i%2?70:62);s+=pth('M350 395 L'+(350+Math.cos(a0)*R1).toFixed(1)+' '+(395+Math.sin(a0)*R1).toFixed(1)+' Q'+(350+Math.cos(m)*(R1+16)).toFixed(1)+' '+(395+Math.sin(m)*(R1+16)).toFixed(1)+' '+(350+Math.cos(a1)*R1).toFixed(1)+' '+(395+Math.sin(a1)*R1).toFixed(1)+'Z',cores[i],T,2.6);}
   s+=circ(350,395,22,'#fffdf6',T,3.4)+circ(350,395,82,'none',T,5);
   /* três portais em arco pontudo */
   [[290,60,170],[350,92,230],[410,60,170]].forEach((q,i)=>{s+=ponte(q[0],840-q[2],q[1],q[2],'#3b342b');});
@@ -628,12 +683,15 @@ C.tipos.gotica=p=>{
   return esq(p,W,H,s,'Igreja gótica: alta, de arcos pontudos, com uma rosácea de vitral colorido',{fundo:false});
 };
 
+/* ---------- xis: dois traços vermelhos de pincel, para riscar a coroa do excomungado ---------- */
+C.tipos.xis=p=>esq(p,320,320,ap('ap',0,'<path d="M40 50 C110 110 200 200 280 280" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round"/><path d="M40 50 C110 110 200 200 280 280" fill="none" stroke="#c93a2a" stroke-width="30" stroke-linecap="round"/><path d="M285 44 C210 110 130 200 44 282" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round"/><path d="M285 44 C210 110 130 200 44 282" fill="none" stroke="#c93a2a" stroke-width="30" stroke-linecap="round"/>'),'Dois traços vermelhos riscam a coroa',{fundo:false});
+
 /* ---------- fita do tempo do feudalismo (900 a 1600), em escala ---------- */
 C.tipos.fitafeudal=p=>{
-  const W=4128,H=560,x0=70,k=4.5,X=a=>Math.round(x0+(a-800)*k);let s='';
+  const W=2700,H=620,x0=70,k=3.2,X=a=>Math.round(x0+(a-800)*k);let s='';
   s+='<g filter="url(#cm-sombra)"><rect x="0" y="0" width="'+W+'" height="'+H+'" fill="#fffdf6" stroke="'+T+'" stroke-width="5"/></g>'+rect(0,0,W,H,'url(#cm-hh)',null,0,' opacity=".14"');
   s+=sTx(60,56,'o feudalismo no tempo, de 800 a 1600',44,700,'start',T);
-  const ey=250;
+  const ey=330;
   s+=pth('M'+X(800)+' '+ey+' H'+X(1600),'none',T,6);
   for(let a=800;a<=1600;a+=100){s+=pth('M'+X(a)+' '+(ey-14)+' V'+(ey+14),'none',T,5)+sTx(X(a),ey+54,String(a),34,700,'middle','#2f2e2a');}
   const barra=(a,b,row,cor,t,et,tt)=>{
@@ -642,8 +700,8 @@ C.tipos.fitafeudal=p=>{
       (dentro?sTx(X(a)+w/2,y+38,t,34,700,'middle',T):sTx(X(b)+12,y+38,t,34,700,'start',T))+'</g>';
   };
   s+=barra(801,1000,0,'#ec8a7a','séculos IX e X: formação','0')+barra(1001,1100,0,'#ffd83d','século XI','8')+barra(1401,1600,0,'#d8d1c0','séculos XV e XVI: fim','0,8');
-  s+=barra(901,1200,1,'#e3dcc4','românico, séculos X a XII','8')+barra(1201,1300,1,'#ffd83d','gótico: a partir do século XII','8');
-  s+=barra(1225,1274,2,'#c4d6d9','Tomás de Aquino','8');
+  s+=barra(901,1200,1,'#e3dcc4','românico, séculos X a XII','8')+barra(1150,1500,2,'#ffd83d','gótico: a partir do século XII','8');
+  s+=barra(1225,1274,3,'#c4d6d9','Tomás de Aquino','8');
   /* marcos pontuais abaixo do eixo */
   const pino=(a,t,et,row)=>{const y=ey+80+row*58;return '<g class="mk" data-et="'+et+'">'+pth('M'+X(a)+' '+(ey+8)+' V'+(y-34),'none',T,3.6)+circ(X(a),ey+8,10,'#d63a22',T,3)+sTx(X(a),y,t,34,700,'middle',T)+'</g>';};
   s+=pino(909,'909: concílio de Trosly','0',1)+pino(1027,'cerca de 1025 a 1030: Adalberão','4',2);
