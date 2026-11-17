@@ -1,12 +1,15 @@
 /* Colagem explicativa da História (estilo aprovado pela Nalu em 17/11/2026).
    Motor reutilizável: o visual de todas as páginas de tópico vem daqui.
    Guia: docs/historia/GUIA-DE-ESTILO-HISTORIA.md. Formato dos dados: docs/historia/MOTOR.md. */
+/* algarismos com zero redondo: a Atkinson corta o zero com uma barra e "800" parece "8Ø0". Só os dígitos (U+0030 a U+0039) vêm de uma sans do sistema; se nenhuma existir, valem a Atkinson. */
+@font-face{font-family:"LAB Num";font-weight:100 599;src:local("Segoe UI"),local("Roboto"),local("Helvetica Neue"),local("Arial"),local("Liberation Sans"),local("DejaVu Sans");unicode-range:U+0030-0039}
+@font-face{font-family:"LAB Num";font-weight:600 900;src:local("Segoe UI Bold"),local("Roboto Bold"),local("Roboto-Bold"),local("HelveticaNeue-Bold"),local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("LiberationSans-Bold"),local("DejaVu Sans Bold"),local("DejaVuSans-Bold");unicode-range:U+0030-0039}
 :root{
   --papel:#f1ece1;--papel2:#e6dfcf;--papel3:#fffdf6;--grade:rgba(40,40,40,.07);
   --tinta:#1b1a17;--tinta2:#4a463e;
   --amarelo:#ffd83d;--coral:#ec6f5e;--coral-esc:#c94d3d;--mar:#18181b;--petroleo:#2f6f7a;--seta:#e8572a;--rio:#1f5fae;
   --serif:"DM Serif Display",Georgia,"Times New Roman",serif;
-  --sans:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,sans-serif;
+  --sans:"LAB Num","Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,sans-serif;
   /* tokens de movimento (Martin) */
   --m-rapido:.2s;--m-base:.45s;--m-gesto:.8s;--m-camera:1.1s;
   --e-entra:cubic-bezier(.16,1,.3,1);--e-assenta:cubic-bezier(.2,.9,.3,1.15);--e-camera:cubic-bezier(.65,0,.25,1);
@@ -233,7 +236,7 @@ a{color:inherit}
   .cm-desbota:not(.fora) svg{animation:none;opacity:.35}
 }
 
-.cm-tempo .aviso{position:absolute;left:14px;bottom:4px;font:italic 400 15px var(--sans);color:var(--tinta2)}
+.cm-tempo .aviso{position:absolute;left:6%;bottom:12px;font:italic 400 15px var(--sans);color:var(--tinta2)}
 /* celular, só nas páginas com celularGrande: palco mais alto e letras de palco maiores (nenhuma abaixo de cerca de 11 px na tela) */
 @media (max-width:860px){
   .cm-g .cm-palco{height:clamp(420px,66vh,620px)}
@@ -307,7 +310,7 @@ a{color:inherit}
 }
 
 /* fonte grande no celular (peça com grande:true) e aviso da fita longe da borda rasgada */
-.cm-tempo.grande .aviso{left:auto;right:120px;max-width:500px;text-align:right;line-height:1.15}
+.cm-tempo.grande .aviso{left:auto;right:7%;bottom:14px;max-width:500px;text-align:right;line-height:1.15}
 @media (max-width:860px){
   .cm-g .cm-fonte.grande .tag{font-size:24px}
   .cm-g .cm-fonte.grande cite{font-size:25px}
@@ -322,3 +325,16 @@ a{color:inherit}
 
 .cm-tempo .aviso[data-et]{opacity:0;transition:opacity .5s}
 .cm-tempo .aviso[data-et].on{opacity:1}
+
+/* fita do tempo ampliada (gg:true): anos e legendas maiores, zero redondo; marcos progressivos (prog:true) */
+.cm-tempo.gg .marco b{font:400 36px/1.1 var(--serif);top:30px;font-variant-numeric:lining-nums}
+.cm-tempo.gg .marco em{font:italic 400 30px/1.1 var(--sans);top:76px}
+.cm-tempo.gg .aviso{font-size:26px}
+@media (max-width:860px){
+  .cm-g .cm-tempo.gg .marco b{font-size:36px}
+  .cm-g .cm-tempo.gg .marco em{font-size:30px}
+  .cm-g .cm-tempo.gg .aviso{font-size:28px}
+}
+.cm-tempo.prog .marco{opacity:0;transition:opacity .5s}
+.cm-tempo.prog .marco.vis{opacity:1}
+.cm-tempo.prog .marco.prox{opacity:.35}
