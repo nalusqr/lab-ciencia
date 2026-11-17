@@ -85,14 +85,14 @@ C.tipos.foto=p=>({cls:'cm-foto'+(p.cor?' cor':''),html:
 
 C.tipos.retrato=p=>({cls:'cm-retrato',html:'<img alt="" src="'+img(p.img)+'" style="transform:scale('+(p.zoom||1)+');transform-origin:'+(p.foco||'50% 50%')+'">'});
 
-C.tipos.fonte=p=>({cls:'cm-fonte rasgado',style:'--clip:'+rasgo(p.id,1.2),html:
+C.tipos.fonte=p=>({cls:'cm-fonte rasgado'+(p.grande?' grande':''),style:'--clip:'+rasgo(p.id,1.2),html:
   '<span class="tag">Fonte histórica</span><blockquote>'+esc(p.texto)+'</blockquote><cite>'+esc(p.ref)+'</cite>'+
   '<span class="perg">'+esc(p.pergunta||'O que essa fonte mostra?')+'</span>'});
 
-C.tipos.tempo=p=>({cls:'cm-tempo rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+(p.aviso?'<span class="aviso">'+esc(p.aviso)+'</span>':'')+
-  (p.marcos||[]).map((m,i)=>'<span class="marco" data-m="'+i+'" style="left:'+m.p+'%'+(m.cor?';--cor:'+cor(m.cor):'')+'"><i></i><b>'+esc(m.t)+'</b></span>').join('')});
+C.tipos.tempo=p=>({cls:'cm-tempo'+(p.grande?' grande':'')+' rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+(p.aviso?'<span class="aviso"'+(p.avisoEt?' data-et="'+p.avisoEt+'"':'')+'>'+esc(p.aviso)+'</span>':'')+
+  (p.marcos||[]).map((m,i)=>'<span class="marco" data-m="'+i+'" style="left:'+m.p+'%'+(m.cor?';--cor:'+cor(m.cor):'')+'"><i></i><b>'+esc(m.t)+'</b>'+(m.s?'<em>'+esc(m.s)+'</em>':'')+'</span>').join('')});
 
-C.tipos.nota=p=>({cls:'cm-nota',html:esc(p.texto)});
+C.tipos.nota=p=>({cls:'cm-nota'+(p.escura?' escura':'')+(p.clara?' clara':''),html:esc(p.texto)});
 
 C.tipos.mapa=p=>({cls:'cm-mapa rasgado',style:'--clip:'+rasgo(p.id,p.rasgo||1.2),html:svgMapa(p)});
 
@@ -121,6 +121,12 @@ function svgMapa(p){
       if(L.corte)defs+='<clipPath id="'+id+'-k"><rect x="'+L.corte[0]+'" y="'+L.corte[1]+'" width="'+L.corte[2]+'" height="'+L.corte[3]+'"/></clipPath>';
       const listra=L.estilo==='listra';
       h='<g filter="url(#'+u+'-r)"'+(L.corte?' clip-path="url(#'+id+'-k)"':'')+'><path d="'+d+'" fill="'+(listra?'url(#'+u+'-l)':cor(L.cor||'coral'))+'" fill-opacity="'+(L.opac||(listra?.9:.78))+'"'+(listra?' stroke="var(--coral-esc)" stroke-width="6"':'')+'/></g>';
+      // terra:true recorta a mancha pela costa da própria base (o mar escuro fica de fora)
+      if(L.terra){
+        if(defs.indexOf(u+'-land')<0)defs+='<filter id="'+u+'-landf" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="7" intercept="-2.1"/><feFuncG type="linear" slope="7" intercept="-2.1"/><feFuncB type="linear" slope="7" intercept="-2.1"/></feComponentTransfer></filter>'+
+          '<mask id="'+u+'-land" maskUnits="userSpaceOnUse" x="0" y="0" width="'+W+'" height="'+H+'"><image href="'+img(p.base)+'" width="'+W+'" height="'+H+'" preserveAspectRatio="none" filter="url(#'+u+'-landf)"/></mask>';
+        h='<g mask="url(#'+u+'-land)">'+h+'</g>';
+      }
     }else if(L.tipo==='corredor'){
       cls+=' reg';
       if(L.corte)defs+='<clipPath id="'+id+'-k"><rect x="'+L.corte[0]+'" y="'+L.corte[1]+'" width="'+L.corte[2]+'" height="'+L.corte[3]+'"/></clipPath>';
@@ -144,6 +150,9 @@ function svgMapa(p){
           ?'<g class="movel" data-trilha="'+id+'-t" data-volta="'+(L.volta||14000)+'"><g class="vira"><g transform="scale('+tam+')"><path d="M-20 0 L20 0 L12 10 L-12 10 Z" fill="#6b3f1d" stroke="#2b1a0c" stroke-width="1.5"/><path d="M-1 0 V-28 L16 -6 Z" fill="#fff8e4" stroke="#6b3f1d" stroke-width="1.8"/></g></g></g>'
           :'<g class="movel" data-trilha="'+id+'-t" data-volta="'+(L.volta||9000)+'"><circle r="'+(9*tam)+'" fill="var(--seta)" stroke="#fff" stroke-width="'+(3*tam)+'"/></g>';
       }
+    }else if(L.tipo==='pontos'){
+      cls+=' pts';
+      h=pts.map(q=>'<circle cx="'+fx(q[0])+'" cy="'+fx(q[1])+'" r="'+(7*tam)+'" fill="'+cor(L.cor||'tinta')+'" stroke="#fff" stroke-width="'+(2.4*tam)+'"/>').join('');
     }else if(L.tipo==='pulso'){
       h='<path class="pulso" style="--lw:'+(L.largura||46)+'px" d="'+d+'" stroke="'+cor(L.cor||'#3d8fd6')+'" stroke-opacity=".55" filter="url(#'+u+'-b)"/>';
     }else if(L.tipo==='cidade'){
