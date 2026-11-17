@@ -1,4 +1,4 @@
-/* LAB Bioenergética: figura de IA por padrão em 6 rotas que já têm cena 3D do Martin (Aurelius).
+/* LAB Bioenergética: figura de IA por padrão em 5 rotas (foto/geral passou para cenas-figura-foto.js) que já têm cena 3D do Martin (Aurelius).
    A figura (figura-ia.js v2, vistas A e B, pontos e zoom) abre primeiro; o botão "Ver em 3D" alterna e "Ver figura" volta.
    O .js de cada imagem só entra na página quando a cena abre. O motion é leve e fica por cima, como a nota de cada cena pede.
    Usa os globais do motor (SC, X, W, H, cap). Carregar antes de LAB8_iniciar(). */
@@ -114,23 +114,7 @@
     }
   });
 
-  // ================= FOTOSSÍNTESE =================
-  LAB_FIGALT.cena(amb, 'foto/geral', {
-    pref: 'bioenergetica', nome: 'Cloroplasto em corte', mask: MASK,
-    vistas: [
-      ['a', 'foto-geral-a', 'Cloroplasto em corte', 'Corte do cloroplasto: granos empilhados no estroma, dentro das duas membranas'],
-      ['b', 'foto-geral-b', 'Um granum de perto', 'Um granum de perto: pilha de tilacoides com proteínas na membrana']
-    ],
-    hs: [
-      { id: 'gran', c: '#7FDA9C', t: 'Granum', d: 'Pilha de tilacoides, os discos com clorofila. Na membrana deles acontece a fase clara: a luz é captada e forma ATP e NADPH.', em: { a: [51, 56] }, z: 2.6 },
-      { id: 'estr', c: '#C4E36A', t: 'Estroma', d: 'Líquido que envolve os granos. Na fase química (ou escura), o ciclo de Calvin usa o ATP, o NADPH e o CO₂ para fazer glicose.', em: { a: [30, 68] }, z: 2.6 },
-      { id: 'lam', c: '#A9C54A', t: 'Lamela do estroma', d: 'Tilacoides longos que ligam um granum a outro.', em: { a: [62, 37] }, z: 3 },
-      { id: 'env', c: '#8FD8FF', t: 'Envelope', d: 'Duas membranas envolvem o cloroplasto: a externa e a interna. Os tilacoides formam uma terceira rede de membranas por dentro.', em: { a: [94, 52] }, z: 2.6 },
-      { id: 'pilha', c: '#7FDA9C', t: 'Pilha de tilacoides', d: 'Cada disco é um tilacoide. Empilhados formam o granum, o que multiplica a superfície para captar luz.', em: { b: [46, 59] }, z: 2.2 },
-      { id: 'prot', c: '#F2B33D', t: 'Proteínas da membrana', d: 'Na membrana do tilacoide ficam a clorofila, os fotossistemas e a ATP sintase, que forma ATP.', em: { b: [41, 30] }, z: 3.2 },
-      { id: 'tubo', c: '#A9C54A', t: 'Ligação entre granos', d: 'Um tilacoide do estroma sai da pilha e liga este granum ao seguinte.', em: { b: [18, 51] }, z: 2.6 }
-    ]
-  });
+  // FOTOSSÍNTESE (foto/geral): a viagem da fotossíntese mora em cenas-figura-foto.js
 
   // ================= FATORES LIMITANTES =================
   const ESTOMAS = [

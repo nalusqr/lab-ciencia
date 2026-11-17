@@ -1,4 +1,4 @@
-/* LAB Microrganismos e fungos: figura de IA por padrão em 2 rotas sem 3D (Aurelius).
+/* LAB Microrganismos e fungos: figura de IA por padrão em rotas sem 3D (Aurelius).
    Figura (figura-ia.js v2, vistas A e B, pontos e zoom) abre primeiro; o botão "Ver esquema" mostra a cena 2D antiga e "Ver figura" volta.
    O .js de cada imagem só entra na página quando a cena abre. Usa os globais do motor (SC, X, W, H, NAR, cap).
    Carregar antes de LAB_MICRO_iniciar(). */
@@ -13,23 +13,7 @@
     esconder: ['.hud.onde'], esconderFig: ['.palco .ctl', '#extra']
   };
 
-  // ================= PROTOCTISTA =================
-  LAB_FIGALT.cena(amb, 'protoctista/protozooses', {
-    pref: 'microrganismos', nome: 'Barbeiro, casa de pau a pique e mosquito Anopheles', mask: MASK,
-    vistas: [
-      ['a', 'protoctista-protozooses-a', 'Barbeiro', 'Barbeiro (Triatoma) sobre a parede de barro de uma casa de pau a pique: vetor da doença de Chagas'],
-      ['b', 'protoctista-protozooses-b', 'Anopheles', 'Mosquito Anopheles pousado com o abdome inclinado para cima: vetor da malária']
-    ],
-    hs: [
-      { id: 'cab', c: '#F28B8B', t: 'Cabeça cônica e tromba', d: 'O barbeiro é um inseto hematófago. A tromba fina perfura a pele para sugar sangue, em geral à noite.', em: { a: [41, 46] }, z: 2.8 },
-      { id: 'con', c: '#FFA94D', t: 'Bordas do abdome listradas', d: 'Faixas alaranjadas e escuras no contorno do abdome ajudam a reconhecer o Triatoma. O inseto tem seis patas, como todo inseto.', em: { a: [66, 50] }, z: 2.6 },
-      { id: 'fez', c: '#FFD43B', t: 'Fezes e o Trypanosoma cruzi', d: 'O barbeiro costuma defecar logo depois de picar. O protozoário vai nas fezes e entra pela ferida ou pelas mucosas, causando a doença de Chagas.', em: { a: [58, 58] }, z: 2.6 },
-      { id: 'par', c: '#A9C54A', t: 'Casa de pau a pique', d: 'Frestas na parede de barro, entre as varas de madeira, abrigam o barbeiro durante o dia. Reboco, telhado e casa de alvenaria eliminam o abrigo.', em: { a: [26, 74] }, z: 2.4 },
-      { id: 'abd', c: '#F28B8B', t: 'Abdome inclinado', d: 'O Anopheles pousa com o abdome erguido, quase em ângulo com a superfície. O Aedes e o Culex pousam com o corpo paralelo.', em: { b: [80, 26] }, z: 2.6 },
-      { id: 'pal', c: '#8FD8FF', t: 'Cabeça, palpos e tromba', d: 'Os palpos são longos, quase do tamanho da tromba. A fêmea suga sangue ao entardecer e à noite.', em: { b: [38, 55] }, z: 2.8 },
-      { id: 'pla', c: '#FFD43B', t: 'Fêmea e o Plasmodium', d: 'Só a fêmea pica. Ao picar, transmite o Plasmodium, o protozoário que causa a malária. O ciclo do mosquito depende de água parada limpa.', em: { b: [54, 38] }, z: 2.6 }
-    ]
-  });
+  // protoctista/protozooses: a figura agora vem de cenas-figura-protozooses.js (viagem de Chagas e malária)
 
   // ================= FUNGI =================
   LAB_FIGALT.cena(amb, 'fungi/liquens', {
