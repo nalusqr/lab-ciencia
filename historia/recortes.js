@@ -624,6 +624,114 @@ function perfil(u,tipo){
 I['hatshepsut']={fundo:'amarelo',nome:'Hatshepsut, em traço',art(u){return perfil(u,'hat');}};
 I['cleopatra']={fundo:'petroleo',nome:'Cleópatra VII, em traço',art(u){return perfil(u,'cle');}};
 
+/* ---------- Tópico 4: Fenícios, hebreus e persas ---------- */
+const tufo=(cx,cy,n,r)=>{let s='';for(let i=0;i<n;i++){const a=-Math.PI+i/(n-1)*Math.PI;s+=tinta('M'+cx+' '+cy+' L'+(cx+Math.cos(a)*r).toFixed(1)+' '+(cy+Math.sin(a)*r).toFixed(1),1.6);}return s;};
+const elip=(cx,cy,rx,ry,f,w)=>'<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+(f||'none')+'" stroke="'+T+'" stroke-width="'+(w||1.5)+'"/>';
+I['cedro']={fundo:false,nome:'Tronco de cedro cortado, com os anéis visíveis na ponta',art(u){
+  const corpo='M46 70 H152 C168 70 178 82 178 100 C178 118 168 130 152 130 H46Z';
+  let s='<defs>'+clip(u+'c',corpo)+'</defs>'+pth(corpo,P)+'<g clip-path="url(#'+u+'c)"><path d="M0 104 H200 V140 H0Z" fill="url(#cm-h1)" opacity=".6"/></g>';
+  s+=tinta('M64 78 C90 76 118 80 168 78 M58 92 C92 90 130 94 176 92 M60 108 C94 106 136 110 176 108 M64 122 C96 120 130 124 168 122',1.5)+pth(corpo,'none',T,3.4);
+  s+=pth('M46 70 C30 70 22 82 22 100 C22 118 30 130 46 130 C62 130 70 118 70 100 C70 82 62 70 46 70Z','#efe2bd',T,3.4);
+  [[19,24],[14,19],[9,13],[4,7]].forEach(q=>{s+=elip(46,100,q[0]+2,q[1]+4,'none',1.4);});
+  s+=tinta('M118 70 C118 52 128 40 146 32',3.2)+tufo(146,32,8,20)+tufo(128,50,6,15)+tufo(160,54,6,14);
+  return s;}};
+I['vidro']={fundo:false,nome:'Frasco de vidro fenício, com faixas onduladas',art(u){
+  const corpo='M86 34 H114 V50 C114 62 130 70 138 92 C150 120 144 152 124 166 C112 174 88 174 76 166 C56 152 50 120 62 92 C70 70 86 62 86 50Z';
+  let s='<defs>'+clip(u+'v',corpo)+'</defs>'+pth(corpo,P)+'<g clip-path="url(#'+u+'v)"><path d="M104 0 H200 V200 H104Z" fill="url(#cm-h1)" opacity=".5"/>';
+  for(let k=0;k<4;k++){const y=98+k*18;s+=tinta('M40 '+y+' C60 '+(y-12)+' 74 '+(y+12)+' 95 '+y+' S130 '+(y-12)+' 160 '+y,2.2);}
+  s+='</g>'+pth(corpo,'none',T,3.4)+pth('M80 34 C80 26 120 26 120 34 C120 40 80 40 80 34Z',P,T,3)+tinta('M68 110 C66 124 70 138 76 148',2.4);
+  return s;}};
+I['murex']={fundo:false,nome:'Concha de múrex, o molusco que dava a púrpura',art(u){
+  const w1='M58 118 C56 92 76 80 100 80 C128 80 146 96 144 122 C142 142 128 154 110 156 C84 158 60 144 58 118Z';
+  let s=pth('M96 150 C104 168 108 184 104 198 C92 186 80 170 74 150Z',P,T,3.2)+tinta('M92 156 L100 188 M84 154 L92 178',1.6);
+  s+=pth(w1,P,T,3.4)+'<path d="M112 84 C134 90 144 108 142 128 C140 146 128 154 112 156 C124 140 128 108 112 84Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=pth('M66 78 C64 58 80 46 98 46 C118 46 130 58 128 76 C112 70 84 70 66 78Z',P,T,3.2)+pth('M76 46 C76 32 90 24 102 26 C114 28 120 38 116 48 C104 44 90 44 76 46Z',P,T,3)+pth('M88 28 C90 14 104 12 108 22 C104 24 96 26 88 28Z',P,T,2.6);
+  s+=tinta('M70 112 C84 104 110 104 134 112 M68 128 C86 122 112 122 138 128 M74 66 C90 62 108 62 122 66 M82 38 C94 35 104 36 112 40',1.8);
+  [[58,110],[56,124],[62,138],[68,148],[144,112],[146,128],[138,144]].forEach(q=>{const dx=q[0]<100?-9:9;s+=pth('M'+q[0]+' '+(q[1]-5)+' L'+(q[0]+dx)+' '+q[1]+' L'+q[0]+' '+(q[1]+5),P,T,2);});
+  return s;}};
+I['purpura']={fundo:false,nome:'Retalho de tecido tingido de púrpura',art(u){
+  const pano='M26 50 C56 38 88 60 120 48 C148 38 168 48 176 54 L170 150 C142 160 112 144 82 156 C60 164 40 156 26 148Z';
+  let s='<defs>'+clip(u+'p',pano)+'</defs>'+pth(pano,'#7c2a6e')+'<g clip-path="url(#'+u+'p)">'+
+    '<path d="M60 40 C70 80 52 120 66 170 M104 40 C112 80 96 120 110 170 M146 40 C154 80 138 120 152 170" fill="none" stroke="#3f0f3a" stroke-width="7" stroke-opacity=".38"/>'+
+    '<path d="M76 40 C86 80 68 120 82 170 M120 40 C128 80 112 120 126 170 M160 40 C166 80 150 120 164 170" fill="none" stroke="#e7b6df" stroke-width="4" stroke-opacity=".3"/></g>'+pth(pano,'none',T,3.4);
+  for(let x=36;x<170;x+=9)s+=tinta('M'+x+' '+(x<90?154:158)+' l-2 12',2);
+  return s;}};
+const glifo=(x,y,k)=>{switch(k%6){
+  case 0:return '<circle cx="'+x+'" cy="'+y+'" r="4.4" fill="none" stroke="'+T+'" stroke-width="1.8"/><circle cx="'+x+'" cy="'+y+'" r="1.2" fill="'+T+'"/>';
+  case 1:return tinta('M'+(x-2.5)+' '+(y-5)+' V'+(y+5)+' M'+(x+2.5)+' '+(y-5)+' V'+(y+5),1.9);
+  case 2:return tinta('M'+(x-5)+' '+(y+3)+' L'+(x-2)+' '+(y-3)+' L'+(x+1)+' '+(y+3)+' L'+(x+4)+' '+(y-3),1.9);
+  case 3:return tinta('M'+(x-5)+' '+(y+3)+' A5 5 0 0 1 '+(x+5)+' '+(y+3)+' Z',1.9);
+  case 4:return elip(x,y+1,4.6,2.8,'none',1.8)+'<circle cx="'+(x+4.5)+'" cy="'+(y-3)+'" r="1.8" fill="'+T+'"/>';
+  default:return tinta('M'+(x-5)+' '+y+' H'+(x+5)+' M'+x+' '+(y-4)+' V'+(y+4),1.9);}};
+I['estela']={fundo:'amarelo',nome:'Estela de pedra com hieróglifos ilegíveis',art(u){
+  const lap='M52 190 V72 C52 38 74 16 100 16 C126 16 148 38 148 72 V190Z';
+  let s='<defs>'+clip(u+'e',lap)+'</defs>'+pth(lap,P)+'<g clip-path="url(#'+u+'e)"><path d="M118 0 H200 V200 H118Z" fill="url(#cm-h1)" opacity=".5"/></g>';
+  s+='<circle cx="100" cy="42" r="8" fill="none" stroke="'+T+'" stroke-width="2.4"/>'+tinta('M92 42 C82 38 72 40 64 47 M108 42 C118 38 128 40 136 47',2.4);
+  const r=C.rng('merneptah');
+  [68,82,96,110,140,154,168].forEach(y=>{for(let x=64;x<=136;x+=12)s+=glifo(x,y,Math.floor(r()*6));});
+  s+=tinta('M66 128 C70 120 82 120 88 125',2.4)+'<circle cx="99" cy="119" r="2.6" fill="none" stroke="'+T+'" stroke-width="1.8"/>'+tinta('M99 122 V132 M95 126 H103',1.8)+'<circle cx="112" cy="119" r="2.6" fill="none" stroke="'+T+'" stroke-width="1.8"/>'+tinta('M112 122 L108 132 H116Z',1.8)+tinta('M124 118 V132 M130 118 V132 M136 118 V132',2.2);
+  return s+pth(lap,'none',T,3.6);}};
+I['rolo-tora']={fundo:'amarelo',nome:'Rolo da Torá aberto, com linhas de texto ilegível',art(u){
+  let s='';
+  [[28,'L'],[172,'R']].forEach(q=>{const x=q[0];s+=pth('M'+(x-8)+' 42 H'+(x+8)+' V160 H'+(x-8)+'Z','#cfa968',T,3)+pth('M'+(x-12)+' 34 H'+(x+12)+' V44 H'+(x-12)+'Z',P,T,3)+pth('M'+(x-12)+' 158 H'+(x+12)+' V168 H'+(x-12)+'Z',P,T,3)+'<circle cx="'+x+'" cy="26" r="8" fill="'+P+'" stroke="'+T+'" stroke-width="3"/><circle cx="'+x+'" cy="176" r="8" fill="'+P+'" stroke="'+T+'" stroke-width="3"/>'+tinta('M'+x+' 44 V158',1.6);});
+  s+=pth('M36 50 H164 V152 H36Z','#f6edd0',T,3)+'<path d="M36 50 H52 V152 H36Z M148 50 H164 V152 H148Z" fill="url(#cm-h1)" opacity=".55"/>';
+  const r=C.rng('tora');
+  for(let y=62;y<=142;y+=11){let x=144;while(x>58){const w=7+Math.floor(r()*22);s+=tinta('M'+x+' '+y+' H'+Math.max(58,x-w),3);x-=w+7;}}
+  return s;}};
+I['cilindro']={fundo:'coral',nome:'Cilindro de Ciro: barril de argila coberto de cunhas',art(u){
+  const corpo='M44 60 H168 V144 H44 C32 144 26 124 26 102 C26 80 32 60 44 60Z';
+  let s='<defs>'+clip(u+'y',corpo)+'</defs>'+pth(corpo,'#e8d9b4')+'<g clip-path="url(#'+u+'y)"><path d="M0 112 H200 V150 H0Z" fill="url(#cm-h1)" opacity=".55"/>';
+  const r=C.rng('ciro'),cu=(x,y,a)=>'<path transform="translate('+x+' '+y+') rotate('+a+')" d="M-5 -2.6 L2 0 L-5 2.6Z M2 0 H6" fill="'+T+'" stroke="'+T+'" stroke-width="1.4" stroke-linejoin="round"/>';
+  for(let y=72;y<=138;y+=13)for(let x=48;x<=160;x+=13){const n=1;for(let k=0;k<n;k++)s+=cu(x+k*3,y+(k?2:0),[0,90,45,0,135][Math.floor(r()*5)]);}
+  s+='</g>'+pth(corpo,'none',T,3.4)+pth('M168 60 C180 60 186 80 186 102 C186 124 180 144 168 144 C176 124 176 80 168 60Z','#d6c595',T,3.2);
+  return s;}};
+I['darico']={fundo:'amarelo',nome:'Dárico: moeda de ouro com o grande rei ajoelhado, de perfil, com arco e lança',art(u){
+  const r=C.rng('darico');let d='';for(let a=0;a<24;a++){const t=a/24*Math.PI*2,rr=80+(r()-.5)*5;d+=(a?'L':'M')+(100+Math.cos(t)*rr).toFixed(1)+' '+(100+Math.sin(t)*rr).toFixed(1);}d+='Z';
+  let s=pth(d.replace(/(\d+\.\d) (\d+\.\d)/g,(m,x,y)=>(+x+4).toFixed(1)+' '+(+y+5).toFixed(1)),'#c99a1c',T,3)+pth(d,'#f2c94c',T,4)+'<path d="'+d+'" fill="url(#cm-h1)" opacity=".3"/>';
+  // rei de perfil, olhando para a esquerda, ajoelhado em corrida
+  s+=pth('M54 48 C38 70 38 106 54 128',null,T,4.5)+tinta('M54 48 L54 128',1.6);               // arco na mão da frente
+  s+=pth('M122 54 L104 138',null,T,3.4)+pth('M122 54 L120 46 L126 50Z',T,T,1.6);                    // lança
+  s+=pth('M82 118 L66 122 L64 144 L74 146',null,T,5)+pth('M98 120 L120 130 L136 142',null,T,5);     // pernas: joelho à frente, outra ao chão
+  s+=pth('M82 66 L102 64 L106 94 L86 98Z','#f6edd0',T,3.4)+pth('M86 98 L106 94 L112 118 L80 122Z','#e8dfc6',T,3.4)+tinta('M86 104 L108 100 M84 112 L110 110',1.6); // túnica
+  s+=pth('M88 74 L66 84',null,T,4.5)+pth('M102 72 L116 88 L106 104',null,T,4.5);                  // braços
+  s+='<ellipse cx="86" cy="52" rx="9" ry="10.5" fill="#f1d9ab" stroke="'+T+'" stroke-width="3"/>'+pth('M78 56 C76 70 86 72 90 64 C84 66 80 62 78 56Z',T,T,1.4);  // cabeça e barba
+  s+=pth('M77 44 L78 32 L82 38 L86 29 L90 38 L94 32 L95 44Z','#fffbe8',T,2.6);                  // coroa de ameias
+  return s;}};
+I['disco-alado']={fundo:'petroleo',nome:'Símbolo alado dos relevos persas: disco com figura de meio corpo, asas em penas e cauda em leque',art(u){
+  let s='';
+  // asas em fileiras de penas
+  [-1,1].forEach(d=>{const X=x=>100+d*x;
+    [[96,86,'#fffbe8'],[107,74,P],[118,60,'#fffbe8']].forEach((q,i)=>{const y=q[0],len=q[1],f=q[2];
+      s+=pth('M'+X(18)+' '+(y-7)+' H'+X(len-6)+' Q'+X(len+8)+' '+y+' '+X(len-6)+' '+(y+7)+' H'+X(18)+'Z',f,T,2.6);
+      for(let k=26;k<len-6;k+=9)s+=tinta('M'+X(k)+' '+(y-6)+' V'+(y+6),1.4);});
+    // fitas que caem dos lados
+    s+=pth('M'+X(14)+' 116 C'+X(26)+' 130 '+X(34)+' 146 '+X(26)+' 164 L'+X(34)+' 160 L'+X(38)+' 170 C'+X(46)+' 150 '+X(34)+' 128 '+X(20)+' 112Z',P,T,2.4);});
+  // cauda em leque
+  s+=pth('M86 120 H114 L124 140 H76Z','#fffbe8',T,2.6)+pth('M76 140 H124 L132 158 H68Z',P,T,2.6)+pth('M68 158 H132 L138 176 H62Z','#fffbe8',T,2.6);
+  for(let k=-2;k<=2;k++)s+=tinta('M'+(100+k*9)+' 122 L'+(100+k*13)+' 176',1.4);
+  // disco e figura barbada saindo dele
+  s+='<circle cx="100" cy="108" r="17" fill="#fffbe8" stroke="'+T+'" stroke-width="3.2"/><circle cx="100" cy="108" r="10" fill="none" stroke="'+T+'" stroke-width="2.2"/>';
+  s+=pth('M86 98 L88 80 H112 L114 98Z','#fffbe8',T,2.6)+pth('M112 84 L130 70',null,T,3)+'<circle cx="133" cy="67" r="5" fill="none" stroke="'+T+'" stroke-width="2.6"/>'+pth('M88 86 L76 92',null,T,3);
+  s+='<ellipse cx="100" cy="68" rx="9" ry="10" fill="#fffbe8" stroke="'+T+'" stroke-width="2.8"/>'+pth('M92 72 C92 86 108 86 108 72 C104 78 96 78 92 72Z',T,T,1.4)+pth('M91 62 L92 52 L96 57 L100 50 L104 57 L108 52 L109 62Z','#fffbe8',T,2.2);
+  return s;}};
+I['alef']={fundo:'coral',nome:'Letra fenícia alef, derivada da cabeça de um boi',art(u){
+  let s=pth('M30 30 H170 V170 H30Z','#fbf4de',T,3.2)+'<path d="M30 30 H62 V170 H30Z" fill="url(#cm-h1)" opacity=".4"/>';
+  s+='<path d="M72 36 V164 M72 98 L132 40 M72 98 L124 164 M72 56 L100 36" fill="none" stroke="'+T+'" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>';
+  return s;}};
+
+I['altar-fogo']={fundo:'coral',nome:'Altar de pedra em degraus com a chama sagrada do zoroastrismo',art(u){
+  let s=pth('M44 172 H156 V156 H44Z','#d9d0bb',T,3)+pth('M56 156 H144 V136 H56Z','#e6dfcc',T,3)+pth('M70 136 H130 V112 H70Z','#d9d0bb',T,3)+pth('M62 112 H138 L130 98 H70Z','#efe9d8',T,3);
+  s+=tinta('M44 164 H156 M56 146 H144 M70 124 H130',1.4)+tinta('M52 172 V156 M70 156 V136 M88 136 V112',1.2);
+  s+=pth('M100 100 C84 86 88 70 96 58 C98 66 104 68 104 76 C112 66 110 54 104 44 C124 58 128 84 114 98 C110 102 106 102 100 100Z','#e8573a',T,3);
+  s+=pth('M100 100 C92 92 94 82 100 74 C106 82 108 92 100 100Z','#fbd24d',T,2.2);
+  return s;}};
+I['rolo-colunas']={fundo:'amarelo',nome:'Rolo de couro com o texto em colunas estreitas',art(u){
+  let s=pth('M40 50 H160 V150 H40Z','#f1e4c1',T,3)+'<path d="M40 50 H56 V150 H40Z" fill="url(#cm-h1)" opacity=".5"/>';
+  [[22,'L'],[178,'R']].forEach(q=>{const x=q[0];s+=pth('M'+(x-14)+' 42 H'+(x+14)+' V158 H'+(x-14)+'Z','#d8b878',T,3)+'<ellipse cx="'+x+'" cy="42" rx="14" ry="6" fill="#efe2bd" stroke="'+T+'" stroke-width="3"/>'+'<ellipse cx="'+x+'" cy="158" rx="14" ry="6" fill="#c9a460" stroke="'+T+'" stroke-width="3"/>'+tinta('M'+(x-5)+' 50 V150',1.4);});
+  const r=C.rng('rolo');
+  [[132,150],[100,128],[68,96]].forEach(c=>{for(let y=62;y<=140;y+=9){const w=8+Math.floor(r()*20);s+=tinta('M'+(c[0]-2)+' '+y+' H'+Math.max(c[1]-30,c[0]-w-2),2.6);}});
+  s+=tinta('M118 56 V146 M86 56 V146',1.2);
+  return s;}};
 C.ICONES=Object.keys(I);
 
 /* papel colorido rasgado atrás do recorte */
@@ -781,5 +889,29 @@ C.tipos.nilosul=p=>{
   // rótulos
   s+='<text x="40" y="200">Egito</text><text x="60" y="720" class="ev d1" '+E+' style="font-size:30px">Kush</text><text x="400" y="600" class="p ev nv" '+E+'>728 a.C.</text><text x="40" y="410" class="p ev pe" '+E+'>persas, 525 a.C.</text>';
   return {cls:'cm-esq cm-nilosul',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema do Nilo, do delta a Meroé, com as cataratas numeradas e o reino de Kush')+'">'+s+'</svg>'};
+};
+
+/* Fenícios: moeda que gira uma vez ao entrar */
+C.tipos.darico=p=>{let h=C.icone('darico',{fundo:p.fundo,rotulo:p.rotulo});if(p.giraEm)h=h.replace('<svg','<svg style="animation-delay:'+p.giraEm+'ms"');return {cls:'cm-icone cm-gira',html:h};};
+
+/* Fenícios: do alef ao alfa e ao A, e uma linha de consoantes sem vogais (esquema desenhado em código) */
+C.tipos.alfabeto=p=>{
+  const W=900,H=600,sans='var(--sans,sans-serif)',serif='var(--serif,Georgia,serif)';
+  const tx=(x,y,t,sz,w,fam,anc)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+(anc||'middle')+'" style="font:'+(w||700)+' '+sz+'px '+(fam||sans)+';fill:'+T+'">'+esc(t)+'</text>';
+  let s='';
+  const card=(x,rot,tit,leg)=>'<g transform="translate('+x+' 24) rotate('+rot+' 120 150)"><rect width="240" height="300" fill="#fffdf6" stroke="'+T+'" stroke-width="3"/><rect width="240" height="46" fill="#f2d28f" stroke="'+T+'" stroke-width="3"/>'+tx(120,35,tit,34)+
+    '<rect y="254" width="240" height="46" fill="#eee6cf" stroke="'+T+'" stroke-width="3"/>'+tx(120,289,leg,34,600)+'</g>';
+  s+=card(30,-1.5,'fenício','alef: boi')+card(330,1,'grego','alfa')+card(630,-1,'latino','A');
+  s+='<g transform="translate(30 24) rotate(-1.5 120 150)"><path d="M72 84 V226 M72 160 L156 80 M72 160 L148 226 M72 104 L112 78" fill="none" stroke="'+T+'" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></g>';
+  s+='<g transform="translate(330 24) rotate(1 120 150)">'+tx(120,200,'Α α',130,400,serif)+'</g>';
+  s+='<g transform="translate(630 24) rotate(-1 120 150)">'+tx(120,214,'A',180,400,sans)+'</g>';
+  const seta=(x0,x1)=>'<path d="M'+x0+' 170 C'+(x0+14)+' 132 '+(x1-14)+' 132 '+(x1-6)+' 166" fill="none" stroke="var(--seta)" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 9"/><path d="M'+(x1-26)+' 160 L'+(x1-4)+' 170 L'+(x1-10)+' 146" fill="none" stroke="var(--seta)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+=seta(276,326)+seta(576,626);
+  // linha fenícia: só consoantes, escrita da direita para a esquerda (alef, bet, gimel, dalet, he)
+  s+='<rect x="30" y="364" width="840" height="206" fill="#fffdf6" stroke="'+T+'" stroke-width="3"/><rect x="30" y="364" width="840" height="44" fill="#eadfc3" stroke="'+T+'" stroke-width="3"/>'+tx(450,395,'só consoantes, da direita para a esquerda',34);
+  const gl=[[770,'M18 -32 V32 M18 -2 L-20 -30 M18 -2 L-14 30 M4 -18 L-4 -34'],[590,'M16 30 V-30 H-14 Q-24 -30 -24 -16 Q-24 -2 -14 -2 H16'],[410,'M14 30 L18 -28 L-18 -24'],[230,'M18 -30 L-20 0 L18 30Z M18 -30 L26 -36']];
+  gl.forEach((g,i)=>{s+='<g transform="translate('+g[0]+' 474)"><path d="'+g[1]+'" fill="none" stroke="'+T+'" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g>';if(i<gl.length-1)s+='<rect x="'+(g[0]-106)+'" y="456" width="32" height="34" rx="4" fill="none" stroke="var(--seta)" stroke-width="3" stroke-dasharray="5 5"/>';});
+  s+=tx(450,550,'quadrinhos tracejados: vogais não escritas',34,400,sans);
+  return {cls:'cm-esq cm-alfabeto',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Da letra fenícia alef ao alfa grego e ao A latino, e uma linha fenícia só com consoantes')+'">'+s+'</svg>'};
 };
 })();
