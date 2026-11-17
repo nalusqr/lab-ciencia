@@ -19,9 +19,13 @@ C.hash=hash;C.rng=rng;C.esc=esc;
 /* texto do aluno: parágrafos separados por linha em branco (ou array), ==palavra== vira marca-texto, **x** vira negrito */
 function marcar(txt,k0){
   const ps=Array.isArray(txt)?txt:String(txt||'').split(/\n\s*\n/);let k=k0||0;
-  return ps.filter(p=>p.trim()).map(p=>'<p>'+esc(p.trim())
-    .replace(/==(.+?)==/g,(_,w)=>'<mark style="--md:'+(0.35+0.6*(k++)).toFixed(2)+'s">'+w+'</mark>')
-    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')+'</p>').join('');
+  const fmt=t=>esc(t.trim()).replace(/==(.+?)==/g,(_,w)=>'<mark style="--md:'+(0.35+0.6*(k++)).toFixed(2)+'s">'+w+'</mark>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  // linhas que começam com "- " viram lista; o resto do bloco vira parágrafo
+  return ps.filter(p=>p.trim()).map(p=>{
+    const ls=p.trim().split('\n');let out='',par=[],li=[];
+    const fp=()=>{if(par.length){out+='<p>'+fmt(par.join(' '))+'</p>';par=[];}},fl=()=>{if(li.length){out+='<ul>'+li.map(x=>'<li>'+fmt(x)+'</li>').join('')+'</ul>';li=[];}};
+    ls.forEach(l=>{if(/^\s*-\s+/.test(l)){fp();li.push(l.replace(/^\s*-\s+/,''));}else{fl();par.push(l);}});
+    fp();fl();return out;}).join('');
 }
 C.marcar=marcar;
 
@@ -85,7 +89,7 @@ C.tipos.fonte=p=>({cls:'cm-fonte rasgado',style:'--clip:'+rasgo(p.id,1.2),html:
   '<span class="tag">Fonte histórica</span><blockquote>'+esc(p.texto)+'</blockquote><cite>'+esc(p.ref)+'</cite>'+
   '<span class="perg">'+esc(p.pergunta||'O que essa fonte mostra?')+'</span>'});
 
-C.tipos.tempo=p=>({cls:'cm-tempo rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+
+C.tipos.tempo=p=>({cls:'cm-tempo rasgado',style:'--clip:'+rasgo(p.id,5),html:'<span class="eixo"></span>'+(p.aviso?'<span class="aviso">'+esc(p.aviso)+'</span>':'')+
   (p.marcos||[]).map((m,i)=>'<span class="marco" data-m="'+i+'" style="left:'+m.p+'%'+(m.cor?';--cor:'+cor(m.cor):'')+'"><i></i><b>'+esc(m.t)+'</b></span>').join('')});
 
 C.tipos.nota=p=>({cls:'cm-nota',html:esc(p.texto)});
@@ -218,6 +222,22 @@ function svgTraco(t,mapa,id,W,H){
     '<path class="ponta" d="'+s.ponta+'" fill="none" stroke="'+c+'" stroke-width="'+(w+1)+'" stroke-linecap="round" stroke-linejoin="round"/>';
 }
 
+/* ---------- texto de estudo (abaixo da colagem): seções, sumário e três quadros ---------- */
+function estudoHtml(T){
+  if(!T.estudo)return '';
+  const sec=T.estudo.map((s,i)=>({id:'est-'+(i+1),t:s.titulo,h:'<h3>'+esc(s.titulo)+'</h3>'+marcar(s.texto)}));
+  const quadros=[];
+  if(T.resumo&&T.resumo.length)quadros.push({id:'est-resumo',t:'Resumo para revisar',cls:'resumo',h:'<ul>'+T.resumo.map(x=>'<li>'+esc(x).replace(/==(.+?)==/g,'<mark>$1</mark>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')+'</li>').join('')+'</ul>'});
+  if(T.enem)quadros.push({id:'est-enem',t:'No ENEM',cls:'enem',h:marcar(T.enem)});
+  if(T.urca)quadros.push({id:'est-urca',t:'Nos vestibulares do Ceará (URCA)',cls:'urca',h:marcar(T.urca)});
+  const nav=sec.concat(quadros).map(x=>'<li><a href="#'+x.id+'">'+esc(x.t)+'</a></li>').join('');
+  return '<section class="cm-estudo" id="estudo" aria-labelledby="est-tit"><div class="cm-leitura"><p class="cm-sobre">'+esc(T.titulo)+'</p><h2 id="est-tit">Texto de estudo</h2>'+
+    '<nav class="cm-sumario" aria-label="Sumário do texto de estudo"><ol>'+nav+'</ol></nav>'+
+    sec.map(x=>'<section id="'+x.id+'" class="cm-sec">'+x.h+'</section>').join('')+'</div>'+
+    (quadros.length?'<div class="cm-quadros">'+quadros.map(x=>'<section id="'+x.id+'" class="cm-quadro '+x.cls+'"><h3>'+esc(x.t)+'</h3>'+x.h+'</section>').join('')+'</div>':'')+
+    '<p class="cm-voltar"><a href="#cm-painel">Voltar à colagem</a></p></section>';
+}
+
 /* ---------- montagem da página ---------- */
 C.montar=function(T){
   const raiz=document.getElementById('colagem')||document.body;
@@ -235,6 +255,7 @@ C.montar=function(T){
 
   const trilha='<nav class="cm-trilha" aria-label="Você está em"><a href="../index.html">Início do LAB</a><a href="index.html">História</a>'+
     (T.modulo?'<span>'+esc(T.modulo)+'</span>':'')+'</nav>';
+  raiz.classList.toggle('cm-g',!!T.celularGrande);
   let pecasHtml=(T.jornal||[]).map(j=>'<span class="cm-jornal" aria-hidden="true" style="left:'+j[0]+'px;top:'+j[1]+'px;width:'+j[2]+'px;height:'+j[3]+'px;--g:'+(j[4]||0)+'deg"></span>').join('');
   PC.forEach(p=>{
     const f=C.tipos[p.tipo];if(!f)throw new Error('Tipo de peça desconhecido: '+p.tipo);
@@ -261,9 +282,10 @@ C.montar=function(T){
         '<p class="so-leitor" role="status" aria-live="polite"></p>'+
         '<h2 tabindex="-1"></h2><div class="cm-txt"></div><div class="cm-extra"></div>'+
         '<nav aria-label="Etapas do tópico"><ol class="cm-lista">'+E.map((e,i)=>'<li><button type="button" data-i="'+i+'">'+(i+1)+'. '+esc(e.titulo)+'</button></li>').join('')+'</ol></nav>'+
-        (T.enem?'<details class="cm-enem"><summary>No ENEM</summary>'+marcar(T.enem,99)+'</details>':'')+
+        (T.enem&&!T.estudo?'<details class="cm-enem"><summary>No ENEM</summary>'+marcar(T.enem,99)+'</details>':'')+
+        (T.estudo?'<a class="cm-ir-estudo" href="#estudo">Ler o texto de estudo, abaixo da colagem</a>':'')+
         (T.credito?'<p class="cm-credito">'+esc(T.credito)+'</p>':'')+
-      '</aside></main>';
+      '</aside></main>'+estudoHtml(T);
 
   const $=s=>raiz.querySelector(s),$$=s=>[...raiz.querySelectorAll(s)];
   const palco=$('.cm-palco'),mesa=$('.cm-mesa');
@@ -273,8 +295,10 @@ C.montar=function(T){
   let at=-1,fase=0,tocando=!reduz&&T.auto!==false,timer=null,timers=[];
   const mapaVis={};// camadas visíveis na etapa anterior (para atrasar só as novas)
 
+  /* tomadas extras da câmera dentro de uma etapa: [[ms,[x,y,w,h]],...]; tomadasM vale só no celular; foco2/foco2Em é o atalho de uma tomada */
+  function tomadas(e){const mob=palco.clientWidth<600;if(mob&&e.tomadasM)return e.tomadasM;if(e.tomadas)return e.tomadas;return e.foco2?[[e.foco2Em||4500,(mob&&e.foco2M)||e.foco2]]:[];}
   function focoDe(i){
-    const e=E[i],mob=palco.clientWidth<600;let f=(fase&&e.foco2)?((mob&&e.foco2M)||e.foco2):((e.focoM&&mob)?e.focoM:e.foco);
+    const e=E[i],mob=palco.clientWidth<600,T2=tomadas(e);let f=(fase&&T2[fase-1])?T2[fase-1][1]:((e.focoM&&mob)?e.focoM:e.foco);
     if(Array.isArray(f)&&typeof f[0]==='number')return f;
     const ids=f?(Array.isArray(f)?f:[f]):[...(e.mostra||[]),...(e.so||[])];
     let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
@@ -293,7 +317,7 @@ C.montar=function(T){
     i=Math.max(0,Math.min(E.length-1,i));if(i===at&&origem!=='init')return;
     const ant=at;at=i;const e=E[at];fase=0;
     timers.forEach(clearTimeout);timers=[];
-    if(e.foco2)timers.push(setTimeout(()=>{fase=1;camera();},e.foco2Em||4500));// segunda tomada da câmera na mesma etapa
+    tomadas(e).forEach((t,k)=>timers.push(setTimeout(()=>{fase=k+1;camera();},t[0])));
     mesa.dataset.e=at;
     // peças
     let k=0,nNotas=(e.tracos||[]).length;
@@ -329,7 +353,7 @@ C.montar=function(T){
     $$('.cm-traco g[data-e]').forEach(g=>g.classList.toggle('on',+g.dataset.e===at));
     camera();
     // painel
-    $('h2').textContent=e.titulo;
+    $('.cm-painel').scrollTop=0;$('h2').textContent=e.titulo;
     $('.cm-txt').innerHTML=marcar(e.texto);
     const ex=$('.cm-extra');ex.innerHTML='';
     if(e.fonte&&mapa[e.fonte]){
@@ -344,9 +368,12 @@ C.montar=function(T){
     $$('.cm-lista button').forEach((b,j)=>{if(j===at)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
     agenda();
   }
+  /* espera da viagem automática: com msPalavra (opt-in), ritmo + palavras do texto x msPalavra, nunca menos que e.tempo */
+  function espera(e){const base=T.ritmo||9000;if(!T.msPalavra)return e.tempo||base;
+    const n=String(e.texto||'').split(/\s+/).filter(Boolean).length;return Math.max(e.tempo||0,base+n*T.msPalavra);}
   function agenda(){
     clearTimeout(timer);
-    if(tocando&&at<E.length-1)timer=setTimeout(()=>vai(at+1),E[at].tempo||T.ritmo||9000);
+    if(tocando&&at<E.length-1)timer=setTimeout(()=>vai(at+1),espera(E[at]));
     if(at===E.length-1&&tocando){tocando=false;botao();}
   }
   function botao(){const b=$('[data-a=play]');b.textContent=tocando?'Pausar':'Continuar';b.setAttribute('aria-label',tocando?'Pausar a viagem automática':'Continuar a viagem automática');}
@@ -369,6 +396,8 @@ C.montar=function(T){
     else if(ev.key==='Home'&&!t.closest('.cm-painel')){pausa();vai(0);}
     else if(ev.key==='End'&&!t.closest('.cm-painel')){pausa();vai(E.length-1);}
   });
+  // o aluno rolando ou tocando no texto: a viagem automática pausa
+  const pn=$('.cm-painel');['wheel','touchmove'].forEach(ev=>pn.addEventListener(ev,()=>pausa(),{passive:true}));
   addEventListener('resize',camera);
   if(window.ResizeObserver)new ResizeObserver(camera).observe(palco);
 

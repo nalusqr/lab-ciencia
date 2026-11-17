@@ -35,9 +35,10 @@ Os roteiros vão em `docs/revisao-historia/mNN-tNN-tema.md`. Cada tópico tem:
 1. **Título e subtítulo**, curtos.
 2. **Etapas** (6 a 9). Cada etapa traz:
    - título de até 6 palavras;
-   - texto do aluno com até cerca de 70 palavras, com 1 a 3 palavras-chave entre `==assim==`, que viram marca-texto na tela;
+   - texto do aluno de cerca de 90 a 140 palavras (pedido da Nalu em 17/11 06:31 UTC: explicações completas, no nível da Biologia), com 1 a 3 palavras-chave entre `==assim==`, que viram marca-texto na tela;
    - **palco**: o que a colagem mostra e faz, com as peças, o gesto da câmera e o que se desenha (região colorida no mapa, rota tracejada, círculo e seta numa foto, nota amarela, fita do tempo).
-3. **Fonte histórica**: um trecho curto parafraseado com referência, a pergunta "O que essa fonte mostra?" e a resposta.
+3. **Texto de estudo** (abaixo da colagem): explicação completa do tópico, de cerca de 900 a 1400 palavras, em seções com título; termina com "Resumo para revisar" (6 a 10 itens), "No ENEM" e "Nos vestibulares do Ceará (URCA)", ligando ao Ceará e ao Cariri quando houver ligação real. Público: preparação para ENEM e vestibulares, com foco inicial na URCA (Universidade Regional do Cariri).
+4. **Fonte histórica**: um trecho curto parafraseado com referência, a pergunta "O que essa fonte mostra?" e a resposta.
 4. **No ENEM**: 2 ou 3 frases sobre o que cai e as pegadinhas.
 5. **Figuras**: no máximo 2 por tópico. Cada uma tem a descrição para gerar com IA, fiel à arqueologia e às fontes, ou indica uma figura já existente para reaproveitar.
 6. **Mapa**: qual base de mapa usar (abaixo) e quais camadas animadas entram por cima.

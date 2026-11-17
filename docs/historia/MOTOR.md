@@ -83,3 +83,22 @@ Colagem.montar({
 ```
 
 Regras de texto na tela: sem "!", sem "·", "→", "↔" ou "~" ("cerca de" no lugar).
+
+## Textos longos, tomadas de câmera e texto de estudo (17/11/2026)
+
+**Texto de etapa de 90 a 140 palavras.** O painel rola por dentro (no desktop) e os botões ficam fixos no topo dele; no celular o texto fica abaixo do palco. Para a viagem automática esperar o tempo de leitura, use no arquivo de dados `ritmo:9000` e `msPalavra:250`: cada etapa espera `ritmo + palavras x msPalavra` (e nunca menos que `tempo` da etapa). Sem `msPalavra`, vale o `ritmo` fixo (o Egito continua assim). Rolar ou tocar no painel pausa a viagem; trocar de etapa volta o texto ao topo.
+
+**Celular.** `celularGrande:true` deixa o palco mais alto e sobe as letras das peças (legendas, notas, etiquetas, fita, fonte, pirâmide) para ficarem com cerca de 11 px ou mais depois do zoom. Regra: no celular, menos peças por tomada e zoom maior; confira a letra mais pequena de cada tomada.
+
+**Tomadas da câmera numa etapa.** Além de `foco`/`focoM`: `foco2` + `foco2Em` (ms) + `foco2M` é uma segunda tomada; `tomadas:[[ms,[x,y,w,h]],...]` faz quantas quiser, e `tomadasM` vale só no celular (fica o `focoM` como primeira). Peça com `atraso` (ms) entra depois desse tempo; traço com `atraso` também. `data-et="0,3"` em qualquer elemento de uma peça o acende nas etapas listadas (classe `on`). `tempo` aceita `aviso` (ex.: "a régua não está em escala"). Camada de região aceita `mistura:false` (cor sem multiplicar, p. ex. gelo). Botões do painel têm `#bAnt`, `#bPlay` e `#bProx`.
+
+**Texto de estudo (`estudo`).** Aparece abaixo da colagem, em coluna de leitura de cerca de 70 caracteres, com sumário de âncoras no topo e três quadros em papel no fim. Campos:
+
+```js
+estudo:[{titulo:'O que é a Pré-História', texto:'Parágrafos separados por linha em branco.\n\n==marca-texto== e **negrito**.'}, ...],
+resumo:['Item curto 1', 'Item 2', ...],          // quadro "Resumo para revisar" (lista, 6 a 10 itens)
+enem:'Texto do quadro No ENEM. ==x== marca.',     // o mesmo campo do cartão antigo
+urca:'Texto do quadro Nos vestibulares do Ceará (URCA).'
+```
+
+Com `estudo`, o cartão "No ENEM" do painel some (o quadro o substitui) e o painel ganha o link "Ler o texto de estudo, abaixo da colagem". O sumário lista as seções e os quadros. Sem `estudo`, nada muda.
