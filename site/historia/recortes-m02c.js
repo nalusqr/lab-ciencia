@@ -234,7 +234,7 @@ C.tipos.pilares=p=>{
     const nm=[['fé','balao'],['oração','tapete'],['jejum','jejum'],['zakat','moedas'],['Meca','caaba']];
     nm.forEach((q,i)=>{const x=x0+i*(cw+gap),a=(0.4+i*1.3).toFixed(1);
       s+='<g class="sobe" style="--a:'+a+'s"><g filter="url(#cm-sombra)">'+rect(x-10,1000,cw+20,70,'#d8d1c0',T,4)+rect(x,330,cw,670,'#f4ecd6',T,5)+rect(x-10,296,cw+20,44,'#e3dcc4',T,4)+'</g>'+
-        circ(x+44,384,34,'#e8572a',T,4)+sTx(x+44,402,String(i+1),46,700,'middle','#fff')+
+        circ(x+46,384,38,'#e8572a',T,4)+sTx(x+46,406,String(i+1),60,700,'middle','#fff')+
         '<g transform="translate('+(x+cw/2-85)+' 440) scale(.85)">'+ART[q[1]]('pk'+seq++)+'</g>'+
         '<rect class="mk3" style="--a:'+(parseFloat(a)+.7)+'s" x="'+(x+12)+'" y="716" width="'+(cw-24)+'" height="84" fill="#ffd83d" fill-opacity=".85"/>'+
         sTx(x+cw/2,776,q[0],56,700,'middle',T)+'</g>';});
@@ -269,7 +269,7 @@ C.tipos.jihad=p=>{
   if(p.vert){
     const W=1000,H=2150;let s='';
     const nota=(y,t,sub,ico,at)=>'<g class="cai" style="--a:'+at+'s"><g filter="url(#cm-sombra)">'+rect(10,y,980,470,'#ffd83d')+'</g>'+
-      '<g transform="translate(40 '+(y+50)+') scale(1.6)">'+ART[ico]('jv'+seq++)+'</g>'+sTx(380,y+200,t,100,700,'start',T)+sTx(380,y+290,sub[0],54,600,'start','#3a3520')+sTx(380,y+352,sub[1],54,600,'start','#3a3520')+'</g>';
+      '<g transform="translate(40 '+(y+50)+') scale(1.6)">'+ART[ico]('jv'+seq++)+'</g>'+sTx(380,y+200,t,100,700,'start',T)+sTx(380,y+290,sub[0],60,600,'start','#3a3520')+sTx(380,y+358,sub[1],60,600,'start','#3a3520')+'</g>';
     s+=nota(10,'interna',['a luta contra os','próprios vícios'],'coracao',.2)+nota(510,'externa',['a defesa da','comunidade'],'escudo',1.2);
     s+='<g class="ar" style="--a:2.2s"><path pathLength="1" d="M40 1010 C40 1080 480 1060 500 1160 C520 1060 960 1080 960 1010" fill="none" stroke="#3a3a3a" stroke-width="9" stroke-linecap="round"/></g>';
     s+='<g class="ap" style="--a:3.2s"><g filter="url(#cm-sombra)">'+rect(260,1200,480,290,'#fff',T,4)+'</g>'+sTx(500,1340,'jihad',140,700,'middle',T,SERIF)+sTx(500,1440,'esforço',84,600,'middle','#2f2e2a')+'</g>';
@@ -302,13 +302,13 @@ C.tipos.califas=p=>{
   s+='<g class="ap" style="--a:2.8s">'+[[470,560],[560,640],[420,470],[980,590],[1050,520],[900,660]].map(q=>circ(q[0],q[1],16,'#7a9a55',T,3)).join('')+pth('M380 392 L380 330 M1110 470 L1110 350','none',T,5)+'</g>';
   s+=tag(40,40,620,280,'sunitas',['cerca de 85% a 90%','dos muçulmanos hoje'],3.2);
   s+=tag(840,100,620,250,'xiitas',['partidários de Ali'],4.4);
-  s+='<g class="cai" style="--a:.6s"><g filter="url(#cm-sombra)">'+rect(960,1030,500,250,'#fff',T,4)+'</g>'+sTx(1210,1120,'632',90,700,'middle',T)+sTx(1210,1190,'morte do profeta',50,600,'middle','#2f2e2a')+sTx(1210,1252,'começa a sucessão',50,600,'middle','#2f2e2a')+pth('M960 1150 L900 1150','none',T,5)+'</g>';
+  s+='<g class="cai" style="--a:.6s"><g filter="url(#cm-sombra)">'+rect(930,1030,560,250,'#fff',T,4)+'</g>'+sTx(1210,1112,'632',90,700,'middle',T)+sTx(1210,1180,'morte do profeta',58,600,'middle','#2f2e2a')+sTx(1210,1250,'começa a sucessão',58,600,'middle','#2f2e2a')+pth('M930 1150 L880 1150','none',T,5)+'</g>';
   return {cls:'cm-m3',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Árvore: do tronco, a morte do profeta em 632, saem dois galhos, sunitas e xiitas')+'">'+s+'</svg>'};
 };
 
 /* ---------- algarismos: das formas antigas indianas (esquema) aos de hoje, com o zero ---------- */
 C.tipos.numeros=p=>{
-  const c=p.cols||10,rowsO=Math.ceil(9/c),rowsM=Math.ceil(10/c),W=c===10?2700:c*240+120,Y0=110,RH=250,YM=Y0+rowsO*RH+80,H=c===10?1180:YM+rowsM*RH+260;let s='';
+  const c=p.cols||10,rowsO=Math.ceil(9/c),rowsM=Math.ceil(10/c),W=c===10?2700:c*240+120,Y0=110,RH=250,YM=Y0+rowsO*RH+80,H=c===10?1180:YM+rowsM*RH+300;let s='';
   /* formas antigas, desenho esquemático: 1 a 4 em traços simples; 5 a 9 abstratos, só para dar a ideia da transformação */
   const velho=[
     'M-34 0 H34',
@@ -333,7 +333,7 @@ C.tipos.numeros=p=>{
   const cz=(c===10?x0:60)+(9%c)*col+60,zr=c===10?0:Math.floor(9/c),zy=c===10?640:YM+zr*RH;
   s+='<g class="ap" style="--a:8.2s"><g filter="url(#cm-sombra)">'+rect(cz-90,zy,180,230,'#fffdf6',T,3.4)+'</g>'+sTx(cz,zy+185,'0',210,400,'middle',T,SERIF)+'</g>';
   s+='<g class="ar" style="--a:9s">'+'<path pathLength="1" d="M'+(cz-124)+' '+(zy+100)+' C'+(cz-120)+' '+(zy-50)+' '+(cz+120)+' '+(zy-50)+' '+(cz+124)+' '+(zy+100)+' C'+(cz+120)+' '+(zy+270)+' '+(cz-120)+' '+(zy+270)+' '+(cz-124)+' '+(zy+100)+'" fill="none" stroke="#ffd83d" stroke-width="16" stroke-linecap="round"/>'+'</g>';
-  s+='<g class="cai" style="--a:9.8s"><g filter="url(#cm-sombra)">'+rect(c===10?960:40,H-200,c===10?1400:W-80,150,'#ffd83d')+'</g>'+sTx(c===10?1660:W/2,H-100,'o zero chegou à Europa por esse caminho',c===10?64:50,700,'middle',T)+'</g>';
+  s+='<g class="cai" style="--a:9.8s"><g filter="url(#cm-sombra)">'+(c===10?rect(960,H-220,1400,150,'#ffd83d')+'</g>'+sTx(1660,H-120,'o zero chegou à Europa por esse caminho',64,700,'middle',T):rect(40,H-270,W-80,230,'#ffd83d')+'</g>'+sTx(W/2,H-170,'o zero chegou à Europa',68,700,'middle',T)+sTx(W/2,H-90,'por esse caminho',68,700,'middle',T))+'</g>';
   return {cls:'cm-m3',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Os algarismos de nove formas antigas indianas aos de hoje, com o zero no fim')+'">'+s+'</svg>'};
 };
 

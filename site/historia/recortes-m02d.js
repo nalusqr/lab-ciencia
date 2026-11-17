@@ -27,7 +27,7 @@ const sleep=0;void sleep;
   s.textContent=
   '.cm-m4{filter:none}.cm-m4 svg{display:block;width:100%;height:100%;overflow:visible}'+
   '.cm-m4.sb{filter:drop-shadow(0 6px 8px rgba(0,0,0,.22))}'+
-  '.cm-m4.mi{pointer-events:none}'+
+  '.cm-m4.mi{pointer-events:none}.cm-m4.m4-mini svg{overflow:hidden}'+
   '.cm-m4 .it{opacity:0;transition:opacity .6s ease-out}.cm-m4 .it.on{opacity:1;transition-delay:var(--a,0s)}'+
   '.cm-m4 .mk{opacity:.5;transition:opacity .5s}.cm-m4 .mk.on{opacity:1}'+
   '.cm-m4 .mk.on .mt{paint-order:stroke;stroke:#ffd83d;stroke-width:9px;stroke-linejoin:round}'+
@@ -56,6 +56,10 @@ const sleep=0;void sleep;
   '@media (prefers-reduced-motion:reduce){.cm-m4 .vit{stroke-dashoffset:0}.cm-m4 .ond{opacity:.8}.m4-pulsa{animation:none}}';
   document.head.appendChild(s);
 })();
+
+/* ---------- notas e etiquetas com tamanho de letra em px da mesa (mesmo formato do tópico do Islamismo) ---------- */
+C.tipos.nota3=C.tipos.nota3||(p=>({cls:'cm-nota',style:'font-size:'+(p.tam||44)+'px;line-height:1.22;padding:14px 20px;',html:esc(p.texto)}));
+C.tipos.etq3=C.tipos.etq3||(p=>({cls:'cm-etq',style:'font-size:'+(p.tam||44)+'px;line-height:1.2;padding:14px 22px!important;',html:'<span class="cm-fita" style="--fx:'+(p.fita!=null?p.fita:12)+'%;--fg:-5deg"></span><span>'+esc(p.texto)+'</span>'}));
 
 /* ---------- escrita abstrata (só ritmo de traços, sem palavra nenhuma) ---------- */
 function escrita(seed,x0,x1,y,amp,sw,cor){
@@ -243,8 +247,8 @@ reg('grio','#d8c9a0','Griô com a kora',u=>{
 C.tipos.musa=p=>{
   const r=C.tipos.foto(p);
   const src=(window.LAB_IMG||{})[p.img]||'';
-  const m=(x,y,rr)=>'radial-gradient(ellipse '+(rr*1.0)+'% '+(rr*1.7)+'% at '+x+'% '+y+'%,#000 62%,transparent 100%)';
-  const ouro=p.ouro||[[40.4,46.5,5.2],[51.6,31.5,5],[49,40,3.2],[44.2,58,2.8],[51.5,60,3]];
+  const m=(x,y,rr)=>'radial-gradient(ellipse '+(rr*1.0)+'% '+(rr*1.7)+'% at '+x+'% '+y+'%,#000 74%,transparent 100%)';
+  const ouro=p.ouro||[[40.4,46.5,6.6],[51.6,31.5,6.2],[49.2,40.2,3.6]];
   const mk=ouro.map(o=>m(o[0],o[1],o[2])).join(',');
   const lay='<div class="m4-ouro" style="background-image:url('+src+');-webkit-mask-image:'+mk+';mask-image:'+mk+'"></div>';
   r.html=r.html.replace('></div>','>'+lay+'</div>');
@@ -301,65 +305,65 @@ C.tipos.minimapa=p=>{
       '<g transform="translate('+(c[0]+(q.dx||0))+' '+(c[1]+(q.dy||0))+')"><rect x="'+(q.anc==='e'?-(q.larg||110):0)+'" y="-10" width="'+(q.larg||110)+'" height="'+(q.alt||24)+'" fill="#fff" stroke="'+T+'" stroke-width="1"/>'+
       sTx((q.anc==='e'?-(q.larg||110)/2:(q.larg||110)/2),(q.alt||24)/2-1,q.nome,q.fs||11.5,700,'middle',T)+'</g></g>';
   });
-  return {cls:'cm-m4 sb',html:'<svg viewBox="'+vb.join(' ')+'" role="img" aria-label="'+esc(p.rotulo||'Mapa da África com três pontos')+'" style="background:#18181b">'+s+'</svg>'};
+  return {cls:'cm-m4 sb m4-mini',html:'<svg viewBox="'+vb.join(' ')+'" role="img" aria-label="'+esc(p.rotulo||'Mapa da África com três pontos')+'" style="background:#18181b">'+s+'</svg>'};
 };
 
 /* ---------- árvore de família matrilinear: a linha amarela corre pelo lado das mulheres ---------- */
 C.tipos.matri=p=>{
-  const W=1300,H=930;let s='';
+  const W=1500,H=1000;let s='';
+  const R=70;
   const ND=(x,y,mul,cor,nome,gray)=>{
-    const sh=mul?circ(x,y,58,cor,T,5):rect(x-52,y-52,104,104,cor,T,5);
-    return '<g class="'+(gray?'cin':'')+'" '+(gray?'opacity=".55"':'')+'>'+sh+sTx(x,y+14,nome,40,700,'middle',T)+'</g>';
+    const sh=mul?circ(x,y,R,cor,T,5):rect(x-R,y-R,R*2,R*2,cor,T,5);
+    return '<g'+(gray?' opacity=".55"':'')+'>'+sh+(nome?sTx(x,y+16,nome,58,700,'middle',T):'')+'</g>';
   };
   const L=(a,b,c,d,cor,w,dash)=>pth('M'+a+' '+b+' L'+c+' '+d,'none',cor||T,w||5,dash?' stroke-dasharray="14 12"':'');
-  const Y1=150,Y2=450,Y3=770;
-  // linhas
-  s+=L(650,Y1+58,650,300,T,5)+L(260,300,1040,300,T,5)+L(260,300,260,Y2-52,T,5)+L(650,300,650,Y2-58,T,5)+L(1040,300,1040,Y2-58,T,5);
-  s+=L(650,Y2+58,650,620,T,5)+L(500,620,800,620,T,5)+L(500,620,500,Y3-52,T,5)+L(800,620,800,Y3-58,T,5);
-  s+=L(260,Y2+52,260,620,T,5,true)+L(160,620,360,620,T,5,true)+L(160,620,160,Y3-52,T,5,true)+L(360,620,360,Y3-52,T,5,true);
-  // linha da herança em amarelo (pelas mulheres)
-  s+='<g class="ap">'+pth('M650 '+(Y1+60)+' V300 H650 V'+(Y2-60),'none','#ffd83d',20,' opacity=".9"')+pth('M650 '+(Y2+60)+' V620 H800 V'+(Y3-60),'none','#ffd83d',20,' opacity=".9"')+pth('M650 300 H1040 V'+(Y2-60),'none','#ffd83d',20,' opacity=".9"')+'</g>';
-  s+=L(650,Y1+58,650,300,T,5)+L(650,300,1040,300,T,5)+L(650,300,650,Y2-58,T,5)+L(1040,300,1040,Y2-58,T,5)+L(650,Y2+58,650,620,T,5)+L(650,620,800,620,T,5)+L(800,620,800,Y3-58,T,5);
-  s+=ND(650,Y1,1,'#f6d3c8','avó')+ND(1040,Y2,1,'#f6d3c8','tia')+ND(650,Y2,1,'#f6d3c8','mãe')+ND(260,Y2,0,'#dcd6c6','tio',1);
-  s+=ND(500,Y3,0,'#fff2b0','filho')+ND(800,Y3,1,'#fff2b0','filha');
-  s+=ND(160,Y3,0,'#dcd6c6','',1)+ND(360,Y3,1,'#dcd6c6','',1);
-  s+=sTx(260,Y2+112,'pai dos filhos dele',32,600,'middle','#4a463e');
-  s+=sTx(260,Y3+100,'de outra linhagem',32,600,'middle','#4a463e');
-  s+=sTx(650,Y3+100,'a linhagem da mãe',36,700,'middle',T);
-  s+=sTx(100,Y1-8,'matrilinear',50,700,'start',T,SERIF)+sTx(100,Y1+44,'a linhagem segue a mãe',38,600,'start','#4a463e');
+  const Y1=190,Y2=510,Y3=830,XA=720,XT=250,XM=720,XB=1190;
+  // linhas de parentesco
+  s+=L(XA,Y1+R,XA,350)+L(XT,350,XB,350)+L(XT,350,XT,Y2-R)+L(XM,350,XM,Y2-R)+L(XB,350,XB,Y2-R);
+  s+=L(XM,Y2+R,XM,670)+L(560,670,880,670)+L(560,670,560,Y3-R)+L(880,670,880,Y3-R);
+  s+=L(XT,Y2+R,XT,670,T,5,true)+L(130,670,370,670,T,5,true)+L(130,670,130,Y3-R,T,5,true)+L(370,670,370,Y3-R,T,5,true);
+  // linha da herança, em amarelo, pelo lado das mulheres
+  s+='<g class="ap">'+pth('M'+XA+' '+(Y1+R+4)+' V350 H'+XB+' V'+(Y2-R-4),'none','#ffd83d',22,' opacity=".92"')+pth('M'+XA+' 350 V'+(Y2-R-4),'none','#ffd83d',22,' opacity=".92"')+pth('M'+XM+' '+(Y2+R+4)+' V670 H880 V'+(Y3-R-4),'none','#ffd83d',22,' opacity=".92"')+'</g>';
+  s+=L(XA,Y1+R,XA,350)+L(XA,350,XB,350)+L(XM,350,XM,Y2-R)+L(XB,350,XB,Y2-R)+L(XM,Y2+R,XM,670)+L(XM,670,880,670)+L(880,670,880,Y3-R);
+  s+=ND(XA,Y1,1,'#f6d3c8','avó')+ND(XB,Y2,1,'#f6d3c8','tia')+ND(XM,Y2,1,'#f6d3c8','mãe')+ND(XT,Y2,0,'#dcd6c6','tio',1);
+  s+=ND(560,Y3,0,'#fff2b0','filho')+ND(880,Y3,1,'#fff2b0','filha');
+  s+=ND(130,Y3,0,'#dcd6c6','',1)+ND(370,Y3,1,'#dcd6c6','',1);
+  s+=sTx(XT,Y2+R+60,'outra linhagem',54,600,'middle','#4a463e');
+  s+=sTx(250,Y3+R+66,'filhos do tio',54,600,'middle','#4a463e');
+  s+=sTx(720,Y3+R+66,'a linhagem da mãe',54,700,'middle',T);
+  s+=sTx(60,Y1-30,'matrilinear',72,700,'start',T,SERIF)+sTx(60,Y1+30,'a linhagem',54,600,'start','#4a463e')+sTx(60,Y1+88,'segue a mãe',54,600,'start','#4a463e');
   return {cls:'cm-m4',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Árvore de família matrilinear')+'">'+s+'</svg>'};
 };
 
 /* ---------- fita do tempo de três faixas: Gana, Mali e Songhai ---------- */
 C.tipos.fitaafr=p=>{
-  const W=3300,H=860,X=a=>120+(a-300)/1300*3060;let s='';
+  const W=3300,H=860,X=a=>330+(a-300)/1300*2570;let s='';
   s+=rect(10,10,W-20,H-20,'#fffdf6',T,0);
   // eixo
   s+=pth('M'+X(300)+' 130 H'+X(1600),'none',T,4);
   for(let a=300;a<=1600;a+=100){s+=pth('M'+X(a)+' 118 V142','none',T,3.4)+sTx(X(a),88,String(a),38,700,'middle','#2f2e2a');}
-  s+=sTx(40,88,'d.C.',34,600,'start','#4a463e');
+  s+=sTx(40,88,'d.C.',40,600,'start','#4a463e');
   const barra=(a,b,y,cor,txt,et,tx,dash)=>'<rect x="'+X(a)+'" y="'+y+'" width="'+(X(b)-X(a))+'" height="74" rx="8" fill="'+cor+'" stroke="'+T+'" stroke-width="4"'+(dash?' stroke-dasharray="16 12"':'')+'/>';
   const marca=(x,y1,y2,t1,t2,anc,et,cor)=>'<g class="mk" data-et="'+et+'">'+pth('M'+x+' '+y1+' V'+y2,'none',T,3.4)+circ(x,y1,13,cor||'#d63a22',T,3.4)+
-    sTx(x,y2+(y2>y1?44:-30),t1,40,700,anc||'middle',T).replace('<text','<text class="mt"')+(t2?sTx(x,y2+(y2>y1?90:-76),t2,34,600,anc||'middle','#2f2e2a'):'')+'</g>';
+    sTx(x,y2+(y2>y1?44:-30),t1,40,700,anc||'middle',T).replace('<text','<text class="mt"')+(t2?sTx(x,y2+(y2>y1?90:-76),t2,40,600,anc||'middle','#2f2e2a'):'')+'</g>';
   // Gana
   s+=sTx(40,300,'Gana',64,700,'start',T,SERIF);
   s+='<g class="mk" data-et="2,3">'+barra(300,1200,230,'#f2a695')+'</g>';
-  s+='<g class="mk" data-et="2">'+'<rect x="'+X(650)+'" y="230" width="'+(X(900)-X(650))+'" height="74" rx="8" fill="#ffd83d" stroke="'+T+'" stroke-width="4"/>'+sTx((X(650)+X(900))/2,350,'apogeu',40,700,'middle',T).replace('<text','<text class="mt"')+sTx((X(650)+X(900))/2,392,'séculos VII a IX',34,600,'middle','#2f2e2a')+'</g>';
-  s+='<g class="mk" data-et="2">'+sTx(X(300)+6,206,'começo, segundo os livros',34,600,'start','#2f2e2a')+'</g>';
-  s+='<g class="mk" data-et="3">'+sTx(X(1100),350,'declínio',40,700,'middle',T).replace('<text','<text class="mt"')+sTx(X(1100),392,'séculos XI e XII',34,600,'middle','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="2">'+'<rect x="'+X(650)+'" y="230" width="'+(X(900)-X(650))+'" height="74" rx="8" fill="#ffd83d" stroke="'+T+'" stroke-width="4"/>'+sTx((X(650)+X(900))/2,350,'apogeu',40,700,'middle',T).replace('<text','<text class="mt"')+sTx((X(650)+X(900))/2,392,'séculos VII a IX',40,600,'middle','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="2">'+sTx(X(300)+6,206,'começo, segundo os livros',40,600,'start','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="3">'+sTx(X(1100),350,'declínio',40,700,'middle',T).replace('<text','<text class="mt"')+sTx(X(1100),392,'séculos XI e XII',40,600,'middle','#2f2e2a')+'</g>';
   // Mali
   s+=sTx(40,500,'Mali',64,700,'start',T,SERIF);
   s+='<g class="mk" data-et="3,4">'+barra(1235,1450,430,'#e8b04a')+'<rect x="'+X(1450)+'" y="430" width="'+(X(1530)-X(1450))+'" height="74" fill="url(#m4fade)" stroke="none"/></g>';
-  s+=marca(X(1235),430,470,'','','middle','3',null).replace(/<text[^>]*>.*?<\/text>/g,'');
-  s+='<g class="mk" data-et="3">'+sTx(X(1235)-8,420,'cerca de 1235: Sundiata Keita',34,600,'end','#2f2e2a')+'</g>';
-  s+='<g class="mk" data-et="4">'+pth('M'+X(1324)+' 504 V560','none',T,3.4)+circ(X(1324),504,13,'#d63a22',T,3.4)+sTx(X(1324)-8,600,'1324 e 1325',38,700,'end',T).replace('<text','<text class="mt"')+sTx(X(1324)-8,642,'peregrinação de Mansa Musa',32,600,'end','#2f2e2a')+'</g>';
-  s+='<g class="mk" data-et="4">'+pth('M'+X(1375)+' 504 V560','none',T,3.4)+circ(X(1375),504,13,'#d63a22',T,3.4)+sTx(X(1375)+8,600,'1375',38,700,'start',T).replace('<text','<text class="mt"')+sTx(X(1375)+8,642,'Atlas Catalão',32,600,'start','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="3">'+circ(X(1235),430,13,'#d63a22',T,3.4)+sTx(X(1235)+26,412,'cerca de 1235: Sundiata Keita',40,700,'start',T)+'</g>';
+  s+='<g class="mk" data-et="4">'+pth('M'+X(1324)+' 504 V530','none',T,3.4)+circ(X(1324),504,13,'#d63a22',T,3.4)+sTx(X(1324)-8,570,'1324 e 1325',38,700,'end',T).replace('<text','<text class="mt"')+sTx(X(1324)-8,608,'peregrinação de Mansa Musa',40,600,'end','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="4">'+pth('M'+X(1375)+' 504 V530','none',T,3.4)+circ(X(1375),504,13,'#d63a22',T,3.4)+sTx(X(1375)+8,570,'1375',38,700,'start',T).replace('<text','<text class="mt"')+sTx(X(1375)+8,608,'Atlas Catalão',40,600,'start','#2f2e2a')+'</g>';
   // Songhai
   s+=sTx(40,700,'Songhai',64,700,'start',T,SERIF);
-  s+='<g class="mk" data-et="5">'+barra(1000,1464,630,'#f6f1e4',null,null,null,true)+sTx(X(1232),602,'reino antigo, centro em Gao',32,600,'middle','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="5">'+barra(1000,1464,630,'#f6f1e4',null,null,null,true)+sTx(X(1232),748,'reino antigo, Gao',40,600,'middle','#2f2e2a')+'</g>';
   s+='<g class="mk" data-et="5">'+barra(1464,1591,630,'#a8d0c4')+'</g>';
-  s+='<g class="mk" data-et="5">'+pth('M'+X(1470)+' 704 V752','none',T,3.4)+circ(X(1470),704,13,'#d63a22',T,3.4)+sTx(X(1470)-10,798,'1468 e 1473',38,700,'end',T).replace('<text','<text class="mt"')+sTx(X(1470)-10,838,'Tombuctu e Djenné',32,600,'end','#2f2e2a')+'</g>';
-  s+='<g class="mk" data-et="5">'+pth('M'+X(1591)+' 704 V752','none',T,3.4)+circ(X(1591),704,13,'#d63a22',T,3.4)+sTx(X(1591)+10,798,'1591',38,700,'start',T).replace('<text','<text class="mt"')+sTx(X(1591)+10,838,'derrota diante do Marrocos',32,600,'start','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="5">'+pth('M'+X(1470)+' 704 V752','none',T,3.4)+circ(X(1470),704,13,'#d63a22',T,3.4)+sTx(X(1470)-10,798,'1468 e 1473',38,700,'end',T).replace('<text','<text class="mt"')+sTx(X(1470)-10,838,'Tombuctu e Djenné',40,600,'end','#2f2e2a')+'</g>';
+  s+='<g class="mk" data-et="5">'+pth('M'+X(1591)+' 704 V752','none',T,3.4)+circ(X(1591),704,13,'#d63a22',T,3.4)+sTx(X(1591)+10,798,'1591',38,700,'start',T).replace('<text','<text class="mt"')+sTx(X(1591)+10,838,'derrota para o Marrocos',38,600,'start','#2f2e2a')+'</g>';
   const defs='<defs><linearGradient id="m4fade" x1="0" x2="1"><stop offset="0" stop-color="#e8b04a"/><stop offset="1" stop-color="#e8b04a" stop-opacity="0"/></linearGradient></defs>';
   return {cls:'cm-m4 sb',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Fita do tempo de Gana, Mali e Songhai, do século III ao XVI')+'">'+defs+s+'</svg>'};
 };

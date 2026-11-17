@@ -42,7 +42,7 @@ Colagem.montar({
   ritmo:9000,
   msPalavra:250,
   celularGrande:true,
-  mesa:{w:3700,h:12000},
+  mesa:{w:3700,h:12100},
   enem:`O ENEM cobra a origem do Islã na Arábia no ==século VII==, a ==Hégira== (622) como início do calendário, os ==cinco pilares== e a expansão, com a presença muçulmana na Península Ibérica e o legado cultural (algarismos, álgebra, palavras árabes no português). As questões costumam combater preconceitos.
 
 Pegadinhas:
@@ -95,7 +95,7 @@ O império vivia do **comércio** de especiarias, seda, tecidos e papel, e suas 
       {tipo:'pontos',pts:DOTS,cor:'#8a5f1c',tam:.3,etapas:[0,1,2],atraso:A(1800)},
       {tipo:'rotulo',p:[1085,600],texto:'deserto',classe:'regiao',giro:-6,tam:.6,etapas:[0],atraso:A(2200)},
       {tipo:'rota',pts:R_CARAVANA,largura:5,etapas:[0],atraso:A(3000),dur:3.4},
-      {tipo:'etiqueta',p:[1085,744],texto:'rumo ao Iêmen',tam:.46,etapas:[0],atraso:A(4200)},
+      {tipo:'etiqueta',p:[1128,722],texto:'rumo ao Iêmen',tam:.46,etapas:[0],atraso:A(4200)},
       {tipo:'rotulo',p:[828,392],texto:'Império Bizantino',classe:'regiao',tam:.5,etapas:[0],atraso:A(6200)},
       {tipo:'rotulo',p:[1196,430],texto:'Império Persa',classe:'regiao',tam:.5,etapas:[0],atraso:A(6600)},
       {tipo:'nota',p:[1095,540],texto:'a oeste, o Império|Bizantino; a leste, o|Império Persa: os dois|exaustos por guerras|entre si',tam:.5,etapas:[0],atraso:A(7600)},
@@ -103,7 +103,7 @@ O império vivia do **comércio** de especiarias, seda, tecidos e papel, e suas 
       {tipo:'cidade',p:MECA,nome:'Meca',lado:'e',tam:.5,etapas:[0,1,2,3,4,6],atraso:A(3800)},
       {tipo:'cidade',p:MEDINA,nome:'Medina',sub:'então Yathrib',lado:'e',tam:.5,etapas:[0,1],atraso:A(4400)},
       {tipo:'cidade',p:MEDINA,nome:'Medina',lado:'e',tam:.5,etapas:[2,3],atraso:A(700)},
-      {tipo:'cidade',p:MEDINA,nome:'Medina',lado:'d',tam:.5,etapas:[4],atraso:A(700)},
+      {tipo:'cidade',p:MEDINA,nome:'Medina',lado:'d',tam:.42,etapas:[4],atraso:A(700)},
       // ===== etapa 3 (2): a Hégira
       {tipo:'rota',pts:R_IDA,largura:6,movel:'ponto',tam:.6,invisivel:true,volta:A(4000)||4000,etapas:[2],atraso:A(1200),dur:2.2},
       {tipo:'etiqueta',p:[1052,626],texto:'622',tam:.5,cor:'amarelo',etapas:[2],atraso:A(3800)},
@@ -132,14 +132,14 @@ O império vivia do **comércio** de especiarias, seda, tecidos e papel, e suas 
       {tipo:'regiao',pts:NAFRICA,suave:false,terra:true,cor:'#2f6b4f',opac:.62,etapas:[7,8],atraso:A(17500)},
       {tipo:'regiao',pts:IBERIA,suave:false,terra:true,cor:'#2f6b4f',opac:.62,etapas:[7,8],atraso:A(19200)},
       {tipo:'cidade',p:CORDOBA,nome:'Córdoba',sub:'al-Andalus',lado:'d',tam:.5,etapas:[7],atraso:A(20800)},
-      {tipo:'cidade',p:CORDOBA,nome:'Córdoba',sub:'al-Andalus',lado:'d',tam:.8,etapas:[8],atraso:A(1000)},
+      {tipo:'cidade',p:CORDOBA,nome:'Córdoba',sub:'al-Andalus',lado:'d',tam:.55,etapas:[8],atraso:A(1000)},
       {tipo:'rota',pts:[CORDOBA,[150,262],[188,200],[222,148],POITIERS],largura:6,cor:'#e8572a',etapas:[7],atraso:A(22200),dur:1.8},
       {tipo:'rota',pts:[[236,76],[270,114]],largura:9,cor:'#c93a2a',tracejada:false,etapas:[7],atraso:A(24200),dur:.8},
-      {tipo:'etiqueta',p:[318,60],texto:'732: Poitiers',tam:.5,cor:'amarelo',etapas:[7],atraso:A(25000)},
+      {tipo:'etiqueta',p:[288,40],texto:'732: Poitiers',tam:.5,cor:'amarelo',etapas:[7],atraso:A(25000)},
       {tipo:'nota',p:[190,410],texto:'o domínio muçulmano|na Península Ibérica|durou até 1492, com|a queda de Granada',tam:.5,etapas:[7],atraso:A(27000)},
       // ===== etapa 9 (8): rotas de comércio a partir de Bagdá
       {tipo:'rota',pts:R_BAGDA_LESTE,largura:5,etapas:[8],atraso:A(1200),dur:3},
-      {tipo:'etiqueta',p:[1262,478],texto:'Índia e China',tam:.5,cor:'amarelo',etapas:[8],atraso:A(4000)},
+      {tipo:'etiqueta',p:[1232,446],texto:'Índia e China',tam:.5,cor:'amarelo',etapas:[8],atraso:A(4000)},
       {tipo:'rota',pts:R_BAGDA_MAR,largura:5,etapas:[8],atraso:A(2200),dur:3},
       {tipo:'etiqueta',p:[1180,610],texto:'pelo mar',tam:.5,cor:'amarelo',etapas:[8],atraso:A(4800)},
       {tipo:'rota',pts:R_BAGDA_OESTE,largura:5,etapas:[8],atraso:A(15000),dur:5},
@@ -183,15 +183,15 @@ O império vivia do **comércio** de especiarias, seda, tecidos e papel, e suas 
     // ================= etapa 7: a árvore dos califas
     {id:'arv',tipo:'califas',x:1100,y:8670,w:1500,h:1320,ini:A(2),rotulo:'Árvore: a morte do profeta em 632 e dois galhos, sunitas e xiitas'},
     // ================= etapa 9: algarismos e palavras
-    {id:'num',tipo:'numeros',cols:MOB?5:10,x:MOB?1250:500,y:10370,w:MOB?1320:2700,h:MOB?1400:1180,ini:A(28),rotulo:'Os algarismos, das formas antigas indianas aos de hoje, com o zero'},
-    {id:'p1',tipo:'palavraal',parte:'aç',resto:'úcar',tam:42,x:100,y:455,w:230,h:76,giro:-4,atraso:A(23800),rotulo:'Palavra: açúcar'},
-    {id:'p2',tipo:'palavraal',parte:'al',resto:'godão',tam:42,x:350,y:455,w:250,h:76,giro:3,atraso:A(24400),rotulo:'Palavra: algodão'},
-    {id:'p3',tipo:'palavraal',parte:'al',resto:'face',tam:42,x:120,y:535,w:210,h:76,giro:-3,atraso:A(25000),rotulo:'Palavra: alface'},
-    {id:'p4',tipo:'palavraal',parte:'az',resto:'eite',tam:42,x:360,y:535,w:210,h:76,giro:4,atraso:A(25600),rotulo:'Palavra: azeite'},
-    {id:'p5',tipo:'palavraal',parte:'al',resto:'moxarifado',tam:42,x:150,y:375,w:400,h:76,giro:-2,atraso:A(26200),rotulo:'Palavra: almoxarifado'},
-    {id:'p-nota2',tipo:'nota3',texto:'em açúcar e azeite, o l se fundiu à letra seguinte: aç-, az-',tam:30,x:70,y:297,w:560,h:70,giro:-1,atraso:A(26400),rotulo:'Nota: o l do artigo se fundiu à letra seguinte'},
-    {id:'p-nota',tipo:'nota3',texto:'al- é o artigo árabe o, a',tam:40,x:70,y:225,w:560,h:80,giro:1.5,atraso:A(27000),rotulo:'Nota: al- é o artigo árabe'},
-    {id:'prox',tipo:'etq3',texto:'Próximo: reinos africanos',tam:60,x:MOB?1250:2150,y:MOB?11840:11580,w:850,h:130,rotulo:'Etiqueta: próximo, reinos africanos'}
+    {id:'num',tipo:'numeros',cols:MOB?5:10,x:MOB?1250:500,y:10370,w:MOB?1320:2700,h:MOB?1490:1180,ini:A(28),rotulo:'Os algarismos, das formas antigas indianas aos de hoje, com o zero'},
+    {id:'p1',tipo:'palavraal',parte:'aç',resto:'úcar',tam:42,x:100,y:452,w:230,h:76,giro:-4,atraso:A(23800),rotulo:'Palavra: açúcar'},
+    {id:'p2',tipo:'palavraal',parte:'al',resto:'godão',tam:42,x:350,y:452,w:250,h:76,giro:3,atraso:A(24400),rotulo:'Palavra: algodão'},
+    {id:'p3',tipo:'palavraal',parte:'al',resto:'face',tam:42,x:120,y:532,w:210,h:76,giro:-3,atraso:A(25000),rotulo:'Palavra: alface'},
+    {id:'p4',tipo:'palavraal',parte:'az',resto:'eite',tam:42,x:360,y:532,w:210,h:76,giro:4,atraso:A(25600),rotulo:'Palavra: azeite'},
+    {id:'p5',tipo:'palavraal',parte:'al',resto:'moxarifado',tam:42,x:150,y:372,w:400,h:76,giro:-2,atraso:A(26200),rotulo:'Palavra: almoxarifado'},
+    {id:'p-nota2',tipo:'nota3',texto:'em açúcar e azeite, o l se fundiu à letra seguinte: aç-, az-',tam:30,x:70,y:272,w:560,h:70,giro:-1,atraso:A(26400),rotulo:'Nota: o l do artigo se fundiu à letra seguinte'},
+    {id:'p-nota',tipo:'nota3',texto:'al- é o artigo árabe o, a',tam:40,x:70,y:190,w:560,h:80,giro:1.5,atraso:A(27000),rotulo:'Nota: al- é o artigo árabe'},
+    {id:'prox',tipo:'etq3',texto:'Próximo: reinos africanos',tam:60,x:MOB?1250:2150,y:MOB?11900:11580,w:850,h:130,rotulo:'Etiqueta: próximo, reinos africanos'}
   ],
 
   etapas:[
@@ -257,8 +257,8 @@ Traduzir jihad só como "guerra santa" é uma simplificação que vem de leitura
 Os califas omíadas governaram de Damasco, a partir de 661. Depois, os abássidas governaram de Bagdá, cidade fundada em 762, que se tornou grande centro de comércio e de saber.`,
      mostra:[],so:['arv','fita'],
      foco:[1040,8600,1620,1460],focoM:[1100,8660,1500,1340],
-     tomadas:[[12000,FD(1000,575,520)],[23000,[1200,2500,2150,860]]],
-     tomadasM:[[12000,FMo(1010,545,350)],[23000,[964,2500,800,860]],[27000,[2378,2500,800,860]]]},
+     tomadas:[[12000,FD(1000,575,520)],[23000,[1100,2500,2250,860]]],
+     tomadasM:[[12000,FMo(1010,545,350)],[23000,[1040,2500,800,860]],[27000,[2378,2500,800,860]]]},
     {titulo:'De Córdoba ao Indo',
      texto:`Em cerca de cem anos, os árabes formaram um enorme ==Império Islâmico==. Tomaram a Síria e o Egito dos bizantinos, venceram os persas e dominaram o norte da África. Em 711, entraram na ==Península Ibérica==, onde derrubaram o reino visigodo. A leste, chegaram ao rio Indo.
 
@@ -273,8 +273,8 @@ A expansão teve motivos religiosos, políticos e comerciais, e foi facilitada p
 Os árabes espalharam os ==algarismos indo-arábicos==, criados na Índia, o que incluiu o zero, e desenvolveram a ==álgebra==, palavra que vem do árabe al-jabr, além de avanços em medicina, astronomia e navegação. Deixaram palavras no português, como açúcar, algodão, alface, azeite e almoxarifado. Na Península Ibérica, a presença muçulmana, a partir de 711, deixou marcas na cultura portuguesa e espanhola.`,
      mostra:[],so:['p1','p2','p3','p4','p5','p-nota','p-nota2','num','prox'],
      foco:FD(1150,540,480),focoM:FMo(1150,540,260),
-     tomadas:[[15000,FD(560,420,1060)],[22000,FD(200,300,520)],[29000,[440,10300,2840,1480]]],
-     tomadasM:[[16500,FMo(1190,510,300)],[22000,FMo(190,260,300)],[28000,[1200,10340,1420,1700]]]}
+     tomadas:[[15000,FD(560,420,1060)],[22000,FD(200,280,540)],[29000,[440,10300,2840,1480]]],
+     tomadasM:[[16500,FMo(1190,510,300)],[22000,FMo(190,260,300)],[28000,[1200,10340,1420,1790]]]}
   ]
 });
 })();
