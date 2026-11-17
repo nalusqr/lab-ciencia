@@ -265,7 +265,7 @@ a{color:inherit}
 .cm-sumario{background:#fff;border:2px dashed rgba(27,26,23,.3);border-radius:6px;padding:14px 20px;margin:0 0 2em;font:600 1rem/1.4 var(--sans)}
 .cm-sumario ol{margin:0;padding-left:1.4em}
 .cm-sumario li{padding:3px 0}
-.cm-sumario a{color:var(--tinta);text-underline-offset:3px;display:inline-block;min-height:28px}
+.cm-sumario a{color:var(--tinta);text-underline-offset:3px;display:inline;padding:4px 0}
 .cm-sec{scroll-margin-top:16px}
 .cm-sec h3{font:400 clamp(1.5rem,3.5vw,1.9rem)/1.15 var(--serif);margin:1.6em 0 .5em}
 .cm-leitura p{margin:0 0 1em}

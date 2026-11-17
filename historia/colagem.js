@@ -414,6 +414,6 @@ C.montar=function(T){
     requestAnimationFrame(anda);
   }
   botao();vai(0,'init');
-  C.atual={vai,etapa:()=>at,total:E.length};
+  C.atual={vai,etapa:()=>at,total:E.length,tomadas:i=>tomadas(E[i]).map(t=>t[0])};
 };
 })();
