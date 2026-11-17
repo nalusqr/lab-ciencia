@@ -112,11 +112,10 @@ camadasMed.push(
   {tipo:'regiao',ll:true,terra:true,pts:B_ESPANHA,suave:false,cor:'coral',opac:.85,etapas:[5],atraso:A(9800),dura:14700},
   {tipo:'regiao',ll:true,terra:true,pts:B_FIM,suave:false,cor:'coral',opac:.85,etapas:[5],atraso:A(30500)},
   {tipo:'etiqueta',ll:true,p:[27.2,37.6],texto:'Império Bizantino',tam:.45,etapas:[5],atraso:A(2500)},
-  {tipo:'etiqueta',ll:true,p:[13.4,38.9],texto:'Italia reconquistada',tam:.4,etapas:[5],atraso:A(10000),dura:14500},
-  {tipo:'etiqueta',ll:true,p:[1.5,33.5],texto:'norte da África reconquistado',tam:.4,etapas:[5],atraso:A(10600),dura:13900},
+  {tipo:'etiqueta',ll:true,p:[13.4,38.9],texto:'Itália',tam:.5,etapas:[5],atraso:A(10000),dura:14500},
+  {tipo:'etiqueta',ll:true,p:[1.5,33.5],texto:'norte da África',tam:.5,etapas:[5],atraso:A(10600),dura:13900},
   {tipo:'cidade',ll:true,p:[28.98,41.01],nome:'Constantinopla',sub:'antiga Bizâncio',capital:true,tam:.5,lado:'e',etapas:[5],atraso:A(1500)}
 );
-camadasMed.forEach(L=>{if(L.texto==='Italia reconquistada')L.texto='Itália reconquistada';});
 
 // ---- camadas do mapa-múndi
 const camadasMun=[];
@@ -126,18 +125,18 @@ const camadasMun=[];
 [['visi',VISI,0],['suev',SUEV,1],['ostro',OSTRO,2],['franc',FRANC,3],['burg',BURG,4],['vand',VAND,5],['anglo',ANGLO,6]].forEach(r=>{
   camadasMun.push({tipo:'regiao',ll:true,terra:true,pts:r[1],suave:false,cor:CORES_R[r[0]],opac:.9,etapas:[3],atraso:A(5600+r[2]*600)});});
 camadasMun.push(
-  {tipo:'etiqueta',ll:true,p:[-9.2,38.4],texto:'visigodos',tam:.34,etapas:[3],atraso:A(6200)},
-  {tipo:'etiqueta',ll:true,p:[-19.5,43],texto:'suevos',tam:.34,etapas:[3],atraso:A(6800)},
-  {tipo:'etiqueta',ll:true,p:[7.4,40.4],texto:'ostrogodos',tam:.34,etapas:[3],atraso:A(7400)},
-  {tipo:'etiqueta',ll:true,p:[-4.6,48.7],texto:'francos',tam:.34,etapas:[3],atraso:A(8000)},
-  {tipo:'etiqueta',ll:true,p:[7.6,45.6],texto:'burgúndios',tam:.34,etapas:[3],atraso:A(8600)},
-  {tipo:'etiqueta',ll:true,p:[-1.5,33],texto:'vândalos',tam:.34,etapas:[3],atraso:A(9200)},
-  {tipo:'etiqueta',ll:true,p:[2.6,54.6],texto:'anglo-saxões',tam:.34,etapas:[3],atraso:A(9800)},
+  {tipo:'etiqueta',ll:true,p:[-9.2,38.4],texto:'visigodos',tam:.24,etapas:[3],atraso:A(6200)},
+  {tipo:'etiqueta',ll:true,p:[-19.5,43],texto:'suevos',tam:.24,etapas:[3],atraso:A(6800)},
+  {tipo:'etiqueta',ll:true,p:[7.4,40.4],texto:'ostrogodos',tam:.24,etapas:[3],atraso:A(7400)},
+  {tipo:'etiqueta',ll:true,p:[-4.6,48.7],texto:'francos',tam:.24,etapas:[3],atraso:A(8000)},
+  {tipo:'etiqueta',ll:true,p:[7.6,45.6],texto:'burgúndios',tam:.24,etapas:[3],atraso:A(8600)},
+  {tipo:'etiqueta',ll:true,p:[-1.5,33],texto:'vândalos',tam:.24,etapas:[3],atraso:A(9200)},
+  {tipo:'etiqueta',ll:true,p:[2.6,54.6],texto:'anglo-saxões',tam:.24,etapas:[3],atraso:A(9800)},
   // ===== etapa 7 (6): o império de Carlos Magno
   {tipo:'regiao',ll:true,terra:true,pts:FRANCIA_CL,suave:false,cor:'coral',opac:.85,etapas:[6],atraso:A(600),dura:7500},
   {tipo:'regiao',ll:true,terra:true,pts:CAROL,suave:false,cor:'coral',opac:.85,etapas:[6,7],atraso:A(8200)},
-  {tipo:'cidade',ll:true,p:[6.08,50.78],nome:'Aix-la-Chapelle',sub:'(Aachen)',capital:true,tam:.4,lado:'e',etapas:[6],atraso:A(10500)},
-  {tipo:'cidade',ll:true,p:[0.34,46.58],nome:'Poitiers',sub:'732',tam:.4,lado:'e',etapas:[6],atraso:A(14500)},
+  {tipo:'cidade',ll:true,p:[6.08,50.78],nome:'Aix-la-Chapelle',sub:'(Aachen)',capital:true,tam:.26,lado:'e',etapas:[6],atraso:A(10500)},
+  {tipo:'cidade',ll:true,p:[0.34,46.58],nome:'Poitiers',sub:'732',tam:.26,lado:'d',etapas:[6],atraso:A(14500)},
   {tipo:'regiao',ll:true,terra:true,pts:M_HISP,suave:false,cor:'petroleo',opac:.9,etapas:[6],atraso:A(31000)},
   {tipo:'regiao',ll:true,terra:true,pts:M_BRETANHA,suave:false,cor:'petroleo',opac:.9,etapas:[6],atraso:A(31400)},
   {tipo:'regiao',ll:true,terra:true,pts:M_FRIUL,suave:false,cor:'petroleo',opac:.9,etapas:[6],atraso:A(31800)},
@@ -146,20 +145,20 @@ camadasMun.push(
 );
 COND.forEach((c,i)=>{camadasMun.push({tipo:'regiao',ll:true,terra:true,pts:c,suave:false,cor:'amarelo',opac:.9,etapas:[6],atraso:A(33000+i*350)});});
 camadasMun.push(
-  {tipo:'etiqueta',ll:true,p:[-0.4,47.8],texto:'condado',tam:.34,etapas:[6],atraso:A(35300),cor:'amarelo'},
-  {tipo:'etiqueta',ll:true,p:[-10.5,40.2],texto:'marca (fronteira)',tam:.34,etapas:[6],atraso:A(35800)},
+  {tipo:'etiqueta',ll:true,p:[-0.4,47.8],texto:'condado',tam:.24,etapas:[6],atraso:A(35300),cor:'amarelo'},
+  {tipo:'etiqueta',ll:true,p:[-10.5,40.2],texto:'marca (fronteira)',tam:.24,etapas:[6],atraso:A(35800)},
   // ===== etapa 8 (7): Verdun divide o império em três faixas
   {tipo:'regiao',ll:true,terra:true,pts:V_OESTE,suave:false,cor:'coral',opac:.85,etapas:[7],atraso:A(14000)},
   {tipo:'regiao',ll:true,terra:true,pts:V_MEIO,suave:false,cor:'#e8c14f',opac:.9,etapas:[7],atraso:A(14800)},
   {tipo:'regiao',ll:true,terra:true,pts:V_LESTE,suave:false,cor:'#6fb0b5',opac:.9,etapas:[7],atraso:A(15600)},
-  {tipo:'etiqueta',ll:true,p:[-6.6,44.4],texto:'Carlos, o Calvo',sub:'futura França',tam:.34,etapas:[7],atraso:A(17500)},
-  {tipo:'etiqueta',ll:true,p:[14.2,42.8],texto:'Lotário',sub:'faixa do meio',tam:.34,etapas:[7],atraso:A(18500)},
-  {tipo:'etiqueta',ll:true,p:[14.4,50.2],texto:'Luís, o Germânico',sub:'futura Alemanha',tam:.34,etapas:[7],atraso:A(19500)},
+  {tipo:'etiqueta',ll:true,p:[-6.6,44.4],texto:'Carlos, o Calvo',sub:'futura França',tam:.24,etapas:[7],atraso:A(17500)},
+  {tipo:'etiqueta',ll:true,p:[14.2,42.8],texto:'Lotário',sub:'faixa do meio',tam:.24,etapas:[7],atraso:A(18500)},
+  {tipo:'etiqueta',ll:true,p:[14.4,50.2],texto:'Luís, o Germânico',sub:'futura Alemanha',tam:.24,etapas:[7],atraso:A(19500)},
   {tipo:'cidade',ll:true,p:[6.08,50.78],nome:'Aix-la-Chapelle',tam:.34,lado:'e',etapas:[7],atraso:A(16500)},
   // ===== etapa 9 (8): invasões
-  {tipo:'etiqueta',ll:true,p:[7,60.8],texto:'vikings',tam:.38,etapas:[8],atraso:A(2500)},
-  {tipo:'etiqueta',ll:true,p:[27.5,50.4],texto:'magiares',tam:.38,etapas:[8],atraso:A(6500)},
-  {tipo:'etiqueta',ll:true,p:[10,33.3],texto:'muçulmanos',tam:.38,etapas:[8],atraso:A(9800)}
+  {tipo:'etiqueta',ll:true,p:[7,60.8],texto:'vikings',tam:.26,etapas:[8],atraso:A(2500)},
+  {tipo:'etiqueta',ll:true,p:[27.5,50.4],texto:'magiares',tam:.26,etapas:[8],atraso:A(6500)},
+  {tipo:'etiqueta',ll:true,p:[10,33.3],texto:'muçulmanos',tam:.26,etapas:[8],atraso:A(9800)}
 );
 
 // ---- fita do tempo (régua fora de escala)
@@ -281,3 +280,69 @@ Depois da morte do imperador, os netos disputaram o poder. O **Tratado de Verdun
      resposta:'A visão dos ==bispos sobre a crise do começo do século X==: invasões, cidades e mosteiros arrasados e falta de um poder central capaz de impor a lei. A imagem dos peixes descreve a violência entre os poderosos locais, o ambiente em que nasce o feudalismo. É preciso criticar a fonte: quem escreve é o ==alto clero==, que sofria com o saque dos mosteiros e queria reforçar a autoridade da Igreja. Por isso exagera o caos e o liga ao pecado.'},
     {id:'et-prox',tipo:'etiqueta',fs:56,x:7340,y:1350,w:640,h:130,clicavel:false,atraso:A(42000),texto:'Próximo: feudalismo'}
   ]),
+
+  etapas:[
+    {titulo:'Mil anos no meio',so:['idade','n-476'],
+     foco:[2100,3050,3900,1300],focoM:[2190,3090,1250,1260],
+     tomadas:[[4500,[2150,3080,2100,1300]],[13500,[3050,3080,2000,1000]],[21000,[4300,3080,1700,1000]]],
+     tomadasM:[[10500,[3050,3150,1300,900]],[17500,[4700,3150,1300,900]]],tempo:44000,
+     texto:TEXTO[0]},
+    {titulo:'Idade das Trevas?',so:['capa1','capa2','capa3','et-got','capacete','n-got'],
+     foco:[2120,4280,960,1230],focoM:[2120,4280,960,1230],
+     tomadas:[[10000,[3020,4300,960,1230]],[20000,[3920,4270,960,1230]],[27500,[2100,4270,2850,1250]],[33500,[5040,4320,1330,720]]],
+     tomadasM:[[10000,[3020,4300,960,1230]],[20000,[3920,4270,960,1230]],[29500,[5060,4330,1250,720]]],tempo:46000,
+     tracos:[{tipo:'seta',de:{peca:'et-got',x:100,y:50},para:{peca:'capacete',x:2,y:45},cor:'seta',espessura:9,ponta:44,curva:.25,atraso:A(32500)}],
+     texto:TEXTO[1]},
+    {titulo:'Do Império aos campos',mostra:['med','tempo'],so:['pessoas','n-col'].concat(CAMPOS.map((c,i)=>'vi'+i)),
+     foco:Fm(4,42,720),focoM:Fmc(4,41,260),
+     tomadas:[[9200,Fm(1,43,400)],[24000,[1650,1500,2600,800]],[36500,TL(5,1700)]],
+     tomadasM:[[9200,Fmc(1,44,130)],[24000,[1650,1540,1520,700]],[31000,[3340,1600,860,400]],[37000,TL(5,760)]],tempo:46000,
+     texto:TEXTO[2]},
+    {titulo:'Os reinos germânicos',mostra:['mun'],so:['comitatus','cruz','n-igreja'],
+     foco:Fw(2,46,250),focoM:Fwc(-2,45,120),
+     tomadas:[[15000,[7330,400,820,740]],[25500,[7330,420,1500,1150]],[36500,TL(5,1700)]],
+     tomadasM:[[9000,Fwc(10,42,120)],[15000,[7330,400,820,740]],[26000,Fwc(4,45,150)],[31500,[7330,1090,820,320]],[37000,TL(5,760)]],tempo:46000,
+     texto:TEXTO[3]},
+    {titulo:'Clóvis e os francos',so:['pia','et-conv','et-povo','et-bispos','n-mero'],
+     foco:Fm(1.5,46.5,300),focoM:Fmc(1.5,46,105),
+     tomadas:[[9000,[100,60,2800,1260]],[27000,TL(14,1700)]],
+     tomadasM:[[9000,[120,90,1250,700]],[18500,[120,300,1250,900]],[22500,[120,1040,1250,280]],[27000,TL(14,760)]],tempo:40000,
+     tracos:[{tipo:'circulo',peca:'pia',x:50,y:52,w:96,h:96,atraso:A(11500)},
+             {tipo:'seta',de:{peca:'pia',x:100,y:45},para:{peca:'et-conv',x:0,y:50},cor:'seta',espessura:9,ponta:40,curva:-.2,atraso:A(13500)},
+             {tipo:'seta',de:{peca:'et-conv',x:30,y:100},para:{peca:'et-povo',x:62,y:0},cor:'seta',espessura:9,ponta:40,curva:.2,atraso:A(16500)},
+             {tipo:'seta',de:{peca:'et-conv',x:78,y:100},para:{peca:'et-bispos',x:50,y:0},cor:'seta',espessura:9,ponta:40,curva:-.2,atraso:A(18000)}],
+     texto:TEXTO[4]},
+    {titulo:'Bizâncio, a Roma do Oriente',so:['sofia','corpus','et-sofia','et-corpus','cruzc','risc'],
+     foco:Fm(22,40,480),focoM:Fmc(26,40,260),
+     tomadas:[[9500,Fm(8,38,640)],[17500,[3640,230,1300,760]],[29500,Fm(30,40,330)],[34000,TL(24,1500)],[39500,[TLX+TLW*.85-1000,TLY-130,2000,900]]],
+     tomadasM:[[9500,Fmc(9,38,420)],[17500,[3640,230,1300,760]],[29500,Fmc(31,40,230)],[34000,TL(24,760)],[38500,[TLX+TLW*.78-380,TLY-130,760,900]],[43000,[TLX+TLW*.92-380,TLY-130,760,900]]],tempo:48000,
+     tracos:[{tipo:'circulo',peca:'sofia',x:50,y:52,w:98,h:98,atraso:A(16000)}],
+     texto:TEXTO[5]},
+    {titulo:'Carlos Magno, imperador',so:['maos','et-maos'],
+     foco:Fw(4,47,250),focoM:Fwc(3,47,120),
+     tomadas:[[12000,Fw(1,46,200)],[22500,[7330,440,820,720]],[30000,Fw(5,47,250)],[37500,TL(40,1900)]],
+     tomadasM:[[12000,Fwc(1,45.5,105)],[22000,[7350,440,780,740]],[30500,Fwc(5,47,120)],[37500,TL(40,760)]],tempo:47000,
+     tracos:[{tipo:'seta',de:MLw(-5.5,37.4),para:MLw(0.3,45.5),cor:'petroleo',espessura:11,ponta:46,curva:.18,atraso:A(14000)},
+             {tipo:'sublinha',de:MLw(-1.3,46),para:MLw(1.9,46),cor:'seta',espessura:15,atraso:A(16500)}],
+     texto:TEXTO[6]},
+    {titulo:'Escolas, letras e Verdun',so:['manus','et-letra','n-hil'],
+     foco:[7330,380,820,1000],focoM:[7330,380,820,1000],
+     tomadas:[[12500,Fw(6,47,250)],[29500,TL(57,1700)]],
+     tomadasM:[[12500,Fwc(6,47,120)],[23500,[7330,1380,820,260]],[29500,TL(57,760)]],tempo:40000,
+     texto:TEXTO[7]},
+    {titulo:'Novas invasões e o poder em pedaços',so:['castelos','doc','et-prox'],fonte:'doc',
+     foco:Fw(10,48,250),focoM:Fwc(10,48,120),
+     tomadas:[[27000,[7300,300,780,1260]],[43500,Fw(10,48,250)]],
+     tomadasM:[[27000,[7300,300,780,1260]],[43500,Fwc(10,48,120)]],tempo:52000,
+     tracos:[
+       {tipo:'seta',de:MLw(10.5,59.6),para:MLw(-0.6,54.4),cor:'seta',espessura:10,ponta:44,curva:-.2,atraso:A(2600)},
+       {tipo:'seta',de:MLw(10.5,59.6),para:MLw(4.4,52.4),cor:'seta',espessura:10,ponta:44,curva:.12,atraso:A(3300)},
+       {tipo:'seta',de:MLw(-2.4,50.3),para:MLw(2.3,48.8),cor:'seta',espessura:8,ponta:34,curva:.2,atraso:A(4000)},
+       {tipo:'seta',de:MLw(32,48.6),para:MLw(17.5,47.4),cor:'seta',espessura:10,ponta:44,curva:-.15,atraso:A(6600)},
+       {tipo:'seta',de:MLw(28,46.4),para:MLw(11.5,45.9),cor:'seta',espessura:10,ponta:44,curva:.15,atraso:A(7400)},
+       {tipo:'seta',de:MLw(10.6,34.6),para:MLw(13.4,40.4),cor:'seta',espessura:10,ponta:44,curva:.2,atraso:A(9900)},
+       {tipo:'seta',de:MLw(-4.6,36.1),para:MLw(5.6,43.1),cor:'seta',espessura:10,ponta:44,curva:-.25,atraso:A(10600)}],
+     texto:TEXTO[8]}
+  ]
+});
+})();
