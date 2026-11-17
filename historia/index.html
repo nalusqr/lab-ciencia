@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>História | LAB</title>
+<meta name="description" content="História no LAB: da Pré-História ao Brasil República, em colagens explicativas com mapas animados, fontes históricas e linha do tempo.">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="colagem.css">
+<style>
+body{background-color:var(--papel);
+  background-image:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);background-size:22px 22px}
+.pg{width:min(1180px,100%);margin:0 auto;padding:0 20px 48px}
+.abre{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center;padding:8px 0 18px}
+.abre h1{font:400 clamp(3rem,9vw,6.2rem)/.95 var(--serif);margin:10px 0 14px}
+.abre h1 span{background:linear-gradient(transparent 58%,var(--amarelo) 58% 90%,transparent 90%);padding:0 .08em}
+.abre p{font-size:1.15rem;line-height:1.55;max-width:34em;margin:0 0 .7em}
+.abre p.mini{font-size:.98rem;color:var(--tinta2)}
+.mesa-abre{position:relative;aspect-ratio:5/4;max-width:520px;width:100%;justify-self:end}
+.mesa-abre .ic{position:absolute;display:block}
+.mesa-abre .ic svg{width:100%;height:100%;display:block;overflow:visible}
+.mesa-abre .i1{left:2%;top:18%;width:44%;transform:rotate(-6deg)}
+.mesa-abre .i2{left:40%;top:0;width:40%;transform:rotate(4deg)}
+.mesa-abre .i3{left:52%;top:46%;width:44%;transform:rotate(-3deg)}
+.mesa-abre .i4{left:20%;top:58%;width:34%;transform:rotate(8deg)}
+.mesa-abre .tira{position:absolute;left:6%;bottom:2%;background:#fff;padding:7px 12px;font:600 15px var(--sans);box-shadow:0 2px 4px rgba(0,0,0,.2);transform:rotate(-2deg)}
+.trilho{position:relative;margin-top:8px}
+.trilho h2{font:400 2rem/1.1 var(--serif);margin:0 0 6px}
+.trilho>p{margin:0 0 18px;color:var(--tinta2)}
+.mods{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.mod{position:relative;background:#fffdf6;padding:20px 22px 20px 112px;min-height:150px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.16));transform:rotate(var(--g,0deg))}
+.mod .papel{position:absolute;inset:0;background:#fffdf6;clip-path:var(--clip);z-index:-1}
+.mod{background:none}
+.mod .ic{position:absolute;left:10px;top:16px;width:92px;height:92px}
+.mod .ic svg{width:100%;height:100%;overflow:visible}
+.mod .num{display:inline-block;font:700 14px var(--sans);color:var(--petroleo);border:2px solid var(--petroleo);padding:3px 8px;transform:rotate(-2deg);margin-bottom:8px}
+.mod h3{font:400 1.6rem/1.1 var(--serif);margin:0 0 6px}
+.mod p{margin:0;color:var(--tinta2);line-height:1.45}
+.breve{display:inline-block;font:700 13px var(--sans);background:var(--papel2);color:var(--tinta);padding:4px 9px;margin-top:10px;transform:rotate(1deg)}
+.mod.m1{grid-column:1/-1;padding-bottom:26px}
+.mod.m1 .ic{width:120px;height:120px}
+.mod.m1{padding-left:146px}
+.tops{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.tops li{display:flex}
+.tops a,.tops span.t{flex:1;display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 12px;font:600 1rem/1.25 var(--sans);text-decoration:none;border:2px dashed rgba(27,26,23,.25);color:var(--tinta2);background:rgba(241,236,225,.5)}
+.tops b{font:700 13px var(--sans);flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--papel2);color:var(--tinta)}
+.tops small{display:block;font:400 12px var(--sans);color:var(--tinta2);margin-top:2px}
+.tops a{border:2px solid var(--tinta);background:var(--amarelo);color:var(--tinta);box-shadow:3px 3px 0 var(--tinta);transition:transform var(--m-rapido),box-shadow var(--m-rapido)}
+.tops a b{background:var(--tinta);color:#fff}
+.tops a:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--tinta)}
+.tops a:active{transform:none;box-shadow:1px 1px 0 var(--tinta)}
+.tops a small{color:var(--tinta)}
+.rodape{margin-top:36px;font-size:.85rem;color:var(--tinta2)}
+@media (max-width:860px){
+  .abre{grid-template-columns:1fr}
+  .mesa-abre{justify-self:center;max-width:360px}
+  .mods{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .pg{padding:0 14px 40px}
+  .mod,.mod.m1{padding:18px 16px 18px 16px}
+  .mod .ic,.mod.m1 .ic{position:relative;left:auto;top:auto;width:76px;height:76px;float:right;margin:-4px -4px 6px 8px}
+  .tops{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.tops a{transition:none}}
+</style>
+</head>
+<body>
+<a class="cm-pular" href="#tit">Pular para o conteúdo</a><header class="cm-topo"><nav class="cm-trilha" aria-label="Você está em"><a href="../index.html">Início do LAB</a></nav></header>
+<main class="pg">
+  <section class="abre" aria-labelledby="tit">
+    <div>
+      <h1 id="tit" tabindex="-1"><span>História</span></h1>
+      <p>Da primeira pedra lascada ao Brasil República. Cada tópico é uma colagem que se monta diante de você: o mapa se desenha, a foto ganha um círculo, a fonte histórica pede uma leitura atenta.</p>
+      <p class="mini">Avance no seu ritmo com Anterior e Próxima, ou deixe a viagem seguir sozinha. Toque numa peça da colagem para ir direto à explicação dela.</p>
+    </div>
+    <div class="mesa-abre" aria-hidden="true">
+      <span class="ic i1" data-icone="zigurate"></span>
+      <span class="ic i2" data-icone="anfora"></span>
+      <span class="ic i3" data-icone="navio"></span>
+      <span class="ic i4" data-icone="pedra-lascada"></span>
+      <span class="tira">da pedra lascada ao Brasil de hoje</span>
+    </div>
+  </section>
+
+  <section class="trilho" aria-labelledby="mods-tit">
+    <h2 id="mods-tit">Os módulos, em ordem cronológica</h2>
+    <p>Comece pelo começo: a Pré-História. Os tópicos ficam prontos aos poucos.</p>
+    <ol class="mods">
+      <li class="mod m1" style="--g:-.4deg"><span class="papel"></span><span class="ic" data-icone="pedra-lascada"></span>
+        <span class="num">Módulo 1</span>
+        <h3>Pré-História e Antiguidade</h3>
+        <p>Dos primeiros grupos humanos às grandes sociedades da Antiguidade.</p>
+        <ol class="tops" aria-label="Tópicos do módulo 1">
+          <li><a href="m01-t01-pre-historia.html"><b>1</b><span>Pré-História<small>Abrir a colagem</small></span></a></li>
+          <li><span class="t"><b>2</b><span>Mesopotâmia<small>em breve</small></span></span></li>
+          <li><a href="m01-t03-egito.html"><b>3</b><span>Egito antigo<small>Abrir a colagem</small></span></a></li>
+          <li><span class="t"><b>4</b><span>Persas, fenícios e hebreus<small>em breve</small></span></span></li>
+          <li><span class="t"><b>5</b><span>Grécia<small>em breve</small></span></span></li>
+          <li><span class="t"><b>6</b><span>Roma<small>em breve</small></span></span></li>
+          <li><span class="t"><b>7</b><span>Povos orientais: China, Índia e Japão<small>em breve</small></span></span></li>
+        </ol>
+      </li>
+      <li class="mod" style="--g:.6deg"><span class="papel"></span><span class="ic" data-icone="muralha"></span><span class="num">Módulo 2</span><h3>Idade Média</h3><p>Reinos germânicos, feudalismo, islamismo, reinos africanos, Cruzadas, Renascimento e Reforma.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:-.5deg"><span class="papel"></span><span class="ic" data-icone="navio"></span><span class="num">Módulo 3</span><h3>Idade Moderna</h3><p>Estados Nacionais, Grandes Navegações, Absolutismo, Mercantilismo, as Américas e o Iluminismo.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:.4deg"><span class="papel"></span><span class="ic" data-icone="coroa"></span><span class="num">Módulo 4</span><h3>Revoluções burguesas</h3><p>Revolução Inglesa, Americana e Francesa e o período napoleônico.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:-.3deg"><span class="papel"></span><span class="ic" data-icone="espiga-foice"></span><span class="num">Módulo 5</span><h3>Brasil Colônia</h3><p>Colonização, escravidão e povos africanos, povos indígenas, União Ibérica, açúcar, expansão territorial, ouro e revoltas coloniais.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:.5deg"><span class="papel"></span><span class="ic" data-icone="pergaminho"></span><span class="num">Módulo 6</span><h3>Brasil: do período joanino à Regência</h3><p>Período joanino, independência, Primeiro Império e o Período Regencial com suas rebeliões.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:-.4deg"><span class="papel"></span><span class="ic" data-icone="moeda"></span><span class="num">Módulo 7</span><h3>Indústria, capitalismo e imperialismo</h3><p>Revolução Industrial, sistemas produtivos, críticas ao capitalismo e imperialismo.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:.3deg"><span class="papel"></span><span class="ic" data-icone="balanca"></span><span class="num">Módulo 8</span><h3>Guerras e revoluções do século XX</h3><p>Primeira Guerra, Revolução Russa, crise de 1929, regimes totalitários, Segunda Guerra e Guerra Fria.</p><span class="breve">em breve</span></li>
+      <li class="mod" style="--g:-.5deg"><span class="papel"></span><span class="ic" data-icone="coluna"></span><span class="num">Módulo 9</span><h3>Brasil Império e República</h3><p>Segundo Império, República da Espada, República Oligárquica, Era Vargas, ditadura militar e Nova República.</p><span class="breve">em breve</span></li>
+    </ol>
+  </section>
+  <p class="rodape">Ilustrações dos módulos desenhadas em código pelo LAB. Fotos dos tópicos: reconstruções geradas por IA a partir de fontes arqueológicas.</p>
+</main>
+<script src="colagem.js"></script>
+<script src="recortes.js"></script>
+<script>
+document.querySelectorAll('[data-icone]').forEach(function(el){el.innerHTML=Colagem.icone(el.dataset.icone);var s=el.querySelector('svg');if(el.closest('[aria-hidden=true]')||el.closest('.mod')){s.removeAttribute('role');s.setAttribute('aria-hidden','true');s.removeAttribute('aria-label');}});
+document.querySelectorAll('.mod').forEach(function(el,i){el.querySelector('.papel').style.setProperty('--clip',Colagem.rasgo('mod'+i,1.2));});
+</script>
+</body>
+</html>
