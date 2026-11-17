@@ -29,6 +29,10 @@ const PAGINAS = [
   ['taxonomia', 'site/taxonomia/index.html'],       // canvas 2D, mesmo motor; percorre todas as rotas por window.LAB_TAXO
   ['virus', 'site/virus/index.html'],               // canvas 2D, mesmo motor; percorre todas as rotas por window.LAB_VIRUS
   ['microrganismos', 'site/microrganismos/index.html'],   // canvas 2D, mesmo motor; window.LAB_MICRO
+  ['plantas-animais', 'site/plantas-animais/index.html'],
+  ['anatomia', 'site/anatomia/index.html'],   // canvas 2D, mesmo motor; window.LAB_ANATOMIA
+  ['evolucao', 'site/evolucao/index.html'],   // canvas 2D, mesmo motor; window.LAB_EVOLUCAO
+  ['ecologia', 'site/ecologia/index.html'],
 ];
 // módulos novos: entram sozinhos quando estiverem marcados como prontos em scripts/modulos.json (ver scripts/abas.py)
 try {
@@ -78,7 +82,7 @@ async function paginaSimples(nome, rel) {
 
 // módulos de canvas 2D com rotas por hash (motor da Bioenergética): abre e percorre cada rota pela API da página
 // (window[api].rotas e .ir), conferindo que não surgiu erro e que o canvas desenhou algo em cada uma
-const ROTAS_2D = { embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO' };
+const ROTAS_2D = { 'divisao-celular': 'LAB_CITOG', embriologia: 'LAB_EMBRIO', histologia: 'LAB_HISTO', taxonomia: 'LAB_TAXO', virus: 'LAB_VIRUS', microrganismos: 'LAB_MICRO', 'plantas-animais': 'LAB_PLANTAS', anatomia: 'LAB_ANATOMIA', evolucao: 'LAB_EVOLUCAO', morfofisiologia: 'LAB_MORFO', bioenergetica: 'LAB8', genetica: 'LAB_GENETICA' };
 async function paginaRotas(nome, rel, api) {
   const t0 = Date.now(); const { ctx, page } = await abrir();
   let rotas = [];
@@ -97,11 +101,17 @@ async function paginaRotas(nome, rel, api) {
     try {
       await page.evaluate(([a, k]) => window[a].ir(k), [api, r]);
       await quadros(page, 4);
-      const pintou = await page.evaluate(() => {
+      const pinta = () => page.evaluate(() => {
         const c = document.getElementById('cv'); if (!c || !c.width || !c.height) return false;
         const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
-        for (let i = 3; i < d.length; i += 4 * 97) if (d[i]) return true; return false;
+        for (let i = 3; i < d.length; i += 4 * 97) if (d[i]) return true;
+        // cenas 3D (canvas WebGL do mol3d) e a célula do módulo Célula num iframe também contam como palco pintado
+        const g = document.querySelector('#view canvas.m3-cv.on'); if (g && g.width && g.height) return true;
+        const f = document.querySelector('#view iframe.cel-fr'); return !!(f && f.style.display !== 'none');
       });
+      // figuras de IA carregam o .js da imagem sob demanda: dá até cerca de 3 s antes de dizer que o palco ficou vazio
+      let pintou = await pinta();
+      for (let k = 0; !pintou && k < 10; k++) { await quadros(page, 4); await page.waitForTimeout(250); pintou = await pinta(); }
       const e = errosNovos(page, desde);
       registrar(`${nome} #${r}`, e.length === 0 && pintou, (pintou ? '' : 'canvas vazio ') + e.slice(0, 5).join(' || '), Date.now() - t);
     } catch (err) { registrar(`${nome} #${r}`, false, err.message.split('\n')[0] + ' || ' + errosNovos(page, desde).slice(0, 5).join(' || '), Date.now() - t); }

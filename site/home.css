@@ -191,6 +191,11 @@ html.js:not(.sem-entrada) .trilha:not(.vista)>.etapa,html.js:not(.sem-entrada) .
   .e,.trilha>.etapa,.apoio>.ref{opacity:1!important;transform:none!important}
   .trilha::before{transform:none!important}
 }
+/* impressão e PDF: tudo aparece, mesmo que a seção ainda não tenha passado na tela (sem .vista) */
+@media print{
+  .e,.trilha>.etapa,.apoio>.ref{opacity:1!important;transform:none!important}
+  .trilha::before{transform:none!important}
+}
 
 /* ---------- Fundo animado da página inicial (fundo.js): canvas fixo atrás do conteúdo ---------- */
 .fundo-cv{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;transition:opacity 600ms var(--ease-out)}
@@ -198,23 +203,24 @@ html.js:not(.sem-entrada) .trilha:not(.vista)>.etapa,html.js:not(.sem-entrada) .
 @media(prefers-reduced-motion:reduce){.fundo-cv{transition:none}}
 .fundo-on .wrap{position:relative;z-index:1}
 
-/* ---------- Botão "Pausar fundo" / "Animar fundo" (fundo.js), no canto de baixo ---------- */
-.fundo-bt{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 16px 0 12px;border-radius:999px;border:1px solid var(--line);background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--dim);font-family:var(--f-txt);font-size:14px;font-weight:600;line-height:1.3;cursor:pointer;transition:background var(--t-ui),border-color var(--t-ui),color var(--t-ui)}
-.fundo-bt svg{width:16px;height:16px;flex:none}
-.fundo-bt .ic-pausa{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
-.fundo-bt .ic-anima{fill:currentColor;display:none}
-.fundo-bt[aria-pressed="true"] .ic-pausa{display:none}
-.fundo-bt[aria-pressed="true"] .ic-anima{display:block}
-.fundo-bt:hover{background:var(--panel-2);border-color:var(--line-strong);color:var(--txt)}
+/* ---------- Botão "Pausar fundo" / "Animar fundo" (fundo.js), no canto de baixo ----------
+   Padrão de botão do guia: raio 8 px, contorno --line-strong (3:1), ícone do conjunto (ui-pausar / ui-continuar) em 20 px. */
+.fundo-bt{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 16px 0 12px;border-radius:8px;border:1px solid var(--line-strong);background:var(--float);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--dim);font-family:var(--f-txt);font-size:14px;font-weight:600;line-height:1.3;cursor:pointer;transition:background var(--t-ui),border-color var(--t-ui),color var(--t-ui)}
+.fundo-bt svg{width:20px;height:20px;flex:none}
+.fundo-bt:hover{background:var(--panel-2);border-color:var(--txt);color:var(--txt)}
 .fundo-bt:active{filter:brightness(.96)}
-/* no celular, só o ícone (44 x 44) para cobrir menos o conteúdo; o texto continua lá para o leitor de tela */
+/* no celular, só o ícone (44 x 44) para cobrir menos o conteúdo; o texto continua lá para o leitor de tela,
+   e o title (fundo.js) dá a dica a quem vê só o ícone */
 @media(max-width:699px){
   .fundo-bt{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:44px;padding:0;justify-content:center}
   .fundo-bt span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 }
 @media print{.fundo-bt,.fundo-cv{display:none}}
 /* espaço no pé da página para o botão não cobrir o rodapé */
-.fundo-on .rodape{padding-bottom:96px}
+.fundo-on .rodape{padding-bottom:64px}
+/* com Tab, o elemento focado para acima do botão fixo, e não embaixo dele:
+   margem do botão + altura do botão + folga, na escala de espaço */
+html.fundo-on{scroll-padding-bottom:calc(16px + 44px + 16px + env(safe-area-inset-bottom,0px))}
 
 /* ---------- Foco do teclado sobre o fundo animado ----------
    Anel gelo (--focus) com um halo escuro por dentro e por fora: o anel nunca encosta numa luz do fundo,

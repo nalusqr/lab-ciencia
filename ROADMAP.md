@@ -89,7 +89,16 @@ A Íris gera a mitocôndria em .glb (`site/assets/modelos/`). O site abre por du
 
 ## Próxima etapa (decidida pela Nalu em 2026-11-15)
 
-A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente, sem rótulo "em breve" (pedido da Nalu); as que ainda não têm conteúdo só não terão módulos por enquanto. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
+A página inicial vira uma roda de matérias que o aluno gira: Química, Biologia, História, Geografia, Física, Português, Literatura, Inglês e Espanhol. Todas as 9 aparecem normalmente. Desde 2026-11-15 (rodada de design aprovada pela Nalu), as que ainda não têm conteúdo mostram o selo "Em breve" no cartão do centro, e o botão leva ao aviso da faixa; as que têm conteúdo mostram quantos módulos já estão no ar. Cada matéria tem um ícone em diorama 3D isométrico, feito pela Íris no Blender. No celular, a roda vira um arco ou carrossel e responde às setas do teclado. A página atual, com a célula 3D e a trilha, passa a ser a página da Biologia. Responsáveis: Leo (roda) e Íris (dioramas).
+
+## Melhoria das animações (aprovada pela Nalu em 2026-11-15)
+
+O padrão vale para todas as animações e está na seção 9 do `docs/GUIA-DE-ESTILO.md`. Ele usa figuras realistas por IA, motion graphics, pontos clicáveis e interação com zoom, ângulo e detalhe. 🎬 Martin lidera a parte visual.
+- [x] Triagem das 269 cenas da Biologia (`docs/visual/triagem-1.csv` e `triagem-2.csv`).
+- [x] Piloto aprovado: coração (anatomia), moluscos (plantas-animais), sangue (histologia) e cadeia respiratória (bioenergetica).
+- [ ] Tópico 1, Biologia molecular (28 cenas): 3D interativo das moléculas e 9 figuras de IA. Em andamento.
+- [ ] Tópicos 2 a 13: só com a autorização da Nalu, um por vez.
+- [ ] Ícones da página inicial (✨ Leo).
 
 ## Ementa da Nalu (fila de etapas, uma por vez)
 
@@ -102,12 +111,12 @@ Esteira (ligada pela Nalu em 2026-11-15): enquanto a equipe programa o tópico N
 5. Embriologia: tipos de ovos quanto à quantidade e à distribuição do vitelo; segmentação, mórula, blástula, gástrula, nêurula e organogênese; anexos embrionários (vesícula vitelínica, alantoide, córion e âmnio); gametogênese (ovulogênese e espermatogênese); embriologia humana. É um módulo novo (site/embriologia/), que reaproveita a gametogênese da Citogenética.
 6. Histologia: características gerais e fisiologia dos tecidos epiteliais, conjuntivos, musculares e nervoso. Módulo novo (site/histologia/).
 7. Taxonomia e nomenclatura: publicada (site/taxonomia/, 12 tópicos, 2026-11-15).
-8. Os vírus: estrutura da partícula viral, replicação e doenças relacionadas. Módulo novo (site/virus/); roteiro pronto (docs/revisao-biologia/virus-roteiro.md, 13 tópicos, no branch WIP); já existe o tópico #teoria/virus na Morfofisiologia.
-9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Provavelmente um módulo por reino, ou um módulo com uma seção por reino.
-10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor.
-11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto.
-12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo.
-13. Ecologia: conceitos; cadeias e teias; fluxo de energia; pirâmides; ciclos biogeoquímicos; dinâmica populacional; relações ecológicas; sucessão; biomas; desequilíbrios. O módulo site/ecologia/ está pausado em cerca de 90% (fora do main, no WIP); retomar e completar.
+8. Os vírus: publicado (site/virus/, 13 tópicos, Etapa 9 da trilha, 2026-11-15), com uma rodada de revisão dos professores (44 correções). Genética passou a Etapa 10 e Ecologia a 11.
+9. Os seres vivos: características gerais, habitats, morfologia e filogenia dos reinos Monera, Protoctista, Fungi, Plantae (Metaphyta) e Animalia (Metazoa). Decisão da Nalu (2026-11-15): dois módulos. "Microrganismos e fungos" (site/microrganismos/: Monera, Protoctista e Fungi, 7 tópicos) e "Plantas e animais" (site/plantas-animais/: 13 tópicos). Roteiro pronto (docs/revisao-biologia/seres-vivos-roteiro.md, 20 tópicos, no branch WIP); as rotas internas ficam como no roteiro. Parte 1 publicada em 2026-11-15: Microrganismos e fungos (site/microrganismos/, 7 tópicos, Etapa 10; Genética 11, Ecologia 12). Parte 2 publicada no mesmo dia: Plantas e animais (site/plantas-animais/, 13 tópicos, Etapa 11; Genética 12, Ecologia 13). Tópico 9 concluído.
+10. Anatomia e fisiologia humana: sistemas digestório, respiratório, circulatório, excretor, endócrino, nervoso, reprodutor e locomotor. Publicado em 2026-11-15: Anatomia e fisiologia (site/anatomia/, 16 tópicos, dois por sistema, Etapa 12; Genética 13, Ecologia 14). Revisão única dos professores com 23 ajustes aplicados.
+11. Genética: conceitos; 1ª lei de Mendel e probabilidade; heredogramas; alelos letais, dominância incompleta, alelos múltiplos; grupos sanguíneos; 2ª lei; linkage; genética do sexo; pleiotropia e interação gênica; biotecnologia; Hardy-Weinberg. O módulo site/genetica/ já existe (Mendel, heredogramas, grupos sanguíneos, ligada ao sexo, linkage); é preciso completar o resto. Completado em 2026-11-15: 12 tópicos novos (alelos letais, pleiotropia, herança poligênica, determinação do sexo, corpúsculo de Barr, herança restrita ao Y e calvície, DNA recombinante, PCR e eletroforese, clonagem, CRISPR, Hardy-Weinberg e fatores evolutivos), em site/genetica/novos-a.js e novos-b.js. Tópico 11 concluído.
+12. Origem da vida (hipóteses e experimentos) e evolução (Lamarckismo, Darwinismo, teoria sintética). Módulo novo. Publicado em 2026-11-15: site/evolucao/, 16 tópicos, Etapa 14 (fluxo em fases: roteiros revisados, guia visual, programação, checagem automática, revisão das telas, correções).
+13. Ecologia: conceitos; cadeias e teias; fluxo de energia; pirâmides; ciclos biogeoquímicos; dinâmica populacional; relações ecológicas; sucessão; biomas; desequilíbrios. Publicado em 2026-11-15: site/ecologia/ completo, Etapa 15, com 34 correções e 9 tópicos novos (produtividade, fósforo, polinização, controle biológico, estratégias r e K, ecossistemas costeiros, desmatamento, espécies invasoras, unidades de conservação). Biologia da ementa concluída.
 
 ## Lembretes da Nalu
 

@@ -13,6 +13,7 @@
 .seg>button i{width:10px;height:10px;border-radius:50%;flex:none}
 .palco{margin-bottom:24px}
 .palco .tela{position:relative;height:clamp(460px,64vh,680px)}
+@media(min-width:700px) and (max-height:820px){.palco .tela{height:clamp(280px,calc(100svh - 450px),680px)}}
 .palco canvas{display:block;width:100%;height:100%;touch-action:pan-y}
 .palco canvas.toca{cursor:pointer}
 .hud{position:absolute}
@@ -28,6 +29,7 @@
 .opts button{font:inherit;font-size:14px;font-weight:600;line-height:1.3;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line-strong);background:var(--panel);color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .15s,border-color .15s}
 .opts button:hover{background:var(--panel-2)}
 .opts button[aria-pressed="true"]{background:var(--panel-2);border-color:#fff;color:#fff;box-shadow:inset 0 0 0 1px #fff}
+.opts .og{flex:0 0 100%;text-align:center;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);margin-top:4px}.opts .og:first-child{margin-top:0}
 .opts button em{font-style:normal;font-family:var(--f-data);font-size:13px;color:var(--dim)}
 .opts button[aria-pressed="true"] em{color:#fff}
 .barra{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px;border-top:1px solid var(--line);background:var(--panel)}
@@ -38,6 +40,7 @@
 .barra svg{width:20px;height:20px;flex:none}
 .ctl{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:8px;border:1px solid var(--line-strong);color:var(--txt);font-size:14px;font-weight:600;min-width:0;flex:0 1 440px}
 .ctl[hidden]{display:none}
+@media(prefers-reduced-motion:no-preference){.ctl:not([hidden]){animation:ctlIn .15s ease-out}@keyframes ctlIn{from{opacity:0}to{opacity:1}}}
 .ctl span{white-space:nowrap}
 .ctl output{font-family:var(--f-data);font-weight:500;font-size:13px;white-space:nowrap;min-width:84px;text-align:right;color:var(--txt)}
 .ctl input{flex:1;min-width:60px;height:44px;accent-color:#FFB347;background:transparent;cursor:pointer}
@@ -78,6 +81,7 @@
 .cores i{width:10px;height:10px;border-radius:50%;flex:none}
 .foot{padding-top:24px}
 .foot i{font-style:italic}
+@media(max-width:479px){.onde.cc{display:none}}
 @media(max-width:699px){
   .palco .tela{height:clamp(420px,62svh,560px)}
   .tag{top:8px;left:8px;font-size:13px;max-width:56%}
@@ -109,13 +113,13 @@
 <symbol id="ui-reiniciar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12A7.5 7.5 0 1 0 12 4.5"/><path d="M14.8 2 12 4.5l2.8 2.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></g></symbol>
 </svg>
 <div class="wrap">
-  <nav class="tabs" aria-label="Módulos"><a href="../index.html"><span>Início</span></a><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../morfofisiologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a><a href="index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-ecologia"/></svg><span>Ecologia</span></a></nav>
+  <!-- abas:inicio (gerado por scripts/abas.py a partir de scripts/modulos.json; não edite à mão) --><nav class="tabs" aria-label="Módulos"><a href="../biologia/index.html"><span>Início</span></a><a href="../biologia-molecular/index.html" class="cp"><svg class="ico" aria-hidden="true"><use href="#mod-biologia-molecular"/></svg><span class="nm-l">Biologia molecular</span><span class="nm-s">Bio. molecular</span></a><a href="../morfofisiologia/index.html" class="cp"><svg class="ico" aria-hidden="true"><use href="#mod-morfofisiologia"/></svg><span class="nm-l">Morfofisiologia</span><span class="nm-s">Morfo</span></a><a href="../celula/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-celula"/></svg><span>Célula</span></a><a href="../divisao-celular/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-divisao"/></svg><span class="nm-l">Citogenética</span><span class="nm-s">Citogenética</span></a><a href="../bioenergetica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-bioenergetica"/></svg><span class="nm-l">Bioenergética</span><span class="nm-s">Energia</span></a><a href="../embriologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-embriologia"/></svg><span class="nm-l">Embriologia</span><span class="nm-s">Embrio</span></a><a href="../histologia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-histologia"/></svg><span class="nm-l">Histologia</span><span class="nm-s">Histo</span></a><a href="../taxonomia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-taxonomia"/></svg><span class="nm-l">Taxonomia</span><span class="nm-s">Taxo</span></a><a href="../virus/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-virus"/></svg><span>Vírus</span></a><a href="../microrganismos/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-microrganismos"/></svg><span class="nm-l">Microrganismos e fungos</span><span class="nm-s">Micro</span></a><a href="../plantas-animais/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-plantas-animais"/></svg><span class="nm-l">Plantas e animais</span><span class="nm-s">Plantas</span></a><a href="../anatomia/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-anatomia"/></svg><span class="nm-l">Anatomia e fisiologia</span><span class="nm-s">Anatomia</span></a><a href="../genetica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-genetica"/></svg><span>Genética</span></a><a href="../evolucao/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-evolucao"/></svg><span class="nm-l">Origem da vida e evolução</span><span class="nm-s">Evolução</span></a><a href="../ecologia/index.html" class="on" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#mod-ecologia"/></svg><span>Ecologia</span></a><a href="../dna/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span class="nm-l">Tabela periódica</span><span class="nm-s">Tabela</span></a><a href="../moleculas/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html" class="ap"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a><details class="apoio"><summary>Apoio</summary><div class="menu"><a href="../dna/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-dna"/></svg><span>DNA</span></a><a href="../tabela-periodica/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-tabela-periodica"/></svg><span>Tabela periódica</span></a><a href="../moleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-moleculas"/></svg><span>Moléculas</span></a><a href="../biomoleculas/index.html"><svg class="ico" aria-hidden="true"><use href="#mod-biomoleculas"/></svg><span>Biomoléculas</span></a></div></details></nav><script>(()=>{const d=document.querySelector(".tabs details.apoio");if(!d)return;const s=d.querySelector("summary");const x=()=>s.setAttribute("aria-expanded",d.open);x();d.addEventListener("toggle",x);document.addEventListener("keydown",e=>{if(e.key==="Escape"&&d.open){d.open=false;s.focus()}});document.addEventListener("click",e=>{if(d.open&&!d.contains(e.target))d.open=false});d.addEventListener("focusout",e=>{if(d.open&&e.relatedTarget&&!d.contains(e.relatedTarget))d.open=false})})();</script><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="mod-biologia-molecular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5 14 6.4v5.8L9 15.1 4 12.2V6.4z"/><path d="M14 12.2l3.2 2.4"/><circle cx="18.6" cy="16.6" r="2.4"/><circle cx="9" cy="20.2" r="1.3" fill="currentColor" stroke="none"/><path d="M9 15.1v3.8"/></g></symbol><symbol id="mod-divisao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.2a5.6 5.6 0 1 0 0 7.6a5.6 5.6 0 1 0 0-7.6z"/><circle cx="7.8" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="16.2" cy="12" r="1.3" fill="currentColor" stroke="none"/><path d="M12 3v2.2M12 18.8V21"/></g></symbol><symbol id="mod-bioenergetica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.5 5.5 13.2h5.2L9.6 21.5l8.9-11.7h-5.6z"/><path d="M19.2 3.4v2.4M22 6.2h-2.4M3 17.6h2.4M4.2 16.4v2.4"/></g></symbol><symbol id="mod-embriologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9.4" cy="9.4" r="2.6"/><circle cx="14.6" cy="9.4" r="2.6"/><circle cx="9.4" cy="14.6" r="2.6"/><circle cx="14.6" cy="14.6" r="2.6"/></g></symbol><symbol id="mod-histologia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h18M3 10.5h18"/><path d="M8 4.5v6M13.5 4.5v6"/><path d="M3 15.5c3 2.4 6 2.4 9 0s6-2.4 9 0M3 20c3 2.4 6 2.4 9 0s6-2.4 9 0"/><circle cx="5.5" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="10.75" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="17.2" cy="7.5" r="1" fill="currentColor" stroke="none"/></g></symbol><symbol id="mod-taxonomia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5V15M12 15 4 4.5M12 15l8-10.5M16 9.75 12 4.5"/><circle cx="4" cy="4" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"/><circle cx="20" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M14.6 10.6l2.8 2.1M7.4 9.6l2.4-1.8"/></g></symbol><symbol id="mod-virus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.2l4.2 2.4v4.8L12 16.8l-4.2-2.4V9.6z"/><path d="M12 7.2V4.6M16.2 9.6l2.3-1.3M16.2 14.4l2.3 1.3M12 16.8v2.6M7.8 14.4l-2.3 1.3M7.8 9.6 5.5 8.3"/><circle cx="12" cy="3.2" r="1.3" fill="currentColor" stroke="none"/><circle cx="19.7" cy="7.6" r="1.3" fill="currentColor" stroke="none"/><circle cx="19.7" cy="16.4" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="20.8" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.3" cy="16.4" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.3" cy="7.6" r="1.3" fill="currentColor" stroke="none"/><path d="M10 12.6c.7-1.2 1.4 1.2 2.1 0s1.4 1.2 2.1 0"/></g></symbol><symbol id="mod-microrganismos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8.5" width="11" height="6" rx="3"/><path d="M13.5 11.5c2 0 2-2.2 4-2.2M5 8.5V6.6M8 8.5V6.2M11 8.5V6.6"/><path d="M15 17.5c0-3 4.5-3 4.5 0M17.2 14.8v-1.3"/><path d="M5 20.5h6.5M8.2 20.5v-3.4"/><circle cx="19.2" cy="5" r="1.7"/></g></symbol><symbol id="mod-plantas-animais" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13.5c0-5.6 4-9.2 10.5-9.5 0 6.2-3.6 10-10.5 9.5z"/><path d="M3.5 13.5 10 8.5"/><circle cx="16.8" cy="14.2" r="1.4"/><circle cx="20.2" cy="17.6" r="1.4"/><circle cx="14.2" cy="18" r="1.4"/><circle cx="17.2" cy="20.6" r="1.4"/></g></symbol><symbol id="mod-anatomia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5C6 16.5 3.5 13 3.5 9.3A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 8.5 1.7c0 3.7-2.5 7.2-8.500 11.2z"/><path d="M12 7.6V4"/><path d="M5 12h3.500l1.500-2.500 2.500 5 1.500-2.500H19"/></g></symbol><symbol id="mod-genetica" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M12 3.5v17M3.5 12h17"/><circle cx="7.75" cy="7.75" r="1.6" fill="currentColor"/><circle cx="16.25" cy="7.75" r="1.6" fill="currentColor"/><circle cx="7.75" cy="16.25" r="1.6" fill="currentColor"/><circle cx="16.25" cy="16.25" r="1.6"/></g></symbol><symbol id="mod-evolucao" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12.5a1.5 1.5 0 0 1 1.5-1.5 3 3 0 0 1 3 3 4.5 4.5 0 0 1-4.5 4.5 6 6 0 0 1-6-6 7.5 7.5 0 0 1 7.5-7.5"/><path d="M13.5 5A9 9 0 0 1 20.5 10"/><circle cx="12" cy="12.5" r="1" fill="currentColor" stroke="none"/></g></symbol></svg><!-- abas:fim -->
 
   <header class="top">
     <svg class="ico-big" aria-hidden="true"><use href="#mod-ecologia"/></svg>
     <div>
       <h1>Ecologia</h1>
-      <div class="k">Módulo 10 <span class="badge">Seres vivos e ambiente</span></div>
+      <div class="k">Módulo 15 <span class="badge">Seres vivos e ambiente</span></div>
     </div>
   </header>
 
@@ -337,10 +341,10 @@ def('teias','cadeia',{t:'Cadeia alimentar',s:'quem come quem, nível por nível'
    X.globalAlpha=S.v===5?1:.35;X.setLineDash([3,5]);line(xs[i],y+54,lerp(xs[i],W/2,.35),dy-s*.5,C.dec,1.5);X.setLineDash([]);X.globalAlpha=1});
   X.globalAlpha=S.v===5?1:.6;fungo(W/2-s*.5,dy,s*.5);fungo(W/2-s*.15,dy,s*.36);bacts(W/2+s*.5,dy-s*.15,s*.4,C.dec,t);X.globalAlpha=1;if(S.v===5)circ(W/2,dy-s*.2,s*1.1,null,C.dec,2);
   tx('decompositores',W/2,dy+16,{s:M?12:13,w:600,bg:true,c:S.v===5?'#fff':C.txt});tx('nível trófico',W*.5,y+62,{s:12,c:C.dim})}
- ,d:`<p>Uma <b>cadeia alimentar</b> é uma sequência de seres vivos em que um serve de alimento para o outro. Cada posição é um <b>nível trófico</b>. Ela sempre começa com um <b>produtor</b> (autótrofo: planta, alga ou bactéria fotossintetizante), que transforma luz em matéria orgânica.</p><p>Depois vêm os <b>consumidores</b> (heterótrofos): o primário come o produtor, o secundário come o primário, e assim por diante. As setas apontam <b>de quem é comido para quem come</b>, porque mostram o caminho da matéria e da energia. Os <b>decompositores</b> atuam em todos os níveis.</p>`,
+ ,d:`<p>Uma <b>cadeia alimentar</b> é uma sequência de seres vivos em que um serve de alimento para o outro. Cada posição é um <b>nível trófico</b>. Ela sempre começa com um <b>produtor</b> (autótrofo: planta, alga ou bactéria fotossintetizante), que usa a energia da luz para fabricar matéria orgânica a partir de CO₂ e água. Em alguns ambientes sem luz, como as fontes hidrotermais do fundo do mar, os produtores são bactérias quimiossintetizantes.</p><p>Depois vêm os <b>consumidores</b> (heterótrofos): o primário come o produtor, o secundário come o primário, e assim por diante. As setas apontam <b>de quem é comido para quem come</b>, porque mostram o caminho da matéria e da energia. Os <b>decompositores</b> atuam em todos os níveis.</p>`,
  kv:[['1º nível trófico','produtores'],['2º nível trófico','consumidores primários (herbívoros)'],['Sentido da seta','do alimento para quem o come'],['Decompositores','fungos e bactérias']],
  enem:'Erro clássico: confundir a ordem do consumidor com o nível trófico. O consumidor <b>primário</b> está no <b>2º</b> nível trófico, porque o 1º é do produtor. Também se cobra o sentido das setas e o papel dos decompositores na <b>reciclagem da matéria</b>.',
- links:[['Teia alimentar interativa','#teias/teia'],['Fotossíntese (módulo 8)',BIO+'#foto']]});
+ links:[['Teia alimentar interativa','#teias/teia'],['Fotossíntese (Bioenergética)',BIO+'#foto']]});
 
 const TEIA={n:[{id:'capim',t:'capim',k:'capim',lv:0,u:.3,v:.86},{id:'lobeira',t:'lobeira',k:'lobeira',lv:0,u:.72,v:.86},{id:'gafanhoto',t:'gafanhoto',k:'gafanhoto',lv:1,u:.14,v:.62},{id:'rato',t:'rato-do-mato',k:'rato',lv:1,u:.5,v:.62},{id:'veado',t:'veado-campeiro',k:'veado',lv:1,u:.86,v:.62},{id:'sapo',t:'sapo',k:'sapo',lv:2,u:.14,v:.37},{id:'cobra',t:'cobra',k:'cobra',lv:2,u:.44,v:.37},{id:'lobo',t:'lobo-guará',k:'lobo',lv:2,u:.72,v:.38},{id:'seriema',t:'seriema',k:'seriema',lv:3,u:.3,v:.12},{id:'onca',t:'onça-parda',k:'onca',lv:3,u:.84,v:.13}],
  e:[['capim','gafanhoto'],['capim','rato'],['capim','veado'],['lobeira','rato'],['lobeira','lobo'],['gafanhoto','sapo'],['gafanhoto','seriema'],['rato','cobra'],['rato','lobo'],['rato','seriema'],['sapo','cobra'],['cobra','seriema'],['veado','onca']]};
@@ -389,10 +393,10 @@ def('energia','fluxo',{t:'Fluxo de energia',s:'a regra dos 10%',c:C.sol,onde:'Va
    X.setLineDash([3,5]);line(x-bw*.2,by+28,x-bw*.2,vy(.93),C.dec,1.5);X.setLineDash([])});
   lab('calor (respiração)',xs[1]+bw*.22,by-hm*Math.pow(ef,.28)-58,C.calor);
   rr(W*.06,vy(.93),W*.88,M?22:24,8,rgba(C.dec,.16),C.dec,1.5);tx(M?'decompositores':'decompositores: restos, fezes e organismos mortos',W/2,vy(.93)+(M?11:12),{s:12,w:600,c:C.txt})}
- ,d:`<p>A <b>matéria</b> circula nos ecossistemas, mas a <b>energia</b> não: ela entra como luz, passa de um nível trófico ao seguinte e sai como <b>calor</b>. O fluxo é <b>unidirecional</b> e a quantidade disponível diminui a cada passo.</p><p>Só cerca de <b>10%</b> da energia de um nível vira matéria no nível seguinte. O resto é gasto na respiração celular e perdido como calor, ou sai em fezes e restos que alimentam os decompositores. Por isso as cadeias raramente têm mais de 4 ou 5 níveis, e alimentar-se de produtores aproveita melhor a energia do que alimentar-se de carne. O valor real varia de 5% a 20%: mova o controle.</p>`,
+ ,d:`<p>A <b>matéria</b> circula nos ecossistemas, mas a <b>energia</b> não: ela entra como luz, passa de um nível trófico ao seguinte e sai como <b>calor</b>. O fluxo é <b>unidirecional</b> e a quantidade disponível diminui a cada passo.</p><p>Só cerca de <b>10%</b> da energia de um nível fica guardada na biomassa do nível seguinte. O resto é gasto na respiração celular e perdido como calor, ou sai em fezes e restos que alimentam os decompositores. Por isso as cadeias raramente têm mais de 4 ou 5 níveis, e alimentar-se de produtores aproveita melhor a energia do que alimentar-se de carne. Na natureza, esse valor fica em geral entre cerca de 5% e 20%: mova o controle.</p>`,
  kv:[['Energia','fluxo de mão única, não recicla'],['Matéria','recicla (ciclos biogeoquímicos)'],['Passa adiante','cerca de 10% por nível'],['Maior perda','calor da respiração']],
  enem:'Conta típica: se os produtores fixam <span class="q">20 000 kJ</span>, o consumidor secundário recebe <span class="q">200 kJ</span> (10% de 10%). Questão típica: por que alimentar a população com grãos rende mais do que com carne bovina? Porque cada nível a mais perde cerca de 90% da energia. Pegadinha: dizer que a energia "é reciclada".',
- links:[['Pirâmides ecológicas','#energia/piramides'],['Respiração celular (módulo 8)',BIO+'#resp'],['Fotossíntese (módulo 8)',BIO+'#foto']]});
+ links:[['Pirâmides ecológicas','#energia/piramides'],['Respiração celular (Bioenergética)',BIO+'#resp'],['Fotossíntese (Bioenergética)',BIO+'#foto']]});
 
 const PIR={energia:{t:'Energia',u:'kJ por m² por ano',l:[['Produtores',10000],['Cons. primários',1000],['Cons. secundários',100],['Cons. terciários',10]],cap:'<b>Pirâmide de energia:</b> nunca se inverte. Cada nível recebe só cerca de 10% da energia do nível de baixo.'},
  biomassa:{t:'Biomassa',u:'gramas por m² (campo, valores ilustrativos)',l:[['Plantas',800],['Herbívoros',40],['Carnívoros',10],['Carnívoros de topo',1.5]],cap:'<b>Pirâmide de biomassa:</b> a massa de matéria orgânica de cada nível. Em terra, quase sempre é direta.'},
@@ -435,12 +439,12 @@ def('ciclos','carbono',Object.assign(cenaCiclo(F_C,'O carbono entra nos seres vi
   alga(W*.78,H-4,s*.7,C.prod,t);alga(W*.94,H-4,s*.55,C.prod,t);ser('peixe',W*.86,vy(.88),s*.5,C.c2,t);
   tx('CO₂ no ar',W*.45,vy(.03),{f:FD,s:M?13:15,bg:true,c:C.txt});lab('combustíveis fósseis',W*.52,vy(.97),C.carb);lab('oceano',W*.85,vy(.75),C.gelo);lab('decompositores',W*.2,vy(.9),C.dec)}),{
  t:'Ciclo do carbono',s:'fotossíntese, respiração e combustão',c:C.carb,onde:'Terra, ar e oceano',
- d:`<p>O carbono é a base das moléculas orgânicas. No ar, ele está como <b>CO₂</b>. A <b>fotossíntese</b> é a única grande porta de entrada: plantas, algas e cianobactérias usam o CO₂ para fabricar açúcares. A partir daí, o carbono segue pela cadeia alimentar.</p><p>Ele volta ao ar por três caminhos: a <b>respiração</b> de todos os seres vivos, a <b>decomposição</b> e a <b>combustão</b>. Parte fica guardada por muito tempo na madeira, no solo, no oceano e nos <b>combustíveis fósseis</b>. O problema atual é o desequilíbrio: a queima de fósseis e o desmatamento devolvem CO₂ muito mais depressa do que a fotossíntese o retira.</p>`,
+ d:`<p>O carbono é a base das moléculas orgânicas. No ar, ele está como <b>CO₂</b>. A <b>fotossíntese</b> é a principal porta de entrada: plantas, algas e cianobactérias usam o CO₂ para fabricar açúcares. A partir daí, o carbono segue pela cadeia alimentar.</p><p>Ele volta ao ar por três caminhos: a <b>respiração</b> de todos os seres vivos, a <b>decomposição</b> e a <b>combustão</b>. Parte fica guardada por muito tempo na madeira, no solo, no oceano e nos <b>combustíveis fósseis</b>. O problema atual é o desequilíbrio: a queima de fósseis e o desmatamento devolvem CO₂ muito mais depressa do que a fotossíntese o retira.</p>`,
  kv:[['Retira CO₂ do ar','fotossíntese'],['Devolve CO₂','respiração, decomposição, combustão'],['Reservas','rochas, oceano, fósseis, florestas e solos']],
- enem:'Liga-se quase sempre ao <b>efeito estufa</b>. Florestas em crescimento são <b>sumidouros</b> de carbono; florestas maduras fixam e liberam quantidades parecidas. Biocombustíveis (etanol) devolvem o CO₂ que a cana retirou do ar há pouco; os fósseis liberam carbono que estava fora do ciclo rápido.',
- links:[['Fotossíntese (módulo 8)',BIO+'#foto'],['Fotossíntese × respiração (módulo 8)',BIO+'#relacao'],['Efeito estufa','#impactos/estufa']]}));
+ enem:'Liga-se quase sempre ao <b>efeito estufa</b>. Florestas em crescimento são <b>sumidouros</b> de carbono; florestas maduras fixam e liberam quantidades parecidas, mas guardam um estoque enorme de carbono na madeira e no solo. Queimá-las devolve esse estoque ao ar de uma vez; por isso o desmatamento é a maior fonte brasileira de CO₂. Biocombustíveis (etanol) devolvem o CO₂ que a cana retirou do ar há pouco; os fósseis liberam carbono que estava fora do ciclo rápido.',
+ links:[['Fotossíntese (Bioenergética)',BIO+'#foto'],['Fotossíntese e respiração (Bioenergética)',BIO+'#relacao'],['Efeito estufa','#impactos/estufa']]}));
 
-const F_N=[{id:'fix',t:'Fixação',c:C.n,p:[[[.34,.1],[.1,.26],[.15,.56]]],cap:'<b>Fixação:</b> bactérias como <i>Rhizobium</i>, nos nódulos das raízes de leguminosas, transformam N₂ em amônia. Raios também fixam um pouco.'},
+const F_N=[{id:'fix',t:'Fixação',c:C.n,p:[[[.34,.1],[.1,.26],[.15,.56]]],cap:'<b>Fixação:</b> bactérias como <i>Rhizobium</i>, nos nódulos das raízes de leguminosas, transformam N₂ em amônia. Cianobactérias e bactérias de vida livre do solo também fixam. No Brasil, a soja recebe bactérias fixadoras (<i>Bradyrhizobium</i>) e dispensa adubo nitrogenado. Raios fixam um pouco, e a indústria de adubos fixa muito.'},
  {id:'amon',t:'Amonificação',c:C.dec,p:[[[.46,.56],[.36,.62],[.32,.74]]],n:2,cap:'<b>Amonificação:</b> decompositores transformam o nitrogênio de restos, fezes e urina em amônia.'},
  {id:'nitr',t:'Nitrificação',c:C.c1,p:[[[.4,.8],[.45,.72],[.5,.8]],[[.63,.8],[.69,.72],[.75,.8]]],n:2,cap:'<b>Nitrificação:</b> bactérias <i>Nitrosomonas</i> oxidam a amônia a nitrito, e as <i>Nitrobacter</i> oxidam o nitrito a nitrato.'},
  {id:'assim',t:'Assimilação',c:C.prod,p:[[[.84,.74],[.9,.66],[.85,.55]]],n:2,cap:'<b>Assimilação:</b> as raízes absorvem nitrato e amônio, e a planta fabrica proteínas e ácidos nucleicos. Os animais recebem o nitrogênio pelo alimento.'},
@@ -453,11 +457,11 @@ def('ciclos','nitrogenio',Object.assign(cenaCiclo(F_N,'O N₂ do ar só entra na
   if(Math.floor(t*1.2)%5===0)poly([[W*.95,vy(.12)],[W*.92,vy(.25)],[W*.945,vy(.25)],[W*.92,vy(.38)],[W*.97,vy(.21)],[W*.945,vy(.21)]],C.sol);
   [['NH₃','amônia',.3],['NO₂⁻','nitrito',.565],['NO₃⁻','nitrato',.83]].forEach(q=>{tx(q[0],W*q[2],vy(.8),{f:FD,s:M?13:15,bg:true,fx:false});tx(q[1],W*q[2],vy(.8)+(M?20:22),{s:12,c:C.dim,fx:false})});
   bacts(W*.45,vy(.9),s*.3,C.c1,t);bacts(W*.69,vy(.9),s*.3,C.c1,t);
-  tx('N₂: 78% do ar',W*.52,vy(.03),{f:FD,s:M?13:15,bg:true});lab('leguminosa',W*.15,gy-s*.75,C.prod);lab('nódulos',W*.15,gy+s*.75,C.rosa);lab('restos e excretas',W*.5,gy+s*.36,C.creme)}),{
+  tx('N₂: cerca de 78% do ar',W*.52,vy(.03),{f:FD,s:M?13:15,bg:true});lab('leguminosa',W*.15,gy-s*.75,C.prod);lab('nódulos',W*.15,gy+s*.75,C.rosa);lab('restos e excretas',W*.5,gy+s*.36,C.creme)}),{
  t:'Ciclo do nitrogênio',s:'fixação, nitrificação e desnitrificação',c:C.n,onde:'Solo e atmosfera',
- d:`<p>O nitrogênio entra na composição das <b>proteínas</b> e dos <b>ácidos nucleicos</b>. Ele forma 78% do ar, como gás <b>N₂</b>, mas plantas e animais não conseguem usar essa forma. Quem resolve o problema são as <b>bactérias</b>, em quatro etapas.</p><p>Na <b>fixação</b>, bactérias como as do gênero <i>Rhizobium</i> transformam N₂ em amônia. Na <b>amonificação</b>, os decompositores liberam amônia a partir de restos e excretas. Na <b>nitrificação</b>, a amônia vira nitrito e depois <b>nitrato</b>, a forma que as plantas mais absorvem. Na <b>desnitrificação</b>, o nitrato volta a ser N₂.</p>
+ d:`<p>O nitrogênio entra na composição das <b>proteínas</b> e dos <b>ácidos nucleicos</b>. Ele forma cerca de 78% do ar, como gás <b>N₂</b>, mas plantas e animais não conseguem usar essa forma. Quem resolve o problema são as <b>bactérias</b>, em quatro etapas.</p><p>Na <b>fixação</b>, bactérias como as do gênero <i>Rhizobium</i> transformam N₂ em amônia. Na <b>amonificação</b>, os decompositores liberam amônia a partir de restos e excretas. Na <b>nitrificação</b>, a amônia vira nitrito e depois <b>nitrato</b>, a forma que as plantas mais absorvem. Na <b>desnitrificação</b>, o nitrato volta a ser N₂.</p>
  <table><tr><th>Etapa</th><th>Transformação</th><th>Quem faz</th></tr><tr><td>Fixação</td><td class="q">N₂ → NH₃</td><td><i>Rhizobium</i>, cianobactérias</td></tr><tr><td>Amonificação</td><td class="q">restos → NH₃</td><td>decompositores</td></tr><tr><td>Nitrificação</td><td class="q">NH₃ → NO₂⁻ → NO₃⁻</td><td><i>Nitrosomonas</i> e <i>Nitrobacter</i></td></tr><tr><td>Desnitrificação</td><td class="q">NO₃⁻ → N₂</td><td><i>Pseudomonas</i></td></tr></table>`,
- kv:[['Forma no ar','N₂, que plantas não absorvem'],['Forma mais absorvida','nitrato (NO₃⁻)'],['Etapas feitas por bactérias','todas as quatro']],
+ kv:[['Forma no ar','N₂, que plantas não absorvem'],['Forma mais absorvida','nitrato (NO₃⁻)'],['Quem faz as etapas','microrganismos, sobretudo bactérias, nas quatro; raios e a indústria de adubos também fixam N₂']],
  enem:'Tema favorito: <b>adubação verde</b> e <b>rotação de culturas</b>. Plantar leguminosas (feijão, soja, amendoim) enriquece o solo em nitrogênio, por causa do <i>Rhizobium</i> nos nódulos, e reduz o uso de adubo. Pegadinha: confundir nitrificação (produz nitrato) com desnitrificação (devolve N₂ ao ar).',
  links:[['Mutualismo: leguminosa e Rhizobium','#relacoes/harmonicas'],['Eutrofização','#impactos/eutrofizacao']]}));
 
@@ -515,7 +519,7 @@ const REL_H=[
  {id:'protocooperacao',t:'Protocooperação',sg:'+ / +',e:'espécies diferentes, união não obrigatória',cap:'<b>Protocooperação:</b> o anu-preto come os carrapatos da capivara. Os dois ganham, mas vivem bem um sem o outro.',
   d(t,cx,gy,s){solo(gy);capim(cx-s*1.6,gy,s*.5,C.prod,t);ser('capivara',cx,gy,s*1.9,C.c1,t);ser('ave',cx-s*.25,gy-s*.86+Math.abs(Math.sin(t*3))*-3,s*.75,C.carb,t);[[.1,-.62],[.42,-.7],[-.5,-.6]].forEach(q=>circ(cx+q[0]*s,gy+q[1]*s,s*.045,C.calor));
    lab('anu-preto',cx-s*.3,gy-s*1.75,C.gelo);lab('capivara',cx+s*.4,gy+20,C.c1);lab('carrapatos',cx+s*1.25,gy-s*.95,C.calor)}},
- {id:'comensalismo',t:'Comensalismo',sg:'+ / 0',e:'espécies diferentes',cap:'<b>Comensalismo:</b> a rêmora pega carona no tubarão e come os restos da caça dele. O tubarão não ganha nem perde.',
+ {id:'comensalismo',t:'Comensalismo',sg:'+ / 0',e:'espécies diferentes',cap:'<b>Comensalismo:</b> a rêmora pega carona no tubarão e come os restos da caça dele. O tubarão não ganha nem perde. Alguns livros chamam só a carona de foresia.',
   d(t,cx,gy,s){agua(0,vy(.12),W,t,.14);const y=gy-s*1.1;ser('tubarao',cx,y+s*.6,s*2.6,C.carb,t);ser('peixe',cx-s*.2,y+s*.72,s*.8,C.creme,t);for(let i=0;i<5;i++){const p=(t*.3+i/5)%1;circ(cx+s*1.3-p*s*1.4,y+s*.05+Math.sin(i*2+t)*s*.1+p*s*.3,2.5,rgba(C.c2,1-p))}
    lab('tubarão',cx,y-s*.75,C.gelo);lab('rêmora',cx-s*.2,y+s*.85,C.creme);lab('restos de comida',cx+s*1.2,y+s*.55,C.c2)}},
  {id:'inquilinismo',t:'Inquilinismo',sg:'+ / 0',e:'espécies diferentes',cap:'<b>Inquilinismo (epifitismo):</b> a bromélia usa a árvore só como apoio para alcançar a luz. Não retira nada dela.',
@@ -524,7 +528,7 @@ const REL_H=[
  {id:'colonia',t:'Colônia',sg:'+ / +',e:'mesma espécie, indivíduos unidos',cap:'<b>Colônia:</b> nos corais, como os de Abrolhos, milhares de pólipos da mesma espécie vivem ligados fisicamente.',
   d(t,cx,gy,s){agua(0,vy(.12),W,t,.14);ell(cx,gy+s*.1,s*1.6,s*.24,0,'rgba(138,106,74,.5)');for(let i=-3;i<=3;i++){const tx_=cx+i*s*.36,ty=gy-s*(.9+.4*Math.cos(i*.9));line(cx+i*s*.2,gy,tx_,ty,C.rosa,s*.13);circ(tx_,ty,s*.1,C.creme);for(let k=0;k<5;k++){const a=-PI/2+(k-2)*.5+Math.sin(t*2+i)*.15;line(tx_,ty,tx_+Math.cos(a)*s*.2,ty+Math.sin(a)*s*.2,C.creme,1.5)}}
    ser('peixe',cx+s*1.5+Math.sin(t*.6)*s*.3,gy-s*1.6,s*.6,C.c1,t,true);lab('pólipos',cx,gy-s*1.75,C.creme);lab('coral: uma colônia',cx,gy+s*.5,C.rosa)}},
- {id:'sociedade',t:'Sociedade',sg:'+ / +',e:'mesma espécie, com divisão de trabalho',cap:'<b>Sociedade:</b> nas saúvas, os indivíduos são independentes, mas dividem o trabalho em castas: rainha, operárias e soldados.',
+ {id:'sociedade',t:'Sociedade',sg:'+ / +',e:'mesma espécie, com divisão de trabalho',cap:'<b>Sociedade:</b> nas saúvas, os indivíduos são independentes, mas dividem o trabalho em castas: a rainha (içá), os machos (bitus) e operárias de vários tamanhos, das pequenas jardineiras às maiores, chamadas de soldados.',
   d(t,cx,gy,s){solo(gy,C.solo,.16);arbusto(cx-s*1.9,gy,s*.8);poly([[cx+s*.9,gy],[cx+s*1.5,gy-s*.5],[cx+s*2.1,gy]],'rgba(138,106,74,.7)');ell(cx+s*1.5,gy+s*.5,s*.5,s*.26,0,'rgba(11,15,28,.6)',C.solo,1.5);inseto(cx+s*1.5,gy+s*.6,s*.5,C.c2);
    for(let i=0;i<5;i++){const p=(t*.07+i/5)%1,x=cx-s*1.6+p*s*2.6;inseto(x,gy,s*.26,C.c2);poly([[x,gy-s*.16],[x+s*.12,gy-s*.42],[x-s*.1,gy-s*.36]],C.prod)}
    lab('operárias',cx-s*.3,gy-s*.7,C.c2);lab('rainha',cx+s*1.5,gy+s*1.02,C.c2);lab('formigueiro',cx+s*1.5,gy-s*.75,C.creme)}}];
@@ -537,7 +541,7 @@ const REL_D=[
  {id:'predacao',t:'Predação',sg:'+ / −',e:'espécies diferentes',cap:'<b>Predação:</b> a onça-pintada mata a capivara para comer. A herbivoria (a capivara comendo capim) segue a mesma lógica.',
   d(t,cx,gy,s){solo(gy);const p=(t%6)/6,f=Math.max(0,p-.6)*s*5;capim(cx+s*2.2,gy,s*.5,C.prod,t);capim(cx-s*2,gy,s*.4,C.prod,t);ser('capivara',cx+s*1+f,gy,s*1.4,C.c1,t*(p>.6?3:0));quad(cx-s*1.7+ss(seg(p,0,.6))*s*1.2+f*.9,gy,s*1.7,C.c3,{leg:.3,fat:.19,tail:-.04,ear:-.1,spots:1,walk:1,t:t});
    lab('onça-pintada (predador)',cx-s*1,gy-s*1.35,C.c3);lab('capivara (presa)',cx+s*1.2,gy+20,C.c1)}},
- {id:'parasitismo',t:'Parasitismo',sg:'+ / −',e:'espécies diferentes',cap:'<b>Parasitismo:</b> o carrapato-estrela suga o sangue da capivara. O parasita prejudica o hospedeiro, mas em geral não o mata.',
+ {id:'parasitismo',t:'Parasitismo',sg:'+ / −',e:'espécies diferentes',cap:'<b>Parasitismo:</b> o carrapato-estrela suga o sangue da capivara. O parasita prejudica o hospedeiro, mas em geral não o mata. Esse carrapato também transmite a bactéria da febre maculosa às pessoas.',
   d(t,cx,gy,s){solo(gy);ser('capivara',cx-s*.6,gy,s*1.9,C.c1,t);[[-.4,-.62],[-.9,-.7],[-.1,-.72]].forEach(q=>circ(cx+q[0]*s,gy+q[1]*s,s*.05,C.calor));
    const mx=cx+s*1.5,my=gy-s*1.3,r=s*.62;line(cx-s*.1,gy-s*.72,mx-r*.8,my+r*.5,C.dim,1.5);circ(mx,my,r,'rgba(19,26,43,.92)',C.gelo,2);for(let i=0;i<4;i++){const a=.5+i*.36;[-1,1].forEach(k=>line(mx,my,mx+k*Math.cos(a-.9)*r*.7,my+Math.sin(a-.9)*r*.7,C.calor,2))}ell(mx,my+r*.08,r*.36,r*.44,0,C.calor);circ(mx,my-r*.4,r*.14,tom(C.calor,-.3));
    lab('carrapato-estrela',mx,my+r+14,C.calor);lab('capivara (hospedeiro)',cx-s*.6,gy+20,C.c1)}},
@@ -574,10 +578,10 @@ def('populacoes','crescimento',{t:'Crescimento populacional',s:'curva em J e cur
   circ(px(n/110*T),py(lg(n/110*T)),5,C.prod);eixos(x0,y0,x1,y1,'tempo','nº de indivíduos');
   tx('K = '+K,x1-4,py(K)-12,{a:'right',f:FD,s:12,c:C.ambar,bg:true});
   if(pr>.45){lab('exponencial (J)',px(Math.log(ym*.8/N0)/r)-(M?52:64),py(ym*.86),C.calor);lab('resistência do meio',px(T*.62),py((K+ym)/2),C.txt)}if(pr>.8)lab('logístico (S)',px(T*.78),py(K)+18,C.prod)}
- ,d:`<p>Toda população tem um <b>potencial biótico</b>: a capacidade de crescer sem parar se tiver alimento, espaço e nenhum inimigo. Nessa situação ideal, o crescimento é <b>exponencial</b> e o gráfico tem forma de <b>J</b>. É o que acontece com bactérias numa cultura nova ou com uma espécie exótica recém-chegada.</p><p>No ambiente real, existe a <b>resistência do meio</b>: falta de alimento e de espaço, predadores, parasitas, competição e clima. O crescimento desacelera e a população oscila em torno da <b>capacidade de suporte (K)</b>, o número máximo de indivíduos que o ambiente sustenta. O gráfico fica em forma de <b>S</b> (curva logística).</p>
+ ,d:`<p>Toda população tem um <b>potencial biótico</b>: a capacidade máxima de crescer quando há alimento e espaço de sobra e nenhum predador, parasita ou doença. Nessa situação ideal, o crescimento é <b>exponencial</b> e o gráfico tem forma de <b>J</b>. É o que acontece com bactérias numa cultura nova ou com uma espécie exótica recém-chegada.</p><p>No ambiente real, existe a <b>resistência do meio</b>: falta de alimento e de espaço, predadores, parasitas, competição e clima. O crescimento desacelera e a população oscila em torno da <b>capacidade de suporte (K)</b>, o número máximo de indivíduos que o ambiente sustenta. O gráfico fica em forma de <b>S</b> (curva logística).</p>
  <span class="eq">crescimento = (natalidade + imigração) − (mortalidade + emigração)</span>`,
  kv:[['Curva em J','potencial biótico, sem limites'],['Curva em S','crescimento real, logístico'],['K','capacidade de suporte do ambiente'],['Diferença entre as curvas','resistência do meio']],
- enem:'Aparece como <b>leitura de gráfico</b>: identificar a fase de crescimento rápido, o ponto em que a resistência do meio aumenta e o patamar em K. Também caem as quatro taxas (natalidade, mortalidade, imigração e emigração) e a <b>densidade populacional</b> (indivíduos por área).',
+ enem:'Aparece como <b>leitura de gráfico</b>: identificar a fase de crescimento rápido, o ponto em que a resistência do meio aumenta e o patamar em K. Também caem as quatro taxas (natalidade, mortalidade, imigração e emigração) e a <b>densidade populacional</b> (indivíduos por área). Fique atento ao caso humano: a população mundial passou de 8 bilhões em 2022 (ONU), e a tecnologia (agricultura, saneamento, medicina) afastou temporariamente a resistência do meio.',
  links:[['Predador e presa: simulador','#populacoes/predador'],['Competição','#relacoes/desarmonicas']]});
 
 function lvPasso(N,P,K,h){const f=(n,p)=>[n*(1-(K?n/K:0))-.02*n*p,.01*n*p-.6*p],a=f(N,P),b=f(N+h/2*a[0],P+h/2*a[1]),c=f(N+h/2*b[0],P+h/2*b[1]),d=f(N+h*c[0],P+h*c[1]);return[Math.max(0,N+h/6*(a[0]+2*b[0]+2*c[0]+d[0])),Math.max(0,P+h/6*(a[1]+2*b[1]+2*c[1]+d[1]))]}
@@ -585,7 +589,7 @@ def('populacoes','predador',{t:'Predador e presa',s:'simulador de duas populaç�
  opts:()=>[{id:'lv',t:'Predadores e presas'},{id:'sem',t:'Sem predadores'},{id:'lim',t:'Alimento limitado'}],
  ctl:{l:'Predadores no início',min:5,max:60,step:5,v:20,f:v=>v+' indiv.'},
  init(S){S.o=S.o||'lv';S.k=null},
- cap:S=>({lv:'As presas aumentam; com mais alimento, os predadores aumentam; as presas caem; os predadores caem em seguida. O pico dos predadores vem sempre <b>depois</b> do pico das presas.',sem:'Sem predadores, as presas crescem até o limite do ambiente. Na natureza, o excesso pode esgotar o alimento e derrubar a população depois.',lim:'Quando o alimento das presas também é limitado, as oscilações diminuem e as duas populações se aproximam de um equilíbrio.'})[S.o],
+ cap:S=>({lv:'As presas aumentam; com mais alimento, os predadores aumentam; as presas caem; os predadores caem em seguida. O pico dos predadores vem sempre <b>depois</b> do pico das presas.',sem:'Sem predadores, as presas crescem em curva S até a capacidade de suporte (K) do ambiente. Na natureza, o excesso pode esgotar o alimento e derrubar a população depois.',lim:'Quando o alimento das presas também é limitado, as oscilações diminuem e as duas populações se aproximam de um equilíbrio.'})[S.o],
  draw(t,S){const k=S.o+S.v;if(S.k!==k){S.k=k;S.N=60;S.P=S.o==='sem'?0:S.v;S.h=[[S.N,S.P]];S.ac=0;S.tl=t}
   const K=S.o==='lv'?0:150;let adv=cl(t-S.tl,0,.5)*2.6;S.tl=t;S.ac+=adv;while(adv>0){const h=Math.min(.02,adv);const r=lvPasso(S.N,S.P,K,h);S.N=r[0];S.P=r[1];adv-=h}
   while(S.ac>=.1){S.ac-=.1;S.h.push([S.N,S.P]);if(S.h.length>420)S.h.shift()}
@@ -630,9 +634,9 @@ function cenaSuc(prim){const N=prim?['Rocha nua','Líquens','Musgos e solo','Gra
 def('sucessao','primaria',Object.assign(cenaSuc(true),{t:'Sucessão primária',s:'a vida ocupa um lugar sem solo',c:C.oliva,onde:'Rocha nua',
  cap:S=>['<b>Rocha nua:</b> uma área onde nunca houve vida, como lava resfriada, dunas ou rocha exposta.','<b>Espécies pioneiras:</b> os líquens se fixam na rocha, aguentam sol e seca, e seus ácidos começam a desfazê-la.','<b>Formação do solo:</b> restos de líquens e musgos se misturam aos grãos de rocha. Surge uma camada fina de solo, que guarda água.','<b>Gramíneas:</b> com solo, germinam capins e ervas. Chegam insetos e outros pequenos animais.','<b>Arbustos:</b> o solo fica mais fundo e sombreado. Cada comunidade muda o ambiente e abre caminho para a seguinte.','<b>Clímax:</b> a floresta madura é estável. Tem a maior biomassa e muitas espécies, e a matéria que produz é quase toda gasta na respiração.'][S.v],
  d:`<p><b>Sucessão ecológica</b> é a troca gradual das comunidades de um lugar ao longo do tempo, até formar uma comunidade estável, o <b>clímax</b>. Na <b>sucessão primária</b>, tudo começa num ambiente sem solo e sem vida: rocha nua, lava resfriada, dunas.</p><p>As primeiras a chegar são as <b>espécies pioneiras</b>, como líquens e musgos, que toleram condições extremas e iniciam a formação do solo. Cada comunidade (estágio seral) modifica o ambiente e facilita a entrada da seguinte. Ao longo da sucessão aumentam a <b>biomassa</b>, o <b>número de espécies</b> e a complexidade das teias alimentares.</p>`,
- kv:[['Ponto de partida','ambiente sem solo'],['Pioneiras','líquens e musgos'],['Aumentam','biomassa, diversidade, teias mais complexas'],['No clímax','produção ≈ respiração']],
+ kv:[['Ponto de partida','ambiente sem solo'],['Pioneiras','líquens e musgos'],['Aumentam','biomassa, diversidade (em geral), teias mais complexas'],['No clímax','produção ≈ respiração']],
  enem:'A pergunta mais comum é sobre o que muda durante a sucessão. No começo, a comunidade produz mais do que gasta (<b>fotossíntese maior que respiração</b>), por isso a biomassa cresce. No clímax, produção e respiração se igualam e a biomassa para de crescer. Também se cobra o papel dos líquens como pioneiros.',
- links:[['Sucessão secundária','#sucessao/secundaria'],['Fotossíntese × respiração (módulo 8)',BIO+'#relacao']]}));
+ links:[['Sucessão secundária','#sucessao/secundaria'],['Fotossíntese e respiração (Bioenergética)',BIO+'#relacao']]}));
 def('sucessao','secundaria',Object.assign(cenaSuc(false),{t:'Sucessão secundária',s:'a floresta volta depois do desmatamento',c:C.oliva,onde:'Mata Atlântica',
  cap:S=>['<b>Área desmatada:</b> um pasto abandonado ou uma área queimada. A vegetação se foi, mas o solo e o banco de sementes ficaram.','<b>Capins e ervas:</b> plantas de crescimento rápido e que gostam de sol cobrem o solo em poucos meses.','<b>Arbustos:</b> em poucos anos surgem arbustos e as primeiras árvores pioneiras, como a embaúba.','<b>Capoeira:</b> árvores jovens fecham o dossel. A sombra favorece mudas de espécies de crescimento lento.','<b>Floresta secundária:</b> em algumas décadas a floresta se recompõe, mas pode levar séculos para recuperar toda a diversidade original.'][S.v],
  d:`<p>A <b>sucessão secundária</b> acontece num lugar que já teve uma comunidade e a perdeu por queimada, desmatamento, enchente ou abandono de uma lavoura. Como o <b>solo</b> já existe e guarda sementes, raízes e microrganismos, ela é <b>muito mais rápida</b> que a primária.</p><p>A sequência típica numa área de floresta é: capins e ervas, arbustos, árvores pioneiras de crescimento rápido (a <b>capoeira</b>) e, por fim, a floresta secundária. A recuperação depende de haver fragmentos de mata por perto, que forneçam sementes e animais dispersores.</p>`,
@@ -641,12 +645,12 @@ def('sucessao','secundaria',Object.assign(cenaSuc(false),{t:'Sucessão secundár
  links:[['Sucessão primária','#sucessao/primaria'],['Ciclo do carbono','#ciclos/carbono'],['Biomas brasileiros','#biomas/mapa']]}));
 
 // ================= 8. BIOMAS =================
-const BIO_T={amazonia:{cl:'equatorial, quente e úmido o ano todo',cap:'<b>Amazônia:</b> a maior floresta tropical do mundo. O solo é pobre: a floresta vive da reciclagem rápida da matéria orgânica. Ameaças: desmatamento, queimadas e garimpo.'},
- cerrado:{cl:'tropical, com seca no inverno',cap:'<b>Cerrado:</b> a savana brasileira, "berço das águas". Árvores de tronco torto, casca grossa e raízes profundas, adaptadas ao fogo e ao solo ácido. Ameaça: avanço da agropecuária.'},
+const BIO_T={amazonia:{cl:'equatorial, quente e úmido o ano todo',cap:'<b>Amazônia:</b> a maior floresta tropical do mundo. O solo é pobre: a floresta vive da reciclagem rápida da matéria orgânica. Só entre agosto de 2024 e julho de 2025, foram derrubados cerca de 6 mil km² de floresta (PRODES/INPE, 2025). Ameaças: desmatamento para pasto, queimadas e garimpo ilegal, que contamina rios com mercúrio.'},
+ cerrado:{cl:'tropical, com seca no inverno',cap:'<b>Cerrado:</b> a savana brasileira, "berço das águas", onde nascem rios de oito das doze grandes bacias do país. Árvores de tronco torto, casca grossa e raízes profundas, adaptadas à seca, ao fogo e ao solo ácido. Cerca de metade da vegetação nativa já foi convertida em pasto, lavoura e cidade (MapBiomas, dados de 2024). Ameaça: avanço da soja e do gado.'},
  caatinga:{cl:'semiárido, chuvas poucas e irregulares',cap:'<b>Caatinga:</b> o único bioma exclusivamente brasileiro. Plantas com espinhos, caules que guardam água e folhas que caem na seca. Ameaça: desertificação.'},
- mata:{cl:'tropical úmido, junto à costa',cap:'<b>Mata Atlântica:</b> floresta úmida com enorme biodiversidade e muitas espécies endêmicas. É o bioma mais devastado: resta pouco mais de um décimo da área original.'},
- pantanal:{cl:'tropical, com cheias e secas',cap:'<b>Pantanal:</b> a maior planície alagável do mundo. O pulso anual de cheias e secas renova os nutrientes e sustenta uma fauna abundante. Ameaças: queimadas e assoreamento.'},
- pampa:{cl:'subtropical, com as quatro estações',cap:'<b>Pampa:</b> os campos do Rio Grande do Sul, dominados por gramíneas. Ameaças: monoculturas, pastoreio excessivo e arenização.'}};
+ mata:{cl:'tropical úmido, junto à costa',cap:'<b>Mata Atlântica:</b> floresta úmida com enorme biodiversidade e muitas espécies endêmicas. É o bioma mais devastado: restam cerca de 24% da cobertura original, e só cerca de 12% são florestas maduras e bem conservadas (SOS Mata Atlântica e INPE, Atlas 2024-2025). Nela vivem cerca de 70% dos brasileiros.'},
+ pantanal:{cl:'tropical, com cheias e secas',cap:'<b>Pantanal:</b> uma das maiores planícies alagáveis do planeta. O pulso anual de cheias e secas renova os nutrientes e sustenta uma fauna abundante. Ameaças: queimadas, como as de 2020 e 2024, e assoreamento dos rios.'},
+ pampa:{cl:'subtropical, com as quatro estações',cap:'<b>Pampa:</b> os campos do sul do Rio Grande do Sul, que continuam no Uruguai e na Argentina, dominados por gramíneas. Ameaças: monoculturas de soja e eucalipto, pastoreio excessivo e arenização.'}};
 function vinheta(id,x,y,w,t){const s=Math.min(w*.2,56);X.save();X.beginPath();X.rect(x-w/2,y-s*2.6,w,s*3.2);X.clip();
  if(id==='amazonia'){solo(y);[-.42,-.25,-.08,.1,.28,.44].forEach((k,i)=>arvore(x+k*w,y,s*(1.9+(i%2)*.4),i%2?C.prod:tom(C.prod,-.15)));agua(x-w/2,y+s*.2,x+w/2,t,.3)}
  else if(id==='cerrado'){solo(y,C.c1,.12);arvoreTorta(x-w*.28,y,s*1.5);arvoreTorta(x+w*.25,y,s*1.2);[-.45,-.1,.05,.42].forEach(k=>capim(x+k*w,y,s*.5,C.oliva,t))}
@@ -662,12 +666,12 @@ def('biomas','mapa',{t:'Os seis biomas do Brasil',s:'toque no mapa para escolher
  draw(t,S){const g=this.geo(),b=BIOMAS.find(b=>b.id===S.o);mapaBR(g.cx,g.cy,g.sz,S.o,true);
   if(M){tx(b.t,16,vy(.7),{a:'left',f:FH,s:16,w:600,c:'#fff'});tx(b.a+' do Brasil',W-16,vy(.7),{a:'right',f:FD,s:12,c:b.c});tx(BIO_T[b.id].cl,16,vy(.7)+20,{a:'left',s:12,c:C.dim});vinheta(b.id,g.px,g.py,g.pw,t)}
   else{tx(b.t,g.px-g.pw/2,vy(.1),{a:'left',f:FH,s:24,w:600,c:'#fff'});tx(b.a+' do território',g.px-g.pw/2,vy(.1)+32,{a:'left',f:FD,s:14,c:b.c});tx('Clima: '+BIO_T[b.id].cl,g.px-g.pw/2,vy(.1)+58,{a:'left',s:14,c:C.dim});vinheta(b.id,g.px,g.py,g.pw,t)}}
- ,d:`<p><b>Bioma</b> é um grande conjunto de ecossistemas com clima, relevo e vegetação parecidos. O IBGE reconhece <b>seis biomas</b> continentais no Brasil. O que define cada um é, principalmente, a combinação de <b>chuva e temperatura</b>, que seleciona as plantas com as adaptações certas.</p>
+ ,d:`<p><b>Bioma</b> é um grande conjunto de ecossistemas com clima, relevo e vegetação parecidos. O IBGE reconhece <b>seis biomas</b> continentais no Brasil (mapa de 2019; as áreas da tabela são desse mapa). O que define cada um é, principalmente, a combinação de <b>chuva e temperatura</b>, que seleciona as plantas com as adaptações certas.</p>
  <table><tr><th>Bioma</th><th>Área</th><th>Vegetação e adaptações</th></tr><tr><td>Amazônia</td><td class="q">49,5%</td><td>floresta densa e alta; folhas largas; solo pobre</td></tr><tr><td>Cerrado</td><td class="q">23,3%</td><td>savana; troncos tortos, casca grossa, raízes profundas</td></tr><tr><td>Mata Atlântica</td><td class="q">13,0%</td><td>floresta úmida com muitas epífitas; inclui a mata de araucárias</td></tr><tr><td>Caatinga</td><td class="q">10,1%</td><td>plantas xerófitas: espinhos, caules suculentos, folhas que caem</td></tr><tr><td>Pampa</td><td class="q">2,3%</td><td>campos de gramíneas</td></tr><tr><td>Pantanal</td><td class="q">1,8%</td><td>campos alagáveis, com espécies do Cerrado e da Amazônia</td></tr></table>
- <p>Na costa há ainda os <b>manguezais</b>, de solo lodoso e salgado, onde as árvores têm raízes respiratórias. Eles funcionam como berçário de peixes e crustáceos.</p>`,
+ <p>Na costa há ainda os <b>ecossistemas costeiros</b>, como manguezais, restingas e recifes de coral, que não são biomas continentais. Veja o tópico seguinte.</p>`,
  kv:[['Maior bioma','Amazônia'],['Mais devastado','Mata Atlântica'],['Só existe no Brasil','Caatinga'],['Hotspots de biodiversidade','Cerrado e Mata Atlântica']],
  enem:'A prova descreve <b>adaptações</b> e pede o bioma: raízes profundas e casca grossa (Cerrado, seca e fogo); espinhos e caule suculento (Caatinga, falta de água); raízes respiratórias (manguezal). Também cobra impactos: desmatamento na Amazônia, soja e gado no Cerrado, desertificação na Caatinga, arenização no Pampa.',
- links:[['Do organismo à biosfera','#niveis/escada'],['Sucessão secundária','#sucessao/secundaria'],['Ciclo da água','#ciclos/agua']]});
+ links:[['Do organismo à biosfera','#niveis/escada'],['Sucessão secundária','#sucessao/secundaria'],['Ciclo da água','#ciclos/agua'],['Ecossistemas costeiros','#biomas/costeiros']]});
 
 // ================= 9. IMPACTOS AMBIENTAIS =================
 def('impactos','estufa',{t:'Efeito estufa e aquecimento global',s:'mais CO₂, mais calor retido',c:C.calor,onde:'Atmosfera',
@@ -684,10 +688,10 @@ def('impactos','estufa',{t:'Efeito estufa e aquecimento global',s:'mais CO₂, m
   lab('luz do Sol',W*.2,vy(.2),C.sol);lab('calor (infravermelho)',W*.62,vy(.62),C.calor);
   const d=3*Math.log2(S.v/280),tx0=W-(M?22:40),ty0=vy(.56),th=AH()*.3;rr(tx0-5,ty0,10,th,5,'rgba(19,26,43,.9)',C.gelo,1.5);const hh=th*cl(.25+d/4,0,1);rr(tx0-3,ty0+th-hh,6,hh,3,C.calor);circ(tx0,ty0+th+4,9,C.calor,C.gelo,1.5);
   tx((d>0?'+':'')+dec(d,1)+' °C',tx0+10,ty0-14,{a:'right',f:FD,s:M?13:15,bg:true,c:C.calor})}
- ,d:`<p>O <b>efeito estufa</b> é natural e necessário. A luz do Sol aquece a superfície, que devolve a energia como <b>calor (infravermelho)</b>. Gases como CO₂, metano (CH₄), óxido nitroso (N₂O) e vapor de água absorvem parte desse calor e o mandam de volta. Sem isso, a temperatura média da Terra seria de cerca de −18 °C.</p><p>O problema é a <b>intensificação</b> do efeito. Desde a Revolução Industrial, a queima de combustíveis fósseis, o desmatamento e a pecuária elevaram o CO₂ de 280 para mais de 420 ppm, e o planeta já aqueceu mais de 1 °C. As consequências incluem derretimento de geleiras, elevação do nível do mar, eventos climáticos extremos e acidificação dos oceanos. O valor do simulador é uma estimativa simplificada, para o equilíbrio a longo prazo.</p>`,
- kv:[['Efeito estufa natural','mantém a Terra em cerca de 15 °C'],['Principais gases','CO₂, CH₄, N₂O, vapor de água'],['Fontes humanas','combustíveis fósseis, desmatamento, pecuária'],['Aquecimento observado','mais de 1 °C desde 1850-1900']],
- enem:'Duas pegadinhas clássicas. Primeira: o efeito estufa <b>não é ruim em si</b>; o problema é sua intensificação. Segunda: ele <b>não tem relação direta com o buraco na camada de ozônio</b>. A prova também liga o tema ao ciclo do carbono, a fontes de energia e a acordos como o Protocolo de Kyoto e o Acordo de Paris.',
- links:[['Ciclo do carbono','#ciclos/carbono'],['Camada de ozônio','#impactos/ozonio'],['Fotossíntese (módulo 8)',BIO+'#foto']]});
+ ,d:`<p>O <b>efeito estufa</b> é natural e necessário. A luz do Sol aquece a superfície, que devolve a energia como <b>calor (infravermelho)</b>. Gases como CO₂, metano (CH₄), óxido nitroso (N₂O) e vapor de água absorvem parte desse calor e o mandam de volta. Sem isso, a temperatura média da Terra seria de cerca de −18 °C.</p><p>O problema é a <b>intensificação</b> do efeito. Desde a Revolução Industrial, a queima de combustíveis fósseis, o desmatamento e a pecuária elevaram o CO₂ de cerca de 280 para cerca de 427 ppm (média de 2025 em Mauna Loa, NOAA). O ano de 2024 foi o mais quente já medido, cerca de 1,5 °C acima do período 1850-1900, e 2025 ficou cerca de 1,4 °C acima (OMM, 2026). As consequências incluem derretimento de geleiras, elevação do nível do mar, eventos climáticos extremos e acidificação dos oceanos. O valor do simulador é uma estimativa simplificada, para o equilíbrio a longo prazo.</p>`,
+ kv:[['Efeito estufa natural','mantém a Terra em cerca de 15 °C'],['Principais gases','CO₂, CH₄, N₂O, vapor de água'],['Fontes humanas','combustíveis fósseis, desmatamento, pecuária'],['Aquecimento observado','cerca de 1,4 °C em 2025, acima de 1850-1900 (OMM)']],
+ enem:'Duas pegadinhas clássicas. Primeira: o efeito estufa <b>não é ruim em si</b>; o problema é sua intensificação. Segunda: ele <b>não tem relação direta com o buraco na camada de ozônio</b>. A prova também liga o tema ao ciclo do carbono, a fontes de energia e a acordos como o Protocolo de Kyoto, o Acordo de Paris (limitar o aquecimento a bem menos de 2 °C, de preferência 1,5 °C) e as conferências do clima, como a COP30, realizada em Belém em 2025.',
+ links:[['Ciclo do carbono','#ciclos/carbono'],['Camada de ozônio','#impactos/ozonio'],['Fotossíntese (Bioenergética)',BIO+'#foto']]});
 
 def('impactos','eutrofizacao',{t:'Eutrofização',s:'excesso de nutrientes na água',c:C.prod,onde:'Lago ou represa',
  ctl:{l:'Etapa',min:0,max:4,step:1,v:0,auto:4.5,f:v=>['Nutrientes','Algas','Sombra','Decomposição','Sem oxigênio'][v]},init(S){S.e=0},
@@ -706,11 +710,11 @@ def('impactos','eutrofizacao',{t:'Eutrofização',s:'excesso de nutrientes na á
  ,d:`<p><b>Eutrofização</b> é o enriquecimento da água em nutrientes, principalmente <b>nitrogênio e fósforo</b>. Ela pode ocorrer naturalmente, mas é acelerada pelo esgoto doméstico sem tratamento e pelos fertilizantes levados pela chuva.</p><p>A sequência é sempre a mesma: nutrientes em excesso, <b>proliferação de algas</b>, bloqueio da luz, morte de algas e plantas, multiplicação de <b>bactérias decompositoras aeróbias</b>, <b>queda do oxigênio dissolvido</b> e morte de peixes. O indicador usado para medir o problema é a <b>DBO</b> (demanda bioquímica de oxigênio): quanto mais matéria orgânica na água, maior a DBO.</p>`,
  kv:[['Causa','excesso de nitratos e fosfatos'],['Quem consome o O₂','bactérias decompositoras aeróbias'],['DBO alta','muita matéria orgânica, água poluída'],['Solução','tratar o esgoto, proteger a mata ciliar']],
  enem:'A pegadinha número um: os peixes <b>não</b> morrem intoxicados pelas algas nem "porque as algas consomem o oxigênio". Eles morrem porque as <b>bactérias decompositoras</b> gastam o oxigênio ao decompor a matéria morta. A prova costuma pedir a ordem correta dos eventos.',
- links:[['Ciclo do nitrogênio','#ciclos/nitrogenio'],['Respiração celular (módulo 8)',BIO+'#resp'],['Fermentação (módulo 8)',BIO+'#ferm']]});
+ links:[['Ciclo do nitrogênio','#ciclos/nitrogenio'],['Respiração celular (Bioenergética)',BIO+'#resp'],['Fermentação (Bioenergética)',BIO+'#ferm']]});
 
 const MAG=[['Água',.000003,'0,000003',null,C.agua],['Zooplâncton',.04,'0,04',null,C.c1],['Peixes pequenos',.5,'0,5','peixe',C.c2],['Peixes grandes',2,'2','tubarao',C.c3],['Aves que comem peixes',25,'25','garca',C.rosa]];
 def('impactos','magnificacao',{t:'Magnificação trófica',s:'o veneno se concentra no topo da cadeia',c:C.c3,onde:'DDT, em partes por milhão',pv:9,
- cap:()=>'O DDT não é eliminado: fica guardado na gordura. Cada animal come muitos organismos do nível de baixo e acumula o veneno de todos eles. No topo, a concentração é <b>milhões de vezes</b> maior que na água.',
+ cap:()=>'O DDT quase não é eliminado: fica guardado na gordura. Cada animal come muitos organismos do nível de baixo e acumula o veneno de todos eles. No topo, a concentração é <b>milhões de vezes</b> maior que na água.',
  draw(t,S){const n=MAG.length,rh=AH()*.86/n,x0=M?16:W*.14,xb=M?W*.36:W*.4,xw=W-xb-(M?64:W*.2),pr=(t%12)/4;
   tit('Concentração de DDT em cada nível',W/2,vy(.03));
   MAG.forEach((q,i)=>{const y=vy(.98)-(i+.5)*rh,a=ss(seg(pr,i/n,(i+1)/n)),w=xw*(Math.log10(q[1])+6)/7.6*a;
@@ -719,7 +723,7 @@ def('impactos','magnificacao',{t:'Magnificação trófica',s:'o veneno se concen
    rr(xb,y+(M?2:-9),Math.max(3,w),M?14:18,4,rgba(C.calor,.35),C.calor,1.5);const nd=Math.round(a*(i+1)*(i+1)*1.4),r=rng(i+3);for(let k=0;k<nd;k++){circ(xb+4+r()*Math.max(1,w-8),y+(M?9:0)+(r()-.5)*(M?8:11),1.8,C.calor)}
    if(a>.9)tx(q[2]+' ppm',xb+w+8,y+(M?9:0),{a:'left',f:FD,s:12,c:C.txt});
    if(i<n-1&&a>.5)ponta(x0+(M?20:34),y-rh*.42,-PI/2,C.dim,7)})}
- ,d:`<p>Algumas substâncias não são degradadas nem eliminadas pelos seres vivos: o inseticida <b>DDT</b>, metais pesados como o <b>mercúrio</b> e o chumbo, e certos poluentes orgânicos. Elas se dissolvem na gordura e se acumulam no corpo ao longo da vida: é a <b>bioacumulação</b>.</p><p>Como cada consumidor come muitos organismos do nível anterior, a concentração aumenta de um nível trófico para o seguinte: é a <b>magnificação trófica</b>. Por isso os mais afetados são os <b>predadores de topo</b>, incluindo o ser humano. No Brasil, o caso mais conhecido é o do mercúrio dos garimpos na Amazônia, que se acumula em peixes carnívoros e chega às populações ribeirinhas.</p>`,
+ ,d:`<p>Algumas substâncias não são degradadas nem eliminadas pelos seres vivos: o inseticida <b>DDT</b>, metais pesados como o <b>mercúrio</b> e o chumbo, e certos poluentes orgânicos. Elas ficam presas no corpo: o DDT se dissolve na gordura; o mercúrio, na forma de metilmercúrio, se liga às proteínas dos músculos. Assim se acumulam ao longo da vida: é a <b>bioacumulação</b>.</p><p>Como cada consumidor come muitos organismos do nível anterior, a concentração aumenta de um nível trófico para o seguinte: é a <b>magnificação trófica</b>. Por isso os mais afetados são os <b>predadores de topo</b>, incluindo o ser humano. No Brasil, o caso mais conhecido é o do mercúrio dos garimpos na Amazônia, que se acumula em peixes carnívoros e chega às populações ribeirinhas.</p>`,
  kv:[['Bioacumulação','acúmulo no corpo de um indivíduo'],['Magnificação','aumento a cada nível trófico'],['Mais contaminados','consumidores de topo'],['Exemplos','DDT, mercúrio, chumbo']],
  enem:'Repare que o veneno faz o caminho <b>contrário ao da energia</b>: a energia diminui a cada nível, a concentração do poluente aumenta. A pergunta típica dá uma cadeia e pede o organismo com maior concentração: é sempre o do <b>último nível trófico</b>. Também se cobra por que o DDT se acumula: ele é lipossolúvel e pouco biodegradável.',
  links:[['Fluxo de energia','#energia/fluxo'],['Teia alimentar','#teias/teia'],['Pirâmides ecológicas','#energia/piramides']]});
@@ -737,14 +741,14 @@ def('impactos','ozonio',{t:'Camada de ozônio',s:'o filtro de ultravioleta e os 
   lab('raios ultravioleta',W*.78,vy(.1),C.c3);
   if(v>0){const m=Math.round(v*6);for(let i=0;i<m;i++){const p=(t*.06+i/m)%1,x=W*.8+Math.sin(i*2.4)*W*.04-p*W*.3,y=lerp(gy-s,ly+lh*.5,p);circ(x,y,3.5,C.prod);circ(x+4,y-3,2.2,C.creme);circ(x-4,y-3,2.2,C.creme)}
    lab('CFC',W*.8,gy-s*1.15,C.prod);tx('Cl + O₃ → ClO + O₂',W/2,ly+lh+16,{f:FD,s:12,bg:true,c:C.prod});lab('mais UV na superfície',W*.5,gy+18,C.c3)}}
- ,d:`<p>Na estratosfera, entre 20 e 30 km de altitude, o gás <b>ozônio (O₃)</b> forma uma camada que absorve a maior parte da radiação <b>ultravioleta</b> do Sol. Essa radiação danifica o DNA: causa câncer de pele e catarata, e prejudica o fitoplâncton e as plantas.</p><p>Os <b>CFCs</b> (clorofluorcarbonos), usados em aerossóis, geladeiras e aparelhos de ar-condicionado, sobem intactos até a estratosfera. Lá, o ultravioleta libera átomos de <b>cloro</b>, que quebram o ozônio e saem inteiros da reação, prontos para destruir outra molécula. O <b>Protocolo de Montreal</b> (1987) baniu os CFCs, e a camada está se recuperando lentamente.</p>
+ ,d:`<p>Na estratosfera, principalmente entre 20 e 30 km de altitude, o gás <b>ozônio (O₃)</b> forma uma camada que absorve a maior parte da radiação <b>ultravioleta</b> do Sol. Essa radiação danifica o DNA: causa câncer de pele e catarata, e prejudica o fitoplâncton e as plantas.</p><p>Os <b>CFCs</b> (clorofluorcarbonos), usados em aerossóis, geladeiras e aparelhos de ar-condicionado, sobem intactos até a estratosfera. Lá, o ultravioleta libera átomos de <b>cloro</b>, que quebram o ozônio e saem inteiros da reação, prontos para destruir outra molécula. O <b>Protocolo de Montreal</b> (1987) eliminou os CFCs aos poucos, até a proibição total em 2010. A camada está se recuperando devagar: sobre a Antártida, deve voltar ao nível de 1980 por volta de 2066 (ONU, 2023).</p>
  <span class="eq">Cl + O₃ → ClO + O₂<br>ClO + O → Cl + O₂</span>`,
  kv:[['Função do ozônio','filtrar a radiação ultravioleta'],['Vilão','cloro liberado pelos CFCs'],['Efeitos do UV','câncer de pele, catarata, danos ao fitoplâncton'],['Acordo','Protocolo de Montreal, 1987']],
  enem:'Não confunda com o efeito estufa: o buraco na camada de ozônio aumenta a entrada de <b>ultravioleta</b>, não é a causa do aquecimento global. Outra distinção cobrada: o ozônio da estratosfera protege; o ozônio perto do solo, formado pela poluição dos carros, é um <b>poluente</b> que irrita as vias respiratórias.',
  links:[['Efeito estufa','#impactos/estufa'],['Chuva ácida','#impactos/chuva']]});
 
 def('impactos','chuva',{t:'Chuva ácida',s:'gases da queima viram ácidos nas nuvens',c:C.sol,onde:'Regiões industriais',
- ctl:{l:'Emissão de SO₂ e NOₓ',min:0,max:10,step:1,v:6,f:v=>'pH '+dec(5.6-v*.16,1)},
+ ctl:{l:'Emissão de SO₂ e NOₓ',min:0,max:10,step:1,v:6,f:v=>v===0?'só a natural':v<4?'baixa':v<8?'média':'alta'},
  cap:S=>S.v===0?'A chuva normal já é levemente ácida (pH perto de <span class="q">5,6</span>), porque o CO₂ do ar forma ácido carbônico.':'SO₂ e NOₓ da queima de combustíveis reagem com a água das nuvens e formam <b>ácido sulfúrico</b> e <b>ácido nítrico</b>. pH desta chuva: <b>'+dec(5.6-S.v*.16,1)+'</b>.',
  draw(t,S){const gy=vy(.84),v=S.v/10,s=Math.min(W*.11,96),cor=v>.05?tom(C.sol,-.1*v):C.agua;
   solo(gy);fabrica(W*.14,gy,s*1.1,t);carro(W*.32,gy,s*.8);X.fillStyle='#0E1424';X.fillRect(W*.7,gy-1,W*.3,H);agua(W*.7,gy+6,W,t,.3);
@@ -756,10 +760,404 @@ def('impactos','chuva',{t:'Chuva ácida',s:'gases da queima viram ácidos nas nu
   const bx=M?16:W*.06,bw=M?W*.4:W*.24,byy=vy(.1);rr(bx,byy,bw,10,5,null,C.gelo,1.5);for(let i=0;i<20;i++){X.fillStyle=i<10?rgba(C.calor,.2+.06*(10-i)):rgba(C.agua,.3);X.fillRect(bx+2+i/20*(bw-4),byy+2,(bw-4)/20+.5,6)}
   const ph=5.6-S.v*.16,px=bx+(ph-3)/4*bw;ponta(px,byy-2,PI/2,C.txt,9);tx('pH '+dec(ph,1),px,byy-18,{f:FD,s:13,bg:true});tx('3',bx,byy+22,{f:FD,s:12,c:C.dim,fx:false});tx('7',bx+bw,byy+22,{f:FD,s:12,c:C.dim,fx:false})}
  ,d:`<p>A água da chuva é naturalmente um pouco ácida, com pH perto de 5,6, por causa do CO₂ dissolvido. Fala-se em <b>chuva ácida</b> quando o pH fica abaixo disso. A causa são dois tipos de gás liberados na queima de carvão e de derivados de petróleo: o <b>dióxido de enxofre (SO₂)</b> e os <b>óxidos de nitrogênio (NOₓ)</b>.</p><p>Na atmosfera, esses gases reagem com a água e formam <b>ácido sulfúrico</b> e <b>ácido nítrico</b>. A chuva ácida empobrece o solo, danifica folhas, acidifica lagos e mata peixes, corrói metais e desgasta monumentos de mármore e calcário. Como o vento leva os gases, ela pode cair longe de onde a poluição foi produzida.</p>
- <span class="eq">SO₃ + H₂O → H₂SO₄<br>CaCO₃ + H₂SO₄ → CaSO₄ + H₂O + CO₂</span>`,
+ <span class="eq">2 SO₂ + O₂ → 2 SO₃<br>SO₃ + H₂O → H₂SO₄<br>CaCO₃ + H₂SO₄ → CaSO₄ + H₂O + CO₂</span>`,
  kv:[['Chuva normal','pH perto de 5,6'],['Gases responsáveis','SO₂ e NOₓ'],['Ácidos formados','sulfúrico e nítrico'],['Como reduzir','filtros, catalisadores, combustíveis com menos enxofre']],
  enem:'Questão interdisciplinar com Química: óxidos ácidos, escala de pH e reação do ácido com o carbonato de cálcio do mármore. Pegadinha: atribuir a chuva ácida ao CO₂ (ele explica só a acidez natural) ou aos CFCs. Lembre também que o problema <b>atravessa fronteiras</b> com o vento.',
  links:[['Ciclo da água','#ciclos/agua'],['Camada de ozônio','#impactos/ozonio'],['Efeito estufa','#impactos/estufa']]});
+
+// ================= Tópicos novos: partes A e B =================
+// Caixas de desenho: lado a lado no computador, empilhadas no celular
+const caixas=()=>{const y=AY()+8,h=AH()-8;return M?[{x:12,y:y,w:W-24,h:h*.54},{x:12,y:y+h*.57,w:W-24,h:h*.43}]:[{x:20,y:y,w:W*.52-28,h:h},{x:W*.52+8,y:y,w:W*.48-28,h:h}]};
+const pan=(b,c)=>rr(b.x,b.y,b.w,b.h,10,c||'rgba(19,26,43,.55)','rgba(255,255,255,.07)',1);
+const cab=(s,b,c)=>tx(s,b.x+12,b.y+15,{a:'left',f:FH,s:M?13:14,w:600,c:c||C.txt,fx:false});
+const pong=(x,L)=>{const m=((x%(2*L))+2*L)%(2*L);return m<L?m:2*L-m};
+const hitR=(x,y,S)=>{const h=(S.hr||[]).find(r=>x>=r.x0&&x<=r.x1&&y>=r.y0&&y<=r.y1);return h?h.id:null};
+
+// ---------- E3. Produtividade primária ----------
+const PPLX=[{id:'mangue',t:'Manguezal ou estuário',s:'Manguezal',v:2000,lim:null},{id:'floresta',t:'Floresta tropical',s:'Floresta tropical',v:2200,lim:null},{id:'lavoura',t:'Lavoura',s:'Lavoura',v:650,lim:'nutrientes'},{id:'cerrado',t:'Cerrado',s:'Cerrado',v:900,lim:'água'},{id:'oceano',t:'Oceano aberto',s:'Oceano aberto',v:125,lim:'nutrientes'},{id:'deserto',t:'Deserto',s:'Deserto',v:90,lim:'água'}];
+const pplE=(e,s)=>Math.round(e.v*(e.lim==='água'?[.45,1,1]:e.lim==='nutrientes'?[.4,1,1.6]:[.55,1,1.1])[s]);
+def('energia','produtividade',{t:'Produtividade primária',s:'quanto alimento cada ecossistema fabrica',c:C.sol,onde:'Valores ilustrativos, por m² por ano',pv:6,
+ optL:'Ambiente',opts:()=>PPLX.map(e=>({id:e.id,t:e.s})),init(S){S.o='mangue'},
+ ctl:{l:'Nutrientes',min:0,max:2,step:1,v:1,f:v=>['poucos','médios','muitos'][v]},
+ hit:hitR,
+ cap:S=>{const e=PPLX.find(q=>q.id===S.o),p=pplE(e,S.v),lim=S.v===0&&e.lim!=='água'?'nutrientes':e.lim;
+  return'<b>'+e.t+':</b> PPL de cerca de <span class="q">'+nb(p)+' g por m² por ano</span>, valor ilustrativo. '+(lim?'Aqui, o fator que mais limita é '+(lim==='água'?'a falta de <b>água</b>':'a falta de <b>nutrientes</b>')+'.':'Aqui, luz, calor, água e nutrientes são suficientes.')},
+ draw(t,S){const e=PPLX.find(q=>q.id===S.o),p=pplE(e,S.v),[A,B]=caixas(),ta=t-S.a0,k=ss(seg(ta,0,1.4));
+  pan(A);pan(B);cab('Do Sol ao herbívoro',A);cab(M?'PPL por área, valores ilustrativos':'PPL por área',B);
+  const bx=A.x,by=A.y,bw=A.w,bh=A.h,gy=by+bh*.9,L=cl(p/4100,.01,1),Lb=cl(p/.6/4100,.02,1);
+  line(bx+8,gy,bx+bw-8,gy,rgba(C.solo,.7),2);
+  const sr=Math.min(bw,bh)*.045;sol(bx+bw*.1,by+bh*.22,sr,0);
+  const cx=bx+bw*.24,cy=gy-bh*.42;arvore(cx,gy,bh*.5,C.prod);
+  const n1=M?4:6;for(let i=0;i<n1;i++){const u=(ta*.5+i/n1)%1;circ(lerp(bx+bw*.14,cx-bw*.03,u),lerp(by+bh*.25,cy,u),3,C.sol)}
+  const x0=bx+bw*.42,tw=bw*.15,ty=by+bh*.3,th=bh*.5;
+  rr(x0,ty,tw,th,6,'rgba(11,15,28,.7)',C.gelo,1.5);
+  const fh=th*Lb*k;X.save();X.beginPath();X.rect(x0+1,ty+th-fh,tw-2,fh);X.clip();rr(x0+1,ty+1,tw-2,th-2,5,rgba(C.prod,.85));X.restore();
+  const n2=2+Math.round(Lb*(M?3:5));for(let i=0;i<n2;i++){const u=(ta*.4+i/n2)%1;circ(lerp(cx+bw*.05,x0-3,u),lerp(cy+bh*.05,ty+th*.35,u),3,C.prod)}
+  line(x0+tw,ty+th*.15,x0+tw+bw*.05,ty+th*.15,C.calor,3);
+  const n3=1+Math.round(Lb*(M?3:4)*k);for(let i=0;i<n3;i++){const u=(ta*.35+i/n3)%1;X.globalAlpha=1-u;circ(x0+tw+bw*.05+Math.sin(i*2+u*3)*5,ty+th*.12-u*bh*.2,3,C.calor);X.globalAlpha=1}
+  const px0=bx+bw*.66,pw=bw*.07,ph=Math.max(3,th*L*k);
+  rr(px0,ty+th-ph,pw,ph,3,C.prod,C.gelo,2);
+  const sh=cl(bh*(.1+.2*Math.sqrt(p/2200)),bh*.1,Math.min(bw*.14,bh*.3)),hx=bx+bw*.9;
+  ser('veado',hx,gy,sh,C.c1,t,true);
+  seta(x0+tw+4,ty+th*.8,px0-4,ty+th*.8,C.dim,1.5,6);seta(px0+pw+4,ty+th*.8,hx-sh*.75,ty+th*.8,C.dim,1.5,6);
+  lab('luz do Sol',bx+bw*.1,by+bh*.22+sr*2.4,C.sol);lab('PPB',x0+tw/2,ty-14,C.prod);lab('R: respiração',x0+tw+bw*(M?.17:.06),ty-bh*(M?.14:.1),C.calor);lab('PPL',px0+pw/2,ty+th-ph-14,C.txt);lab('herbívoro',hx,gy+14,C.c1);
+  // gráfico de barras
+  const y0=B.y+36,rh=(B.h-(M?44:56))/6,lw=M?108:150,bx0=B.x+12+lw+6,mw=B.w-lw-12-6-62,rows=[];
+  PPLX.forEach((q,i)=>{const cy=y0+rh*(i+.5),on=q.id===S.o,v=on?p:q.v,w=Math.max(3,v/2400*mw*k+(1-k)*3),bh2=Math.min(rh*.6,24);
+   tx(q.s,B.x+12,cy,{a:'left',s:M?12:13,w:on?700:400,c:on?C.txt:C.dim,fx:false});
+   rr(bx0,cy-bh2/2,w,bh2,4,on?C.prod:rgba(C.prod,.45),on?C.ambar:null,2);
+   tx(nb(v),bx0+w+6,cy,{a:'left',f:FD,s:12,c:on?C.txt:C.dim,fx:false});
+   rows.push({id:q.id,x0:B.x,x1:B.x+B.w,y0:cy-rh/2,y1:cy+rh/2})});
+  S.hr=rows;if(!M)tx('valores ilustrativos, em g por m² por ano',B.x+B.w-12,B.y+B.h-12,{a:'right',s:12,c:C.dim,fx:false})}
+ ,d:`<p>A <b>produtividade primária bruta (PPB)</b> é toda a matéria orgânica que os produtores fabricam num período. Parte dela é gasta na respiração dos próprios produtores (R). O que sobra, a <b>produtividade primária líquida (PPL = PPB − R)</b>, é o que fica disponível para os consumidores e os decompositores.</p><p>Ecossistemas quentes, úmidos e ricos em nutrientes, como florestas tropicais, manguezais e estuários, têm PPL alta. Desertos e o oceano aberto, longe da costa, têm PPL baixa por área, porque falta água ou faltam nutrientes. O oceano aberto produz muito no total só por ser imenso.</p>`,
+ kv:[['PPB','tudo o que é fotossintetizado'],['PPL','PPB menos a respiração dos produtores'],['Maior por área','manguezais, estuários e florestas tropicais'],['Fatores limitantes','luz, água, temperatura e nutrientes (N e P)']],
+ enem:'Pergunta típica: <b>por que o manguezal é berçário de peixes?</b> Porque a PPL é alta e os nutrientes trazidos pelos rios se acumulam ali. Pegadinha: a floresta madura tem PPB alta, mas o saldo para acumular biomassa é pequeno, pois a respiração da comunidade quase iguala a produção. E produtividade não é biomassa: é velocidade de produção.',
+ links:[['Fluxo de energia','#energia/fluxo'],['Ciclo do fósforo','#ciclos/fosforo'],['Eutrofização','#impactos/eutrofizacao'],['Os seis biomas do Brasil','#biomas/mapa'],['Fotossíntese (Bioenergética)',BIO+'#foto']]});
+
+// ---------- C4. Ciclo do fósforo ----------
+const F_P=[
+ {id:'intemp',t:'Intemperismo',c:C.c2,p:[[[.14,.4],[.22,.34],[.3,.54]]],n:2,cap:'<b>Intemperismo:</b> a chuva e o vento desgastam as rochas fosfatadas e liberam fosfato no solo.'},
+ {id:'absor',t:'Absorção',c:C.c2,p:[[[.31,.68],[.3,.58],[.37,.5]]],n:2,cap:'<b>Absorção:</b> as raízes das plantas absorvem o fosfato dissolvido na água do solo.'},
+ {id:'alim',t:'Alimentação',c:C.c2,p:[[[.42,.34],[.49,.26],[.56,.36]]],n:2,cap:'<b>Alimentação:</b> o fósforo passa da planta ao herbívoro e segue pela cadeia alimentar, dentro de moléculas orgânicas.'},
+ {id:'decomp',t:'Decomposição',c:C.dec,p:[[[.56,.54],[.52,.66],[.44,.66]]],n:2,cap:'<b>Decomposição:</b> fungos e bactérias decompõem restos e excretas e devolvem o fosfato ao solo.'},
+ {id:'esco',t:'Escoamento',c:C.c2,p:[[[.6,.52],[.68,.5],[.76,.58]]],n:3,cap:'<b>Escoamento:</b> a chuva leva parte do fosfato do solo para os rios, e dos rios para o mar.'},
+ {id:'sed',t:'Sedimentação',c:C.c2,p:[[[.84,.64],[.88,.78],[.84,.9]]],n:2,cap:'<b>Sedimentação:</b> o fosfato se deposita no fundo do mar, onde fica fora do alcance dos seres vivos.'},
+ {id:'soerg',t:'Soerguimento',c:C.carb,p:[[[.76,.95],[.45,.99],[.17,.72]]],tr:[4,5],vel:.07,n:3,cap:'<b>Soerguimento:</b> depois de milhões de anos, os sedimentos viram rocha e são erguidos, formando novas rochas fosfatadas em terra.'},
+ {id:'guano',t:'Guano',c:C.c2,p:[[[.9,.36],[.8,.26],[.68,.46]]],n:2,cap:'<b>Guano:</b> aves marinhas comem peixes e devolvem um pouco de fósforo à terra nas fezes, o guano.'},
+ {id:'adubo',t:'Adubos e esgoto',c:C.c2,p:[[[.57,.3],[.63,.29],[.67,.5]]],n:4,vel:.4,cap:'<b>Adubos e esgoto:</b> o excesso de fosfato chega ao rio e ao lago, que fica verde: é a <a href="#impactos/eutrofizacao">eutrofização</a>.'}];
+function cenaFosforo(t,S){const gy=vy(.5),s=Math.min(W*.12,AH()*.3),ad=S.o==='adubo',esc=S.v===1?ss(seg(t-S.a0,0,6)):0,P=(u,v)=>[ux(u),vy(v)];
+ // céu vazio de propósito
+ X.save();X.setLineDash([5,6]);rr(W*.3,vy(.0),W*.4,vy(.16)-vy(.0),10,null,rgba(C.dim,.5),1.2);X.restore();tx('nenhuma forma gasosa importante',W*.5,vy(.08),{s:M?12:13,c:C.dim});
+ // chão, mar e fundo
+ X.fillStyle=rgba(C.solo,.2);X.fillRect(0,gy,W*.74,H-gy);line(0,gy,W*.74,gy,rgba(C.solo,.7),1.5);
+ X.fillStyle=rgba(C.agua,.2);X.fillRect(W*.74,gy+4,W*.26,H-gy-4);line(W*.74,gy+4,W,gy+4,rgba(C.agua,.6),1.5);
+ const sed=(1-esc*.7);X.fillStyle=rgba(C.solo,.55);X.fillRect(W*.74,vy(.93)-(sed-.3)*14,W*.26,H-vy(.93)+(sed-.3)*14);
+ // montanha de rocha fosfatada
+ const mt=[[0,gy],[0,vy(.3)],[W*.08,vy(.2)],[W*.15,vy(.27)],[W*.2,vy(.36)],[W*.27,gy]];poly(mt,rgba(C.carb,.5),C.carb,1.5);
+ if(esc>0)poly([[0,gy],[0,gy-esc*AH()*.1],[W*.12,gy-esc*AH()*.06],[W*.27,gy]],rgba(C.gelo,.55*esc),C.gelo,1);
+ lab(M?'rocha':'rochas fosfatadas',W*(M?.1:.11),vy(.44),C.carb);if(esc>.6)lab('rocha nova',W*.2,gy-AH()*.09,C.gelo);
+ // planta, herbívoro, decompositores
+ arvore(W*.38,gy,s*1.1,C.prod);ser('veado',W*.56,gy,s*.8,C.c1,t,true);bacts(W*.45,vy(.68),s*.4,C.dec,t);
+ [-.2,0,.2].forEach(k=>line(W*.38,gy,W*.38+k*s,gy+s*.35,C.creme,1.5));
+ // lavoura
+ for(let i=0;i<5;i++)capim(W*(.585+i*.02),gy,s*.3,C.prod,0);
+ // lago e rio
+ const lc=ad?lerp(0,1,ss(seg(t-S.a0,0,3))):0;ell(W*.67,vy(.6),W*.07,AH()*.04,0,lc>0?rgba(C.oliva,.35+.5*lc):rgba(C.agua,.45),C.agua,1.5);
+ if(ad&&lc>.3)for(let i=0;i<8;i++)circ(W*.67+(((i*37)%13)-6)/6*W*.055,vy(.6)+(((i*17)%7)-3)/3*AH()*.025,2.5,C.oliva);
+ // ilha e ave
+ ell(W*.9,gy+6,W*.07,AH()*.025,0,rgba(C.solo,.8));ser('garca',W*.9,gy+4,s*.6,C.gelo,t,true);
+ // fosfato extra no rio
+ if(ad){for(let i=0;i<10;i++){const u=((t-S.a0)*.3+i/10)%1,q=qpt([P(.56,.52),P(.64,.5),P(.7,.58)],u);circ(q[0],q[1],3.2,C.c2)}}
+ // legenda de cor
+ circ(W-(M?104:116),vy(.2),4,C.c2);tx('fosfato, PO₄³⁻',W-(M?96:108),vy(.2),{a:'left',s:12,c:C.dim,fx:false});
+ lab('solo',W*.28,gy+AH()*.28,C.creme);lab(M?'mar':'rio e mar',W*.79,vy(.82),C.agua);}
+def('ciclos','fosforo',Object.assign(cenaCiclo(F_P,'O fósforo não tem forma gasosa importante: ele sai da rocha, passa pelos seres vivos e volta ao fundo do mar, onde só retorna em milhões de anos. Escolha um processo.',cenaFosforo),{t:'Ciclo do fósforo',s:'o ciclo que não passa pelo ar',c:C.agua,onde:'Ciclo sedimentar, esquema',
+ ctl:S=>['todos','sed','soerg'].indexOf(S.o)>=0?{k:'esc',l:'Escala de tempo',min:0,max:1,step:1,v:0,f:v=>v?'milhões de anos':'anos'}:null,
+ pick(id,S){S.o=id;if(id==='soerg')S.v=1},
+ cap:S=>{const f=F_P.find(q=>q.id===S.o),b=S.o==='todos'?'O fósforo não tem forma gasosa importante: ele sai da rocha, passa pelos seres vivos e volta ao fundo do mar. Escolha um processo.':f.cap;return b+(S.v===1&&['todos','sed','soerg'].indexOf(S.o)>=0&&S.o!=='soerg'?' Na escala de milhões de anos, o fundo do mar sobe e vira rocha nova.':'')},
+ d:`<p>O fósforo está no <b>DNA</b>, no <b>RNA</b>, no <b>ATP</b>, nos fosfolipídios das membranas e nos ossos e dentes. Ao contrário do carbono e do nitrogênio, ele <b>não tem uma forma gasosa importante</b>: é um <b>ciclo sedimentar</b>.</p><p>A chuva desgasta as <b>rochas fosfatadas</b> e libera fosfato no solo. As plantas o absorvem e ele passa pela cadeia alimentar. Os decompositores devolvem o fosfato ao solo. Parte escorre para rios e mares e se deposita no fundo, onde só volta a ficar disponível depois de milhões de anos, quando os sedimentos viram rocha e são erguidos. Aves marinhas devolvem um pouco à terra pelo <b>guano</b>.</p>`,
+ kv:[['Reservatório','rochas e sedimentos'],['Forma absorvida','fosfato (PO₄³⁻)'],['Fase gasosa','nenhuma importante'],['Ciclo','lento e sedimentar']],
+ enem:'O excesso de fosfato vindo de adubos, esgoto e detergentes é a principal causa da <b>eutrofização</b> de lagos e represas. Pegadinha: confundir com o nitrogênio e dizer que bactérias "fixam fósforo do ar". O Brasil importa a maior parte do fosfato que usa em adubos, e as jazidas são finitas: reciclar fósforo do esgoto e do esterco é tema de sustentabilidade.',
+ links:[['Ciclo do nitrogênio','#ciclos/nitrogenio'],['Ciclo do carbono','#ciclos/carbono'],['Eutrofização','#impactos/eutrofizacao'],['Produtividade primária','#energia/produtividade']]}));
+
+// ---------- R4. Polinização e dispersão ----------
+const POLZ=[{id:'abelha',t:'Abelha',pl:'das abelhas',fl:[0,1]},{id:'beija',t:'Beija-flor',pl:'dos beija-flores',fl:[2]},{id:'morcego',t:'Morcego',pl:'dos morcegos',fl:[1]}];
+const FLR=[{c:C.rosa,n:'flor rosa'},{c:tom(C.c1,.5),n:'flor clara, abre à noite'},{c:C.calor,n:'flor tubular vermelha'}];
+function polin(k,x,y,s,t){if(k==='abelha'){const w=Math.sin(t*30)*s*.12;ell(x-s*.1,y-s*.2+w,s*.14,s*.07,-.6,'rgba(207,224,255,.6)');ell(x+s*.1,y-s*.2+w,s*.14,s*.07,.6,'rgba(207,224,255,.6)');ell(x,y,s*.26,s*.16,0,C.c1);[-.1,.05,.18].forEach(q=>line(x+q*s,y-s*.14,x+q*s,y+s*.14,C.noite,s*.05));circ(x+s*.26,y,s*.08,C.noite)}
+ else if(k==='beija'){const w=Math.sin(t*26)*s*.2;ell(x-s*.04,y-s*.1,s*.3,s*.07,-.9+w*.02,rgba(C.prod,.6));ell(x,y,s*.24,s*.13,.2,C.prod);circ(x+s*.24,y-s*.05,s*.08,C.prod);line(x+s*.3,y-s*.05,x+s*.62,y-s*.02,C.creme,s*.03);poly([[x-s*.2,y+s*.04],[x-s*.45,y+s*.14],[x-s*.2,y+s*.12]],C.dec)}
+ else{const w=Math.sin(t*9)*s*.12;poly([[x,y],[x-s*.55,y-s*.25+w],[x-s*.35,y+s*.05],[x-s*.2,y+s*.12]],C.c3);poly([[x,y],[x+s*.55,y-s*.25+w],[x+s*.35,y+s*.05],[x+s*.2,y+s*.12]],C.c3);ell(x,y,s*.12,s*.16,0,tom(C.c3,-.2));circ(x,y-s*.17,s*.07,tom(C.c3,-.2))}}
+function flor(x,y,s,f,fruto,open){const g=ss(fruto||0);line(x,y,x,y+s*1.4,C.prod,2);
+ if(g>.02){circ(x,y+s*.2,s*(.2+.34*g),C.c2,tom(C.c2,.3),1.5)}
+ else if(f.n==='flor tubular vermelha'){poly([[x-s*.12,y+s*.6],[x-s*.3,y-s*.1],[x+s*.3,y-s*.1],[x+s*.12,y+s*.6]],f.c);ell(x,y-s*.1,s*.3,s*.08,0,tom(f.c,.25))}
+ else{for(let i=0;i<6;i++){const a=i/6*TAU;ell(x+Math.cos(a)*s*.32,y+Math.sin(a)*s*.32,s*.22,s*.12,a,f.c)}circ(x,y,s*.14,C.sol)}}
+const polInfo=(S,ta)=>{const pz=POLZ.find(q=>q.id===S.p),a=S.v/100,vf=[0,1,2,3,4,5].filter(i=>pz.fl.indexOf(i%3)>=0),nf=Math.round(a*vf.length);let fr=0;vf.forEach((i,j)=>{if(j<nf&&ta>1+j*1.1+2)fr++});return{pz:pz,a:a,vf:vf,nf:nf,fr:fr}};
+def('relacoes','polinizacao',{t:'Polinização e dispersão',s:'plantas que dependem de animais',c:C.rosa,onde:'Dois exemplos, esquema',pv:16,multi:true,
+ optL:'Polinizador e dispersor',
+ opts:()=>POLZ.map(q=>({id:q.id,t:q.t})).concat([{id:'cutia',t:'Retirar a cutia'}]),
+ init(S){S.p='abelha';S.cutia=false},
+ sel:S=>{const o={};o[S.p]=1;if(S.cutia)o.cutia=1;return o},
+ pick(id,S){if(id==='cutia')S.cutia=!S.cutia;else S.p=id},
+ ctl:S=>({k:S.p,l:S.p==='abelha'?'Abelhas na região':S.p==='beija'?'Beija-flores na região':'Morcegos na região',min:0,max:100,step:10,v:100,f:v=>v+'%'}),
+ cap:S=>{const I=polInfo(S,S.ta||0),pz=I.pz;return'Com <b>'+S.v+'%</b> '+pz.pl+', '+I.nf+' de '+I.vf.length+' flores visitadas viram fruto. '+(S.p==='beija'?'O beija-flor prefere a flor tubular vermelha. ':S.p==='morcego'?'O morcego visita a flor clara que abre à noite. ':'')+(S.cutia?'Sem a cutia, os ouriços ficam fechados no chão e não surgem mudas novas: a castanheira envelhece sem se renovar.':'A cutia enterra as sementes e esquece parte delas, que germinam.')},
+ draw(t,S){const[A,B]=caixas(),ta=Math.max(0,t-S.a0),I=polInfo(S,ta);S.ta=ta;pan(A);pan(B);cab('Polinização',A);cab('Dispersão',B);
+  // painel A
+  const night=S.p==='morcego',gy=A.y+A.h*.76,xs=[.12,.4,.68,.26,.54,.88].map(q=>A.x+A.w*q);
+  if(night){X.fillStyle='rgba(11,15,28,.55)';X.fillRect(A.x+1,A.y+1,A.w-2,A.h-2);for(let i=0;i<9;i++)circ(A.x+A.w*((i*41%90)/90+.05),A.y+A.h*(.12+(i*23%30)/100),1.5,C.creme);circ(A.x+A.w*.9,A.y+A.h*.18,9,C.creme)}
+  line(A.x+8,gy+A.h*.08,A.x+A.w-8,gy+A.h*.08,rgba(C.solo,.7),2);
+  const fs=Math.min(A.w*.1,A.h*.2),pos=[0,1,2,3,4,5].map(i=>({x:xs[i],y:gy-fs*(1.5+(i%2)*.8)}));
+  pos.forEach((q,i)=>{const j=I.vf.indexOf(i),fruit=j>=0&&j<I.nf?seg(ta,1+j*1.1+2,1+j*1.1+3.2):0;flor(q.x,q.y,fs,FLR[i%3],fruit)});
+  // polinizador voa pelas flores visitadas
+  const nv=Math.max(0,Math.ceil(I.a*(M?2:3)));
+  for(let a=0;a<nv;a++){const L=I.vf.length,u=(ta*.45+a*L/Math.max(1,nv))%L,i0=Math.floor(u)%L,i1=(i0+1)%L,f=ss(u%1),p0=pos[I.vf[i0]],p1=pos[I.vf[i1]],px=lerp(p0.x,p1.x,f),py=lerp(p0.y,p1.y,f)-Math.sin(f*PI)*fs*.8;
+   polin(S.p,px,py,fs*.9,t);circ(px-fs*.35,py+fs*.2,2,C.sol);circ(px-fs*.5,py+fs*.3,2,C.sol)}
+  tx('frutos formados: '+I.fr,A.x+12,A.y+38,{a:'left',f:FD,s:12,c:C.c2,bg:true,fx:false});
+  [0,1,2].forEach(i=>{const q=pos[i];if(!M||S.p===POLZ[0].id||I.pz.fl.indexOf(i)>=0)lab(M?FLR[i].n.split(',')[0]:FLR[i].n,q.x,gy+A.h*.08+(M?16:15),FLR[i].c)});
+  // painel B
+  const gy2=B.y+B.h*.84,ts=Math.min(B.h*(M?.5:.62),B.w*.42),tx0=B.x+Math.max(B.w*.16,ts*.42+12);
+  line(B.x+8,gy2,B.x+B.w-8,gy2,rgba(C.solo,.7),2);
+  X.fillStyle=C.solo;X.fillRect(tx0-ts*.05,gy2-ts*.55,ts*.1,ts*.55);circ(tx0-ts*.18,gy2-ts*.62,ts*.22,tom(C.prod,-.2));circ(tx0+ts*.18,gy2-ts*.62,ts*.22,tom(C.prod,-.1));circ(tx0,gy2-ts*.78,ts*.28,C.prod);
+  const oc=!S.cutia,ous=[.1,.2,.3].map(q=>({x:tx0+ts*q*1.6+ts*.1,y:gy2-5}));
+  ous.forEach((q,i)=>{circ(q.x,q.y,6,oc?tom(C.solo,.3):tom(C.solo,-.3));for(let k=0;k<8;k++){const a=k/8*TAU;line(q.x+Math.cos(a)*6,q.y+Math.sin(a)*6,q.x+Math.cos(a)*9,q.y+Math.sin(a)*9,C.solo,1.5)}if(oc&&seg(ta,.5,1.5)>0)circ(q.x,q.y-2,2.5,C.creme)});
+  const pts=[.45,.62,.8].map(q=>B.x+B.w*q);let mudas=0;
+  if(oc){pts.forEach((px,k)=>{const tb=1+4*k+2.4,g=seg(ta,tb,tb+3);if(ta>tb-.5)circ(px,gy2+5,3,C.creme);if(g>0){mudas+=g>.9?1:0;line(px,gy2,px,gy2-g*ts*.25,C.prod,2.5);circ(px-3,gy2-g*ts*.25,3*g+1,C.prod);circ(px+3,gy2-g*ts*.2,3*g+1,tom(C.prod,.2))}});
+   const kk=Math.min(2,Math.max(0,Math.floor((ta-1)/4))),ph=ta<1?0:ta>13?-1:((ta-1)/4)%1,ex=ous[1].x+ts*.12;let cx,bend=0;
+   if(ph<0||ta<1)cx=ex;else if(ph<.45)cx=lerp(ex,pts[kk],ph/.45);else if(ph<.6){cx=pts[kk];bend=1}else cx=lerp(pts[kk],ex,(ph-.6)/.4);
+   ser('capivara',cx,gy2,ts*.34,tom(C.solo,.3),t,ph>=.6&&ph>=0);lab('cutia',cx,gy2-ts*.34,C.creme)}
+  else lab('sem mudas novas',B.x+B.w*.7,gy2-ts*.4,C.calor);
+  tx('mudas novas: '+mudas,B.x+12,B.y+38,{a:'left',f:FD,s:12,c:C.prod,bg:true,fx:false});lab('castanheira',tx0+ts*.75,gy2-ts*.95,C.prod);lab(oc?'ouriços abertos':'ouriços fechados',ous[1].x+ts*.05,gy2+16,oc?C.creme:C.dim)}
+ ,d:`<p>Muitas plantas dependem de animais para se reproduzir. Na <b>polinização</b>, abelhas, beija-flores, morcegos e mariposas levam o pólen de uma flor a outra e recebem néctar ou pólen como alimento: é um <b>mutualismo</b>, quase sempre facultativo. Na <b>dispersão</b>, animais comem frutos e espalham as sementes longe da planta-mãe.</p><p>A <b>cutia</b> enterra as sementes da castanheira-da-amazônia e esquece parte delas, que germinam. O <b>muriqui</b> e o <b>tucano</b> espalham sementes da Mata Atlântica. Algumas relações viraram dependência estreita, fruto de <b>coevolução</b>, como a da figueira com a sua vespa.</p>`,
+ kv:[['Polinização','pólen em troca de alimento'],['Dispersão','sementes em troca de fruto'],['Abelhas nativas sem ferrão','jataí, uruçu e mandaçaia'],['Perda do dispersor','a planta não se renova']],
+ enem:'O tema volta em questões sobre o <b>declínio das abelhas</b> (agrotóxicos, perda de habitat) e o prejuízo para lavouras como café, maracujá e açaí. Outra pergunta típica: por que a castanheira só produz bem em floresta? Porque precisa das abelhas grandes que a polinizam e da cutia que dispersa as sementes. Pegadinha: chamar a relação beija-flor e flor de comensalismo; os dois ganham.',
+ links:[['Relações harmônicas','#relacoes/harmonicas'],['Quem ganha e quem perde','#relacoes/quadro'],['Os seis biomas do Brasil','#biomas/mapa'],['Reprodução das plantas','../plantas-animais/index.html']]});
+
+// ---------- R5. Controle biológico ----------
+const PRG=(m,g)=>{const base=.08+.87/(1+Math.exp(-(g-9)*.45));
+ if(m==='nenhuma')return[base,0];
+ if(m==='agro'){if(g<10)return[base,0];const h=g-10;return[g<10.8?lerp(base,.04,(g-10)/.8):.04+.88/(1+Math.exp(-(h-9)*.55)),0]}
+ return[.3+.33*Math.exp(-g/12)*Math.sin(g*PI/5-.6),.3+.2*Math.exp(-g/12)*Math.sin(g*PI/5-.6-PI/2)]};
+const DANO=.6,TG=30;
+def('relacoes','controle',{t:'Controle biológico',s:'usar um inimigo natural contra a praga',c:C.prod,onde:'Modelo ilustrativo, em gerações',pv:20,multi:true,dyn:true,
+ optL:'Estratégia de controle e exemplo',
+ opts:S=>[{id:'nenhuma',t:'Nenhuma',g:'Método de controle'},{id:'agro',t:'Agrotóxico'},{id:'inim',t:S.ex==='soja'?'Baculovírus':'Vespa Cotesia'},{id:'cana',t:'Cana',g:'Exemplo de lavoura'},{id:'soja',t:'Soja'}],
+ init(S){S.o='nenhuma';S.ex='cana'},
+ sel:S=>{const o={};o[S.o]=1;o[S.ex]=1;return o},
+ pick(id,S){if(id==='cana'||id==='soja')S.ex=id;else S.o=id},
+ cap:S=>{const g=S.g||0,soja=S.ex==='soja',pr=soja?'lagarta-da-soja':'broca-da-cana',ini=soja?'baculovírus':'vespa <i>Cotesia</i>';
+  if(S.o==='nenhuma')return'Sem controle, a população da <b>'+pr+'</b> cresce, cruza a linha de dano e a lavoura perde produção.';
+  if(S.o==='agro')return g<10?'A praga cresce e passa da linha de dano. Chega a hora de aplicar o agrotóxico.':g<14?'A praga cai depressa, mas o <b>resíduo</b> chega ao rio ao fundo.':'Sobram as lagartas <b>resistentes</b>: em poucas gerações a praga volta a subir e passa de novo da linha de dano.';
+  return'O inimigo natural ('+ini+') e a praga oscilam como presa e predador. A praga fica <b>abaixo</b> da linha de dano, sem chegar a zero, e quase não sobra resíduo.'},
+ draw(t,S){const[A,B]=caixas(),ta=Math.max(0,t-S.a0),g=cl(ta*2.2,0,TG),soja=S.ex==='soja';S.g=g;pan(A);pan(B);cab(soja?'Talhão de soja':'Talhão de cana',A);cab('Praga e inimigo natural',B);
+  const [P,E]=PRG(S.o,g),gy=A.y+A.h*.78,n=M?7:8,dm=Math.round(P*n),res=S.o==='agro'?cl((g-12)/6,0,1):0,sprayed=S.o==='agro'&&g>=10;
+  // rio ao fundo com resíduo
+  X.fillStyle=rgba(C.agua,.3);X.fillRect(A.x+2,gy+A.h*.08,A.w-4,A.h*.12-4);const rs=sprayed?cl((g-10)/3,0,1):0;if(rs>0)X.fillStyle=rgba(C.c3,.55*rs),X.fillRect(A.x+2,gy+A.h*.08,A.w-4,A.h*.12-4);
+  line(A.x+8,gy,A.x+A.w-8,gy,rgba(C.solo,.8),2);if(rs>.5)lab('resíduo no rio',A.x+A.w*.5,gy+A.h*.14,C.c3);else lab('rio',A.x+A.w*.9,gy+A.h*.14,C.agua);
+  // plantas
+  const sx=i=>A.x+A.w*(.1+.8*i/(n-1)),hh=A.h*.5;
+  for(let i=0;i<n;i++){const x=sx(i),sick=i<dm;
+   if(!soja){X.strokeStyle=sick?tom(C.prod,-.45):C.prod;X.lineWidth=6;X.lineCap='round';X.beginPath();X.moveTo(x,gy);X.lineTo(x,gy-hh);X.stroke();for(let k=0;k<3;k++){line(x,gy-hh*(.95-k*.12),x+(k%2?-1:1)*A.w*.045,gy-hh*(.82-k*.1),sick?tom(C.prod,-.45):C.prod,3)}}
+   else{arbusto(x,gy,A.h*.28,sick?tom(C.prod,-.45):C.prod)}
+   if(sick){const ry=soja?gy-A.h*.14:gy-hh*(.3+.4*((i*37)%10)/10),isr=res>0&&i%2===0&&i>=dm-Math.ceil(res*dm);
+    if(S.o==='inim'&&soja&&i%2===1){ell(x+9,ry,9,4.5,.3,C.carb);}else{ell(x+9,ry,9,4.5,.3,isr?C.creme:C.calor,isr?C.calor:null,1.5)}
+    if(isr&&i===dm-1)lab('resistentes',x,ry-16,C.creme)}}
+  // pulverização
+  if(S.o==='agro'&&g>=9.5&&g<11.5){for(let i=0;i<14;i++){const u=((g-9.5)*1.2+i*.07)%1;circ(A.x+A.w*(.1+.8*((i*53)%100)/100),lerp(A.y+A.h*.22,gy-4,u),2,C.c3)}}
+  // inimigos naturais
+  if(S.o==='inim'){const ne=Math.round(E*(M?9:12));for(let i=0;i<ne;i++){const x=A.x+A.w*(.12+.76*((i*31)%97)/97)+Math.sin(t*2+i)*8,y=A.y+A.h*(.25+.35*((i*17)%13)/13)+Math.cos(t*2.5+i)*6;if(soja){circ(x,y,3,C.c1,C.noite,1)}else{ell(x,y,5,2.5,0,C.c1);ell(x-2,y-4,4,2,.5,'rgba(207,224,255,.7)')}}}
+  lab(soja?'lagarta-da-soja':'broca-da-cana',A.x+A.w*.5,A.y+A.h*.12,C.calor);if(S.o==='inim')lab(soja?'baculovírus':'vespa Cotesia',A.x+A.w*.5,A.y+A.h*.2,C.c1);
+  // gráfico
+  const x0=B.x+(M?44:52),x1=B.x+B.w-18,y0=B.y+B.h-30,y1=B.y+44,px=u=>x0+u/TG*(x1-x0),py=v=>y0-v*(y0-y1);
+  eixos(x0,y0,x1,y1,'gerações','população relativa');
+  X.setLineDash([6,5]);line(x0,py(DANO),x1,py(DANO),C.dim,1.5);X.setLineDash([]);tx('nível de dano econômico',x1-4,py(DANO)-12,{a:'right',s:12,c:C.dim,bg:true,fx:false});
+  [[0,C.calor],[1,C.c1]].forEach(q=>{if(q[0]===1&&S.o!=='inim')return;X.beginPath();for(let i=0;i<=120;i++){const u=Math.min(g,i/120*TG);if(i/120*TG>g)break;const v=PRG(S.o,u)[q[0]];i?X.lineTo(px(u),py(cl(v,0,1))):X.moveTo(px(u),py(cl(v,0,1)))}X.strokeStyle=q[1];X.lineWidth=3;X.lineJoin='round';X.stroke()});
+  circ(px(g),py(cl(P,0,1)),4.5,C.calor);if(S.o==='inim')circ(px(g),py(cl(E,0,1)),4.5,C.c1);
+  tx('praga',x0+120,y1+4,{a:'left',s:12,c:C.calor,w:700,bg:true,fx:false});if(S.o==='inim')tx(soja?'baculovírus':'vespa',x0+176,y1+4,{a:'left',s:12,c:C.c1,w:700,bg:true,fx:false});
+  if(S.o==='agro'&&g>=10)tx('aplicação',px(10),y0-10,{s:12,c:C.c3,bg:true,fx:false})}
+ ,d:`<p>No <b>controle biológico</b>, um predador, parasita, parasitoide ou microrganismo natural é usado para reduzir uma praga. O Brasil é um dos países que mais usam essa técnica.</p><p>Na cana-de-açúcar, a vespinha <b>Cotesia flavipes</b> põe ovos dentro da lagarta da <b>broca-da-cana</b>, e as larvas da vespa a matam por dentro: é um <b>parasitoide</b>, um parasita que sempre mata o hospedeiro. Na soja, um vírus (<b>Baculovirus anticarsia</b>) controla a lagarta-da-soja. Fungos como <b>Metarhizium</b> e <b>Beauveria</b> atacam cigarrinhas e outros insetos.</p><p>A vantagem é reduzir agrotóxicos. O risco é soltar uma espécie exótica que vire praga, como o <b>sapo-cururu</b>, levado à Austrália para controlar besouros da cana e que se espalhou atacando a fauna nativa.</p>`,
+ kv:[['Controle biológico','inimigo natural contra a praga'],['Parasitoide','parasita que mata o hospedeiro'],['Vantagem','menos agrotóxico e menos resistência'],['Risco','espécie introduzida sem predadores']],
+ enem:'Pergunta clássica: qual a vantagem do controle biológico sobre o químico? Não deixa resíduo nos alimentos e na água, é bem mais específico (atinge pouco os outros seres) e quase não seleciona insetos resistentes. A outra face: a questão pode descrever uma introdução que deu errado e pedir a relação ecológica envolvida (competição ou predação de espécies nativas). Pegadinha: o controle biológico <b>reduz</b> a praga a um nível sem prejuízo; não a elimina, senão o inimigo natural também some.',
+ links:[['Relações desarmônicas','#relacoes/desarmonicas'],['Predador e presa','#populacoes/predador'],['Teia alimentar','#teias/teia'],['Habitat e nicho','#niveis/nicho'],['Magnificação trófica','#impactos/magnificacao']]});
+
+// ---------- N1. Estratégias r e K ----------
+const SVV={I:x=>Math.max(1,1000*(1-Math.pow(x,5))),II:x=>1000*Math.pow(10,-2.6*x),III:x=>1000*Math.pow(10,-2.9*(1-Math.pow(1-x,6)))};
+function cenaR(b,x,t,S){const n=M?36:60,r=rng(5),frac=SVV.III(x)/1000,vivos=Math.round(n*frac);
+ const ay=b.y+b.h*.55;peixe(b.x+b.w*.13,ay,Math.min(b.w*.24,b.h*.5),C.carb,{t:t});
+ for(let i=0;i<n;i++){const ex=b.x+b.w*(.26+.68*r()),ey=b.y+b.h*(.18+.64*r()),vivo=i<vivos;if(vivo)circ(ex+Math.sin(t*1.5+i)*2,ey,3,C.creme,C.c2,1);else{X.globalAlpha=.18;circ(ex,ey,2,C.dim);X.globalAlpha=1}}
+ lab('sardinha',b.x+b.w*.12,ay+b.h*.22,C.carb);lab(vivos+' de '+n+' ovos vivos',b.x+b.w*.62,b.y+b.h*.9,C.creme)}
+function cenaK(b,x,t,S){const s=Math.min(b.w*.28,b.h*.5),gy=b.y+b.h*.8,vivos=Math.round(2*SVV.I(x)/1000);
+ line(b.x+8,gy,b.x+b.w-8,gy,rgba(C.solo,.7),2);ser('pintada',b.x+b.w*.32,gy,s,C.c1,t);
+ for(let i=0;i<2;i++){if(i<vivos)ser('pintada',b.x+b.w*(.52+.14*i),gy,s*(.3+.45*x),tom(C.c1,.15),t)}
+ lab('onça-pintada',b.x+b.w*.32,gy+b.h*.12,C.c1);lab(vivos+' de 2 filhotes vivos',b.x+b.w*.62,b.y+b.h*.12,C.creme)}
+def('populacoes','estrategias',{t:'Estratégias r e K',s:'muitos filhotes ou poucos e bem cuidados',c:C.c2,onde:'Esquema com curvas de sobrevivência',pv:12,
+ optL:'Estratégia',opts:()=>[{id:'r',t:'Estratégia r'},{id:'k',t:'Estratégia K'},{id:'cmp',t:'Comparar'}],init(S){S.o='r'},
+ ctl:{l:'Idade',min:0,max:100,step:1,v:0,f:v=>v+'% da vida'},
+ cap:S=>{const x=S.v/100,a=Math.round(SVV.III(x)),b=Math.round(SVV.I(x));
+  if(S.o==='r')return'<b>Estratégia r:</b> com <span class="q">'+S.v+'%</span> da vida, ainda vivem cerca de <b>'+nb(a)+'</b> de cada 1 000 que nasceram. Quase todos morrem cedo: curva tipo III.';
+  if(S.o==='k')return'<b>Estratégia K:</b> com <span class="q">'+S.v+'%</span> da vida, ainda vivem cerca de <b>'+nb(b)+'</b> de cada 1 000 que nasceram. Quase todos chegam à idade adulta: curva tipo I.';
+  return'Com <span class="q">'+S.v+'%</span> da vida, vivem cerca de <b>'+nb(b)+'</b> (tipo I, K), <b>'+nb(Math.round(SVV.II(x)))+'</b> (tipo II, aves) e <b>'+nb(a)+'</b> (tipo III, r) de cada 1 000.'},
+ draw(t,S){const[A,B]=caixas(),ta=Math.max(0,t-S.a0);if(!S.touched){const v=Math.min(100,Math.floor(ta*10));if(v!==S.v)ctlSet(v)}
+  const x=S.v/100;pan(A);pan(B);cab(S.o==='cmp'?'Os dois modos de vida':S.o==='r'?'Estratégia r':'Estratégia K',A);cab('Curva de sobrevivência',B);
+  if(S.o==='cmp'){const h=A.h/2-14;cenaR({x:A.x,y:A.y+24,w:A.w,h:h},x,t,S);cenaK({x:A.x,y:A.y+24+h,w:A.w,h:h},x,t,S)}
+  else if(S.o==='r')cenaR({x:A.x,y:A.y+24,w:A.w,h:A.h-30},x,t,S);else cenaK({x:A.x,y:A.y+24,w:A.w,h:A.h-30},x,t,S);
+  const x0=B.x+(M?40:50),x1=B.x+B.w-22,y0=B.y+B.h-34,y1=B.y+40,px=u=>x0+u*(x1-x0),py=n=>y0-Math.log10(Math.max(1,n))/3*(y0-y1);
+  eixos(x0,y0,x1,y1,'idade','sobreviventes');[1,10,100,1000].forEach(n=>{line(x0-4,py(n),x0,py(n),C.dim,1.5);tx(nb(n),x0-7,py(n),{a:'right',f:FD,s:11,c:C.dim,fx:false})});
+  const cs=S.o==='cmp'?[['I',[],'tipo I (K)'],['II',[6,5],'tipo II (aves)'],['III',[2,5],'tipo III (r)']]:S.o==='r'?[['III',[],'tipo III']]:[['I',[],'tipo I']];
+  cs.forEach(q=>{X.beginPath();for(let i=0;i<=100;i++){const u=i/100,v=py(SVV[q[0]](u));i?X.lineTo(px(u),v):X.moveTo(px(u),v)}X.setLineDash(q[1]);X.strokeStyle=C.c2;X.lineWidth=3;X.lineJoin='round';X.stroke();X.setLineDash([]);circ(px(x),py(SVV[q[0]](x)),5,C.c2,C.gelo,2)});
+  line(px(x),y0,px(x),y1,rgba(C.gelo,.35),1);
+  cs.forEach((q,i)=>lab(q[2],px(q[0]==='I'?.28:q[0]==='II'?.6:.12),py(SVV[q[0]](q[0]==='I'?.28:q[0]==='II'?.6:.12))+(q[0]==='I'?-16:q[0]==='II'?-16:16),C.txt))}
+ ,d:`<p>Espécies <b>estrategistas r</b> têm muitos descendentes, pequenos, que recebem pouco ou nenhum cuidado; a maioria morre cedo. Vivem bem em ambientes instáveis e recém-abertos: insetos, capins, ratos, peixes que soltam milhares de ovos.</p><p>Espécies <b>estrategistas K</b> têm poucos descendentes, grandes, com longo cuidado parental; vivem mais e mantêm a população perto da capacidade de suporte (K). Exemplos: elefante, onça-pintada, baleia, ser humano. As pioneiras da sucessão costumam ser r; as do clímax, K.</p><p>As <b>curvas de sobrevivência</b> resumem a diferença: tipo I (quase todos chegam à velhice, K), tipo II (morte constante em todas as idades, aves) e tipo III (morte em massa dos jovens, r).</p>`,
+ kv:[['Estrategista r','muitos filhotes, pouco cuidado'],['Estrategista K','poucos filhotes, muito cuidado'],['Ambiente favorável a r','instável, recém-aberto'],['Curva tipo III','morte em massa dos jovens']],
+ enem:'A prova descreve uma espécie (número de ovos, cuidado parental, tamanho, tempo de vida) e pede a estratégia, ou dá três curvas de sobrevivência e pede qual combina com a descrição. Pragas agrícolas e espécies invasoras costumam ser estrategistas r.',
+ links:[['Crescimento populacional','#populacoes/crescimento'],['Sucessão primária','#sucessao/primaria'],['Espécies invasoras','#impactos/invasoras']]});
+
+// ---------- N2. Ecossistemas costeiros ----------
+const CAM={todo:{u:.5,v:.5,k:1},mangue:{u:.52,v:.52,k:1.45},restinga:{u:.29,v:.55,k:2},recife:{u:.86,v:.7,k:1.8}};
+function coral(x,y,s,c,bl){const cc=lerp(0,1,bl),col=bl>0?'rgb('+(hx(c)[0]+(235-hx(c)[0])*cc|0)+','+(hx(c)[1]+(240-hx(c)[1])*cc|0)+','+(hx(c)[2]+(245-hx(c)[2])*cc|0)+')':c;
+ X.strokeStyle=col;X.lineCap='round';X.lineWidth=Math.max(2,s*.12);[[-.3,-.9],[0,-1.1],[.3,-.8],[-.12,-.55]].forEach((q,i)=>{X.beginPath();X.moveTo(x+(i===3?-.1:q[0]*.3)*s,y);X.lineTo(x+q[0]*s,y+q[1]*s);X.stroke()});
+ if(bl<.7)[[-.3,-.9],[0,-1.1],[.3,-.8]].forEach(q=>circ(x+q[0]*s,y+q[1]*s,Math.max(2,s*.07),C.prod))}
+def('biomas','costeiros',{t:'Ecossistemas costeiros',s:'manguezal, restinga e recifes de coral',c:C.dec,onde:'Corte do litoral, esquema',pv:4,
+ optL:'Trecho do litoral',opts:()=>[{id:'todo',t:'Litoral inteiro'},{id:'mangue',t:'Manguezal'},{id:'restinga',t:'Restinga'},{id:'recife',t:'Recife de coral'}],
+ init(S){S.o='mangue';S.cam=Object.assign({},CAM.mangue)},
+ ctl:S=>S.o==='restinga'?null:S.o==='recife'?{k:'temp',l:'Temperatura da água',min:0,max:6,step:1,v:0,f:v=>'+'+dec(v/2,1)+' °C'}:{k:'mare',l:'Maré',min:0,max:100,step:1,v:0,f:v=>v<25?'baixa':v<75?'média':'alta'},
+ cap:S=>{const td=S.td==null?0:S.td;
+  if(S.o==='todo')return'Da mata ao mar: Mata Atlântica, restinga, manguezal e recife de coral. Escolha um trecho para ver de perto.';
+  if(S.o==='mangue')return td<.4?'<b>Maré baixa:</b> os <b>pneumatóforos</b> ficam à mostra, e os caranguejos saem das tocas no lodo.':td>.7?'<b>Maré alta:</b> a água cobre as raízes, e peixes jovens e camarões se abrigam entre elas: é o <b>berçário</b>.':'A maré sobe e desce duas vezes por dia. As raízes-escora seguram a árvore no lodo mole.';
+  if(S.o==='restinga')return'<b>Restinga:</b> sobre a areia, com sal, vento e pouca água retida, as plantas são rasteiras e têm folhas grossas e cerosas, que perdem pouca água.';
+  const T=S.v/2;return T>1?'<b>Branqueamento:</b> com <span class="q">+'+dec(T,1)+' °C</span>, os corais expulsam as algas que vivem neles e ficam brancos. Sem as algas, o coral perde alimento.':'<b>Recife de coral:</b> o coral vive em mutualismo com algas. Acima de <span class="q">+1 °C</span> a água quente expulsa as algas, e o coral branqueia.'},
+ pick(id,S){S.o=id;S.tgt=CAM[id]},
+ draw(t,S){const ta=Math.max(0,t-S.a0),tg=S.tgt||CAM[S.o],cm=S.cam,a=S.dt?1-Math.exp(-S.dt*4):1;cm.u+=(tg.u-cm.u)*a;cm.v+=(tg.v-cm.v)*a;cm.k+=((M&&tg.k>1?tg.k*.8:tg.k)-cm.k)*a;
+  let td;if(S.o==='mangue'||S.o==='todo'){if(!S.touched){const v=Math.round((.5-.5*Math.cos(ta*TAU/9))*100);if(v!==S.v)ctlSet(v)}td=S.v/100}else td=.5-.5*Math.cos((ta+4.5)*TAU/9);S.td=td;
+  const bl=S.o==='recife'?ss(seg(S.v/2,.8,1.6)):0,k=cm.k,fx=ux(cm.u),fy=vy(cm.v),Pt=(u,v)=>[W/2+(ux(u)-fx)*k,AY()+AH()/2+(vy(v)-fy)*k],ah=AH();
+  const gprof=[[0,.45],[.1,.43],[.2,.5],[.24,.56],[.38,.58],[.4,.62],[.64,.63],[.7,.8],[.78,.88],[1,.9]],wl=vy(lerp(.62,.47,td));
+  X.save();X.beginPath();X.rect(0,AY()-6,W,AH()+8);X.clip();X.translate(W/2,AY()+AH()/2);X.scale(k,k);X.translate(-fx,-fy);
+  // terreno
+  const tp=gprof.map(q=>[ux(q[0]),vy(q[1])]);tp.push([W,H*3],[0,H*3]);poly(tp,'#1A2236',null);
+  poly([[ux(.2),vy(.5)],[ux(.24),vy(.56)],[ux(.38),vy(.58)],[ux(.38),vy(.64)],[ux(.2),vy(.64)]],rgba(C.creme,.22));
+  poly([[ux(.4),vy(.62)],[ux(.64),vy(.63)],[ux(.64),vy(.7)],[ux(.4),vy(.7)]],rgba(C.solo,.55));
+  // mata
+  (S.o==='todo'?[.06,.11,.16,.21]:M?[.21]:[.11,.16,.21]).forEach((u,i)=>{let gv=.45;for(let j=1;j<gprof.length;j++)if(u<=gprof[j][0]){gv=lerp(gprof[j-1][1],gprof[j][1],(u-gprof[j-1][0])/(gprof[j][0]-gprof[j-1][0]));break}arvore(ux(u),vy(gv)+2,ah*.3,i%2?C.prod:tom(C.prod,-.15))});
+  // restinga
+  [.26,.3,.34].forEach((u,i)=>{capim(ux(u),vy(.57),ah*.1,C.oliva,0);if(i!==1)arbusto(ux(u)+ux(.015),vy(.57),ah*.1,tom(C.oliva,-.1));else bromelia(ux(u),vy(.575),ah*.1,C.oliva)});
+  // manguezal
+  const pn=[];[.44,.5,.56,.61].forEach((u,i)=>{const x=ux(u),y=vy(.63);
+   X.strokeStyle=C.solo;X.lineCap='round';X.lineWidth=ah*.012;[[-1,0],[0,.5],[1,0]].forEach(q=>{X.beginPath();X.moveTo(x,y-ah*.13);X.quadraticCurveTo(x+q[0]*ah*.05,y-ah*.06,x+q[0]*ah*.07+q[1]*ah*.02,y)});
+   [[-1,0],[1,0],[-.5,0]].forEach(q=>{X.beginPath();X.moveTo(x,y-ah*.12);X.quadraticCurveTo(x+q[0]*ah*.04,y-ah*.08,x+q[0]*ah*.075,y);X.stroke()});
+   line(x,y-ah*.13,x,y-ah*.2,C.solo,ah*.018);circ(x-ah*.05,y-ah*.24,ah*.06,tom(C.dec,-.3));circ(x+ah*.05,y-ah*.24,ah*.06,tom(C.dec,-.15));circ(x,y-ah*.29,ah*.07,C.dec);
+   [-.1,.02,.11].forEach(q=>{line(x+q*ah,y,x+q*ah,y-ah*.035,C.creme,2.5)})});
+  // caranguejos
+  const ca=1-ss(seg(td,.3,.55));if(ca>0){X.globalAlpha=ca;[.47,.53,.6].forEach((u,i)=>{const x=ux(u)+Math.sin(ta*1.2+i*2)*ah*.015,y=vy(.63);ell(x,y-3,ah*.016,ah*.01,0,C.c2);line(x-ah*.018,y-5,x-ah*.03,y-10,C.c2,1.5);line(x+ah*.018,y-5,x+ah*.03,y-10,C.c2,1.5)});X.globalAlpha=1}
+  // água
+  X.fillStyle=rgba(C.agua,.3);X.fillRect(ux(.38),wl,W-ux(.38),H*3);line(ux(.38),wl,W,wl,rgba(C.agua,.8),1.5);
+  X.save();X.beginPath();X.rect(ux(.38),wl,W,H*3);X.clip();poly(tp,'#1A2236',null);poly([[ux(.4),vy(.62)],[ux(.64),vy(.63)],[ux(.64),vy(.7)],[ux(.4),vy(.7)]],rgba(C.solo,.55));poly([[ux(.64),vy(.63)],[ux(.7),vy(.8)],[ux(.78),vy(.88)],[ux(1),vy(.9)],[ux(1),vy(.94)],[ux(.64),vy(.94)]],rgba(C.creme,.15));
+  [.44,.5,.56,.61].forEach(u=>{const x=ux(u),y=vy(.63);X.strokeStyle=rgba(C.solo,.9);X.lineWidth=ah*.012;[-1,1,-.5].forEach(q=>{X.beginPath();X.moveTo(x,y-ah*.12);X.quadraticCurveTo(x+q*ah*.04,y-ah*.08,x+q*ah*.075,y);X.stroke()});[-.1,.02,.11].forEach(q=>line(x+q*ah,y,x+q*ah,y-ah*.035,C.creme,2.5))});X.restore();
+  X.fillStyle=rgba(C.agua,.22);X.fillRect(ux(.38),wl,W-ux(.38),H*3);
+  // peixes jovens entre as raízes
+  const fy2=ss(seg(td,.55,.85));if(fy2>0){X.globalAlpha=fy2;[.46,.52,.58].forEach((u,i)=>peixe(ux(u)+Math.sin(ta*1.3+i)*ah*.02,vy(.56)+i*ah*.01,ah*.045,C.c1,{t:ta,flip:i%2}));X.globalAlpha=1}
+  // recife
+  const rfx=[.8,.84,.88,.92,.96];rfx.forEach((u,i)=>coral(ux(u),vy(.9),ah*(.07+(i%2)*.025),i%2?C.rosa:tom(C.rosa,.1),bl));
+  peixe(ux(.82)+Math.sin(ta*.8)*ah*.05,vy(.74),ah*.05,C.agua,{t:ta});peixe(ux(.93)-Math.sin(ta*.7)*ah*.05,vy(.7),ah*.05,C.gelo,{t:ta,flip:1});
+  X.restore();
+  // rótulos em tela
+  const L=(s,u,v,c)=>{const p=Pt(u,v);lab(s,p[0],p[1],c)};
+  if(S.o==='todo'){L('Mata Atlântica',.1,.3,C.prod);L('restinga',.3,.46,C.oliva);L('manguezal',.52,.34,C.dec);L('recife de coral',.88,.74,C.rosa)}
+  else if(S.o==='mangue'){if(!M||td>=.5)L('raízes-escora',.46,.67,C.solo);if(!M||td<.5)L('pneumatóforos',.58,.67,C.creme);L(td<.4?'caranguejos':td>.7?'peixes jovens':'maré subindo',.71,td<.4?.58:.54,C.c2);L('manguezal',.52,.14,C.dec)}
+  else if(S.o==='restinga'){L('plantas rasteiras',.3,.5,C.oliva);L('areia',.3,.63,C.creme);L('folhas grossas e cerosas',.3,.44,C.oliva)}
+  else{L('coral',.86,.78,C.rosa);if(bl<.7)L('algas dentro do coral',.9,.68,C.prod);else L('coral branqueado',.9,.74,C.gelo)}}
+ ,d:`<p>O litoral brasileiro tem cerca de 8 mil km e ecossistemas que não são biomas continentais. O <b>manguezal</b> fica onde o rio encontra o mar: solo lodoso, salgado e pobre em oxigênio. As árvores têm <b>raízes-escora</b> (sustentação no lodo) e <b>pneumatóforos</b>, raízes que saem do solo para respirar, e eliminam o excesso de sal pelas folhas. É <b>berçário</b> de peixes, caranguejos e camarões e guarda muito carbono no solo.</p><p>A <b>restinga</b> cresce sobre areia, entre a praia e a mata: plantas rasteiras, folhas grossas e cerosas, adaptadas ao sal, ao vento e à falta de água no solo arenoso.</p><p>Os <b>recifes de coral</b> (como Abrolhos, na Bahia) abrigam enorme diversidade. Com o aquecimento da água, os corais perdem as algas que vivem neles e <b>branqueiam</b>. Os três estão sob pressão de aterros, ocupação urbana, carcinicultura e poluição.</p>`,
+ kv:[['Manguezal','lodo salgado, pneumatóforos, berçário'],['Restinga','areia, plantas rasteiras e cerosas'],['Recifes','corais e algas em mutualismo'],['Branqueamento','água quente expulsa as algas']],
+ enem:'Manguezal é um dos temas mais cobrados: raízes respiratórias como adaptação ao solo sem oxigênio, papel de berçário e a importância para a pesca artesanal. O branqueamento de corais aparece ligado ao aquecimento global e à acidificação dos oceanos.',
+ links:[['Os seis biomas do Brasil','#biomas/mapa'],['Efeito estufa','#impactos/estufa'],['Mutualismo','#relacoes/harmonicas']]});
+
+// ---------- N3. Desmatamento e fragmentação ----------
+const GW=18,GH=12;
+const ORD=(()=>{const r=rng(21),road=GW>>1,o=[];for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const dr=Math.min(Math.abs(y-1),Math.abs(y-5),Math.abs(y-9)),d=Math.abs(x-road)+dr*2.2;o.push({i:y*GW+x,d:d+r()*1.2,road:x===road||dr===0})}return o.sort((a,b)=>a.d-b.d)})();
+function analisa(cl_){const n=GW*GH,bor=new Array(n).fill(false),fr=new Array(n).fill(-1);let nf=0,fl=0,inn=0;
+ for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const i=y*GW+x;if(cl_[i])continue;fl++;let b=false;[[1,0],[-1,0],[0,1],[0,-1]].forEach(q=>{const xx=x+q[0],yy=y+q[1];if(xx<0||yy<0||xx>=GW||yy>=GH)return;if(cl_[yy*GW+xx])b=true});bor[i]=b;if(!b)inn++}
+ for(let i=0;i<n;i++){if(cl_[i]||fr[i]>=0)continue;const st=[i];fr[i]=nf;while(st.length){const c=st.pop(),x=c%GW,y=(c/GW)|0;[[1,0],[-1,0],[0,1],[0,-1]].forEach(q=>{const xx=x+q[0],yy=y+q[1];if(xx<0||yy<0||xx>=GW||yy>=GH)return;const j=yy*GW+xx;if(!cl_[j]&&fr[j]<0){fr[j]=nf;st.push(j)}})}nf++}
+ return{bor:bor,fl:fl,inn:inn,nf:nf}}
+function geoPaisagem(){return M?{g:{x:12,y:AY()+8,w:W-24,h:AH()*.62},p:{x:12,y:AY()+AH()*.68,w:W-24,h:AH()*.32-8}}:{g:{x:20,y:AY()+8,w:W*.62-28,h:AH()-8},p:{x:W*.62,y:AY()+8,w:W*.38-20,h:AH()-8}}}
+function grade(g,cs,cel,desenha){const ox=g.x+(g.w-cs*GW)/2,oy=g.y+(g.h-cs*GH)/2;for(let y=0;y<GH;y++)for(let x=0;x<GW;x++)desenha(x,y,ox+x*cs,oy+y*cs)}
+def('impactos','desmatamento',{t:'Desmatamento e fragmentação',s:'menos floresta, mais borda, menos espécies',c:C.calor,onde:'Paisagem esquemática, vista de cima',ondeCurto:true,pv:10,
+ optL:'Cena',opts:()=>[{id:'pais',t:'Paisagem'},{id:'formas',t:'Mesma área, formas diferentes'}],init(S){S.o='pais';S.pc=0},
+ ctl:S=>S.o==='pais'?{k:'des',l:'Área desmatada',min:0,max:80,step:5,v:0,f:v=>v+'%'}:null,
+ cap:S=>{if(S.o==='formas')return'Os dois grupos têm a mesma área de floresta, <b>16 quadrados</b>. Em um fragmento grande e redondo, sobram <b>4</b> de interior; em quatro fragmentos alongados, <b>nenhum</b>.';const s=S.st;if(!s)return'';const tot=GW*GH;return'Com cerca de <b>'+(100-Math.round(s.fl/tot*100))+'%</b> da área desmatada, restam '+Math.round(s.fl/tot*100)+'% de floresta, mas só <b>'+Math.round(s.inn/tot*100)+'%</b> é floresta de interior. A mata está em <b>'+s.nf+'</b> fragmento'+(s.nf===1?'':'s')+'.'},
+ draw(t,S){const ta=Math.max(0,t-S.a0);
+  if(S.o==='formas'){const[A,B]=caixas();pan(A);pan(B);cab('Um fragmento grande',A);cab('Quatro fragmentos pequenos',B);
+   const mk=(b,cells)=>{const cs=Math.min(b.w/9,(b.h-50)/7,M?30:44),ox=b.x+(b.w-cs*8)/2,oy=b.y+(b.h-cs*6)/2+8;const set={};cells.forEach(q=>set[q[0]+','+q[1]]=1);let inn=0;
+    for(let y=0;y<6;y++)for(let x=0;x<8;x++)rr(ox+x*cs+1,oy+y*cs+1,cs-2,cs-2,3,rgba(C.oliva,.3));
+    cells.forEach(q=>{let b2=false;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(!set[(q[0]+dx)+','+(q[1]+dy)])b2=true;if(!b2)inn++;rr(ox+q[0]*cs+1,oy+q[1]*cs+1,cs-2,cs-2,3,b2?C.c1:tom(C.prod,-.3))});return inn};
+   const big=[];for(let y=1;y<5;y++)for(let x=2;x<6;x++)big.push([x,y]);const i1=mk(A,big);
+   const pq=[];[0,2,4,6].forEach(x=>{for(let y=1;y<5;y++)pq.push([x,y])});const i2=mk(B,pq);
+   tx('interior: '+i1+' de 16 quadrados',A.x+A.w/2,A.y+A.h-16,{f:FD,s:12,c:C.prod,bg:true,fx:false});tx('interior: '+i2+' de 16 quadrados',B.x+B.w/2,B.y+B.h-16,{f:FD,s:12,c:C.calor,bg:true,fx:false});
+   lab('borda',A.x+A.w*.84,A.y+A.h*.3,C.c1);lab('interior',A.x+A.w/2,A.y+A.h*.5,C.prod);return}
+  if(!S.touched){const v=Math.min(45,Math.floor(ta*5));if(v!==S.v)ctlSet(v)}
+  S.pc+=(S.v-S.pc)*(S.dt?Math.min(1,S.dt*5):1);const G=geoPaisagem(),n=Math.round(S.pc/100*GW*GH),cl_=new Array(GW*GH).fill(false),road=new Array(GW*GH).fill(false);
+  for(let i=0;i<n;i++){cl_[ORD[i].i]=true;road[ORD[i].i]=ORD[i].road}
+  const st=analisa(cl_);S.st=st;pan(G.g);pan(G.p);cab('Paisagem vista de cima',G.g);cab('Números',G.p);
+  const cs=Math.min((G.g.w-12)/GW,(G.g.h-34)/GH);G.g.y+=12;
+  grade(G.g,cs,0,(x,y,px,py)=>{const i=y*GW+x;rr(px+.5,py+.5,cs-1,cs-1,2,cl_[i]?(road[i]?rgba(C.solo,.8):rgba(C.oliva,.5)):st.bor[i]?C.c1:tom(C.prod,-.3))});
+  G.g.y-=12;const p=G.p,tot=GW*GH,rows=[['floresta restante',Math.round(st.fl/tot*100)+'%',C.prod],['floresta de interior',Math.round(st.inn/tot*100)+'%',tom(C.prod,-.1)],['fragmentos',String(st.nf),C.calor]];
+  if(M){rows.forEach((r,i)=>{const x=p.x+p.w*(i+.5)/3;tx(r[1],x,p.y+p.h*.48,{f:FD,s:20,w:500,c:r[2],fx:false});tx(r[0],x,p.y+p.h*.48+22,{s:12,c:C.dim,fx:false})})}
+  else{rows.forEach((r,i)=>{const y=p.y+60+i*74;tx(r[1],p.x+16,y,{a:'left',f:FD,s:30,w:500,c:r[2],fx:false});tx(r[0],p.x+16,y+28,{a:'left',s:13,c:C.dim,fx:false})})}
+  const ly=M?p.y+p.h-14:p.y+300;[[tom(C.prod,-.3),'interior'],[C.c1,'borda'],[rgba(C.oliva,.5),'pasto'],[rgba(C.solo,.8),'estrada']].forEach((q,i)=>{const x=M?p.x+10+i*(p.w/4):p.x+16,y=M?ly:ly+i*18;rr(x,y-6,12,12,3,q[0]);tx(q[1],x+18,y,{a:'left',s:12,c:C.dim,fx:false})})}
+ ,d:`<p>O desmatamento no Brasil acontece sobretudo para abrir pasto e lavoura, quase sempre seguido de <b>queimada</b>. Os números vêm de satélites: o <b>PRODES/INPE</b> mede o corte raso de floresta na Amazônia e no Cerrado a cada ano (agosto a julho); o <b>MapBiomas</b> mapeia o uso da terra em todos os biomas. Entre agosto de 2024 e julho de 2025, a Amazônia perdeu cerca de 6 mil km² e o Cerrado cerca de 7 mil km² (PRODES/INPE, 2025).</p><p>Além da área perdida, o desmatamento <b>fragmenta</b> a mata em ilhas. Cada fragmento tem <b>efeito de borda</b>: mais luz, vento, calor e secura numa faixa de dezenas de metros, onde espécies de interior não sobrevivem. Fragmentos pequenos e isolados perdem espécies, porque animais não passam de um para outro. Consequências: perda de biodiversidade, erosão e assoreamento de rios, menos chuva levada pelos "rios voadores" da Amazônia para o Centro-Sul, mais CO₂ no ar.</p>`,
+ kv:[['Principais causas','pecuária e agricultura'],['Medição','PRODES/INPE e MapBiomas'],['Efeito de borda','faixa mais seca e quente'],['Fragmentos isolados','perdem espécies']],
+ enem:'A prova traz mapas ou gráficos de desmatamento e pede a leitura, ou compara dois fragmentos de mesma área total e pergunta qual conserva mais espécies (o maior, mais arredondado e conectado). Cai também a ligação entre desmatamento da Amazônia e chuvas no Sudeste.',
+ links:[['Sucessão secundária','#sucessao/secundaria'],['Ciclo da água','#ciclos/agua'],['Efeito estufa','#impactos/estufa'],['Unidades de conservação','#impactos/conservacao']]});
+
+// ---------- N4. Espécies exóticas invasoras ----------
+const INV=(m,g)=>m==='sem'?[1/(1+99*Math.exp(-.5*g)),0]:[.02+.12*(1-Math.exp(-g/4))+.04*Math.exp(-g/6)*Math.sin(g*.8),0];
+def('impactos','invasoras',{t:'Espécies exóticas invasoras',s:'sem inimigos naturais, crescem sem freio',c:C.calor,onde:'Lago, esquema com o mexilhão-dourado',pv:10,
+ optL:'Situação',opts:()=>[{id:'sem',t:'Sem inimigo natural'},{id:'com',t:'Com inimigo natural'}],
+ init(S){S.o='sem';S.tt=RM?20:0},pick(id,S){S.o=id;S.tt=RM?20:0},
+ ctl:{l:'Velocidade do tempo',min:1,max:3,step:1,v:2,f:v=>['lenta','média','rápida'][v-1]},
+ cap:S=>{const g=S.g||0;if(S.o==='sem')return g<3?'Alguns mexilhões chegam na <b>água de lastro</b> de um navio. As espécies nativas ainda não sentem a mudança.':g<12?'Sem predadores e sem competidores, a invasora cresce quase em <b>curva J</b>: cobre pedras, tubos e cascos.':'A invasora ocupa quase todo o espaço e as espécies <b>nativas</b> perdem lugar e alimento.';
+  return g<3?'Alguns mexilhões chegam na água de lastro de um navio.':'Com um <b>inimigo natural</b>, a invasora cresce pouco e se estabiliza em número baixo. As nativas seguem no lago.'},
+ draw(t,S){const[A,B]=caixas();if(S.dt)S.tt+=S.dt*S.v;const g=S.tt*1.4;S.g=g;const[N]=INV(S.o,g),M2=S.o==='sem'?1-.85*N:1-.12*N;pan(A);pan(B);cab('Lago',A);cab('População no tempo',B);
+  const sy=A.y+A.h*(M?.38:.3),fl=A.y+A.h*.92,r=rng(8);X.fillStyle=rgba(C.agua,.22);X.fillRect(A.x+2,sy,A.w-4,fl-sy);line(A.x+2,sy,A.x+A.w-2,sy,rgba(C.agua,.8),1.5);
+  // navio
+  poly([[A.x+A.w*.04,sy-A.h*.14],[A.x+A.w*.3,sy-A.h*.14],[A.x+A.w*.26,sy+A.h*.06],[A.x+A.w*.08,sy+A.h*.06]],'#2C3757',C.carb,1.5);rr(A.x+A.w*.12,sy-A.h*.22,A.w*.1,A.h*.08,2,'#2C3757',C.carb,1);
+  if(g<2)for(let i=0;i<6;i++){const u=(g*.8+i/6)%1;circ(A.x+A.w*(.12+i*.025),sy+A.h*.08+u*A.h*.2,2.5,C.calor)}
+  // pedras e tubo
+  [[.3,.1],[.55,.12],[.8,.1]].forEach(q=>ell(A.x+A.w*q[0]+A.w*.07,fl-A.h*.03,A.w*.07,A.h*.06,0,'#2E3652'));
+  rr(A.x+A.w*.72,fl-A.h*.3,A.w*.24,A.h*.06,3,'#3A4468',C.carb,1);lab('tubo da usina',A.x+A.w*.84,fl-A.h*.38,C.carb);
+  // mexilhões
+  const pts=[];for(let i=0;i<90;i++){const c=Math.floor(r()*4);let x,y;if(c===0){const a=r()*PI;x=A.x+A.w*(.37+.07*Math.cos(a));y=fl-A.h*.03-A.h*.06*Math.sin(a)}else if(c===1){const a=r()*PI;x=A.x+A.w*(.62+.07*Math.cos(a));y=fl-A.h*.03-A.h*.06*Math.sin(a)}else if(c===2){x=A.x+A.w*(.72+.24*r());y=fl-A.h*.3+(r()-.5)*A.h*.08}else{x=A.x+A.w*(.04+.26*r());y=sy+A.h*.06+(r()-.5)*A.h*.03}pts.push([x,y])}
+  const nm=Math.round(N*90);for(let i=0;i<nm;i++)ell(pts[i][0],pts[i][1],5.5,3.6,.4,C.calor,tom(C.calor,-.4),1);
+  // peixes nativos e inimigo natural
+  const nn=Math.round(6*M2+.4);for(let i=0;i<nn;i++){const x=A.x+A.w*(.15+.7*((i*37)%100)/100)+Math.sin(t*.7+i)*A.w*.04,y=sy+A.h*(.12+.34*((i*23)%100)/100);peixe(x,y,Math.min(A.w*.07,26),C.prod,{t:t,flip:i%2})}
+  if(S.o==='com')peixe(A.x+A.w*.5+Math.sin(t*.5)*A.w*.2,fl-A.h*.2,Math.min(A.w*.1,38),C.c3,{t:t,flip:Math.cos(t*.5)>0?0:1});
+  lab('nativos',A.x+A.w*.3,sy+A.h*.1,C.prod);lab('exótica',A.x+A.w*.5,fl-A.h*.16,C.calor);if(S.o==='com')lab('inimigo natural',A.x+A.w*.5+Math.sin(t*.5)*A.w*.2,fl-A.h*.2-26,C.c3);if(g<2)lab('água de lastro',A.x+A.w*.2,sy+A.h*.28,C.calor);
+  // gráfico
+  const x0=B.x+(M?44:52),x1=B.x+B.w-18,y0=B.y+B.h-30,y1=B.y+44,TT=22,px=u=>x0+u/TT*(x1-x0),py=v=>y0-cl(v,0,1)*(y0-y1);eixos(x0,y0,x1,y1,'tempo','população');
+  [[0,C.calor],[1,C.prod]].forEach(q=>{X.beginPath();for(let i=0;i<=110;i++){const u=i/110*TT;if(u>g)break;const v=q[0]?(S.o==='sem'?1-.85*INV('sem',u)[0]:1-.12*INV('com',u)[0]):INV(S.o,u)[0];i?X.lineTo(px(u),py(v)):X.moveTo(px(u),py(v))}X.strokeStyle=q[1];X.lineWidth=3;X.lineJoin='round';X.stroke()});
+  tx('exótica',x0+100,y1+4,{a:'left',s:12,c:C.calor,w:700,bg:true,fx:false});tx('nativas',x0+170,y1+4,{a:'left',s:12,c:C.prod,w:700,bg:true,fx:false});
+  const gc=Math.min(g,TT);circ(px(gc),py(N),4.5,C.calor);circ(px(gc),py(M2),4.5,C.prod)}
+ ,d:`<p>Uma espécie é <b>exótica</b> quando vive fora da sua região de origem, levada pelo ser humano. Torna-se <b>invasora</b> quando se espalha e prejudica as nativas. No novo ambiente, ela costuma não ter <b>predadores, parasitas e competidores</b> que a controlavam, e sua população cresce quase em curva J.</p><p>Exemplos no Brasil: <b>mexilhão-dourado</b> (veio da Ásia na água de lastro de navios e entope tubulações de hidrelétricas), <b>coral-sol</b> (no litoral, compete com corais nativos), <b>javali</b> (destrói lavouras e nascentes), <b>caramujo-africano</b>, <b>braquiária</b> (capim africano que domina o Cerrado) e o <b>peixe-leão</b> (chegou ao litoral do Nordeste em 2020).</p><p>A invasão biológica é uma das principais causas de perda de biodiversidade. Prevenir é muito mais barato que erradicar; o <b>controle biológico</b> com inimigo natural só pode ser feito após estudos, porque o próprio controlador pode virar invasor.</p>`,
+ kv:[['Exótica','fora da região de origem'],['Invasora','exótica que causa dano'],['Por que explode','sem inimigos naturais'],['Exemplo clássico','mexilhão-dourado (água de lastro)']],
+ enem:'Pergunta típica: por que a espécie introduzida cresceu tanto (ausência de predadores e competidores) e qual o risco de introduzir um predador para controlá-la. Cai também a distinção entre exótica e invasora e o caso do caramujo-africano, levado para criação e abandonado.',
+ links:[['Crescimento populacional','#populacoes/crescimento'],['Predador e presa','#populacoes/predador'],['Competição','#relacoes/desarmonicas']]});
+
+// ---------- N5. Unidades de conservação ----------
+const LM=['..................','.FFFFF......FFFF..','.FFFFF......FFFF..','.FFFFF......FFFF..','.FFFFF......FFFF..','..................','..................','..FFFFF...........','..FFFFF....FFFF...','..FFFFF....FFFF...','..FFFFF....FFFF...','..................'];
+const RIO=[9,9,9,9,9,8,8,9,9,10,10,10],COR=(()=>{const o=[];for(let x=3;x<=13;x++)o.push([x,5]);o.push([5,6],[13,6],[13,7]);return o})();
+function mapaUC(S){const n=GW*GH,f=new Array(n).fill(false),frag=new Array(n).fill(-1),rio=new Array(n).fill(false),ci=new Array(n).fill(false),co=new Array(n).fill(false);
+ LM.forEach((s,y)=>[...s].forEach((c,x)=>{if(c==='F'){f[y*GW+x]=true}}));
+ const A=[[1,2],[6,5]],ids=[[1,1,5,4],[12,1,15,4],[2,7,6,10],[11,8,14,10]];ids.forEach((q,k)=>{for(let y=q[1];y<=q[3];y++)for(let x=q[0];x<=q[2];x++)frag[y*GW+x]=k});
+ RIO.forEach((x,y)=>{rio[y*GW+x]=true;if(S.ap.ci)[x-1,x+1].forEach(xx=>{if(!f[y*GW+xx]){f[y*GW+xx]=true;ci[y*GW+xx]=true}})});
+ if(S.ap.co)COR.forEach(q=>{const i=q[1]*GW+q[0];if(!rio[i]&&!f[i]){f[i]=true;co[i]=true}});
+ const comp=new Array(n).fill(-1);let nc=0;for(let i=0;i<n;i++){if(!f[i]||comp[i]>=0)continue;const st=[i];comp[i]=nc;while(st.length){const c=st.pop(),x=c%GW,y=(c/GW)|0;[[1,0],[-1,0],[0,1],[0,-1]].forEach(q=>{const xx=x+q[0],yy=y+q[1];if(xx<0||yy<0||xx>=GW||yy>=GH)return;const j=yy*GW+xx;if(f[j]&&comp[j]<0){comp[j]=nc;st.push(j)}})}nc++}
+ const cnt={};ids.forEach((q,k)=>{const c=comp[q[1]*GW+q[0]];cnt[c]=(cnt[c]||0)+1});const lig=Math.max.apply(null,Object.keys(cnt).map(k=>cnt[k]));
+ // rota da onça entre fragmento 0 e 1
+ let rota=null;const a=ids[0][1]*GW+ids[0][0]+2*GW+2,b=ids[1][1]*GW+ids[1][0]+2*GW+1;if(comp[a]>=0&&comp[a]===comp[b]){const pr={};pr[a]=-1;const q=[a];while(q.length){const c=q.shift();if(c===b)break;const x=c%GW,y=(c/GW)|0;[[1,0],[-1,0],[0,1],[0,-1]].forEach(d=>{const xx=x+d[0],yy=y+d[1];if(xx<0||yy<0||xx>=GW||yy>=GH)return;const j=yy*GW+xx;if(f[j]&&pr[j]===undefined){pr[j]=c;q.push(j)}})}rota=[];for(let c=b;c!==-1;c=pr[c])rota.unshift([c%GW,(c/GW)|0])}
+ return{f:f,frag:frag,rio:rio,ci:ci,co:co,lig:lig,rota:rota}}
+def('impactos','conservacao',{t:'Unidades de conservação',s:'proteger áreas e ligar fragmentos',c:C.agua,onde:'Paisagem esquemática, vista de cima',ondeCurto:true,pv:10,multi:true,
+ optL:'Medidas de proteção',opts:()=>[{id:'uc',t:'Unidade de conservação'},{id:'ci',t:'Mata ciliar'},{id:'co',t:'Corredor ecológico'}],
+ init(S){S.ap={uc:false,ci:false,co:false};S.cim=0;S.tur=1},sel:S=>S.ap,pick(id,S){S.ap[id]=!S.ap[id]},
+ ctl:S=>S.ap.uc?{k:'uc',l:'Tipo de unidade',min:0,max:1,step:1,v:0,f:v=>v?'Uso sustentável':'Proteção integral'}:null,
+ cap:S=>{const a=S.ap,p=[];if(!a.uc&&!a.ci&&!a.co)return'A paisagem está fragmentada e o rio corre barrento. Toque numa medida para aplicá-la.';
+  if(a.uc)p.push(S.v===1?'A <b>unidade de uso sustentável</b> admite moradores e extrativismo controlado.':'A <b>unidade de proteção integral</b> admite só pesquisa e visitação.');
+  if(a.ci)p.push('A <b>mata ciliar</b> segura o solo e o rio clareia.');if(a.co)p.push('O <b>corredor ecológico</b> liga os fragmentos e os animais passam de um ao outro.');return p.join(' ')},
+ draw(t,S){const ta=Math.max(0,t-S.a0),a=S.dt?Math.min(1,S.dt*1.2):1;S.cim+=((S.ap.ci?1:0)-S.cim)*a;const m=mapaUC(S),G=geoPaisagem();pan(G.g);pan(G.p);cab('Paisagem vista de cima',G.g);cab('Resultado',G.p);
+  const cs=Math.min((G.g.w-12)/GW,(G.g.h-34)/GH),gg={x:G.g.x,y:G.g.y+12,w:G.g.w,h:G.g.h},ox=gg.x+(gg.w-cs*GW)/2,oy=gg.y+(gg.h-cs*GH)/2,cx=(x,y)=>[ox+(x+.5)*cs,oy+(y+.5)*cs];
+  const rc=S.ap.ci?lerp(0,1,S.cim):0,col=rc>.5?C.agua:C.solo;
+  grade(gg,cs,0,(x,y,px,py)=>{const i=y*GW+x;let c=rgba(C.oliva,.4);if(m.f[i])c=m.ci[i]?rgba(C.prod,.35+.65*S.cim):m.co[i]?rgba(C.prod,.35+.65*S.cim):tom(C.prod,-.3);if(m.rio[i])c=rc>.5?rgba(C.agua,.9):rgba(C.solo,.9);rr(px+.5,py+.5,cs-1,cs-1,2,c)});
+  if(!S.ap.ci&&!M)for(let i=0;i<6;i++){RIO.forEach((x,y)=>{if(y%2===i%2){const p=cx(x,y);circ(p[0]+Math.sin(t+i+y)*3,p[1]+((t*8+i*9)%cs)-cs/2,1.5,C.solo)}})}
+  if(S.ap.uc){const q=[1,1,5,4],x0=ox+q[0]*cs,y0=oy+q[1]*cs,w=(q[2]-q[0]+1)*cs,h=(q[3]-q[1]+1)*cs;X.save();X.setLineDash([7,5]);rr(x0-3,y0-3,w+6,h+6,6,null,C.agua,2.5);X.restore();rr(x0+w/2-16,y0-3-19,32,18,9,C.agua);tx('UC',x0+w/2,y0-3-10,{f:FH,s:12,w:700,c:C.noite,fx:false});
+   if(S.v===1){[[2,2],[4,3]].forEach(q=>{const p=cx(q[0],q[1]);rr(p[0]-cs*.25,p[1]-cs*.1,cs*.5,cs*.3,2,C.solo);poly([[p[0]-cs*.32,p[1]-cs*.1],[p[0],p[1]-cs*.38],[p[0]+cs*.32,p[1]-cs*.1]],C.c2)});X.save();X.setLineDash([3,4]);X.beginPath();const a1=cx(2,3),a2=cx(3,2),a3=cx(4,3);X.moveTo(a1[0],a1[1]);X.lineTo(a2[0],a2[1]);X.lineTo(a3[0],a3[1]);X.strokeStyle=C.creme;X.lineWidth=1.5;X.stroke();X.restore();lab('moradores e trilhas',x0+w/2,y0+h+12,C.creme)}}
+  // animais
+  const route=m.rota;let px,py;if(route&&route.length>1){const L=route.length-1,s=pong(ta*.9,L),i0=Math.min(L-1,Math.floor(s)),f=s-i0,a0=cx(route[i0][0],route[i0][1]),a1=cx(route[i0+1][0],route[i0+1][1]);px=lerp(a0[0],a1[0],f);py=lerp(a0[1],a1[1],f)}else{const c0=cx(3,2.5);px=c0[0]+Math.sin(ta*.8)*cs*1.6;py=c0[1]+Math.cos(ta*.6)*cs*.9}
+  ser('onca',px,py+cs*.35,cs*1.1,C.c1,t,false);[0,1].forEach(i=>{const bx2=route?px+Math.sin(ta*1.3+i*3)*cs*.6:cx(2+i*2,2)[0]+Math.sin(ta*1.1+i)*cs*.5,by2=route?py-cs*.5+Math.cos(ta*1.5+i)*cs*.3:cx(2,2+i)[1]+Math.cos(ta*.9+i)*cs*.4;aveVoo(bx2,by2,cs*.55,C.creme,t)});
+  lab('onça',px,py-cs*.55,C.c1);
+  // painel
+  const p=G.p,tur=S.ap.ci?(S.cim>.7?'baixa':'média'):'alta',rows=[['fragmentos ligados',m.lig+' de 4',C.prod],['turbidez do rio',tur,col]];
+  if(M){rows.forEach((r,i)=>{const x=p.x+p.w*(i+.5)/2;tx(r[1],x,p.y+p.h*.42,{f:FD,s:18,w:500,c:r[2],fx:false});tx(r[0],x,p.y+p.h*.42+20,{s:12,c:C.dim,fx:false})})}
+  else{rows.forEach((r,i)=>{const y=p.y+60+i*74;tx(r[1],p.x+16,y,{a:'left',f:FD,s:28,w:500,c:r[2],fx:false});tx(r[0],p.x+16,y+28,{a:'left',s:13,c:C.dim,fx:false})})}
+  const ly=M?p.y+p.h-14:p.y+220;[[tom(C.prod,-.3),'mata'],[rgba(C.oliva,.4),'pasto'],[rc>.5?C.agua:C.solo,'rio'],[C.agua,'contorno tracejado: unidade']].slice(0,M?3:4).forEach((q,i)=>{const x=M?p.x+10+i*(p.w/3):p.x+16,y=M?ly:ly+i*18;rr(x,y-6,12,12,3,q[0]);tx(q[1],x+18,y,{a:'left',s:12,c:C.dim,fx:false})})}
+ ,d:`<p>O <b>SNUC</b> (Sistema Nacional de Unidades de Conservação, Lei 9.985 de 2000) divide as áreas protegidas em dois grupos. <b>Proteção integral</b>: só uso indireto, como pesquisa e visitação (parque nacional, reserva biológica, estação ecológica). <b>Uso sustentável</b>: permite moradores e uso controlado dos recursos (reserva extrativista, área de proteção ambiental, floresta nacional). As <b>terras indígenas</b>, embora não sejam unidades de conservação, estão entre as áreas mais preservadas do país.</p><p>Em propriedades privadas, o <b>Código Florestal</b> (Lei 12.651 de 2012) exige <b>áreas de preservação permanente</b> (APP), como a mata ciliar ao longo dos rios e os topos de morro, e uma <b>reserva legal</b> (80% do imóvel na Amazônia, 20% na maior parte do país). <b>Corredores ecológicos</b> ligam fragmentos e deixam os animais circularem, o que mantém o fluxo de genes entre as populações.</p>`,
+ kv:[['Proteção integral','parque nacional, reserva biológica'],['Uso sustentável','reserva extrativista, APA'],['Mata ciliar','APP que protege rios do assoreamento'],['Corredor ecológico','liga fragmentos, mantém fluxo gênico']],
+ enem:'A prova pede a categoria certa para uma situação (comunidade extrativista que vive da floresta: reserva extrativista, de uso sustentável) ou a função da mata ciliar e do corredor ecológico. Chico Mendes e as reservas extrativistas aparecem em questões de Ciências Humanas e de Biologia.',
+ links:[['Desmatamento e fragmentação','#impactos/desmatamento'],['Sucessão secundária','#sucessao/secundaria'],['Os seis biomas do Brasil','#biomas/mapa']]});
+
 
 // ================= Interface =================
 const ST={};let cur=null,paused=false,tm=0,last=performance.now(),capTxt=null;
@@ -767,22 +1165,27 @@ const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').match
 const ALL=SEC.reduce((a,s)=>a.concat(ORDER[s.id]),[]);
 $('secs').innerHTML=SEC.map(s=>'<button type="button" data-s="'+s.id+'"><i style="background:'+s.c+'"></i>'+s.t+'</button>').join('');
 $('secs').onclick=e=>{const b=e.target.closest('button');if(b)go(ORDER[b.dataset.s][0])};
-function pintaOpts(){const o=SC[cur],S=ST[cur];[].forEach.call($('opts').children,b=>{const on=o.multi?!!o.sel(S)[b.dataset.id]:S.o===b.dataset.id;b.setAttribute('aria-pressed',on)})}
-function escolhe(id){const o=SC[cur],S=ST[cur];if(o.pick)o.pick(id,S);else S.o=id;pintaOpts()}
-function go(key,op){const o=SC[key];if(!o)return;op=op||{};cur=key;const S=ST[key]={t0:tm,dt:0,touched:false};if(o.ctl)S.v=o.ctl.v;if(o.init)o.init(S);
+function pintaOpts(){const o=SC[cur],S=ST[cur];[].forEach.call($('opts').querySelectorAll('button'),b=>{const on=o.multi?!!o.sel(S)[b.dataset.id]:S.o===b.dataset.id;b.setAttribute('aria-pressed',on)})}
+const CT=(o,S)=>typeof o.ctl==='function'?o.ctl(S):o.ctl;
+function ctlSet(v){const o=SC[cur],S=ST[cur],c=CT(o,S);if(!c)return;S.v=v;$('ctlR').value=v;$('ctlV').textContent=c.f(v);$('ctlR').setAttribute('aria-valuetext',c.f(v))}
+function syncCtl(){const o=SC[cur],S=ST[cur],c=CT(o,S),el=$('ctl');if(!c){el.hidden=true;return}
+ const k=c.k||'';if(S.ck!==k){S.ck=k;S.v=c.v;S.touched=false}const r=$('ctlR');r.min=c.min;r.max=c.max;r.step=c.step;r.value=S.v;$('ctlL').textContent=c.l;$('ctlV').textContent=c.f(S.v);r.setAttribute('aria-valuetext',c.f(S.v));el.hidden=false}
+function pintaBotoes(){const o=SC[cur],S=ST[cur],ops=o.opts?o.opts(S):null;$('opts').hidden=!ops;$('opts').innerHTML=ops?ops.map(q=>(q.g?'<span class="og">'+q.g+'</span>':'')+'<button type="button" data-id="'+q.id+'" aria-pressed="false">'+(q.n?'<em>'+q.n+'</em>':'')+q.t+'</button>').join(''):'';if(ops)pintaOpts()}
+function escolhe(id){const o=SC[cur],S=ST[cur];S.a0=tm-S.t0;if(o.pick)o.pick(id,S);else S.o=id;if(o.dyn)pintaBotoes();else pintaOpts();syncCtl()}
+function go(key,op){const o=SC[key];if(!o)return;op=op||{};if(cur&&SC[cur].sair)try{SC[cur].sair()}catch(e){console.error(e)}cur=key;// cenas 3D liberam o palco WebGL
+const S=ST[key]={t0:tm,dt:0,touched:false,a0:0,ck:null,v:0};if(o.init)o.init(S);
  const sec=SEC.find(s=>s.id===o.sec),ops=o.opts?o.opts(S):null;if(ops&&!o.multi&&S.o==null)S.o=ops[0].id;
  [].forEach.call($('secs').children,b=>{const on=b.dataset.s===o.sec;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(on&&b.scrollIntoView&&$('secs').scrollWidth>$('secs').clientWidth)$('secs').scrollLeft=Math.max(0,b.offsetLeft-$('secs').offsetLeft-24)});
  $('tops').innerHTML=ORDER[o.sec].map((k,i)=>'<button type="button" data-k="'+k+'" class="'+(k===key?'on':'')+'"'+(k===key?' aria-current="true"':'')+'><em>'+String(i+1).padStart(2,'0')+'</em><span>'+SC[k].t+'<small>'+SC[k].s+'</small></span></button>').join('');
  $('topL').textContent=sec.t+': escolha um tópico';$('iS').textContent=sec.t;$('iD').style.background=o.c;$('iT').textContent=o.t;$('desc').innerHTML=o.d;$('enemT').innerHTML=o.enem;
  $('kv').innerHTML=o.kv.map(q=>'<div>'+q[0]+'</div><div>'+q[1]+'</div>').join('');$('links').innerHTML=o.links.map(q=>'<a class="btn" href="'+q[1]+'">'+q[0]+'</a>').join('');
- $('tagC').style.background=o.c;$('tagT').textContent=o.t;$('ondeV').textContent=o.onde;cv.setAttribute('aria-label','Animação: '+o.t+', '+o.s+'. A legenda abaixo descreve o que está acontecendo.');
- $('opts').hidden=!ops;$('opts').setAttribute('aria-label',o.optL||'Opções');$('opts').innerHTML=ops?ops.map(q=>'<button type="button" data-id="'+q.id+'" aria-pressed="false">'+(q.n?'<em>'+q.n+'</em>':'')+q.t+'</button>').join(''):'';if(ops)pintaOpts();
- const c=o.ctl;$('ctl').hidden=!c;if(c){const r=$('ctlR');r.min=c.min;r.max=c.max;r.step=c.step;r.value=S.v;$('ctlL').textContent=c.l;$('ctlV').textContent=c.f(S.v);r.setAttribute('aria-valuetext',c.f(S.v))}
- capTxt=null;document.title=o.t+' · Ecologia · LAB';try{history.replaceState(null,'','#'+key)}catch(e){}
+ $('tagC').style.background=o.c;$('tagT').textContent=o.t;$('ondeV').textContent=o.onde;$('ondeV').parentNode.classList.toggle('cc',!!o.ondeCurto);cv.setAttribute('aria-label','Animação: '+o.t+', '+o.s+'. A legenda abaixo descreve o que está acontecendo.');
+ $('opts').setAttribute('aria-label',o.optL||'Opções');pintaBotoes();syncCtl();
+ capTxt=null;document.title=o.t+' | Ecologia | LAB';try{history.replaceState(null,'','#'+key)}catch(e){}
  if(op.rola){const r=$('palco').getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)$('palco').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}}
 $('tops').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.k,{rola:true})};
 $('opts').onclick=e=>{const b=e.target.closest('button');if(b)escolhe(b.dataset.id)};
-$('ctlR').oninput=e=>{const o=SC[cur],S=ST[cur];S.v=+e.target.value;S.touched=true;$('ctlV').textContent=o.ctl.f(S.v);e.target.setAttribute('aria-valuetext',o.ctl.f(S.v))};
+$('ctlR').oninput=e=>{const o=SC[cur],S=ST[cur],c=CT(o,S);S.v=+e.target.value;S.touched=true;$('ctlV').textContent=c.f(S.v);e.target.setAttribute('aria-valuetext',c.f(S.v))};
 $('lbls').onclick=()=>{LB=!LB;$('lbls').setAttribute('aria-pressed',LB)};
 function setP(v){paused=v;const b=$('pause'),s=v?'Continuar a animação':'Pausar a animação';b.setAttribute('aria-pressed',v);b.title=s;b.setAttribute('aria-label',s);b.innerHTML='<svg aria-hidden="true"><use href="#'+(v?'ui-continuar':'ui-pausar')+'"/></svg><span class="tx">'+(v?'Continuar':'Pausar')+'</span>'}
 $('pause').onclick=()=>setP(!paused);$('reset').onclick=()=>go(cur);
@@ -795,15 +1198,33 @@ cv.addEventListener('mousemove',e=>{const o=SC[cur];if(!o.hit){cv.classList.remo
 function rota(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}return SC[h]?h:ORDER[h]?ORDER[h][0]:null}
 addEventListener('hashchange',()=>{const k=rota();if(k&&k!==cur)go(k,{rola:true})});
 function quadro(now){const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;if(!paused)tm+=dt;const o=SC[cur],S=ST[cur];S.dt=paused?0:dt;const lt=tm-S.t0+(RM?(o.pv||0):0);
- if(o.ctl&&o.ctl.auto&&!S.touched){const v=o.ctl.min+Math.floor(lt/o.ctl.auto)%(o.ctl.max-o.ctl.min+1);if(v!==S.v){S.v=v;$('ctlR').value=v;$('ctlV').textContent=o.ctl.f(v);$('ctlR').setAttribute('aria-valuetext',o.ctl.f(v))}}
+ const cc=CT(o,S);if(cc&&cc.auto&&!S.touched){const v=cc.min+Math.floor(lt/cc.auto)%(cc.max-cc.min+1);if(v!==S.v)ctlSet(v)}
  X.clearRect(0,0,W,H);X.save();try{o.draw(lt,S)}catch(err){console.error(err)}X.restore();X.globalAlpha=1;X.setLineDash([]);
  const c=o.cap?o.cap(S):'';if(c!==capTxt){capTxt=c;$('cap').innerHTML=c}
  requestAnimationFrame(quadro)}
 fit();addEventListener('resize',fit);if(window.ResizeObserver)new ResizeObserver(fit).observe(cv);
 if(RM)setP(true);
-go(rota()||'niveis/escada');
-requestAnimationFrame(quadro);
+// ganchos das cenas 3D (cenas3d-*.js): ponte para o kit e partida depois que os arquivos das cenas carregam
+window.LAB_ECO={SC,ST,ORDER,C,FT,FH,FD,PIR,F_C,F_N,F_A,tx,lab,rgba,escolhe,ctlSet,get X(){return X},set X(v){X=v},get W(){return W},get H(){return H},get M(){return M},get LB(){return LB},get paused(){return paused},get cur(){return cur}};
+let partiu=false;window.LAB_ECO_iniciar=()=>{if(partiu)return;partiu=true;go(rota()||'niveis/escada');requestAnimationFrame(quadro)};
+addEventListener('load',window.LAB_ECO_iniciar);
 })();
 </script>
+<script src="eco3d-ponte.js"></script>
+<script src="../biologia-molecular/mol3d.js"></script>
+<script src="../virus/vir3d.js"></script>
+<script src="../virus/vir3d-pecas.js"></script>
+<script src="../plantas-animais/plantas3d-pecas.js"></script>
+<script src="eco3d-pecas.js"></script>
+<script src="cenas3d-teias.js"></script>
+<script src="cenas3d-ciclos.js"></script>
+<script src="cenas3d-populacoes.js"></script>
+<script src="../biologia-molecular/figura-ia.js"></script>
+<script src="../biologia-molecular/figura-alterna.js"></script>
+<script src="cenas-figura.js"></script>
+<script src="cenas-figura-v2.js"></script>
+<script src="cenas-figura-ciclos.js"></script>
+<script src="cenas-figura-ciclos2.js"></script>
+<script>LAB_ECO_iniciar();</script>
 </body>
 </html>

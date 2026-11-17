@@ -174,7 +174,9 @@ function LAB_EMBRIO_iniciar() {
   const fresh = o => ({ ph: paused ? (o.still == null ? 2.5 : o.still) : 0, v: paused && o.stillV != null ? o.stillV : o.ctl.v, dt: 0 });
   function setCtl(o, S) { const c = o.ctl, r = $('ctlR'); r.min = c.min; r.max = c.max; r.step = c.step; r.value = S.v; $('ctlL').textContent = c.l; $('ctlV').textContent = c.f(S.v); r.setAttribute('aria-valuetext', c.f(S.v)); }
   function go(key, force, keepHash) {
-    const o = SC[key]; if (!o) return; const re = key === cur; cur = key;
+    const o = SC[key]; if (!o) return; const re = key === cur;
+    if (cur && !re && SC[cur] && SC[cur].sair) try { SC[cur].sair(); } catch (e) { console.error(e); }   // cenas 3D liberam o palco WebGL
+    cur = key;
     if (!ST[key] || force || !re) ST[key] = fresh(o); const S = ST[key]; if (o.init) o.init(S);
     const sec = SEC.find(s => s.id === o.sec);
     [...$('secs').children].forEach(b => { const on = b.dataset.s === o.sec; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); if (on && b.scrollIntoView && $('secs').scrollWidth > $('secs').clientWidth) $('secs').scrollLeft = Math.max(0, b.offsetLeft - 24); });
@@ -189,7 +191,7 @@ function LAB_EMBRIO_iniciar() {
     setCtl(o, S); $('ctlR').parentNode.hidden = !!o.noCtl; capLast = null; cap('');
     // botões extras do tópico: o.extra = [{ t, on(S), pressed(S) }]
     $('extra').innerHTML = (o.extra || []).map((b, i) => `<button type="button" data-i="${i}" aria-pressed="${b.pressed ? !!b.pressed(S) : false}">${b.t}</button>`).join('');
-    document.title = `${o.t} · Embriologia · LAB`;
+    document.title = `${o.t} | Embriologia | LAB`;
     if (!keepHash) try { history.replaceState(null, '', '#' + key); } catch (e) { /* file:// em navegadores antigos */ }
   }
   $('tops').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.k, true); };
@@ -229,6 +231,6 @@ function LAB_EMBRIO_iniciar() {
   }
   route(false);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(rs);
-  window.LAB_EMBRIO = { rotas: ALL, ir: k => go(k, true), pausar: setP, estado: () => ({ cur, paused, ph: cur ? ST[cur].ph : 0 }) };
+  window.LAB_EMBRIO = { rotas: ALL, ir: k => go(k, true), pausar: setP, estado: () => ({ cur, paused, ph: cur ? ST[cur].ph : 0 }), fase: v => { if (cur) ST[cur].ph = +v; } };
   requestAnimationFrame(frame);
 }

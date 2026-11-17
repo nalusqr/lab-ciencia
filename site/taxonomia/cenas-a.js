@@ -217,17 +217,24 @@
       // ---- livro: página de rosto (desenho próprio) ----
       const pw = stack ? Math.min(96, L.w * .26) : Math.min(150, L.w * .3), ph = stack ? Math.min(L.h * .8, pw * 1.45) : Math.min(L.h * .62, pw * 1.45);
       const bx = L.x, by = L.y + (stack ? L.h * .05 : 0);
+      const ano = sp.obra.match(/\d{4}/)[0], plant = /Plantarum/.test(sp.obra), tit = plant ? ['SPECIES', 'PLANTARUM'] : ['SYSTEMA', 'NATURAE'];
+      const livro3d = window.TAXO3D && TAXO3D.prop('livro', bx, by, pw, ph, { ano, tit, asp: pw / ph });
+      if (livro3d) {
+        const hy = by + ph + 26, hh = L.y + L.h - hy;
+        if (!stack && hh >= 70) TAXO3D.prop('herbario', bx, hy, pw, hh, { asp: pw / hh });
+      } else {
       rr(bx + 4, by + 4, pw, ph, 4, 'rgba(0,0,0,.35)');
       rr(bx, by, pw, ph, 4, C.papel, '#B9A57C', 1.5); rr(bx + 6, by + 6, pw - 12, ph - 12, 2, null, rgba(C.tinta, .5), 1);
       const tc = C.tinta;
       X.save(); X.beginPath(); X.rect(bx, by, pw, ph); X.clip();
       tx(pw < 120 ? 'LINNAEUS' : 'CAROLI LINNAEI', bx + pw / 2, by + ph * .14, { s: 12, w: 600, c: tc, bg: false, f: FH });
-      tx('SYSTEMA', bx + pw / 2, by + ph * .3, { s: stack ? 13 : 18, w: 700, c: tc, bg: false, f: FH });
-      tx('NATURAE', bx + pw / 2, by + ph * .3 + (stack ? 16 : 22), { s: stack ? 13 : 18, w: 700, c: tc, bg: false, f: FH });
+      tx(tit[0], bx + pw / 2, by + ph * .3, { s: stack ? 12 : plant ? 15 : 18, w: 700, c: tc, bg: false, f: FH });
+      tx(tit[1], bx + pw / 2, by + ph * .3 + (stack ? 16 : 22), { s: stack ? 12 : plant ? 15 : 18, w: 700, c: tc, bg: false, f: FH });
       const ey = by + ph * .62; for (let i = 0; i < 3; i++) line(bx + pw * .3, ey + i * 7, bx + pw * .7, ey + i * 7, rgba(tc, .45), 1.2);
       circ(bx + pw / 2, by + ph * .8, Math.min(pw, ph) * .07, null, rgba(tc, .6), 1.2);
-      tx(sp.obra.match(/\d{4}/)[0], bx + pw / 2, by + ph * .92, { s: 12, f: FD, w: 500, c: tc, bg: false });
+      tx(ano, bx + pw / 2, by + ph * .92, { s: 12, f: FD, w: 500, c: tc, bg: false });
       X.restore();
+      }
       tx('desenho próprio', bx + pw / 2, by + ph + 12, { s: 12, c: C.dim, bg: false });
       // ---- gavetas encaixadas ----
       const gx = bx + pw + (stack ? 10 : 18), gw = L.x + L.w - gx, gy = L.y, gh = L.h;
@@ -243,7 +250,8 @@
         const cw = tx(cat, x + slide + 24, ty, { s: NAR ? 12 : 13, w: 600, a: 'left', c: LCOR[i], bg: false });
         void cw;
         const vx = x + slide + 24 + tw(cat, NAR ? 12 : 13, 600) + 8;
-        const vw = mtx(val, vx, ty, { s: NAR ? 13 : 15, w: 700, a: 'left', c: C.txt, bg: false });
+        const vs = (NAR ? 13 : 15) * Math.min(1, Math.max(.7, (x + slide + w - 8 - vx) / Math.max(1, tw(val.replace(/<[^>]+>/g, ''), NAR ? 13 : 15, 700))));
+        const vw = mtx(val, vx, ty, { s: vs, w: 700, a: 'left', c: C.txt, bg: false });
         if (nota && w - (vx - x) - vw > tw(nota, 12) + 16) tx(`(${nota})`, vx + vw + 8, ty, { s: 12, a: 'left', c: C.dim, bg: false });
         X.restore();
       }

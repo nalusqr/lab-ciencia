@@ -1,0 +1,232 @@
+modulo;rota;classe;motivo curto;sugestao de figura
+biologia-molecular;comp/celula;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;comp/elementos;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;agua/molecula;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;agua/capilaridade;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;agua/calor;FRACA;praia feita de dois retângulos (areia, mar) e uma lua;foto IA de praia com areia e mar ao entardecer e outra à noite, em duas metades lado a lado
+biologia-molecular;agua/solvente;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;agua/teor;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;sais/funcoes;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;sais/osmose;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;carb/mono-di;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;carb/polissacarideos;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;lip/glicerideos;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;lip/classes;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;lip/colesterol;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;prot/aminoacidos;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;prot/peptidica;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;prot/niveis;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;prot/desnaturacao;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;enz/encaixe;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;enz/ativacao;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;enz/temperatura;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;enz/ph;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;enz/inibicao;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;vit/tipos;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;vit/avitaminoses;FRACA;boca com dentes e frutas desenhadas como ícones minúsculos;figura IA: gengiva com escorbuto (dentes e sangramento) ao lado de laranja, acerola e couve
+biologia-molecular;na/nucleotideo;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;na/pareamento;OK;molécula/gráfico/figura IA de qualidade;-
+biologia-molecular;na/dna-rna;OK;molécula/gráfico/figura IA de qualidade;-
+morfofisiologia;teoria/hooke;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;teoria/leeuwenhoek;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;teoria/schleiden;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;teoria/virchow;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;teoria/postulados;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;teoria/virus;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;tipos/lado;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;tipos/proc;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;tipos/euc;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;tipos/organelas;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;tipos/escala;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/mosaico;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/comp;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/fluidez;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/difusao;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/facilitada;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/osmose;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/bomba;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/endo;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;membranas/espec;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;origem/invag;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;origem/mito;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;origem/cloro;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;origem/evid;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/geral;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/poro;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/cromatina;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/eu;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/nucleolo;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+morfofisiologia;nucleo/cromossomos;OK;membrana, núcleo e organelas em 3D ou figura IA de qualidade;-
+celula;animal;OK;célula/organela em 3D, cena microscópica;-
+celula;vegetal;OK;célula/organela em 3D, cena microscópica;-
+celula;bacteria;OK;célula/organela em 3D, cena microscópica;-
+celula;neuronio;OK;célula/organela em 3D, cena microscópica;-
+celula;esperma;OK;célula/organela em 3D, cena microscópica;-
+celula;levedura;OK;célula/organela em 3D, cena microscópica;-
+celula;sangue;OK;célula/organela em 3D, cena microscópica;-
+celula;fago;OK;célula/organela em 3D, cena microscópica;-
+celula;nucleo;OK;célula/organela em 3D, cena microscópica;-
+celula;mitocondria;OK;célula/organela em 3D, cena microscópica;-
+celula;cloroplasto;OK;célula/organela em 3D, cena microscópica;-
+celula;re;OK;célula/organela em 3D, cena microscópica;-
+celula;golgi;OK;célula/organela em 3D, cena microscópica;-
+celula;lisossomo;OK;célula/organela em 3D, cena microscópica;-
+celula;ribossomo;OK;célula/organela em 3D, cena microscópica;-
+celula;membrana;OK;célula/organela em 3D, cena microscópica;-
+celula;citoesqueleto;OK;célula/organela em 3D, cena microscópica;-
+celula;centriolo;OK;célula/organela em 3D, cena microscópica;-
+celula;peroxissomo;OK;célula/organela em 3D, cena microscópica;-
+celula;vacuolo;OK;célula/organela em 3D, cena microscópica;-
+biologia;trilha;OK;página da trilha com a célula 3D de vitrine;-
+divisao-celular;cromossomos/estrutura;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;cromossomos/classificacao;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;cromossomos/cariotipo;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;cromossomos/homologos;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;ciclo/interfase;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;ciclo/checagem;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;ciclo/cancer;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;mitose/fases;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;mitose/citocinese;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;meiose/fases;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;meiose/crossing;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;meiose/segregacao;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;comparar/grafico;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;comparar/lado;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;erros/naodisjuncao;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;erros/aneuploidias;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;erros/euploidias;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;gametogenese/espermatogenese;OK;célula e cromossomos em 3D ou gráfico;-
+divisao-celular;gametogenese/ovogenese;OK;célula e cromossomos em 3D ou gráfico;-
+bioenergetica;atp/ciclo;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;atp/acoplamento;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;resp/geral;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;resp/glicolise;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;resp/krebs;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;resp/cadeia;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;resp/saldo;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;ferm/latica;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;ferm/alcoolica;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;foto/geral;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;foto/pigmentos;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;foto/clara;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;foto/calvin;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;fatores/luz;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;fatores/co2;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;fatores/temp;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;fatores/c4cam;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;relacao/ciclo;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;relacao/carbono;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;relacao/quimio;OK;molécula, gráfico, organela ou figura IA;-
+bioenergetica;relacao/comparar;OK;molécula, gráfico, organela ou figura IA;-
+embriologia;gametas/resumo;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;ovos/tipos;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;ovos/vitelo;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;desenvolvimento/segmentacao;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;desenvolvimento/morula;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;desenvolvimento/blastula;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;desenvolvimento/gastrula;FRACA;gástrula de bolas brancas em arco;figura IA: gástrula de anfioxo em corte com blastocele, ectoderme e endoderme
+embriologia;desenvolvimento/blastoporo;FRACA;gástrulas feitas de fileiras de bolas azuis;figura IA: dois cortes de gástrula (protostômio e deuterostômio) com blastóporo e arquêntero
+embriologia;desenvolvimento/folhetos;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;desenvolvimento/neurula;FRACA;folhetos como lajes de cor lisa;figura IA: corte transversal da nêurula com tubo neural, notocorda e somitos
+embriologia;desenvolvimento/organogenese;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;anexos/funcoes;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;anexos/amniotico;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;humano/fecundacao;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;humano/nidacao;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;humano/placenta;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;humano/gemeos;OK;figura IA de embrião, ovo ou útero de qualidade;-
+embriologia;humano/semanas;OK;figura IA de embrião, ovo ou útero de qualidade;-
+histologia;tecidos/visao;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;epitelial/revestimento;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;epitelial/glandular;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;conjuntivo/propriamente;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;conjuntivo/adiposo;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;conjuntivo/cartilagem;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;conjuntivo/osso;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;conjuntivo/ossificacao;FRACA;mesênquima como elipse e osso como barra branca;figura IA: modelo de cartilagem virando osso (centro de ossificação) e crânio intramembranoso
+histologia;sangue/elementos;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;sangue/coagulacao;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;muscular/tipos;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;muscular/sarcomero;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;muscular/contracao;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;muscular/energia;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;nervoso/neuronio;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;nervoso/glia;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;nervoso/impulso;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+histologia;nervoso/sinapse;OK;lâmina de microscopia IA ou estrutura microscópica 3D;-
+taxonomia;historia/aristoteles;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;historia/lineu;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;categorias/hierarquia;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;especie/conceito;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;nomes/binomial;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;nomes/regras;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;sistemas/reinos;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;sistemas/dominios;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;cladistica/cladograma;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;cladistica/grupos;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;cladistica/homologia;OK;figura IA de qualidade ou diagrama/cladograma;-
+taxonomia;chave/dicotomica;OK;figura IA de qualidade ou diagrama/cladograma;-
+virus;natureza/vivo;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;estrutura/particula;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;estrutura/tipos;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;fagos/litico;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;fagos/lisogenico;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;replicacao/animal;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;replicacao/retrovirus;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;doencas/arboviroses;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;doencas/hiv;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;doencas/respiratorias;LIMITE;pessoas da sala de aula são elipses com círculo (pictograma);opcional: figura IA de sala de aula vista de cima; a simulação em si é legítima
+virus;doencas/hepatites-hpv;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;prevencao/vacinas;OK;vírus/célula em 3D, figura IA ou gráfico;-
+virus;prevencao/transmissao;OK;vírus/célula em 3D, figura IA ou gráfico;-
+microrganismos;monera/celula;OK;célula em corte, foto IA ou diagrama;-
+microrganismos;monera/reproducao;OK;célula em corte, foto IA ou diagrama;-
+microrganismos;monera/doencas;FRACA;corpo humano de retângulos arredondados;figura IA: silhueta humana translúcida com as portas de entrada (pele, pulmão, intestino) marcadas
+microrganismos;protoctista/grupos;LIMITE;ameba, tripanossomo e paramécio como blobs 3D simples;opcional: figura IA de microscopia dos quatro protozoários
+microrganismos;protoctista/protozooses;OK;célula em corte, foto IA ou diagrama;-
+microrganismos;fungi/fungos;FRACA;pão como laje achatada e hifa como cápsula;figura IA: fatia de pão com bolor, com corte mostrando hifas e micélio
+microrganismos;fungi/liquens;OK;célula em corte, foto IA ou diagrama;-
+plantas-animais;plantae/conquista;FRACA;árvore de cone, samambaia e flor sobre caixa marrom;figura IA: linha evolutiva alga, musgo, samambaia, araucária e flor em paisagem contínua
+plantas-animais;plantae/briofitas;OK;figura IA de qualidade ou diagrama de ciclo;-
+plantas-animais;plantae/pteridofitas;FRACA;samambaia de folhas planas sobre disco;figura IA: samambaia com soros no verso da folha e protalo em detalhe
+plantas-animais;plantae/gimnospermas;OK;figura IA de qualidade ou diagrama de ciclo;-
+plantas-animais;plantae/angiospermas;FRACA;flor de pétalas planas e caule cilíndrico;figura IA: flor em corte longitudinal com estigma, estames, ovário e óvulos
+plantas-animais;plantae/orgaos;FRACA;planta de cilindros sobre bloco de solo;figura IA: planta inteira com raiz, caule e folhas em corte, solo em perfil
+plantas-animais;animalia/novidades;FRACA;cnidário de tubos e caixas de cor, sem aspecto de animal;figura IA: anêmona/água-viva em corte mostrando tentáculos, boca e cavidade gastrovascular
+plantas-animais;animalia/poriferos-cnidarios;FRACA;esponja como barril liso com bolinhas, sem aspecto de esponja;figura IA: esponja-tubo em corte com poros, coanócitos e ósculo
+plantas-animais;animalia/vermes;OK;figura IA de qualidade ou diagrama de ciclo;-
+plantas-animais;animalia/moluscos-anelideos;OK;figura IA de qualidade ou diagrama de ciclo;-
+plantas-animais;animalia/artropodes;OK;figura IA de qualidade ou diagrama de ciclo;-
+plantas-animais;animalia/cordados;FRACA;estrela-do-mar de contorno e linhas, larva de elipse;figura IA: estrela-do-mar em vista inferior com pés ambulacrais, ao lado de larva
+plantas-animais;animalia/vertebrados;OK;figura IA de qualidade ou diagrama de ciclo;-
+genetica;conceitos/gene;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;conceitos/fenotipo;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;lei1/punnett;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;lei1/sorteio;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;lei2/dihibridismo;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;lei2/gametas;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/incompleta;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/codominancia;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/letais;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/pleiotropia;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/abo;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/transfusao;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;variacoes/rh;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;determinacao/sistemas;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;determinacao/barr;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;sexo/daltonismo;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;sexo/hemofilia;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;sexo/y-calvicie;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;heredogramas/leitura;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;heredogramas/exercicios;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;probabilidade/e;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;probabilidade/ou;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;biotec/recombinante;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;biotec/pcr;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;biotec/clonagem;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;biotec/crispr;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;populacoes/hardy-weinberg;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;populacoes/fatores;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;extras/ligacao;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;extras/interacao;OK;esquema, simulação, cromossomo ou figura IA;-
+genetica;extras/poligenica;OK;esquema, simulação, cromossomo ou figura IA;-

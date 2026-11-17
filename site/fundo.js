@@ -5,8 +5,10 @@
    - prefers-reduced-motion: anda bem mais devagar (35% da velocidade), sem parar.
    - Aba oculta: o laço para (requestAnimationFrame cancelado) e volta quando a aba aparece.
    - Leve: no máximo cerca de 30 quadros por segundo, densidade de pixels até 1,5 e partículas contadas pela área.
-   - Botão "Pausar fundo" / "Animar fundo" no canto de baixo (aria-pressed="true" quando parado). Parado, fica o último
-     quadro desenhado. A escolha fica em localStorage ("lab-fundo" = "parado"); sem localStorage, vale só para a visita. */
+   - Botão no canto de baixo, no começo do <main>: o rótulo diz a ação ("Pausar fundo" / "Animar fundo"), com o mesmo
+     texto no title e o ícone ui-pausar / ui-continuar do sprite do index.html (padrão dos botões Pausar dos módulos,
+     sem aria-pressed). Parado, fica o último quadro desenhado. A escolha fica em localStorage ("lab-fundo" = "parado");
+     sem localStorage, vale só para a visita. */
 (function () {
   'use strict';
   var doc = document.documentElement, body = document.body;
@@ -130,11 +132,11 @@
   // Botão no canto: para e retoma o fundo (WCAG 2.2.2, pausar o que se move sozinho)
   var bt = document.createElement('button');
   bt.type = 'button'; bt.className = 'fundo-bt';
-  bt.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path class="ic-pausa" d="M5 3.5v9M11 3.5v9"/>' +
-    '<path class="ic-anima" d="M5.5 3.2v9.6L12.8 8z"/></svg><span></span>';
-  function rotulo() {
-    bt.setAttribute('aria-pressed', parado ? 'true' : 'false');
+  bt.innerHTML = '<svg class="ico" aria-hidden="true" focusable="false"><use href="#ui-pausar"/></svg><span></span>';
+  function rotulo() {   // o rótulo diz o que o clique faz; no celular o botão é só ícone, e o title vira a dica
     bt.lastChild.textContent = parado ? 'Animar fundo' : 'Pausar fundo';
+    bt.title = bt.lastChild.textContent;
+    bt.querySelector('use').setAttribute('href', parado ? '#ui-continuar' : '#ui-pausar');
     doc.classList.toggle('fundo-parado', parado);
   }
   bt.addEventListener('click', function () {
@@ -143,7 +145,10 @@
     rotulo(); liga();
   });
   rotulo();
-  body.appendChild(bt);
+  // no começo do <main>: o controle que para o movimento fica cedo na ordem do Tab e dentro de uma região.
+  // Não vai na .barra: com .rolou, o backdrop-filter dela prenderia o position:fixed do botão.
+  var principal = document.querySelector('main');
+  if (principal) principal.insertBefore(bt, principal.firstChild); else body.appendChild(bt);
 
   // abaixo da capa, o fundo apaga pela metade (a transição de opacidade fica no home.css)
   var baixo = null;

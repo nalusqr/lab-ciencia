@@ -1,0 +1,14 @@
+modulo;arquivo;rota;nota;destino;acao
+virus;virus__01.png;natureza/vivo;2;figura-ia;Folha de tabaco com mosaico e vírus ao microscópio eletrônico realistas; os três passos viram hotspots.
+virus;virus__02.png;estrutura/particula;3;3d;Feito: RNA em 8 bastões, capsômeros se encaixando, espículas na membrana e brotamento com a membrana embrulhando; corte e sabão.
+virus;virus__03.png;estrutura/tipos;3;3d;Feito: bastonete helicoidal com janela no RNA, icosaedro com faces destacadas e fibras, envelope do herpes e fago T4.
+virus;virus__04.png;fagos/litico;2;3d;Feito: T4 desce, abre as fibras, contrai e injeta o DNA na E. coli em corte; síntese, montagem e lise.
+virus;virus__05.png;fagos/lisogenico;2;3d;Feito: fago λ injeta, DNA em círculo vira prófago, três divisões, luz UV e indução com lise.
+virus;virus__06.png;replicacao/animal;2;3d;Feito: célula em corte com núcleo; ligação, fusão ou endocitose, desnudamento, cópia, montagem, brotamento ou lise.
+virus;virus__07.png;replicacao/retrovirus;3;3d;Feito: modo novo HIV em 3D (envelope, gp120, cone, dois RNAs, enzimas) e a transcriptase reversa montando DNA; ciclo com remédios fica em 2D.
+virus;virus__08.png;doencas/arboviroses;2;figura-ia;Aedes aegypti e criadouros reais (caixa-d'água, pneu, vaso) ensinam mais que o desenho; hotspots com motion.
+virus;virus__09.png;doencas/hiv;3;manter;Gráfico de CD4 e carga viral claro e correto; só suavizar a entrada das curvas.
+virus;virus__10.png;doencas/respiratorias;3;manter;Sala de aula vista de cima já explica o contágio; manter a simulação.
+virus;virus__11.png;doencas/hepatites-hpv;2;figura-ia;Fígado realista (normal, cirrose) e lesões do HPV pedem imagem; linha do tempo fica em motion.
+virus;virus__12.png;prevencao/vacinas;3;3d;Feito: modo novo Anticorpos em 3D (anticorpos em Y neutralizam as espículas); gráficos de vacina e soro ficam em 2D.
+virus;virus__13.png;prevencao/transmissao;3;manter;Casas com portas e trancas por via de transmissão funcionam; manter.

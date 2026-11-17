@@ -26,8 +26,6 @@
     if (a && a.textContent !== loc) a.textContent = loc;
     if (b && b.textContent !== nota) { b.textContent = nota; b.hidden = !nota; }
   }
-  // mostra ou esconde a faixa do controle (some nos cartões)
-  function faixa(on) { const r = $id('ctlR'); if (r && r.parentNode && r.parentNode.hidden === on) r.parentNode.hidden = !on; }
   // texto que encolhe até caber
   function cabe(s, x, y, maxw, o = {}) { let sz = o.s || 13; const w = o.w || 400; while (sz > 12 && mtw(s, sz, w) > maxw) sz--; return mtx(s, x, y, Object.assign({}, o, { s: sz })); }
   // botão desenhado no canvas
@@ -40,15 +38,18 @@
   // texto girado 90° (rótulo ao longo de uma parede ou de um eixo)
   function txV(s, x, y, o, ang = -PI / 2) { X.save(); X.translate(x, y); X.rotate(ang); tx(s, 0, 0, o); X.restore(); }
 
+  // alvo sob o ponteiro, ignorando o cartão arrastado (que é desenhado por cima e registra o toque por último)
+  function alvoEm(nome, x, y) {
+    for (let i = HITS.length - 1; i >= 0; i--) { const h = HITS[i]; if (typeof h.id === 'string' && h.id.startsWith(nome + ':a=') && x >= h.x - 3 && x <= h.x + h.w + 3 && y >= h.y - 3 && y <= h.y + h.h + 3) return +h.id.split('=')[1]; }
+    return null;
+  }
   // baralho com mais de uma resposta certa por cartão (c.ok = alvos aceitos): antes de soltar, o cartão adota o alvo escolhido
   function multi(B, nome) {
-    const hook = (x, y, S) => {
-      const b = S[nome], h = hitAt(x, y);
-      if (!b || typeof h !== 'string' || !h.startsWith(nome + ':a=')) return;
-      const i = b.drag ? b.drag.i : b.sel; if (i == null) return;
-      const c = B.cartas[i], k = +h.split('=')[1]; if (c.ok && c.ok.includes(k)) c.k = k;
+    const adota = (i, k) => { const c = B.cartas[i]; if (c.ok && c.ok.includes(k)) c.k = k; };
+    return {
+      tap(x, y, S) { const b = S[nome], k = alvoEm(nome, x, y); if (b && b.sel != null && k != null) adota(b.sel, k); return B.tap(x, y, S); },
+      grabEnd(x, y, S) { const b = S[nome], d = b && b.drag; if (!d) return; b.drag = null; const k = alvoEm(nome, x, y); if (k == null) return; adota(d.i, k); B.soltar(S, d.i, k); }
     };
-    return { tap(x, y, S) { hook(x, y, S); return B.tap(x, y, S); }, grabEnd(x, y, S) { hook(x, y, S); B.grabEnd(x, y, S); } };
   }
 
   // =================================================================================
@@ -77,7 +78,7 @@
         { t: 'Beijo no rosto', k: 1, m: '<b>Não transmite.</b> Beijo no rosto, aperto de mão e lágrimas não passam o HIV.' },
         { t: 'Usar o mesmo copo', k: 1, m: '<b>Não transmite.</b> Copos, talheres e piscina não passam o HIV.' },
         { t: 'Picada de mosquito', k: 1, m: '<b>Não transmite.</b> O HIV não se multiplica no mosquito, e o mosquito não injeta o sangue de uma pessoa na outra.' },
-        { t: 'Parceiro indetectável há mais de seis meses', k: 1, m: '<b>Não transmite pela via sexual.</b> Com o tratamento, a carga viral fica indetectável: indetectável = intransmissível.' }
+        { t: 'Relação com parceiro em tratamento, carga viral indetectável há mais de seis meses', k: 1, m: '<b>Não transmite pela via sexual.</b> Com o tratamento, a carga viral fica indetectável: indetectável = intransmissível.' }
       ],
       alvos: [{ t: 'Transmite', c: K('sangue') }, { t: 'Não transmite', c: K('ok') }],
       certo: c => c.m,
@@ -85,8 +86,10 @@
       fim: S => `Pronto${S.hiv && S.hiv.erros ? '' : ', sem erros'}. O HIV passa por <b>sangue, sêmen, secreção vaginal e leite materno</b>; abraço, beijo no rosto, copo e mosquito não transmitem.`,
       dica: 'Primeiro toque numa situação; depois, em <b>Transmite</b> ou <b>Não transmite</b>.'
     });
+    const MH = multi(BH, 'hiv');
 
     def('doencas', 'hiv', {
+      ctlVis: S => S.modo !== 2,
       t: 'HIV e aids', s: 'o vírus que ataca a defesa do corpo', c: K('sangue'), loc: 'Linfócitos T CD4 e carga viral', locNota: 'Gráfico esquemático',
       alt: 'Gráfico de dez anos de infecção pelo HIV sem tratamento: a linha azul dos linfócitos T CD4 cai devagar e a linha vermelha da carga viral sobe no começo, cai e volta a subir no fim. Ao cruzar 200 CD4 por milímetro cúbico, aparecem doenças oportunistas. Com tratamento, a carga viral cai até indetectável e os linfócitos se recuperam. No jogo "Passa ou não passa?", situações do dia a dia vão para "transmite" ou "não transmite"',
       d: `<p>O <b>HIV</b> (vírus da imunodeficiência humana) é um <b>retrovírus</b> que infecta principalmente os <b>linfócitos T auxiliares</b>, que têm a proteína <b>CD4</b> na membrana. Esses linfócitos coordenam a resposta imune: sem eles, os outros glóbulos brancos não são "avisados" do perigo. Logo depois da infecção, pode haver febre e mal-estar parecidos com uma gripe; depois, a pessoa pode passar <b>anos sem sintomas</b>, enquanto o vírus destrói os linfócitos aos poucos.</p>
@@ -105,21 +108,20 @@
         { t: 'Passa ou não passa?', pressed: S => S.modo === 2, on(S) { S.modo = 2; } }
       ],
       init(S) { if (S.modo == null) { S.modo = 0; BH.zera(S); } },
-      tap(x, y, S) { if (S.modo === 2) BH.tap(x, y, S); },
-      grab(x, y, S) { return S.modo === 2 && BH.grab(x, y, S); }, grabMove: BH.grabMove, grabEnd: BH.grabEnd,
+      tap(x, y, S) { if (S.modo === 2) MH.tap(x, y, S); },
+      grab(x, y, S) { return S.modo === 2 && BH.grab(x, y, S); }, grabMove: BH.grabMove, grabEnd: MH.grabEnd,
       draw(t, S) {
         const A = area();
-        faixa(S.modo !== 2);
         if (S.modo === 2) {
           onde('Situações do dia a dia', 'Cartões para classificar');
-          BH.draw(S, { x0: A.x0, y0: A.y0, x1: A.x1, y1: A.y1 }, { cols: NAR ? 2 : 5, cartaH: NAR ? 44 : 46 });
+          BH.draw(S, { x0: A.x0, y0: A.y0 + (NAR ? 0 : 8), x1: A.x1, y1: A.y1 }, { cols: NAR ? 2 : 5, cartaH: NAR ? 44 : 46 });
           cap(BH.msg(S) || 'Toque numa situação e depois em <b>Transmite</b> ou <b>Não transmite</b> (com o mouse, também dá para arrastar).');
           return;
         }
         onde('Linfócitos T CD4 e carga viral', 'Gráfico esquemático');
         const trat = S.modo === 1, yr = cl(S.v, 0, 10), fC = trat ? cd4t : cd4s, fV = trat ? cvt : cvs;
         // quadro do gráfico; embaixo dele, a faixa das doenças oportunistas
-        const strip = NAR ? 62 : 34, padL = NAR ? 34 : 58, padR = NAR ? 12 : 70;
+        const strip = NAR ? 80 : 34, padL = NAR ? 34 : 58, padR = NAR ? 12 : 70;
         const P = { x0: A.x0 + padL, x1: A.x1 - padR, y0: A.y0 + (NAR ? 52 : 58), y1: A.y1 - strip - 30 };
         const px = y => lerp(P.x0, P.x1, y / 10), pyC = c => lerp(P.y1, P.y0, c / 1080), pyV = v => lerp(P.y1, P.y0, v * .92);
         // legenda das linhas
@@ -154,7 +156,7 @@
         if (!trat && yr >= cruza) {
           X.save(); X.globalAlpha *= ss((yr - cruza) / .8);
           let x0 = A.x0, x = x0, y = sy;
-          if (!NAR) { const l0 = 'doenças oportunistas:'; mtx(l0, P.x0, sy + 12, { s: 13, w: 700, c: ROSA, a: 'left' }); x0 = x = P.x0 + mtw(l0, 13, 700) + 10; }
+          if (!NAR) { const l0 = 'doenças oportunistas:'; mtx(l0, P.x0, sy + 12, { s: 13, w: 700, c: ROSA, a: 'left' }); x0 = x = P.x0 + mtw(l0, 13, 700) + 10; } else { mtx('doenças oportunistas:', A.x0, sy + 6, { s: 12, w: 700, c: ROSA, a: 'left' }); y = sy + 16; }
           for (const s of OPO) {
             const w = mtw(s, 12, 600) + 18; if (x > x0 && x + w > A.x1) { x = x0; y += 26; }
             rr(x, y + 1, w, 22, 999, rgba(K('erro'), .18), K('erro'), 1); mtx(s, x + w / 2, y + 12.5, { s: 12, w: 600, c: K('txt'), bg: false }); x += w + 8;
@@ -178,16 +180,16 @@
   {
     // média aproximada de colegas infectados por um doente, numa turma sem imunidade (ordem de grandeza); r = alcance da nuvem em carteiras
     const DZ = [
-      { n: 'Gripe', b: 2, r: 1.7, txt: 'cerca de 2', vir: 'vírus influenza' },
-      { n: 'Covid-19', b: 3, r: 2.3, txt: 'cerca de 3', vir: 'SARS-CoV-2' },
-      { n: 'Sarampo', b: 15, r: 9, txt: 'de 12 a 18', vir: 'vírus do sarampo' }
+      { n: 'Gripe', b: 1.5, r: 1.6, ef: .5, txt: 'de 1 a 2', vir: 'vírus influenza' },
+      { n: 'Covid-19', b: 3, r: 2.3, ef: .5, txt: 'cerca de 3 (vírus de 2020)', vir: 'SARS-CoV-2' },
+      { n: 'Sarampo', b: 15, r: 9, ef: .97, txt: 'de 12 a 18', vir: 'vírus do sarampo' }
     ];
     // colegas em ordem de chegada da nuvem: distância ao doente, com um pouco de acaso
     const ORDEM = (() => {
       const R = rng(7), L = []; for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) { if (r === 1 && c === 3) continue; L.push({ r, c, d: Math.hypot(c - 3, (r - 1) * 1.1) + R() * .9 }); }
       return L.sort((a, b) => a.d - b.d);
     })();
-    const nInf = S => { let n = DZ[S.dz].b; if (S.jan) n *= .5; if (S.masc) n *= .5; if (S.vac) n *= .1; return Math.min(20, Math.round(n)); };
+    const nInf = S => { const z = DZ[S.dz]; let n = z.b; if (S.jan) n *= .5; if (S.masc) n *= .5; if (S.vac) n *= 1 - z.ef; return Math.min(20, Math.round(n)); };
     const reset = S => { S.c0 = S.ph; };
 
     // "Por que vacina todo ano?": forma da ponta da espícula H (perfil) e encaixe do anticorpo
@@ -206,7 +208,7 @@
       alt: 'Sala de aula vista de cima, com uma pessoa doente e 20 colegas. Nuvens de aerossol saem da pessoa doente; botões escolhem gripe, covid-19 ou sarampo e ligam janelas abertas, máscaras e turma vacinada, e um placar mostra quantos colegas se infectam em média. No modo "Por que vacina todo ano?", as espículas H do vírus da gripe mudam de forma a cada ano e os anticorpos encaixam cada vez pior, até a vacina nova; a troca de segmentos numa célula de porco gera um vírus novo, com risco de pandemia',
       d: `<p>A <b>gripe</b> é causada pelo <b>vírus influenza</b>, um vírus de RNA com envelope e genoma em 8 pedaços. Passa por <b>gotículas</b> e <b>aerossóis</b> expelidos ao tossir, espirrar e falar, e por mãos e objetos contaminados. O vírus muda o tempo todo por <b>pequenas mutações</b> nas proteínas H e N; por isso a vacina é <b>atualizada todo ano</b>, com as cepas que mais circulam, e deve ser tomada <b>todo ano</b>. De vez em quando, dois vírus diferentes (um humano e um de ave ou de porco) infectam a mesma célula e <b>trocam segmentos</b> de RNA, gerando um vírus muito diferente, contra o qual quase ninguém tem defesa: é assim que nascem as <b>pandemias</b> de gripe, como a de 1918 (a "gripe espanhola") e a de 2009 (H1N1). Gripe não é o mesmo que resfriado, que é causado por outros vírus (como os rinovírus) e costuma ser mais leve.</p>
 <p>A <b>covid-19</b> é causada pelo <b>SARS-CoV-2</b>, um <b>coronavírus</b> (de RNA, com envelope, cujas espículas lembram uma coroa). A OMS declarou a <b>pandemia</b> em <b>março de 2020</b> e encerrou a emergência internacional em <b>maio de 2023</b>. O vírus usa a proteína <b>S</b> para entrar nas células pela <b>ECA2</b> e passa por gotículas e <b>aerossóis</b>, sobretudo em lugares fechados e pouco ventilados. Por isso funcionaram <b>máscaras</b>, <b>ventilação</b>, distanciamento e <b>vacinas</b>. O vírus acumulou mutações e gerou <b>variantes</b> (como Gama, identificada em Manaus, Delta e Ômicron). As vacinas foram feitas por várias técnicas: <b>vírus inativado</b> (CoronaVac, Butantan), <b>vetor viral</b> (um adenovírus modificado que leva o gene da proteína S; AstraZeneca e Fiocruz) e <b>RNA mensageiro</b> (Pfizer), que ensina as células a produzir a proteína S por pouco tempo e <b>não altera o DNA</b> de quem é vacinado.</p>
-<p>O <b>sarampo</b> é uma das doenças <b>mais contagiosas</b> que existem: uma pessoa doente pode infectar de 12 a 18 outras sem imunidade, pelo ar. Causa febre alta, tosse, olhos vermelhos e <b>manchas vermelhas</b> que começam no rosto e descem pelo corpo, e pode levar a pneumonia, encefalite e morte, sobretudo em crianças pequenas e desnutridas. A prevenção é a vacina <b>tríplice viral</b> (sarampo, caxumba e rubéola), em duas doses na infância; as idades estão no calendário vigente. O Brasil recebeu o certificado de país livre do sarampo em <b>2016</b>, <b>perdeu</b> em 2019 depois de surtos ligados à queda da vacinação, e <b>voltou a ser certificado</b> em 2024. A doença volta sempre que a cobertura vacinal cai.</p>
+<p>O <b>sarampo</b> é uma das doenças <b>mais contagiosas</b> que existem: uma pessoa doente pode infectar de 12 a 18 outras sem imunidade, pelo ar. Causa febre alta, tosse, olhos vermelhos e <b>manchas vermelhas</b> que começam no rosto e descem pelo corpo, e pode levar a pneumonia, encefalite e morte, sobretudo em crianças pequenas e desnutridas. A prevenção é a vacina <b>tríplice viral</b> (sarampo, caxumba e rubéola), em duas doses na infância; as idades estão no calendário vigente. O Brasil recebeu o certificado de país livre do sarampo em <b>2016</b>, <b>perdeu</b> em 2019 depois de surtos ligados à queda da vacinação, e <b>voltou a ser certificado</b> em 2024. Em 2025, com surtos em países vizinhos, as Américas como um todo perderam de novo o status de região livre do sarampo; o Brasil manteve o seu, mas recebe casos importados. A doença volta sempre que a cobertura vacinal cai.</p>
 <p>Na animação, escolha a doença e ligue <b>janelas abertas</b>, <b>máscaras</b> e <b>turma vacinada</b>. Os números são uma <b>média aproximada</b>, para comparar a ordem de grandeza. Em <b>Por que vacina todo ano?</b>, passe os anos e veja os anticorpos encaixarem cada vez pior.</p>`,
       kv: [['Gripe', 'influenza, RNA em 8 pedaços; vacina anual'], ['Covid-19', 'SARS-CoV-2, um coronavírus; proteína S e ECA2'], ['Sarampo', 'altíssima transmissão pelo ar; vacina tríplice viral']],
       enem: '<b>Gripe:</b> vírus de RNA que muda muito, por isso a <b>vacina é anual</b>; pandemias surgem quando vírus diferentes trocam pedaços de RNA. <b>Covid-19:</b> transmissão por <b>aerossóis</b>; as vacinas de <b>RNAm</b> não mudam o DNA; as <b>variantes</b> são exemplo de mutação e seleção natural acontecendo na nossa frente. <b>Sarampo:</b> altíssima transmissão pelo ar, prevenido pela <b>tríplice viral</b>; a volta da doença está ligada à <b>queda da cobertura vacinal</b>. As questões costumam usar gráficos de casos e de vacinação.',
@@ -294,13 +296,14 @@
         }
         const lista = [S.jan && 'janelas abertas', S.masc && 'máscaras', S.vac && 'turma vacinada'].filter(Boolean);
         const med = lista.length < 2 ? lista.join('') : lista.slice(0, -1).join(', ') + ' e ' + lista[lista.length - 1];
-        cap(S.vac ? `Com a <b>turma vacinada</b>, a nuvem continua saindo, mas quase ninguém fica doente.${S.dz === 2 ? ' Contra o sarampo, a vacina é a <b>tríplice viral</b>.' : ''}`
+        cap(S.vac ? (S.dz === 2 ? 'Com a <b>turma vacinada</b> com as duas doses da <b>tríplice viral</b>, o sarampo quase não passa: a proteção é de cerca de 97%.' : 'Com a <b>turma vacinada</b>, menos colegas se infectam e, sobretudo, quase ninguém tem a <b>forma grave</b>: as vacinas da gripe e da covid-19 protegem mais contra a doença grave do que contra a infecção.')
           : lista.length ? `Com ${med}, menos aerossol chega aos colegas.${S.dz === 1 ? ' Ventilação e máscaras funcionaram contra a covid-19.' : ''}`
             : S.dz === 2 ? 'Sarampo sem vacina: quase a sala inteira adoece. Uma pessoa doente pode infectar <b>de 12 a 18</b> outras sem imunidade.'
+              : S.dz === 1 ? 'Covid-19: o vírus viaja em <b>gotículas e aerossóis</b>. Com o vírus original de 2020, cada doente infectava <b>cerca de 3</b> pessoas; variantes como a <b>Ômicron</b> transmitem bem mais.'
               : `${z.n}: o vírus viaja em <b>gotículas e aerossóis</b> expelidos ao tossir, espirrar e falar.`);
       },
       deriva(t, S, A) {
-        // demonstração enquanto ninguém mexe: um ano a cada 2,6 s; vacina nova a cada 4 anos
+        // demonstração enquanto ninguém mexe: um ano a cada 2,6 s; a cada 4 anos, a vacina nova mostra o encaixe de volta
         if (!S.user && !S.paused && S.troca == null) {
           S.dk = (S.dk || 0) + S.dt;
           if (S.dk > 2.6) { S.dk = 0; if (S.ano % 4 === 0 && S.vacAno !== S.ano) { S.sa = S.sv; S.vacAno = S.ano; S.novo = false; } else { S.ano++; S.sv += .3; } }
@@ -371,7 +374,7 @@
         if (P.w > 90) {
           const c3 = f > .6 ? K('ok') : f > .25 ? K('espicula') : K('erro');
           mtx(`ano ${S.ano}`, P.x, P.y, { s: fs(15, 18), w: 700, f: FH, c: K('txt'), a: 'left' });
-          cabe(`vacina feita no ano ${S.vacAno}`, P.x, P.y + 22, P.w, { s: 12, c: K('dim'), a: 'left' });
+          cabe(S.ano > S.vacAno ? `última vacina no ano ${S.vacAno}: faltou a deste ano` : 'vacina deste ano em dia', P.x, P.y + 22, P.w, { s: 12, c: S.ano > S.vacAno ? K('erro') : K('dim'), a: 'left' });
           cabe('anticorpos que encaixam', P.x, P.y + 44, P.w, { s: 12, c: K('dim'), a: 'left' });
           mtx(`${nb} de 8`, P.x, P.y + 66, { s: fs(16, 20), w: 700, f: FH, c: c3, a: 'left' });
           const bw = Math.min(P.w, 150); rr(P.x, P.y + 84, bw, 8, 4, 'rgba(201,211,240,.18)', null); if (f > .01) rr(P.x, P.y + 84, bw * f, 8, 4, c3, null);
@@ -383,13 +386,13 @@
       },
       troca(t, S, A, top, bot) {
         const k = S.ph - S.troca, hh = bot - top, cx = A.cx, cy = top + hh / 2 + 10;
-        const rx = Math.min(A.w * .46, 300), ry = Math.min(hh * .36, 160), vr = Math.min(rx, ry) * .3, CA = '#FFC2B5';
+        const rx = Math.min(A.w * .46, 300), ry = Math.min(hh * .36, 160), vr = Math.min(rx, ry) * .3, CA = '#FFF1D6';
         celula(cx, cy, rx, ry, { nuc: false, ribo: 12, seed: 4 });
         const ly = cy - ry - 16; bicho('porco', cx - mtw('célula de porco', 12, 600) / 2 - 18, ly, 22, { c: K('envelope') }); mtx('célula de porco', cx, ly, { s: 12, w: 600, c: K('envelope') });
         // vírus com 8 pedaços de RNA coloridos pela origem (coral: humano; claro: ave)
         const vir = (x, y, cores, a = 1) => {
           envelope(x, y, vr, { esp: 10, espTipo: i => i % 2 ? 'N' : 'H', espLen: vr * .4, f: '#1E1830', a });
-          cores.forEach((c, i) => { const g2 = i / 8 * TAU + .3, mx = x + Math.cos(g2) * vr * .45, my = y + Math.sin(g2) * vr * .45, d = g2 + PI / 2; fita([[mx - Math.cos(d) * vr * .22, my - Math.sin(d) * vr * .22], [mx + Math.cos(d) * vr * .22, my + Math.sin(d) * vr * .22]], { c, amp: 1.5, ond: 8, lw: 2.2, a }); });
+          cores.forEach((c, i) => { const g2 = i / 8 * TAU + .3, mx = x + Math.cos(g2) * vr * .45, my = y + Math.sin(g2) * vr * .45, d = g2 + PI / 2; fita([[mx - Math.cos(d) * vr * .15, my - Math.sin(d) * vr * .15], [mx + Math.cos(d) * vr * .15, my + Math.sin(d) * vr * .15]], { c, amp: 1.5, ond: 8, lw: 3, a }); });
         };
         const nome = (s, x, ic, a) => { X.save(); X.globalAlpha *= a; mtx(s, x, cy + vr * 1.5 + 12, { s: 12, w: 700, c: K('txt') }); if (ic) bicho(ic, x, cy - vr * 1.45 - 16, 24, { c: SAUDE }); X.restore(); };
         const H8 = Array(8).fill(K('rna')), A8 = Array(8).fill(CA), M8 = [K('rna'), CA, K('rna'), K('rna'), CA, K('rna'), CA, K('rna')];
@@ -423,7 +426,7 @@
         { t: 'Comer salada lavada com água contaminada', k: 0, ok: [0], m: () => '<b>Hepatite A</b>, via <b>fecal-oral</b>: água e alimentos contaminados com fezes. É mais comum onde falta saneamento básico.' },
         { t: 'Compartilhar alicate de unha', k: 2, ok: [1, 2], m: k => `<b>Hepatite ${k === 1 ? 'B' : 'C'}</b>, pelo <b>sangue</b> que fica no objeto cortante. A hepatite ${k === 1 ? 'C' : 'B'} também passa assim.` },
         { t: 'Nascer de mãe com hepatite B', k: 1, ok: [1], m: () => '<b>Hepatite B</b>, da mãe para o bebê. Por isso a vacina contra a hepatite B é dada logo ao nascer.' },
-        { t: 'Relação sexual sem preservativo', k: 3, ok: [1, 3], m: k => k === 3 ? '<b>HPV</b>, pelo contato de pele e mucosa: é a infecção sexualmente transmissível mais comum. A hepatite B também passa por via sexual.' : '<b>Hepatite B</b>, por via sexual. O HPV também passa assim, e o preservativo reduz o risco dele, mas não o elimina.' },
+        { t: 'Relação sexual sem preservativo', k: 3, ok: [1, 2, 3], m: k => k === 3 ? '<b>HPV</b>, pelo contato de pele e mucosa: é a infecção sexualmente transmissível mais comum. A hepatite B também passa por via sexual.' : k === 1 ? '<b>Hepatite B</b>, por via sexual. O HPV também passa assim, e o preservativo reduz o risco dele, mas não o elimina.' : '<b>Hepatite C</b>: a via sexual é possível, mas bem menos comum que o sangue. A hepatite B e o HPV passam mais por essa via.' },
         { t: 'Transfusão com sangue testado', k: 4, ok: [4], m: () => '<b>Risco muito baixo.</b> Antes da testagem do sangue doado, a transfusão transmitia a hepatite C. Hoje essa via ficou muito rara.' }
       ],
       alvos: [{ t: 'Hepatite A', c: K('fecal') }, { t: 'Hepatite B', c: K('sangue') }, { t: 'Hepatite C', c: K('sangue') }, { t: 'HPV', c: K('sangue') }, { t: 'Risco muito baixo', c: K('dim') }],
@@ -487,10 +490,10 @@
       const est = vac || yr < .02 ? 'saudável' : yr < .5 ? 'hepatite aguda' : yr < 20 ? 'hepatite crônica' : 'cirrose';
       tok(fx, fy + s * .78 + 12, est, est === 'saudável' ? K('ok') : est === 'cirrose' ? '#C9A06A' : ROSA, { s: 13 });
       if (vac) mtx('vacinada ao nascer: os anticorpos barram o vírus', fx, fy + s * .78 + 38, { s: fs(12, 13), w: 700, c: K('ok') });
-      linhaTempo(A, yr, vac ? [[0, 30, K('ok'), 'protegida a vida toda']] : [[0, .5, ROSA, 'aguda'], [.5, 20, '#E0524A', 'crônica, muitas vezes sem sintomas'], [20, 30, '#C9A06A', 'cirrose e risco de câncer']]);
+      linhaTempo(A, yr, vac ? [[0, 30, K('ok'), 'protegida, com o esquema completo']] : [[0, .5, ROSA, 'aguda'], [.5, 20, '#E0524A', 'crônica, muitas vezes sem sintomas'], [20, 30, '#C9A06A', 'cirrose e risco de câncer']]);
       cap(vac ? 'A <b>vacina contra a hepatite B</b> é dada <b>logo ao nascer</b> e faz parte do calendário em várias doses: o vírus não se instala.'
         : yr < .5 ? 'A <b>hepatite B</b> (vírus de DNA, com envelope) passa por sangue, relação sexual e da mãe para o bebê. O fígado inflama.'
-          : yr < 20 ? 'A hepatite B pode virar uma infecção <b>crônica</b>. Muitas pessoas <b>não têm sintomas</b> por anos; por isso a testagem é importante.'
+          : yr < 20 ? 'A hepatite B pode virar uma infecção <b>crônica</b>, o que é muito mais comum em quem se infecta ao nascer do que em adultos. Muitas pessoas <b>não têm sintomas</b> por anos; por isso a testagem é importante.'
             : 'Depois de anos, a hepatite B crônica pode causar <b>cirrose</b> (fígado endurecido, com nódulos) e <b>câncer de fígado</b>.');
     }
     function hpv(t, S, A) {
@@ -535,9 +538,9 @@
         else if (!achou && yr < 1.5) virion(x, lerp(A.y0 + 34, sy0 + rh * .6, ss(ph)), r0, { tipo: 'nu', rot: t * .3 + i, a: ph > .85 ? (1 - ph) * 6 : 1 });
       }
       if (achou) { const lx = sx0 + sw * .72, ly = sy0 + eh * .7, lr = Math.min(30, rh * 1.5); circ(lx, ly, lr, 'rgba(232,237,247,.06)', K('ok'), 3); line(lx + lr * .7, ly + lr * .7, lx + lr * 1.3, ly + lr * 1.3, K('ok'), 4); }
-      const fases = vac ? [[0, 30, K('ok'), 'vacina: barreira antes da infecção']] : exam ? [[0, 5, ROSA, ''], [5, 30, K('ok'), achou ? 'lesão tratada a tempo' : '']] : [[0, 3, ROSA, 'infecção'], [3, 14, '#E0524A', 'lesões'], [14, 30, '#F0605D', 'câncer']];
+      const fases = vac ? [[0, 30, K('ok'), 'vacina: barreira antes da infecção; o preventivo continua']] : exam ? [[0, 5, ROSA, ''], [5, 30, K('ok'), achou ? 'lesão tratada a tempo' : '']] : [[0, 3, ROSA, 'infecção'], [3, 14, '#E0524A', 'lesões'], [14, 30, '#F0605D', 'câncer']];
       linhaTempo(A, yr, fases, (xs, y) => { if (exam) { line(xs(5), y - 12, xs(5), y + 9, K('ok'), 2.5); if (!achou) mtx('exame preventivo', xs(5) + 6, y - 19, { s: 12, w: 700, c: K('ok'), a: 'left' }); } });
-      cap(vac ? 'A <b>vacina contra o HPV</b>, gratuita no SUS para <b>meninas e meninos</b> antes do início da vida sexual, protege contra os tipos que causam câncer.'
+      cap(vac ? 'A <b>vacina contra o HPV</b>, gratuita no SUS para <b>meninas e meninos</b> antes do início da vida sexual, protege contra os tipos que mais causam câncer (<b>16</b> e <b>18</b>) e verrugas (<b>6</b> e <b>11</b>). Mesmo vacinada, a pessoa continua fazendo o <b>exame preventivo</b>, porque a vacina não cobre todos os tipos.'
         : achou ? 'O <b>exame preventivo</b> (Papanicolau e teste de DNA do HPV) encontra a lesão no começo, e ela é tratada antes de virar câncer.'
           : g < 1 ? 'O <b>HPV</b> (vírus de DNA, sem envelope) passa nas relações sexuais. A maioria das infecções <b>some sozinha</b>; aqui, o caso em que ela persiste.'
             : g < 4 ? 'Quando a infecção por tipos como o <b>16</b> e o <b>18</b> persiste, as células mudam aos poucos, ao longo de 10 a 20 anos.'
@@ -545,6 +548,7 @@
     }
 
     def('doencas', 'hepatites-hpv', {
+      ctlVis: S => S.modo !== 2,
       t: 'Hepatites virais e HPV', s: 'fígado, câncer e as vacinas que os previnem', c: K('fecal'), loc: 'Fígado em esquema (hepatite B)', locNota: 'Linha do tempo esquemática',
       alt: 'Três modos. Hepatite B: um fígado esquemático passa de saudável a inflamado, à hepatite crônica e à cirrose com nódulos ao longo de décadas; com a vacina ao nascer, anticorpos barram o vírus e o fígado continua saudável. HPV: corte do colo do útero em que as células mudam aos poucos, de lesão a câncer, ao longo de 10 a 20 anos, com as barreiras da vacina e do exame preventivo. Qual via?: cartões de situações para levar à hepatite A, B, C, ao HPV ou ao risco muito baixo, com a cor da via de transmissão',
       d: `<p><b>Hepatite</b> é inflamação do <b>fígado</b>, e vários vírus diferentes podem causá-la. A <b>hepatite A</b> (vírus de RNA, <b>sem envelope</b>) passa pela via <b>fecal-oral</b>: água e alimentos contaminados com fezes. É mais comum onde falta <b>saneamento básico</b>, costuma ser aguda e curar sozinha, e tem vacina no calendário infantil. A <b>hepatite B</b> (vírus de <b>DNA</b>, com envelope) passa por <b>sangue</b>, <b>relação sexual</b> e <b>da mãe para o bebê</b>. Pode virar uma infecção <b>crônica</b> e, depois de anos, causar <b>cirrose</b> e <b>câncer de fígado</b>. A <b>vacina</b> contra a hepatite B é dada <b>logo ao nascer</b> e faz parte do calendário em várias doses. A <b>hepatite C</b> (vírus de RNA) passa principalmente por <b>sangue</b> (seringas compartilhadas, objetos cortantes, procedimentos sem material esterilizado; antes da testagem do sangue doado, também por transfusão). Não tem vacina, mas hoje tem <b>cura</b> com remédios antivirais em mais de 95% dos casos. Muitas pessoas com hepatite B ou C <b>não têm sintomas</b> por anos; por isso a testagem é importante. (Existem também as hepatites D, que só ocorre em quem tem a B, e E, fecal-oral.)</p>
@@ -574,12 +578,11 @@
       grab(x, y, S) { return S.modo === 2 && BV.grab(x, y, S); }, grabMove: BV.grabMove, grabEnd: MV.grabEnd,
       draw(t, S) {
         const A = area();
-        faixa(S.modo !== 2);
         if (S.modo === 0) { onde('Fígado em esquema (hepatite B)', 'Linha do tempo esquemática'); return hepB(t, S, A); }
         if (S.modo === 1) { onde('Colo do útero em corte (HPV)', 'Linha do tempo esquemática'); return hpv(t, S, A); }
         onde('Situações do dia a dia', 'Cartões para classificar');
-        BV.draw(S, { x0: A.x0, y0: A.y0, x1: A.x1, y1: A.y1 }, { cols: NAR ? 2 : 5, cartaH: NAR ? 44 : 46 });
-        cap(BV.msg(S) || 'Toque numa situação e depois no vírus que ela pode transmitir. Marrom: via <b>fecal-oral</b>. Vermelho: <b>sangue e sexual</b>.');
+        BV.draw(S, { x0: A.x0, y0: A.y0 + (NAR ? 0 : 8), x1: A.x1, y1: A.y1 }, { cols: NAR ? 2 : 5, cartaH: NAR ? 44 : 46 });
+        cap(BV.msg(S) || 'Toque numa situação e depois no vírus que ela pode transmitir (ou em <b>Risco muito baixo</b>). Marrom: via <b>fecal-oral</b>. Vermelho: <b>sangue e sexual</b>.');
       }
     });
   }

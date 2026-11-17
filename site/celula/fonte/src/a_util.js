@@ -42,7 +42,9 @@ function M(k,col,o={}){const vc=!!o.vc;delete o.vc;const c=new THREE.Color(col);
   m.userData.k=k;m.userData.e0=m.emissiveIntensity;if(!m.transparent||m.opacity>.5)m.userData.c0=m.color.clone();MATS.push(m);return m}
 // vidro biológico (membranas que deixam ver o interior)
 function GLASS(k,tint,o={}){const t=new THREE.Color(tint);const keep={};for(const x of['roughness','opacity','clearcoat'])if(o[x]!==undefined)keep[x]=o[x];
-  return M(k,t.clone().lerp(new THREE.Color('#ffffff'),.25),Object.assign({transparent:true,opacity:.2,depthWrite:false,roughness:.32,clearcoat:.7,clearcoatRoughness:.3,sheen:0,envMapIntensity:.7,specularIntensity:.8},keep))}
+  const m=M(k,t.clone().lerp(new THREE.Color('#ffffff'),.25),Object.assign({transparent:true,opacity:.2,depthWrite:false,roughness:.32,clearcoat:.7,clearcoatRoughness:.3,sheen:0,envMapIntensity:.7,specularIntensity:.8},keep));
+  m.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>','{float fr=pow(1.-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.,1.),2.2);diffuseColor.a*=mix(.32,2.2,fr);}\n#include <opaque_fragment>')};
+  m.customProgramCacheKey=()=>'vidro-fresnel';return m}
 // película translúcida comum (para estruturas dentro de outra membrana)
 function FILM(k,col,op=.35,o={}){return M(k,col,Object.assign({transparent:true,opacity:op,depthWrite:false,roughness:.15,clearcoat:1,side:THREE.DoubleSide},o))}
 // brilho de borda (efeito Fresnel), aditivo
@@ -64,4 +66,4 @@ function placer(){const P=[];return{ok(p,r){return P.every(q=>q.p.distanceTo(p)>
 function scatter(n,r,gen,pl,tries=400){const out=[];for(let i=0;i<tries&&out.length<n;i++){const p=gen();if(pl.ok(p,r)){pl.add(p,r);out.push(p)}}return out}
 function dispose(g){g.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)[].concat(o.material).forEach(m=>m.dispose())})}
 // cena padrão: grupo + âncoras dos pontos clicáveis + rótulos fixos + animação
-function scene(o){return Object.assign({g:new THREE.Group(),anch:{},labels:[],tick:null,dist:7,cam:V3(0,.55,1),upu:1,mats:MATS.splice(0)},o)}
+function scene(o){MITO.m=null;return Object.assign({g:new THREE.Group(),anch:{},labels:[],tick:null,dist:7,cam:V3(0,.55,1),upu:1,mats:MATS.splice(0)},o)}

@@ -1,0 +1,310 @@
+/* LAB, módulo Anatomia e fisiologia. Cenas da parte 1 (Circulatório e Excretor): C1, C2, E1 e E2.
+   Código da equipe (Aurelius). Textos: roteiro do Taxon (docs/revisao-biologia/anatomia-roteiro-parte1.md). */
+'use strict';
+{
+  const NOTA = 'Desenho esquemático, fora de escala';
+  const ART = '#E5484D', VEN = '#7C6FD6', O2C = '#6EC8E8', CO2C = '#8C96A8', CARB = '#F2D04A', PROT = '#E58AB0', LIP = '#F28C3A', AM = C.amber, QUI = '#9BE0B8';
+  const dtv = S => S.paused ? 0 : Math.min(.05, S.dt || .016);
+  const NO = Object.assign({}, RITMO, { no: true });
+  const MD = {};
+  // modos de cada tópico: cada modo tem a sua faixa (CT); a faixa do tópico acompanha o modo ativo
+  function mk(key, CT, ini) {
+    MD[key] = Object.keys(CT)[0];
+    return {
+      ctl: () => CT[MD[key]],
+      vis: S => !(CT[S.modo] || {}).no,
+      extra: (id, t) => ({ t, on: S => { S.modo = id; MD[key] = id; S.v = CT[id].v; S.ph = 0; S.touch = 0; ini && ini(S, id); }, pressed: S => S.modo === id }),
+      init(S) { const id = Object.keys(CT)[0]; S.modo = id; MD[key] = id; S.v = CT[id].v; ini && ini(S, id); }
+    };
+  }
+  const etiq = (s, x, y, c, a = 1) => { X.save(); X.globalAlpha *= a; const sz = NAR ? 12 : 13, w = mtw(s, sz, 600) + 24; rr(x, y - 11, w, 22, 999, 'rgba(11,15,28,.84)', rgba(c, .8), 1); circ(x + 11, y, 4.5, c); mtx(s, x + 20, y + .5, { s: sz, w: 600, a: 'left', c: C.txt, bg: false }); X.restore(); return w; };
+  function fila(x, y, w, h, its, c) { const n = its.length, g = 6, bw = (w - (n - 1) * g) / n; its.forEach((it, i) => btn(x + i * (bw + g), y, bw, h, it[0], it[3] || c, it[1], { on: it[2], s: NAR ? 12 : 13 })); }
+  function phReg(x, y, w, v, mn, mx, nome) {
+    const g = X.createLinearGradient(x, 0, x + w, 0); g.addColorStop(0, '#D9534F'); g.addColorStop(.5, '#5FB36A'); g.addColorStop(1, '#4F86D9');
+    rr(x, y - 5, w, 10, 5, g, 'rgba(11,15,28,.7)', 1);
+    const px = x + w * seg(v, mn, mx); X.beginPath(); X.moveTo(px, y + 7); X.lineTo(px - 6, y + 17); X.lineTo(px + 6, y + 17); X.closePath(); X.fillStyle = C.txt; X.fill();
+    tx(String(mn), x, y - 16, { s: 12, f: FD, c: C.dim }); tx(String(mx), x + w, y - 16, { s: 12, f: FD, c: C.dim });
+    mtx((nome || 'pH') + ' ' + nbr(v, v % 1 ? 1 : 0), px, y + 29, { s: 13, w: 700, f: FD });
+  }
+  function cadeia(x, y, n, r, c, q, t, seed) {
+    const R = rng(seed), P = [];
+    for (let k = 0; k < n; k++) { const a0 = (k - (n - 1) / 2) * r * 2.1, an = R() * TAU, d = q * (10 + R() * 16); P.push([x + a0 * (1 - q * .5) + Math.cos(an + t * .8 * q) * d, y + Math.sin(k * 1.7) * r * .8 * (1 - q) + Math.sin(an + t * .8 * q) * d]); }
+    if (q < .5) poly(P, rgba(c, .8), 2);
+    P.forEach(p => circ(p[0], p[1], r, c, 'rgba(11,15,28,.7)', 1));
+  }
+  const TXT = {};
+  TXT.C1 = {"t": "Coração e circulação dupla e completa", "s": "duas bombas lado a lado, que nunca misturam os dois sangues", "d": "<p>O coração humano tem <b>quatro cavidades</b>: dois <b>átrios</b> em cima, que recebem o sangue, e dois <b>ventrículos</b> embaixo, que bombeiam. Entre átrio e ventrículo de cada lado há uma <b>valva</b> (a tricúspide à direita, a mitral ou bicúspide à esquerda), e na saída dos ventrículos há as valvas da aorta e da artéria pulmonar. As valvas só abrem para um lado, e o <b>fechamento</b> delas produz o som do \"tum-tá\". Um septo separa completamente o lado <b>direito</b> (só sangue <b>venoso</b>, pobre em O₂) do lado <b>esquerdo</b> (só sangue <b>arterial</b>, rico em O₂). Por isso a circulação humana é <b>completa</b>: os dois sangues <b>não se misturam</b>.</p><p>E é <b>dupla</b>: o sangue passa <b>duas vezes</b> pelo coração a cada volta. Na <b>pequena circulação</b> (pulmonar), o ventrículo direito manda sangue venoso pela <b>artéria pulmonar</b> até os pulmões, onde ele faz a hematose e volta arterial pelas <b>veias pulmonares</b> ao átrio esquerdo. Na <b>grande circulação</b> (sistêmica), o ventrículo esquerdo manda sangue arterial pela <b>aorta</b> para o corpo todo; nos tecidos ele perde O₂ e ganha CO₂ e volta venoso pelas <b>veias cavas</b> ao átrio direito. Note: <b>artéria</b> é o vaso que <b>sai</b> do coração, mesmo levando sangue venoso, como a artéria pulmonar; <b>veia</b> é o que <b>chega</b>, como as veias pulmonares, que trazem sangue arterial. A parede do ventrículo esquerdo é a mais grossa, porque empurra o sangue para o corpo inteiro.</p><p>O coração bate sozinho: um grupo de células no átrio direito, o <b>nó sinoatrial</b> (o <b>marca-passo natural</b>), dispara impulsos elétricos que fazem os átrios e depois os ventrículos se contraírem. A contração é a <b>sístole</b>; o relaxamento, a <b>diástole</b>. Em repouso, um adulto tem em média cerca de <b>60 a 100 batimentos por minuto</b>. O sistema nervoso e a adrenalina aceleram ou freiam o ritmo, mas não o criam. O próprio coração é nutrido pelas <b>artérias coronárias</b>; se uma delas entope por placas de gordura (<b>aterosclerose</b>) e um coágulo, parte do músculo fica sem O₂ e morre: é o <b>infarto</b>. No feto, a circulação tem desvios porque o pulmão ainda não funciona (ver Embriologia, placenta).</p>", "enem": "Cai muito a definição de <b>circulação dupla</b> (passa duas vezes pelo coração) e <b>completa</b> (não mistura sangue arterial e venoso), muitas vezes comparando com peixes, anfíbios e répteis. Pegadinha clássica: <b>artéria pulmonar leva sangue venoso</b> e <b>veias pulmonares trazem sangue arterial</b>. Também aparecem o caminho do sangue, a parede mais grossa do ventrículo esquerdo e as causas do <b>infarto</b>."};
+  TXT.C2 = {"t": "Pressão, capilares, sangue e linfa", "s": "o que sai do capilar precisa voltar", "d": "<p>As <b>artérias</b> têm parede grossa e elástica, que aguenta a pressão de cada batida; as <b>veias</b> têm parede fina e <b>válvulas</b> que impedem o sangue de voltar, ajudadas pelos músculos das pernas que as apertam ao andar; os <b>capilares</b> têm parede de <b>uma só camada de células</b>, e é só neles que acontecem as trocas com os tecidos. A <b>pressão arterial</b> é medida com dois números, a máxima (<b>sistólica</b>) e a mínima (<b>diastólica</b>), em milímetros de mercúrio; um valor de referência muito citado é cerca de <b>120 por 80</b>. A <b>hipertensão</b> é a pressão alta por muito tempo: em geral não dá sintomas, mas força o coração e danifica vasos, rins e encéfalo; sal em excesso, sedentarismo, obesidade, álcool e cigarro aumentam o risco.</p><p>No começo do capilar, a pressão do sangue empurra <b>água, nutrientes e O₂</b> para fora, entre as células: forma-se o <b>líquido intersticial</b>. No fim do capilar, a pressão já caiu e as <b>proteínas do plasma</b>, sobretudo a <b>albumina</b> feita pelo fígado, puxam a água de volta por <b>osmose</b>. Mas nem tudo volta: uma pequena parte fica entre as células e é recolhida pelos <b>vasos linfáticos</b>. Esse líquido é a <b>linfa</b>. Ela corre devagar, sem bomba própria, passa pelos <b>linfonodos</b> (os \"gânglios\", onde há células de defesa e que incham numa infecção) e volta ao sangue em veias perto do coração. O sistema linfático também leva a gordura absorvida no intestino (veja Digestório, absorção). Quando sai mais líquido do que volta, acumula: é o <b>edema</b> (inchaço). Isso acontece com falta de proteína no sangue (desnutrição grave, doença do fígado), com pressão alta nas veias, ou quando os vasos linfáticos são bloqueados, como na <b>filariose</b>, a elefantíase (veja Plantas e animais, vermes).</p><p>O <b>sangue</b> em si está na Histologia (plasma, hemácias, leucócitos, plaquetas). Aqui importam as funções: transportar <b>O₂</b> (hemoglobina das hemácias), <b>CO₂</b> (sobretudo como bicarbonato, veja Respiratório, controle), nutrientes, hormônios e <b>ureia</b> até o rim; <b>defender</b> o corpo (leucócitos); <b>distribuir calor</b>; e <b>fechar ferimentos</b> pela <b>coagulação</b>, em que as plaquetas formam um tampão e uma cascata de reações transforma o <b>fibrinogênio</b> em fios de <b>fibrina</b>, com participação de cálcio e da vitamina K (ver Histologia, coagulação). Com <b>pouca hemoglobina</b>, por falta de ferro na alimentação ou perda de sangue, há <b>anemia</b>: cansaço e palidez, porque chega menos O₂ aos tecidos. <b>Doar sangue</b> é seguro para quem está apto e salva vidas; as regras de quem pode doar estão no site do Ministério da Saúde.</p>", "enem": "Caem o <b>edema</b> explicado pelo balanço entre <b>pressão do sangue</b> e <b>proteínas do plasma</b> (desnutrição e falta de albumina), a <b>elefantíase</b> como bloqueio linfático, a diferença de parede entre artéria, veia e capilar, a <b>hipertensão</b> e seus fatores de risco, a <b>anemia</b> por falta de ferro e a <b>coagulação</b> (plaquetas, fibrina, vitamina K, hemofilia como doença genética, ver Genética)."};
+  TXT.E1 = {"t": "O néfron: filtrar, reabsorver, secretar", "s": "o rim filtra quase tudo e depois pega de volta o que presta", "d": "<p>Cada rim tem cerca de <b>1 milhão de néfrons</b>, as unidades que fazem a urina. Ao quebrar aminoácidos, as células produzem <b>amônia</b>, muito tóxica; o <b>fígado</b> a transforma em <b>ureia</b>, bem menos tóxica, que o sangue leva até o rim (veja Digestório, absorção). Outros resíduos são o <b>ácido úrico</b> (da quebra de ácidos nucleicos) e a <b>creatinina</b> (dos músculos).</p><p>O trabalho tem três etapas. <b>1. Filtração:</b> o sangue chega a um novelo de capilares, o <b>glomérulo</b>, abraçado pela <b>cápsula de Bowman</b>. A pressão empurra para dentro da cápsula água, sais, glicose, aminoácidos, ureia: tudo o que é pequeno. Células do sangue e proteínas grandes <b>ficam no sangue</b>. Por dia, os dois rins filtram cerca de <b>180 litros</b>, mas só cerca de <b>1,5 litro</b> vira urina. <b>2. Reabsorção:</b> ao longo do <b>túbulo contorcido proximal</b>, da <b>alça néfrica (de Henle)</b> e do <b>túbulo distal</b>, o rim pega de volta <b>toda a glicose e os aminoácidos</b> (por transporte ativo, com gasto de ATP), a maior parte do sódio e quase toda a água (por osmose). Só parte da <b>ureia</b> é reabsorvida e, como quase toda a água volta, ela fica bem concentrada na urina. <b>3. Secreção:</b> as células do túbulo também <b>jogam</b> para dentro dele substâncias que estavam no sangue, como íons H⁺, potássio e certos remédios; é assim que o rim ajuda a manter o <b>pH</b>. O que sobra no <b>ducto coletor</b> é a <b>urina</b>, que desce pelo ureter até a bexiga.</p><p>Se a glicose no sangue fica alta demais, como no <b>diabetes</b> sem controle, os transportadores do túbulo não dão conta e a glicose <b>aparece na urina</b> (glicosúria); ela puxa água junto, e a pessoa urina muito e sente muita sede. <b>Proteína na urina</b> costuma indicar lesão no glomérulo. Quando os rins param de funcionar, os resíduos se acumulam no sangue e a pessoa precisa de <b>hemodiálise</b> (uma máquina filtra o sangue por uma membrana semipermeável) ou de <b>transplante</b>. Hipertensão e diabetes estão entre as principais causas de doença renal crônica.</p>", "enem": "É um dos temas mais cobrados do item. Caem a <b>tabela de concentrações</b> (proteína no plasma mas não no filtrado; glicose no filtrado mas não na urina; ureia muito concentrada na urina), as três etapas (<b>filtração, reabsorção, secreção</b>), a <b>glicose na urina</b> no diabetes, a origem da <b>ureia</b> no fígado e o princípio da <b>hemodiálise</b> (difusão por membrana)."};
+  TXT.E2 = {"t": "ADH, aldosterona e o equilíbrio da água", "s": "dois hormônios decidem se a urina sai clara ou escura", "d": "<p>A quantidade de água no sangue muda o tempo todo: suamos, bebemos, comemos salgado. Quem acerta o volume final é o rim, comandado por hormônios (veja Endócrino, glândulas). O <b>hormônio antidiurético (ADH)</b>, ou vasopressina, é produzido no <b>hipotálamo</b> e liberado pela <b>neuro-hipófise</b> quando o sangue fica <b>concentrado</b> (pouca água ou muito sal). Ele abre canais de água, as <b>aquaporinas</b>, nas paredes do túbulo distal e do ducto coletor: mais água volta para o sangue, e a urina sai <b>pouca e escura</b>. Quando bebemos muita água, o ADH cai, os canais fecham e a urina sai <b>muita e clara</b>. Ao mesmo tempo, o sangue concentrado ativa a <b>sede</b>.</p><p>O <b>álcool inibe o ADH</b>: a pessoa urina mais do que bebeu, desidrata e acorda com dor de cabeça e sede. No <b>diabetes insípido</b>, falta ADH ou o rim não responde a ele, e a pessoa elimina muitos litros de urina diluída por dia; não tem a ver com açúcar (o nome antigo vem de a urina não ser doce, ao contrário do diabetes melito).</p><p>A <b>aldosterona</b>, produzida no <b>córtex das glândulas suprarrenais</b>, faz o túbulo distal e o ducto coletor <b>reabsorver sódio</b> (e eliminar potássio). Como a água segue o sódio por osmose, o volume do sangue e a <b>pressão arterial sobem</b>. Ela é liberada quando a pressão ou o volume do sangue caem, por exemplo numa hemorragia ou desidratação: o rim percebe e solta a enzima <b>renina</b>, que inicia uma cadeia de reações (sistema renina-angiotensina-aldosterona) até a aldosterona. Muitos <b>remédios para hipertensão</b> agem nessa cadeia ou como <b>diuréticos</b>, que aumentam a perda de sódio e água; o uso é sempre com indicação médica. Na sequência: <b>ADH controla sobretudo a água</b>, <b>aldosterona controla sobretudo o sódio</b>, e os dois juntos controlam o volume e a pressão do sangue.</p>", "enem": "Cobram o efeito do <b>ADH</b> (mais reabsorção de água, urina concentrada) e a <b>inibição do ADH pelo álcool</b> (mais urina e desidratação), a diferença entre <b>diabetes insípido</b> e <b>diabetes melito</b>, e a <b>aldosterona</b> com reabsorção de <b>sódio</b> e aumento da pressão. Questões sobre <b>sal e hipertensão</b> e sobre <b>diuréticos</b> também usam essa ideia."};
+  function along(P, f) { let tot = 0; const L = []; for (let i = 1; i < P.length; i++) { const l = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); L.push(l); tot += l; } let d = cl(f, 0, 1) * tot, i = 0; while (i < L.length - 1 && d > L[i]) { d -= L[i]; i++; } const u = L[i] ? d / L[i] : 0; return [lerp(P[i][0], P[i + 1][0], u), lerp(P[i][1], P[i + 1][1], u)]; }
+  const leg = (its, x, y, w) => { let cx = x, cy = y; its.forEach(([n, c]) => { const ww = mtw(n, 12, 600) + 22; if (cx + ww > x + w) { cx = x; cy += 20; } circ(cx + 6, cy, 5, c, '#0B0F1C', 1); mtx(n, cx + 16, cy + .5, { s: 12, w: 600, a: 'left', c: C.txt }); cx += ww; }); };
+
+  // ===== C1: coração =====
+  const CTC1 = { fig: { l: 'Frequência', min: 40, max: 160, step: 10, v: 70, f: v => v + ' bpm', rate: v => v / 60 }, cor: { l: 'Frequência', min: 40, max: 160, step: 10, v: 70, f: v => v + ' bpm', rate: v => v / 60 }, hem: NO, furo: { l: 'Furo no septo', min: 0, max: 3, step: 1, v: 0, f: v => ['fechado', 'pequeno', 'médio', 'grande'][v], rate: () => 1.15 } };
+  const M5 = mk('c1', CTC1, S => { S.p = 0; S.msg = null; S.ele = false; S.rx = null; });
+  function coracao(t, S, A, furo) {
+    const u = fr(t), wide = !NAR, hw = Math.min(wide ? A.w * .5 : A.w * .8, 400), hh = Math.min(A.h * (furo ? .5 : .6), hw * .8), x = A.cx - hw / 2, y = A.y0 + A.h * .24, w = hw, h = hh;
+    const sA = 1 - .1 * ss(seg(u, 0, .07)) * (1 - ss(seg(u, .1, .15))), sV = 1 - .14 * ss(seg(u, .15, .22)) * (1 - ss(seg(u, .4, .5))), vs = u > .15 && u < .5;
+    const ch = (cx0, cy0, cw, chh, s, col, lw, nm) => { const ww = cw * s, hh2 = chh * s; rr(cx0 + (cw - ww) / 2, cy0 + (chh - hh2) / 2, ww, hh2, 18, rgba(col, .2), col, lw); };
+    ch(x, y + h * .1, w * .4, h * .34, sA, VEN, 2.5); ch(x + w * .6, y + h * .1, w * .4, h * .34, sA, ART, 2.5); ch(x, y + h * .5, w * .4, h * .46, sV, VEN, 3); ch(x + w * .6, y + h * .5, w * .4, h * .46, sV, ART, 7);
+    line(x + w * .5, y + h * .1, x + w * .5, y + h * .5 + h * .46 * .0, C.txt, 3);
+    const gap = furo * h * .06; line(x + w * .5, y + h * .5, x + w * .5, y + h * .72, C.txt, 3); if (furo) { rr(x + w * .5 - 4, y + h * .72, 8, gap + 2, 2, '#0B0F1C'); line(x + w * .5, y + h * .72 + gap + 2, x + w * .5, y + h * .96, C.txt, 3); } else line(x + w * .5, y + h * .72, x + w * .5, y + h * .96, C.txt, 3);
+    const vv = (px, py, open, c) => { const k = open ? .55 : .1; line(px - 11, py, px - 11 * k, py + (open ? 12 : 0), c, 3); line(px + 11, py, px + 11 * k, py + (open ? 12 : 0), c, 3); };
+    vv(x + w * .2, y + h * .47, !vs, VEN); vv(x + w * .8, y + h * .47, !vs, ART);
+    const vp = (px, c) => { line(px, y + h * .5, px, y - h * .1, c, 7); }; vp(x + w * .45, VEN); vp(x + w * .55, ART); qarrow(x + w * .45, y - h * .1, x + w * .45, y - h * .2, x + w * .2, y - h * .2, VEN, 7); qarrow(x + w * .55, y - h * .1, x + w * .55, y - h * .2, x + w * .8, y - h * .2, ART, 7);
+    line(x + w * .12, y - h * .2, x + w * .12, y + h * .2, VEN, 7); line(x + w * .88, y - h * .2, x + w * .88, y + h * .2, ART, 7);
+    const mixc = furo ? mix(ART, VEN, furo * .17) : ART, nm = 10;
+    for (let i = 0; i < nm; i++) { const f = fr(t * .5 + i / nm);
+      let p = along([[x + w * .12, y - h * .2], [x + w * .12, y + h * .25], [x + w * .2, y + h * .72], [x + w * .45, y + h * .55], [x + w * .45, y - h * .1], [x + w * .2, y - h * .2]], f); circ(p[0], p[1], 4, VEN, '#0B0F1C', .8);
+      p = along([[x + w * .88, y - h * .2], [x + w * .88, y + h * .25], [x + w * .8, y + h * .72], [x + w * .55, y + h * .55], [x + w * .55, y - h * .1], [x + w * .8, y - h * .2]], f); circ(p[0], p[1], 4, f > .45 && f < .75 ? mixc : ART, '#0B0F1C', .8); }
+    if (furo) for (let i = 0; i < 4; i++) { const f = fr(t * .6 + i / 4); circ(lerp(x + w * .4, x + w * .6, f), y + h * .72 + gap / 2 + 1, 3.2, mix(VEN, ART, f), null); }
+    if (S.ele) { const r = u * w * .8; circ(x + w * .14, y + h * .18, 8, AM, '#0B0F1C', 1.5); X.save(); X.globalAlpha = 1 - u; circ(x + w * .14, y + h * .18, r, null, AM, 2.5); X.restore(); }
+    if (Math.abs(u - .17) < .05) etiq('tum', x + w * .5 - 22, y + h * .5 - 14, AM); if (Math.abs(u - .5) < .05) etiq('tá', x + w * .5 - 14, y + h * .5 - 14, AM);
+    lab(x + w * .12, y - h * .1, x - 10, y - h * .24, 'veias cavas'); lab(x + w * .3, y + h * .25, x - 20, y + h * .3, 'átrio direito'); lab(x + w * .3, y + h * .75, x - 20, y + h * .75, 'ventrículo direito'); lab(x + w * .7, y + h * .25, x + w + 14, y + h * .3, 'átrio esquerdo'); lab(x + w * .8, y + h * .75, x + w + 14, y + h * .75, 'ventrículo esquerdo, parede mais grossa');
+    lab(x + w * .45, y - h * .05, x + w * .22, y - h * .3, 'artéria pulmonar'); lab(x + w * .55, y - h * .05, x + w * .78, y - h * .3, 'aorta'); lab(x + w * .88, y - h * .1, x + w + 14, y - h * .22, 'veias pulmonares'); lab(x + w * .2, y + h * .47, x + w * .1, y + h * .6, 'valva tricúspide'); lab(x + w * .8, y + h * .47, x + w * .9, y + h * .6, 'valva mitral');
+    if (S.ele) lab(x + w * .14, y + h * .18, x + w * .3, y + h * .02, 'nó sinoatrial (marca-passo)');
+    if (furo) { const ox = Math.round(100 - 17 * furo), mw = Math.min(A.w - 20, 380), my = A.y1 - 16; mtx('O₂ no sangue que vai para o corpo (valor ilustrativo)', A.cx, my - 18, { s: 13, w: 600 }); rr(A.cx - mw / 2, my - 6, mw, 14, 7, 'rgba(11,15,28,.7)', C.line, 1.2); rr(A.cx - mw / 2, my - 6, mw * ox / 100, 14, 7, ox > 80 ? O2C : AM); mtx('cerca de ' + ox + '%', A.cx + mw / 2 - 4, my - 18, { s: 12, w: 700, a: 'right', f: FD }); }
+    return vs;
+  }
+  // ----- C1, vista realista: figura de IA com hotspots, batimento e fluxo do sangue em motion graphics -----
+  // pontos em % da figura (1200 x 896); a cor do ponto é o código do sangue que passa ali
+  const HSC = [
+    { id: 'aorta', x: 52.5, y: 15, c: ART, t: 'Aorta', d: 'A principal artéria do corpo: sai do ventrículo esquerdo e leva sangue arterial para o corpo todo.' },
+    { id: 'pulm', x: 61, y: 32.5, c: VEN, t: 'Artéria pulmonar', d: 'Sai do ventrículo direito e leva sangue venoso aos pulmões. É artéria porque sai do coração.' },
+    { id: 'cava', x: 40.8, y: 18, c: VEN, t: 'Veia cava superior', d: 'Traz ao átrio direito o sangue venoso da cabeça, dos braços e do tronco.' },
+    { id: 'ad', x: 34.5, y: 46, c: VEN, t: 'Átrio direito', d: 'Recebe o sangue venoso das veias cavas. Nele fica o nó sinoatrial, o marca-passo natural.' },
+    { id: 'ae', x: 58, y: 41, c: ART, t: 'Átrio esquerdo', d: 'Recebe das veias pulmonares o sangue arterial, rico em O₂, que volta dos pulmões.' },
+    { id: 'vp', x: 68, y: 44, c: ART, t: 'Veias pulmonares', d: 'Trazem dos pulmões ao átrio esquerdo o sangue arterial. São veias porque chegam ao coração.' },
+    { id: 'vd', x: 43, y: 66, c: VEN, t: 'Ventrículo direito', d: 'Bombeia o sangue venoso para os pulmões pela artéria pulmonar.' },
+    { id: 've', x: 61.5, y: 72, c: ART, t: 'Ventrículo esquerdo', d: 'Tem a parede mais grossa, porque bombeia o sangue arterial para o corpo inteiro pela aorta.' },
+    { id: 'cor', x: 55.5, y: 53, c: ART, t: 'Artérias coronárias', d: 'Correm na superfície do coração e nutrem o próprio músculo. Se uma entope, acontece o infarto.' }
+  ];
+  // caminhos do fluxo, em % da figura: enchimento na diástole, ejeção na sístole
+  const FLX = [
+    { c: VEN, fase: 'enche', p: [[40.6, 4], [40.8, 14], [40.6, 25], [38.5, 34], [35.5, 43], [37, 53], [43, 62]] },
+    { c: ART, fase: 'enche', p: [[76, 43.5], [70, 43.5], [64, 42.5], [58.5, 42], [59.5, 52], [61.5, 66]] },
+    { c: VEN, fase: 'sai', p: [[43, 63], [46.5, 53], [50, 44], [54.5, 36.5], [60, 32.5], [66, 31.3], [74, 30.5]] },
+    { c: ART, fase: 'sai', p: [[61, 67], [55.5, 57], [50.5, 47], [47.5, 37], [46.8, 27], [48, 18], [51, 12.5], [53.5, 7.5], [54, 3]] }
+  ];
+  let FIGC = null;
+  const bump = (u, c, w) => Math.exp(-Math.pow((u - c) / w, 2));
+  function trilha(P, f0, f1, c, lw, a) { // trecho do caminho entre as frações f0 e f1, com cauda que esmaece
+    const n = 14; let q = along(P, cl(f0, 0, 1));
+    for (let i = 1; i <= n; i++) { const f = lerp(f0, f1, i / n); if (f < 0 || f0 > 1) continue; const r = along(P, cl(f, 0, 1)); X.globalAlpha = a * (i / n); line(q[0], q[1], r[0], r[1], c, lw); q = r; }
+    X.globalAlpha = 1;
+  }
+  function coracaoFig(t, S, A) {
+    if (!FIGC && window.LAB_FIGIA) FIGC = LAB_FIGIA({ img: 'anatomia-circulatorio-coracao', hs: HSC, mask: { miolo: .6, borda: .99 } });
+    if (!FIGC) return false;
+    const u = fr(t), vs = u > .15 && u < .5;
+    // batimento: "tum" forte no começo da sístole e "tá" mais fraco no fim, depois pausa (cerca de 70 por minuto, segue a faixa)
+    const pulso = bump(u, .17, .07) + .55 * bump(u, .5, .06);
+    const box = { x: NAR ? 4 : 24, y: NAR ? 40 : 30, w: W - (NAR ? 8 : 48), h: H - (NAR ? 40 : 30) - (NAR ? 96 : 64) };
+    const R = FIGC.desenhar(X, box, {
+      cam: NAR ? { x: .25, y: .03, w: .5, h: .92 } : { x: .2, y: .02, w: .6, h: .94 }, ox: .52, oy: .58, escala: 1 + .013 * pulso, brilho: pulso,
+      ver: () => LB,
+      sobre: R => {
+        const pt = p => p.map(q => R.pt(q[0], q[1])), lw = NAR ? 1.8 : 2.2;
+        FLX.forEach(fl => {
+          const P = pt(fl.p); X.save(); X.setLineDash([2, 5]); poly(P, rgba(fl.c, .45), 1.2); X.restore();
+          const e = P[P.length - 1], b = P[P.length - 2]; arrowHead(e[0], e[1], Math.atan2(e[1] - b[1], e[0] - b[0]), rgba(fl.c, .55), 7);
+          // a etapa do ciclo decide qual caminho corre: enchimento (diástole) ou ejeção (sístole)
+          const k = fl.fase === 'sai' ? seg(u, .15, .45) : fr(u - .5) / .65;
+          if (k <= 0 || k >= 1) return; const g = fl.fase === 'sai' ? ss(k) : k;
+          for (let i = 0; i < 3; i++) { const f = g * 1.35 - i * .2; trilha(P, f - .22, f, 'rgba(11,15,28,.55)', lw + 2.4, .9 - i * .2); trilha(P, f - .22, f, light(fl.c, .35), lw, .95 - i * .2); if (f > 0 && f < 1) { const q = along(P, f); circ(q[0], q[1], lw * 1.3, light(fl.c, .6)); } }
+        });
+        if (S.ele) { // pulso elétrico: nasce no nó sinoatrial e varre os átrios e depois os ventrículos
+          const n = R.pt(39.5, 30.5); circ(n[0], n[1], 5, AM, '#0B0F1C', 1.5);
+          X.save(); X.globalAlpha = (1 - u) * .9; circ(n[0], n[1], 6 + ss(u / .6) * R.w * .7 * R.sc, null, AM, 1.5); X.restore();
+          lab(n[0], n[1], n[0] - R.w * .3, n[1] - 10, 'nó sinoatrial (marca-passo)');
+        }
+      }
+    });
+    const p = NAR ? R.pt(30, 94) : R.pt(74, 62); if (Math.abs(u - .17) < .05) etiq('tum', p[0], p[1], AM); if (Math.abs(u - .5) < .05) etiq('tá', p[0], p[1], AM);
+    if (!NAR) leg([['sangue arterial', ART], ['sangue venoso', VEN]], A.x0 + 4, H - 82, 360);
+    return vs;
+  }
+  const CAM = [['veias cavas', .14, .8, 'Comece pelas veias cavas: elas trazem o sangue venoso do corpo ao coração.'], ['átrio direito', .3, .4, 'Das veias cavas o sangue chega ao átrio direito.'], ['ventrículo direito', .3, .58, 'O átrio direito manda o sangue ao ventrículo direito.'], ['artéria pulmonar', .14, .22, 'A artéria pulmonar sai do ventrículo direito e leva <b>sangue venoso</b> aos pulmões.'], ['pulmões', .5, .08, 'Nos pulmões acontece a hematose: o sangue fica arterial.'], ['veias pulmonares', .86, .22, 'Dos pulmões o sangue volta pelas veias pulmonares, que trazem <b>sangue arterial</b>.'], ['átrio esquerdo', .7, .4, 'As veias pulmonares chegam ao átrio esquerdo.'], ['ventrículo esquerdo', .7, .58, 'O átrio esquerdo manda o sangue ao ventrículo esquerdo, de parede mais grossa.'], ['aorta', .86, .8, 'O ventrículo esquerdo bombeia o sangue pela aorta.'], ['tecidos do corpo', .5, .92, 'Nos tecidos o sangue perde O₂ e ganha CO₂: volta venoso.']];
+  function caminho(t, S, A) {
+    const dt = dtv(S), nw = NAR ? 84 : 116, nh = NAR ? 38 : 34, pos = i => [A.x0 + A.w * CAM[i][1], A.y0 + 6 + (A.h - 12) * CAM[i][2]];
+    for (let i = 0; i < 10; i++) if (i < S.p) { const a = pos(i), b = pos((i + 1) % 10); if (i + 1 < S.p || S.p >= 10) arrow(a[0], a[1], b[0], b[1], rgba(i < 4 || i === 9 ? VEN : ART, .7), 2); }
+    CAM.forEach((n, i) => { const [px, py] = pos(i), c = i === 4 || i === 9 ? '#9DA9C4' : i < 4 ? VEN : ART; btn(px - nw / 2, py - nh / 2, nw, nh, n[0], c, 'n' + i, { on: i < S.p, s: 12 }); });
+    const cur = Math.min(S.p, 9), cp = pos(S.p === 0 ? 0 : cur), tx0 = cp[0], ty0 = cp[1] - nh / 2 - 12; S.rx = S.rx == null ? tx0 : lerp(S.rx, tx0, 1 - Math.exp(-8 * Math.max(dt, .016))); S.ry = S.ry == null ? ty0 : lerp(S.ry, ty0, 1 - Math.exp(-8 * Math.max(dt, .016)));
+    const col = S.p === 0 ? VEN : S.p >= 5 && S.p < 10 ? ART : S.p >= 10 || S.p <= 4 ? VEN : ART; ell(S.rx, S.ry, 12, 8, 0, col, '#0B0F1C', 1.5); mtx('hemácia', S.rx, S.ry - 16, { s: 12, w: 700, c: C.txt });
+    cap(S.msg || 'Toque, em ordem, nas estruturas por onde a hemácia passa, começando nas veias cavas.');
+  }
+  def('circulatorio', 'coracao', {
+    t: TXT.C1.t, s: TXT.C1.s, c: '#E5484D', loc: S => ({ fig: 'Vista de frente', cor: 'Coração aberto', hem: 'O caminho de uma hemácia', furo: 'Furo no septo' })[S.modo] || '', locNota: S => S.modo === 'fig' ? 'Ilustração, cores do sangue como código' : NOTA,
+    alt: 'o coração realista com pontos para aorta, artéria pulmonar, veia cava, átrios, ventrículos e coronárias, o coração com quatro cavidades e valvas, o caminho de uma hemácia pelo esquema em oito e um furo no septo', still: 3,
+    get ctl() { return M5.ctl(); }, ctlVis: M5.vis, extra: [M5.extra('fig', 'Coração'), M5.extra('cor', 'Coração aberto'), M5.extra('hem', 'Caminho de uma hemácia'), M5.extra('furo', 'Furo no septo'), { t: 'Pulso elétrico', on: S => { S.ele = !S.ele; }, pressed: S => !!S.ele }],
+    init: M5.init, d: TXT.C1.d + '<p>Na vista de frente, passe o mouse ou toque nos pontos para ver o nome de cada parte. Em "Caminho de uma hemácia", toque nas estruturas na ordem certa. O vermelho é o sangue arterial e o azul-arroxeado, o venoso; é só um código de cores.</p>', enem: TXT.C1.enem,
+    kv: [['Cavidades', '2 átrios e 2 ventrículos'], ['Repouso', 'cerca de 60 a 100 batimentos por minuto'], ['Marca-passo', 'nó sinoatrial, no átrio direito']], links: [LK.musctipos, LK.sangue, LK.placenta, LK.comparar],
+    tap(x, y, S) {
+      if (S.modo !== 'hem' || !toque(S)) return; const h = hitAt(x, y); if (typeof h !== 'string' || h[0] !== 'n') return; const i = +h.slice(1);
+      if (S.p >= 10) { S.p = 0; S.msg = null; } if (i === S.p) { S.p++; S.msg = S.p >= 10 ? '<b>Volta completa.</b> O sangue passou <b>duas vezes</b> pelo coração (circulação dupla) sem misturar os dois sangues (completa).' : '<b>Certo.</b> ' + CAM[i][3]; } else S.msg = '<b>Ainda não.</b> ' + CAM[S.p][3];
+    },
+    draw(t, S) { const A = area(); if (S.modo === 'hem') caminho(t, S, A); else { const vs = S.modo === 'fig' && window.LAB_FIGIA ? coracaoFig(t, S, A) : coracao(t, S, A, S.modo === 'furo' ? S.v : 0); cap(S.modo === 'furo' ? (S.v ? '<b>Furo no septo</b>: o sangue dos dois lados se mistura e cai o O₂ que vai para o corpo, como no coração de três cavidades de anfíbios e répteis.' : 'Septo fechado: os dois sangues não se misturam. Abra o furo com a faixa.') : vs ? '<b>Sístole</b> dos ventrículos: as valvas entre átrio e ventrículo fecham (tum) e o sangue sai pela aorta e pela artéria pulmonar.' : '<b>Diástole</b>: as valvas das saídas fecham (tá) e o sangue enche as cavidades.'); } }
+  });
+
+  // ===== C2: vasos, capilar, pressão =====
+  const SCN = { normal: 'Normal', albumina: 'Pouca albumina', linf: 'Vaso linfático bloqueado' };
+  const CTC2 = { vasos: RITMO, cap: { l: 'Pressão do sangue', min: .6, max: 1.6, step: .1, v: 1, f: v => nbr(v, 1) + '×', rate: () => 1 }, pres: NO };
+  const M6 = mk('c2', CTC2, S => { S.anda = false; S.prot = 1; S.blq = false; S.nv = 0; S.cen = 'normal'; S.pp = 180; S.run = false; S.m1 = null; S.m2 = null; });
+  function vasos(t, S, A) {
+    const R = Math.min(A.h * .17, NAR ? 34 : 50), y = A.y0 + R + 22, xs = [A.x0 + A.w * .17, A.x0 + A.w * .5, A.x0 + A.w * .83];
+    circ(xs[0], y, R, rgba(ART, .8), '#E8EDF7', 2); circ(xs[0], y, R * .55, '#2A1218', ART, 1.5); circ(xs[1], y, R, rgba(VEN, .35), '#E8EDF7', 2); circ(xs[1], y, R * .85, '#1B1833', VEN, 1.5); circ(xs[2], y, R * .38, rgba(ART, .3), '#E8EDF7', 2); circ(xs[2], y, R * .3, '#2A1218');
+    [['artéria', 'parede grossa e elástica'], ['veia', 'parede fina, com válvulas'], ['capilar', 'uma só camada de células']].forEach((n, i) => { mtx(n[0], xs[i], y + R + 14, { s: 13, w: 700, c: C.txt }); if (!NAR) mtx(n[1], xs[i], y + R + 30, { s: 12, c: C.dim }); });
+    const vy = A.y0 + A.h * (NAR ? .68 : .72), vh = 40, x0 = A.x0 + 40, x1 = A.x1 - 40, c = fr(t * .4), sq = S.anda && c < .5;
+    rr(x0, vy - vh / 2, x1 - x0, vh, 20, rgba(VEN, .12), VEN, 2); const pul = S.anda ? (sq ? 1 : 0) : 0.0; ell((x0 + x1) / 2, vy + vh / 2 + 14 - pul * 6, (x1 - x0) * .3, 14 + pul * 4, 0, rgba(PROT, .2), PROT, 1.5); mtx(S.anda ? 'músculo da perna contrai' : 'músculo da perna', (x0 + x1) / 2, vy + vh / 2 + 34, { s: 12, c: C.dim });
+    for (let k = 0; k < 2; k++) { const vx = x0 + (x1 - x0) * (.35 + k * .3), open = sq; line(vx, vy - vh / 2 + 3, vx + (open ? 4 : 14), vy - (open ? 10 : 2), C.txt, 3); line(vx, vy + vh / 2 - 3, vx + (open ? 4 : 14), vy + (open ? 10 : 2), C.txt, 3); }
+    const adv = S.anda ? (sq ? 1 : 0) : .25; S.off = (S.off || 0) + adv * dtv(S) * .5; for (let i = 0; i < 9; i++) circ(x0 + 14 + fr(S.off + i / 9) * (x1 - x0 - 28), vy + Math.sin(i * 3) * 8, 4.5, VEN, '#0B0F1C', .8);
+    arrow(x1 - 6, vy - vh / 2 - 12, x0 + (x1 - x0) * .7, vy - vh / 2 - 12, AM, 2); mtx('rumo ao coração', x1 - 70, vy - vh / 2 - 24, { s: 12, c: AM }); lab(x0 + (x1 - x0) * .35 + 5, vy - 6, x0 + (x1 - x0) * .2, vy - vh / 2 - 30, 'válvula');
+    cap(S.anda ? 'Ao andar, o músculo aperta a veia e as <b>válvulas</b> deixam o sangue passar só para cima.' : 'A veia tem <b>válvulas</b> que impedem o sangue de voltar. Toque em "Andar" para o músculo apertar a veia.');
+  }
+  function capilar(t, S, A) {
+    const dt = dtv(S), P = S.v, leak = Math.max(0, .5 * P - .4 * S.prot), drain = S.blq ? 0 : .12; S.nv = cl(S.nv + (leak - drain) * dt * .25, 0, 1);
+    const cy = A.y0 + 34, x0 = A.x0 + 10, x1 = A.x1 - 10, sw = 1 + .35 * S.nv;
+    rr(x0, cy - 20, x1 - x0, 40, 20, rgba(ART, .14), ART, 2); for (let i = 0; i < 8; i++) ell(x0 + 20 + fr(t * .08 + i / 8) * (x1 - x0 - 40), cy, 9, 6, 0, i % 2 ? ART : mix(ART, VEN, .3), '#0B0F1C', 1);
+    const no = Math.round(6 * P), ni = Math.round(5 * S.prot); for (let i = 0; i < no; i++) { const f = fr(t * .35 + i / no); circ(x0 + (x1 - x0) * (.06 + .4 * (i / no)), cy + 24 + f * 36, 3.4, O2C, null); }
+    for (let i = 0; i < ni; i++) { const f = fr(t * .35 + i / ni); circ(x0 + (x1 - x0) * (.55 + .4 * (i / ni)), cy + 60 - f * 36, 3.4, O2C, null); }
+    for (let i = 0; i < 5; i++) tx(S.prot < .8 ? '' : 'P', x0 + (x1 - x0) * (.6 + i * .08), cy - 4, { s: 12, w: 700, c: '#9A6BFF', bg: false });
+    arrow(x0 + 20, cy - 30, x1 - 20, cy - 30, C.dim, 1.5); if (!NAR) mtx('sangue corre', A.cx, cy - 42, { s: 12, c: C.dim }); etiq(NAR ? 'água sai (pressão)' : 'pressão empurra a água para fora', x0, cy + 86, O2C); etiq(NAR ? 'água volta (proteínas)' : 'proteínas puxam a água de volta', NAR ? x0 + 140 : A.cx + 6, cy + 86, '#9A6BFF');
+    const ty = cy + 104, th = A.y1 - ty - 6, tw = x1 - x0; rr(x0, ty, tw, th, 12, rgba('#E58AB0', .08 + .12 * S.nv), rgba('#E58AB0', .5), 1.5);
+    for (let i = 0; i < 6; i++) ell(x0 + tw * (.1 + i * .16), ty + th * .45, 20 * sw, 13 * sw, 0, rgba('#E58AB0', .3), '#E58AB0', 1.3);
+    const tkx = x1 - 54, tkh = th - 10; rr(tkx, ty + 5, 40, tkh, 8, 'rgba(11,15,28,.6)', C.line, 1.2); rr(tkx, ty + 5 + tkh * (1 - S.nv), 40, tkh * S.nv, 8, rgba(O2C, .6)); mtx(NAR ? 'sobra' : 'líquido que sobra', tkx + 20, ty - 8, { s: 12, c: C.dim, a: 'center' });
+    line(tkx, ty + th * .6, x0 + tw * .55, ty + th * .6, QUI, 4, S.blq ? [6, 6] : null); if (S.blq) tx('bloqueado', x0 + tw * .65, ty + th * .6 - 12, { s: 12, w: 700, c: AM }); else for (let i = 0; i < 3; i++) circ(lerp(tkx, x0 + tw * .55, fr(t * .2 + i / 3)), ty + th * .6, 3, QUI); etiq('vaso linfático', x0 + tw * .3, ty + th * .6 + 18, QUI);
+    if (S.nv > .55) etiq('edema (inchaço)', x0 + 8, ty + th - 14, AM);
+    cap(S.cen === 'normal' && P <= 1.1 ? 'No começo do capilar a pressão empurra água para fora; no fim, as <b>proteínas</b> puxam de volta. A pequena sobra vai pelo vaso linfático.' : S.nv > .55 ? '<b>Edema</b>: sai mais líquido do que volta ou o linfático não leva embora, e o tecido incha.' : 'O líquido que sobra enche o tanque. Veja se o vaso linfático dá conta.');
+  }
+  function pressao(t, S, A) {
+    const dt = dtv(S); if (S.run && S.pp > 40) S.pp = Math.max(40, S.pp - dt * 6);
+    const gx = NAR ? A.x1 - 52 : A.cx + 90, gh = A.h - 70, gy = A.y0 + 4, ay = A.y0 + A.h * .26, ax = A.x0 + 6, aw = (NAR ? gx - 14 : gx - 90) - ax;
+    rr(ax, ay, aw, 54, 24, rgba('#E8B796', .22), '#E8B796', 2); rr(ax + aw * .4, ay - 8, aw * .26, 70, 8, rgba('#7CC4FF', .3), '#7CC4FF', 2); mtx('manguito', ax + aw * .53, ay + 78, { s: 12, c: C.dim });
+    const aud = S.pp <= 120 && S.pp >= 80, c = fr(t * 1.1); if (aud && c < .3) { circ(ax + aw * .85, ay + 27, 10 + c * 40, null, rgba(AM, 1 - c / .3), 2.5); etiq('tum', ax + aw * .85 - 20, ay - 18, AM); }
+    rr(gx, gy, 22, gh, 11, 'rgba(11,15,28,.7)', C.line, 1.5); const fh = gh * (S.pp / 200); rr(gx, gy + gh - fh, 22, fh, 11, '#C9D4EA'); for (let v = 0; v <= 200; v += 40) { tx(String(v), gx + 42, gy + gh - gh * v / 200, { s: 12, f: FD, c: C.dim }); line(gx + 22, gy + gh - gh * v / 200, gx + 28, gy + gh - gh * v / 200, C.dim, 1); }
+    mtx('mmHg', gx + 11, gy - 8, { s: 12, c: C.dim }); mtx('cerca de ' + Math.round(S.pp), ax + aw / 2, A.y0 + 14, { s: 14, w: 700, f: FD });
+    const by = A.y1 - 40, bw = (A.w - 12) / 3; fila(A.x0, by, A.w, 38, [[S.run ? 'repetir' : 'soltar o ar', 'sol', false], ['ouvi o 1º batimento', 'm1', S.m1 != null], ['ouvi o último', 'm2', S.m2 != null]], AM);
+    cap(S.m1 != null && S.m2 != null ? `Você marcou <b>${Math.round(S.m1)} por ${Math.round(S.m2)}</b>: a primeira é a <b>sistólica</b> e a segunda, a <b>diastólica</b>. O valor de referência era 120 por 80 (${Math.abs(S.m1 - 120) <= 8 && Math.abs(S.m2 - 80) <= 8 ? 'você acertou' : 'tente de novo'}). Menos sal, atividade física, peso saudável, sem cigarro e pouco álcool ajudam; só profissional de saúde diagnostica hipertensão.` : !S.run ? 'Toque em "soltar o ar" e marque quando ouvir o primeiro e o último batimento.' : 'Escute: o primeiro batimento é a pressão sistólica; quando o som some, a diastólica.');
+  }
+  def('circulatorio', 'sangue-linfa', {
+    t: TXT.C2.t, s: TXT.C2.s, c: '#E5484D', loc: S => ({ vasos: 'Três vasos', cap: 'Balanço do capilar', pres: 'Medidor de pressão' })[S.modo] || '', locNota: NOTA,
+    alt: 'cortes de artéria, veia e capilar com as válvulas, o balanço de líquidos no capilar com a linfa e um medidor de pressão arterial', still: 3,
+    get ctl() { return M6.ctl(); }, ctlVis: M6.vis, extra: [M6.extra('vasos', 'Três vasos'), M6.extra('cap', 'Balanço do capilar'), M6.extra('pres', 'Medidor de pressão'), { t: 'Andar', vis: S => S.modo === 'vasos', on: S => { S.anda = !S.anda; }, pressed: S => !!S.anda }, ...Object.keys(SCN).map(k => ({ t: SCN[k], vis: S => S.modo === 'cap', on: S => { S.cen = k; S.prot = k === 'albumina' ? .4 : 1; S.blq = k === 'linf'; S.nv = 0; }, pressed: S => S.cen === k }))],
+    init: M6.init, d: TXT.C2.d + '<p class="nota">Conteúdo educativo, não substitui orientação médica. As regras de quem pode doar sangue estão no site do Ministério da Saúde.</p>', enem: TXT.C2.enem,
+    kv: [['Pressão de referência', 'cerca de 120 por 80 mmHg'], ['Troca com os tecidos', 'só nos capilares'], ['Linfa', 'volta ao sangue perto do coração']], links: [LK.sangue, LK.coagulacao, LK.comparar],
+    tap(x, y, S) { if (S.modo !== 'pres' || !toque(S)) return; const h = hitAt(x, y); if (h === 'sol') { S.pp = 180; S.run = true; S.m1 = S.m2 = null; } else if (h === 'm1' && S.run) S.m1 = S.pp; else if (h === 'm2' && S.run) S.m2 = S.pp; },
+    draw(t, S) { const A = area(); if (S.modo === 'vasos') vasos(t, S, A); else if (S.modo === 'cap') capilar(t, S, A); else pressao(t, S, A); }
+  });
+
+  // ===== E1: néfron =====
+  const CTE1 = { nef: RITMO, qua: NO, dia: NO };
+  const M7 = mk('e1', CTE1, S => { S.q = [[0, 0], [0, 0], [0, 0], [0, 0]]; S.chk = false; S.diab = false; S.msg = null; S.ban = 0; S.go = false; S.tm = 0; });
+  const PT = [{ n: 'glicose', c: CARB, re: .27, k: 7 }, { n: 'aminoácido', c: PROT, re: .27, k: 5 }, { n: 'sódio', c: '#E8EDF7', re: .55, k: 7 }, { n: 'água', c: '#8FD0F0', re: .62, k: 9 }, { n: 'ureia', c: '#C9A227', re: 2, k: 7 }, { n: 'proteína', c: '#9A6BFF', re: -1, k: 3 }, { n: 'hemácia', c: ART, re: -1, k: 4 }];
+  function nefron(t, S, A) {
+    const fx = f => A.x0 + A.w * f, fy = f => A.y0 + 14 + (A.h - 56) * f;
+    const T = [[.1, .3], [.3, .3], [.4, .3], [.4, .62], [.52, .62], [.52, .3], [.74, .3], [.74, .5], [.95, .5]].map(q => [fx(q[0]), fy(q[1])]), K = [[0, .12], ...[[.1, .3], [.3, .3], [.4, .3], [.4, .62], [.52, .62], [.52, .3], [.74, .3], [.74, .5], [.95, .5]]].map((q, i) => [fx(q[0]) + (i ? 9 : 0), fy(q[1]) + (i ? 12 : 0)]);
+    const KK = [[fx(0), fy(.12)], ...T.map(q => [q[0] + 9, q[1] + 12])];
+    poly(T, rgba('#C9A227', .3), NAR ? 14 : 18); poly(T, rgba('#C9A227', .75), 1.5); poly(KK, rgba(ART, .45), NAR ? 7 : 9);
+    circ(T[0][0], T[0][1], NAR ? 20 : 26, rgba(ART, .12), ART, 2); circ(T[0][0], T[0][1], NAR ? 26 : 34, null, 'rgba(223,230,245,.6)', 2);
+    const nT = 7;
+    PT.forEach((p, ti) => { for (let j = 0; j < p.k; j++) {
+      const s = fr(t * .045 + (j + ti * .37) / p.k), fil = ti < 5, kP = along(KK, s * .98 + .02 * 0), tP = along(T, cl((s - .1) / .9, 0, 1));
+      let pt = kP;
+      if (fil && s >= .1) { const a = ss(seg(s, .1, .14)), b = p.re > 0 && p.re < 1.5 ? ss(seg(s, p.re, p.re + .05)) : 0; const kk = along(KK, s); pt = [lerp(lerp(kk[0], tP[0], a), kk[0], b), lerp(lerp(kk[1], tP[1], a), kk[1], b)]; }
+      else if (s < .1 || !fil) pt = along(KK, s);
+      circ(pt[0], pt[1], ti === 5 ? 5.5 : ti === 6 ? 5 : 3.6, p.c, '#0B0F1C', .8);
+    } });
+    for (let j = 0; j < 4; j++) { const s = fr(t * .045 + j / 4 + .1), kk = along(KK, s), tP = along(T, cl((s - .1) / .9, 0, 1)), a = ss(seg(s, .45, .5)); circ(lerp(kk[0], tP[0], a), lerp(kk[1], tP[1], a), 4, AM, '#0B0F1C', .8); }
+    const ATP = (f) => { const q = along(T, f); tok(q[0] + 4, q[1] - (NAR ? 26 : 30), 'ATP', AM, { s: 12 }); }; ATP(.2);
+    lab(T[0][0], T[0][1], T[0][0] - 6, T[0][1] - 48, 'glomérulo e cápsula de Bowman'); lab(along(T, .25)[0], along(T, .25)[1], along(T, .25)[0] + 10, T[0][1] - 52, 'túbulo contorcido proximal'); lab(along(T, .45)[0], along(T, .45)[1], along(T, .45)[0] - 20, fy(.82), 'alça néfrica (de Henle)'); lab(along(T, .72)[0], along(T, .72)[1], along(T, .72)[0], T[0][1] - 44, 'túbulo contorcido distal'); lab(T[8][0] - 30, T[8][1], T[8][0] - 30, T[8][1] + 36, 'ducto coletor');
+    const ly = A.y1 - (NAR ? 40 : 22); leg([...PT.map(p => [p.n, p.c]), ['H⁺ secretado', AM]], A.x0, ly, A.w);
+    const px = NAR ? A.x0 + A.w * .56 : A.x0 + A.w * .62, py = fy(.62); mtx('por dia, os dois rins:', px, py - 6, { s: 12, c: C.dim, a: 'left' }); mtx('filtram cerca de 180 L', px, py + 12, { s: 13, w: 700, a: 'left', c: C.txt }); mtx('e fazem cerca de 1,5 L de urina', px, py + 30, { s: 13, w: 700, a: 'left', c: AM });
+    cap('<b>1. Filtração</b> no glomérulo (proteína e hemácia ficam); <b>2. reabsorção</b> nos túbulos (glicose e aminoácidos por transporte ativo, água por osmose); <b>3. secreção</b> de H⁺. A ureia fica e vira urina.');
+  }
+  const QL = ['?', 'zero', 'igual', 'maior', 'menor'], QR = [['proteína', [1, 1], 'grande demais para filtrar'], ['glicose', [2, 1], 'reabsorvida por transporte ativo'], ['ureia', [2, 3], 'pouco reabsorvida e a água sai: concentra'], ['sódio', [2, 4], 'quase todo reabsorvido']];
+  function quadro(t, S, A) {
+    const cw = (A.w - (NAR ? 74 : 110)) / 3, lw = NAR ? 74 : 110, rh = NAR ? 40 : 46, y0 = A.y0 + 30, hint = !NAR && S.chk === 2;
+    ['plasma', 'filtrado', 'urina'].forEach((n, i) => mtx(n, A.x0 + lw + (i + (hint && false ? 0 : 0)) * cw + cw / 2 - (hint ? 0 : 0), A.y0 + 12, { s: 13, w: 700, c: C.txt }));
+    QR.forEach((r, i) => { const y = y0 + i * (rh + 6); mtx(r[0], A.x0, y + rh / 2, { s: 13, w: 700, a: 'left', c: C.txt });
+      rr(A.x0 + lw + 3, y, cw - 6, rh, 8, 'rgba(19,26,43,.6)', C.line, 1); mtx('referência', A.x0 + lw + cw / 2, y + rh / 2, { s: 12, c: C.dim });
+      for (let c = 0; c < 2; c++) { const v = S.q[i][c], want = r[1][c], ok = (S.diab && i === 1 && c === 1) ? v >= 2 : v === want, col = S.chk && v ? (ok ? C.ok : C.erro) : v ? AM : '#9DA9C4', x = A.x0 + lw + (c + 1) * cw + 3; btn(x, y, cw - 6, rh, S.chk === 2 ? (S.diab && i === 1 && c === 1 ? 'aparece' : QL[want]) : QL[v], col, 'q' + i + c, { on: !!v, s: 13 }); } });
+    const by = y0 + 4 * (rh + 6) + 6; fila(A.x0, by, A.w, 38, [['conferir', 'chk', S.chk === 1], ['mostrar respostas', 'res', S.chk === 2], ['diabetes sem controle', 'dia', S.diab, ART]], AM);
+    if (!NAR) QR.forEach((r, i) => { if (S.chk === 2) mtx(r[2], A.x1, y0 + i * (rh + 6) - 6, { s: 12, c: C.dim, a: 'right' }); });
+    cap(S.diab ? '<b>Diabetes sem controle</b>: a glicose passa do que os transportadores dão conta e <b>aparece na urina</b>; ela puxa água, e a pessoa urina e tem sede demais.' : S.msg || 'Toque em cada célula para escolher: zero, igual, maior ou menor que no plasma.');
+  }
+  function dialise(t, S, A) {
+    const dt = dtv(S); if (S.go) S.tm = Math.min(1, S.tm + dt * .12);
+    const bx = A.x0, by = A.y0 + 4, bw = NAR ? A.w : A.w * .66, bh = NAR ? A.h - 110 : A.h - 56; rr(bx, by, bw, bh, 14, rgba(S.ban ? '#7CC4FF' : '#8FD0F0', S.ban ? .16 : .08), '#8FD0F0', 1.5);
+    const rows = 4, tp = [[bx + 20, by + bh * .12]]; for (let i = 0; i < rows; i++) { const yy = by + bh * (.12 + i * .25); tp.push([i % 2 ? bx + 20 : bx + bw - 20, yy], [i % 2 ? bx + 20 : bx + bw - 20, yy + bh * .25]); }
+    const P2 = []; for (let i = 0; i < rows; i++) { const yy = by + bh * (.14 + i * .22); P2.push(i % 2 ? [bx + bw - 24, yy] : [bx + 24, yy], i % 2 ? [bx + 24, yy] : [bx + bw - 24, yy]); }
+    poly(P2, rgba(ART, .4), 14); poly(P2, rgba(ART, .8), 1.5);
+    const SUBS = [['ureia', '#C9A227', true], ['glicose', CARB, !S.ban], ['sais', '#E8EDF7', !S.ban]], tmv = S.tm;
+    SUBS.forEach((s, si) => { for (let j = 0; j < 7; j++) { const f = fr(t * .03 + (j + si * .3) / 7), p = along(P2, f), leave = s[2] && ss(seg(tmv, j / 7 * .6, j / 7 * .6 + .4)); const ox = p[0] + Math.sin(j * 5 + si) * 40, oy = p[1] + 26 + (j % 3) * 8; circ(lerp(p[0], ox, leave), lerp(p[1] + si * 3 - 3, oy, leave), 3.6, s[1], '#0B0F1C', .8); } });
+    for (let j = 0; j < 3; j++) { const p = along(P2, fr(t * .03 + j / 3 + .1)); ell(p[0], p[1], 8, 5, 0, ART, '#0B0F1C', 1); }
+    mtx('banho (dialisado)', bx + 10, by + bh - 12, { s: 12, c: C.dim, a: 'left' }); mtx('tubo de membrana semipermeável', bx + bw - 10, by + 14, { s: 12, c: C.dim, a: 'right' });
+    const gx = NAR ? A.x0 : A.x0 + bw + 14, gw = NAR ? A.w : A.w - bw - 14, gy = NAR ? by + bh + 12 : A.y0 + 4; panel(gx, gy, gw, NAR ? 70 : bh); head('No sangue ao fim', gx + 10, gy + 16, AM);
+    [['ureia', 0.2], ['glicose', S.ban ? 1 : .2], ['sais', S.ban ? 1 : .2]].forEach((b, i) => { const lv = lerp(1, b[1], tmv), yy = gy + (NAR ? 24 : 38) + i * (NAR ? 14 : 30); mtx(b[0], gx + 10, yy, { s: 12, a: 'left', c: C.txt }); rr(gx + 70, yy - 5, gw - 84, 10, 5, 'rgba(11,15,28,.7)', C.line, 1); rr(gx + 70, yy - 5, (gw - 84) * lv, 10, 5, b[1] < 1 ? AM : C.ok); });
+    const fy = A.y1 - 40; fila(A.x0, fy, A.w, 38, [['banho: água pura', 'b0', S.ban === 0], ['banho: glicose e sais como no sangue', 'b1', S.ban === 1], ['ligar a máquina', 'go', S.go]], AM);
+    cap(!S.go ? 'Escolha o banho e ligue a máquina.' : S.ban ? 'Com <b>glicose e sais na mesma concentração do sangue</b>, só os resíduos (ureia) saem por difusão.' : 'Em <b>água pura</b>, também saem glicose e sais, que o paciente precisa: o banho certo tem glicose e sais iguais aos do sangue.');
+  }
+  def('excretor', 'nefron', {
+    t: TXT.E1.t, s: TXT.E1.s, c: '#E3C25B', loc: S => ({ nef: 'Um néfron', qua: 'Quadro de concentrações', dia: 'Hemodiálise' })[S.modo] || '', locNota: NOTA,
+    alt: 'um néfron esquemático com as três etapas, a tabela de concentrações de plasma, filtrado e urina e a hemodiálise', still: 8,
+    get ctl() { return M7.ctl(); }, ctlVis: M7.vis, extra: [M7.extra('nef', 'Um néfron'), M7.extra('qua', 'Quadro de concentrações'), M7.extra('dia', 'Hemodiálise')],
+    init: M7.init, d: TXT.E1.d + '<p class="nota">Conteúdo educativo, não substitui orientação médica.</p>', enem: TXT.E1.enem,
+    kv: [['Néfrons', 'cerca de 1 milhão por rim'], ['Filtrado por dia', 'cerca de 180 litros'], ['Urina por dia', 'cerca de 1,5 litro'], ['Resíduos', 'ureia, ácido úrico e creatinina']], links: [LK.bomba, LK.comparar, LK.folhetos],
+    tap(x, y, S) {
+      if (!toque(S)) return; const h = hitAt(x, y); if (typeof h !== 'string') return;
+      if (S.modo === 'qua') { if (h[0] === 'q') { const i = +h[1], c = +h[2]; S.q[i][c] = (S.q[i][c] + 1) % 5; S.chk = 0; S.msg = null; } else if (h === 'chk') { let n = 0; QR.forEach((r, i) => r[1].forEach((w, c) => { const v = S.q[i][c]; if ((S.diab && i === 1 && c === 1) ? v >= 2 : v === w) n++; })); S.chk = 1; S.msg = `<b>${n} de 8</b> células certas. As erradas ficam em vermelho: pense no que passa pelo filtro e no que volta.`; } else if (h === 'res') { S.chk = 2; S.q = QR.map(r => r[1].slice()); if (S.diab) S.q[1][1] = 2; S.msg = 'Proteína não passa pelo filtro; glicose passa e volta; ureia fica concentrada.'; } else if (h === 'dia') { S.diab = !S.diab; S.chk = 0; } }
+      else if (S.modo === 'dia') { if (h[0] === 'b') { S.ban = +h[1]; S.go = false; S.tm = 0; } else if (h === 'go') { S.go = true; S.tm = 0; } }
+    },
+    draw(t, S) { const A = area(); if (S.modo === 'nef') nefron(t, S, A); else if (S.modo === 'qua') quadro(t, S, A); else dialise(t, S, A); }
+  });
+
+  // ===== E2: ADH, aldosterona e a água =====
+  const CTE2 = { tor: { l: 'Sangue', min: 0, max: 2, step: 1, v: 1, f: v => ['diluído', 'normal', 'concentrado'][v], rate: () => 1 }, dia: NO, tes: NO };
+  const M8 = mk('e2', CTE2, S => { S.vol = false; S.ev = null; S.D = { adh: .5, ald: .5, vol: 1, conc: .5, pa: 1 }; S.Tg = { adh: .5, ald: .5, vol: 1, conc: .5, pa: 1 }; BD3.zera(S); });
+  const EV = { agua: ['beber 1 litro de água', { adh: .1, ald: .4, vol: 2, conc: .1, pa: 1 }, 'Muita água dilui o sangue: o ADH cai, a urina sai <b>muita e clara</b>.'], sal: ['comer pipoca salgada', { adh: 1.5, ald: .3, vol: .6, conc: 1.5, pa: 1.3 }, 'Muito sal concentra o sangue: o ADH sobe, a urina sai <b>pouca e escura</b>, e o sal extra pode elevar a pressão.'], fut: ['uma hora de futebol no calor', { adh: 1.8, ald: 1.6, vol: .4, conc: 1.8, pa: .9 }, 'O suor tira água e sal: ADH e aldosterona sobem para poupar água e sódio.'], alc: ['beber álcool', { adh: .1, ald: .5, vol: 1.8, conc: .3, pa: .95 }, '<b>O álcool inibe o ADH</b>: a pessoa urina mais do que bebeu e desidrata.'], hem: ['uma hemorragia leve', { adh: 1.6, ald: 2, vol: .5, conc: 1.3, pa: .7 }, 'A pressão cai: o rim solta renina e a <b>aldosterona</b> sobe, poupando sódio e água.'] };
+  const BD3 = baralho({
+    nome: 'e2', alvos: [{ t: 'urina pouca e escura', c: '#B9780C' }, { t: 'urina muita e clara', c: '#F3E9A0' }],
+    cartas: [{ t: 'maratonista sem beber água', k: 0 }, { t: 'pessoa depois de uma festa com álcool', k: 1 }, { t: 'paciente com diabetes insípido', k: 1 }, { t: 'comeu muito sal e bebeu pouco', k: 0 }, { t: 'bebeu 1 litro de água de uma vez', k: 1 }],
+    certo: c => ({ 0: '<b>Certo.</b> Sangue concentrado, ADH alto: urina pouca e escura.', 1: '<b>Certo.</b> ADH baixo (ou sem efeito): urina muita e clara.' })[c.k], errado: c => `<b>Ainda não.</b> Pense: nesse caso o ADH está alto ou baixo?`, fim: () => '<b>Pronto.</b> ADH alto poupa água; ADH baixo deixa a água sair.', dica: 'Toque na situação e depois na urina esperada.'
+  });
+  const urCor = c => mix('#F3E9A0', '#B9780C', cl(c / 2, 0, 1));
+  function copo(x, y, w, h, nivel, cor) { rr(x, y, w, h, 6, 'rgba(11,15,28,.5)', C.dim, 2); rr(x + 2, y + h * (1 - nivel) , w - 4, h * nivel - 2, 4, cor); }
+  function torneiras(t, S, A) {
+    const adh = [.1, .5, 1][S.v], ald = S.vol ? 1 : .3, py = A.y0 + A.h * (NAR ? .46 : .44), x0 = A.x0 + 10, x1 = A.x1 - (NAR ? 70 : 100), mid = x0 + (x1 - x0) * .42, ph = 34;
+    rr(x0, py - ph / 2, x1 - x0, ph, 17, 'rgba(201,162,39,.12)', '#C9A227', 2); tx('túbulo distal', (x0 + mid) / 2, py - ph / 2 - 12, { s: 12, c: C.dim }); tx('ducto coletor', (mid + x1) / 2, py - ph / 2 - 12, { s: 12, c: C.dim });
+    const NA = 4, NW = 5, nx = i => x0 + (mid - x0) * (.15 + .7 * i / (NA - 1)), wx = i => mid + (x1 - mid) * (.15 + .7 * i / (NW - 1)), bY = py + ph / 2 + 20;
+    rr(x0, bY, x1 - x0, 12, 6, rgba(ART, .3), ART, 1.5); mtx('sangue', x0 + 6, bY + 26, { s: 12, c: C.dim, a: 'left' });
+    for (let i = 0; i < NA; i++) { const o = i / NA < ald; rr(nx(i) - 8, py + ph / 2 - 2, 16, 6, 2, o ? '#0B0F1C' : '#C9A227'); if (o) for (let k = 0; k < 2; k++) circ(nx(i), py + ph / 2 + 4 + fr(t * .6 + k * .5 + i * .2) * 16, 3.2, '#E8EDF7', null); }
+    for (let i = 0; i < NW; i++) { const o = i / NW < adh / 1.0 * .9 + (adh >= 1 ? .1 : 0); rr(wx(i) - 8, py + ph / 2 - 2, 16, 6, 2, o ? '#0B0F1C' : '#C9A227'); if (o) for (let k = 0; k < 2; k++) circ(wx(i), py + ph / 2 + 4 + fr(t * .6 + k * .5 + i * .2) * 16, 3.2, '#8FD0F0', null); }
+    for (let j = 0; j < 10; j++) circ(lerp(x0 + 10, x1 - 10, fr(t * .1 + j / 10)), py + Math.sin(j * 4 + t) * 7, 3.4, j % 2 ? '#8FD0F0' : '#E8EDF7', null);
+    const hx = x0, hy = A.y0 + 2; rr(hx, hy, 150, 26, 8, rgba('#C58BE8', .2), '#C58BE8', 1.5); mtx('neuro-hipófise (ADH)', hx + 75, hy + 13, { s: 12, w: 700 }); rr(x0 + (x1 - x0) * .5, hy, 170, 26, 8, rgba('#7FB2E5', .2), '#7FB2E5', 1.5); mtx('suprarrenal (aldosterona)', x0 + (x1 - x0) * .5 + 85, hy + 13, { s: 12, w: 700 });
+    const nA = Math.round(adh * 6); for (let i = 0; i < nA; i++) { const f = fr(t * .3 + i / Math.max(1, nA)); circ(hx + 75 + (wx(2) - hx - 75) * f, hy + 28 + (py - ph / 2 - hy - 30) * f, 3.2, '#C58BE8', null); }
+    const nB = Math.round(ald * 6); for (let i = 0; i < nB; i++) { const f = fr(t * .3 + i / Math.max(1, nB)); circ(lerp(x0 + (x1 - x0) * .6, nx(1), f), lerp(hy + 28, py - ph / 2, f), 3.2, '#7FB2E5', null); }
+    etiq('ADH abre canais de água', x0 + (x1 - x0) * .45, bY + 48, '#C58BE8'); etiq('aldosterona: sódio', x0, bY + 48 + (NAR ? 26 : 0), '#7FB2E5');
+    const cx = x1 + 16, cw = NAR ? 44 : 62, cy0 = py - 20, chh = NAR ? 80 : 110; copo(cx, cy0, cw, chh, 1 - adh * .6, urCor(adh * 1.5 + .2)); mtx('urina', cx + cw / 2, cy0 + chh + 12, { s: 12, c: C.dim });
+    cap(S.v === 1 && !S.vol ? 'Sangue normal: ADH médio e urina de cor normal.' : S.vol ? '<b>Volume do sangue baixo</b>: a aldosterona faz o túbulo distal e o ducto coletor reabsorver sódio; a água segue o sódio e a pressão sobe.' : S.v === 2 ? 'Sangue <b>concentrado</b>: o ADH sobe, os canais de água abrem, mais água volta ao sangue e a urina sai pouca e escura.' : 'Sangue <b>diluído</b>: o ADH cai, os canais fecham e a água sai na urina, que fica muita e clara.');
+  }
+  function dia(t, S, A) {
+    const dt = dtv(S), k = 1 - Math.exp(-2 * Math.max(dt, .016)); if (dt > 0) for (const q in S.D) S.D[q] += (S.Tg[q] - S.D[q]) * k;
+    const ks = Object.keys(EV), bh = NAR ? 36 : 38; if (NAR) { fila(A.x0, A.y0, A.w, bh, ks.slice(0, 3).map(q => [EV[q][0], 'v:' + q, S.ev === q]), AM); fila(A.x0, A.y0 + bh + 6, A.w, bh, ks.slice(3).map(q => [EV[q][0], 'v:' + q, S.ev === q]), AM); } else fila(A.x0, A.y0, A.w, bh, ks.map(q => [EV[q][0], 'v:' + q, S.ev === q]), AM);
+    const gy = A.y0 + (NAR ? 2 * bh + 24 : bh + 30), rowh = (A.y1 - gy - 4) / 5, gw = (NAR ? A.w - 70 : A.w - 130) - 150;
+    [['ADH', 'adh', '#C58BE8'], ['aldosterona', 'ald', '#7FB2E5'], ['volume de urina', 'vol', O2C], ['concentração da urina', 'conc', '#B9780C'], ['pressão arterial', 'pa', ART]].forEach((g, i) => { const y = gy + i * rowh, v = S.D[g[1]]; mtx(g[0], A.x0, y + rowh / 2, { s: 12, w: 600, a: 'left', c: C.txt }); const bx = A.x0 + 150; rr(bx, y + rowh / 2 - 6, gw, 12, 6, 'rgba(11,15,28,.7)', C.line, 1); line(bx + gw / 2, y + rowh / 2 - 9, bx + gw / 2, y + rowh / 2 + 9, C.dim, 1); rr(bx, y + rowh / 2 - 6, Math.max(6, gw * cl(v / 2, 0, 1)), 12, 6, g[2]); });
+    const cx = A.x1 - (NAR ? 56 : 90), ch = Math.min(rowh * 4, 120); copo(cx, gy, NAR ? 44 : 62, ch, cl(S.D.vol / 2.2, .1, 1), urCor(S.D.conc)); mtx('urina', cx + (NAR ? 22 : 31), gy + ch + 12, { s: 12, c: C.dim });
+    if (S.ev === 'alc') etiq('o álcool inibe o ADH: a pessoa desidrata', A.x0, gy - 12, AM);
+    cap(S.ev ? EV[S.ev][2] : 'Escolha um evento do dia e acompanhe o ADH, a aldosterona, a urina e a pressão.');
+  }
+  def('excretor', 'controle', {
+    t: TXT.E2.t, s: TXT.E2.s, c: '#E3C25B', loc: S => ({ tor: 'Duas torneiras', dia: 'Um dia no rim', tes: 'Teste rápido' })[S.modo] || '', locNota: NOTA,
+    alt: 'o ducto coletor com canais de água abertos pelo ADH, a aldosterona no túbulo distal, eventos de um dia e três situações para prever', still: 8,
+    get ctl() { return M8.ctl(); }, ctlVis: M8.vis, extra: [M8.extra('tor', 'Duas torneiras'), M8.extra('dia', 'Um dia no rim'), M8.extra('tes', 'Teste rápido'), { t: 'Volume do sangue baixo', vis: S => S.modo === 'tor', on: S => { if (S.modo === 'tor') S.vol = !S.vol; }, pressed: S => !!S.vol }],
+    init: M8.init, d: TXT.E2.d + '<p class="nota">Conteúdo educativo, não substitui orientação médica. Diuréticos e remédios para hipertensão só com indicação médica.</p>', enem: TXT.E2.enem,
+    kv: [['ADH', 'hipotálamo e neuro-hipófise, controla a água'], ['Aldosterona', 'córtex da suprarrenal, controla o sódio'], ['Álcool', 'inibe o ADH']], links: [LK.bomba, LK.comparar],
+    tap(x, y, S) { if (S.modo === 'tes') { BD3.tap(x, y, S); return; } if (S.modo !== 'dia' || !toque(S)) return; const h = hitAt(x, y); if (typeof h === 'string' && h.startsWith('v:')) { S.ev = h.slice(2); S.Tg = Object.assign({}, EV[S.ev][1]); } },
+    grab(x, y, S) { return S.modo === 'tes' && BD3.grab(x, y, S); }, grabMove(x, y, S) { BD3.grabMove(x, y, S); }, grabEnd(x, y, S) { BD3.grabEnd(x, y, S); },
+    draw(t, S) { const A = area(); if (S.modo === 'tor') torneiras(t, S, A); else if (S.modo === 'dia') dia(t, S, A); else { BD3.draw(S, { x0: A.x0, y0: A.y0, x1: A.x1, y1: A.y1 }, { cols: NAR ? 1 : 3, cartaH: NAR ? 38 : 44 }); cap(BD3.msg(S) || 'Três situações a prever e mais duas: para cada uma, diga como sai a urina.'); } }
+  });
+}

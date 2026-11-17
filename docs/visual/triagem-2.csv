@@ -1,0 +1,128 @@
+modulo;arquivo;rota;nota;destino;acao
+virus;virus__01.png;natureza/vivo;2;figura-ia;Cena de filtro e folha: gerar folha, filtro e microscópio realistas, passos viram hotspots.
+virus;virus__02.png;estrutura/particula;3;modelo-3d;Vírus da gripe envelopado girável em 3D, com espículas e proteínas clicáveis.
+virus;virus__03.png;estrutura/tipos;3;modelo-3d;Três capsídeos (helicoidal, icosaédrico, fago T4) em 3D girável, com rótulos nos pontos.
+virus;virus__04.png;fagos/litico;2;figura-ia;Célula bacteriana e fago T4 renderizados, etapas do ciclo animadas por cima.
+virus;virus__05.png;fagos/lisogenico;2;figura-ia;Fago lambda e bactéria renderizados, ciclo lisogênico em duas trilhas animadas.
+virus;virus__06.png;replicacao/animal;2;figura-ia;Célula animal em corte com vírus realista, etapas de entrada animadas.
+virus;virus__07.png;replicacao/retrovirus;2;figura-ia;Linfócito T e HIV realistas, fluxo DNA-RNA-proteína em motion por cima.
+virus;virus__08.png;doencas/arboviroses;2;figura-ia;Casa, caixa-d água e mosquito Aedes realistas, criadouros clicáveis com motion.
+virus;virus__09.png;doencas/hiv;3;motion;Gráfico CD4 e carga viral: refazer em motion graphics com curvas suaves.
+virus;virus__10.png;doencas/respiratorias;2;motion;Sala de aula vista de cima: refazer como simulação de contágio com motion graphics.
+virus;virus__11.png;doencas/hepatites-hpv;2;figura-ia;Fígado anatômico realista com hotspots, linha do tempo da hepatite em motion.
+virus;virus__12.png;prevencao/vacinas;3;motion;Curvas de anticorpos vacina versus soro: refazer como motion graphics.
+virus;virus__13.png;prevencao/transmissao;2;motion;Quatro casas de vias de transmissão: refazer como diagrama em motion.
+microrganismos;microrganismos__01.png;monera/celula;3;modelo-3d;Bactéria em corte girável em 3D: cápsula, parede, nucleoide e flagelo clicáveis.
+microrganismos;microrganismos__02.png;monera/reproducao;2;motion;Divisão binária e crescimento exponencial: refazer como motion graphics.
+microrganismos;microrganismos__03.png;monera/doencas;2;figura-ia;Silhueta humana chapada: gerar corpo anatômico realista com portas de entrada clicáveis.
+microrganismos;microrganismos__04.png;protoctista/grupos;2;figura-ia;Quatro protozoários e algas: gerar microscopia realista de cada, com hotspots.
+microrganismos;microrganismos__05.png;protoctista/protozooses;2;figura-ia;Ciclo da malária: gerar mosquito, hemácias e fígado realistas, ciclo em motion.
+microrganismos;microrganismos__06.png;fungi/fungos;2;figura-ia;Pão com bolor e hifas: gerar fungo e hifas em macro realista.
+microrganismos;microrganismos__07.png;fungi/liquens;3;figura-ia;Líquen em corte: gerar camadas de fungo, alga e rocha em estilo realista.
+plantas-animais;plantas-animais__01.png;plantae/conquista;3;motion;Cladograma e roda do ciclo de vida: refazer como motion graphics limpo.
+plantas-animais;plantas-animais__02.png;plantae/briofitas;2;figura-ia;Musgo com gametófitos: gerar macro realista de briófita com anterídio e arquegônio.
+plantas-animais;plantas-animais__03.png;plantae/pteridofitas;2;figura-ia;Samambaia e soros: gerar frondes e prótalo realistas, com hotspots.
+plantas-animais;plantas-animais__04.png;plantae/gimnospermas;2;figura-ia;Pinheiro, estróbilos e pólen: gerar pinha realista, pólen animado por cima.
+plantas-animais;plantas-animais__05.png;plantae/angiospermas;2;figura-ia;Flor em corte: gerar flor realista com estame e ovário, hotspots nas partes.
+plantas-animais;plantas-animais__06.png;plantae/orgaos;2;figura-ia;Planta com raiz, caule e folha: gerar corte realista, xilema e floema em motion.
+plantas-animais;plantas-animais__07.png;animalia/novidades;3;motion;Cladograma animal em branco: refazer como motion graphics de qualidade.
+plantas-animais;plantas-animais__08.png;animalia/poriferos-cnidarios;2;figura-ia;Esponja em corte: gerar esponja realista e coanócitos em detalhe, fluxo em motion.
+plantas-animais;plantas-animais__09.png;animalia/vermes;3;motion;Ciclos de esquistossomose e tênia: refazer como diagrama em motion.
+plantas-animais;plantas-animais__10.png;animalia/moluscos-anelideos;1;figura-ia;Caramujo, mexilhão e polvo chapados: gerar três moluscos realistas e anatomia interna.
+plantas-animais;plantas-animais__11.png;animalia/artropodes;2;figura-ia;Quatro artrópodes em silhueta: gerar formiga, aranha, camarão e lacraia realistas.
+plantas-animais;plantas-animais__12.png;animalia/cordados;2;figura-ia;Estrela-do-mar: gerar estrela realista com pés ambulacrais, canal em motion.
+plantas-animais;plantas-animais__13.png;animalia/vertebrados;2;figura-ia;Cinco vertebrados e corações: gerar vertebrados e corações realistas, ícones saem.
+anatomia;anatomia__01.png;digestorio/enzimas;2;figura-ia;Tubo digestório em caixas: gerar trato digestório realista, pH e enzimas em motion.
+anatomia;anatomia__02.png;digestorio/absorcao;2;figura-ia;Vilosidades em elipses: gerar corte realista do intestino e vilosidades, com zoom.
+anatomia;anatomia__03.png;respiratorio/hematose;2;figura-ia;Pulmão e diafragma em caixa: gerar vias aéreas e alvéolos realistas, hotspots.
+anatomia;anatomia__04.png;respiratorio/controle;3;motion;Balança de pH e CO2: refazer como motion graphics.
+anatomia;anatomia__05.png;circulatorio/coracao;3;modelo-3d;Coração anatômico girável em 3D com câmaras e vasos clicáveis, como a referência da Nalu.
+anatomia;anatomia__06.png;circulatorio/sangue-linfa;2;figura-ia;Artéria, veia e capilar: gerar cortes de vasos e células do sangue realistas.
+anatomia;anatomia__07.png;excretor/nefron;2;figura-ia;Néfron em tubo colorido: gerar néfron e glomérulo realistas, filtração em motion.
+anatomia;anatomia__08.png;excretor/controle;2;figura-ia;Túbulo e ducto coletor: gerar rim e néfron realistas, ADH animado por cima.
+anatomia;anatomia__09.png;endocrino/glandulas;2;figura-ia;Corpo em bonecos de caixa: gerar torso anatômico realista com glândulas clicáveis.
+anatomia;anatomia__10.png;endocrino/glicemia;3;motion;Curva de glicemia ao longo do dia: refazer como motion graphics com órgãos realistas.
+anatomia;anatomia__11.png;nervoso/organizacao;2;figura-ia;Corpo em contorno com cérebro em elipse: gerar sistema nervoso realista e encéfalo.
+anatomia;anatomia__12.png;nervoso/autonomo;2;figura-ia;Corpo de caixas e ícones de órgãos: gerar órgãos realistas com hotspots simpático e parassimpático.
+anatomia;anatomia__13.png;reprodutor/ciclo;2;figura-ia;Cortes genitais em contorno: gerar cortes anatômicos realistas masculino e feminino.
+anatomia;anatomia__14.png;reprodutor/prevencao;2;figura-ia;Útero em contorno e lista de métodos: gerar corte realista, métodos como hotspots.
+anatomia;anatomia__15.png;locomotor/esqueleto;3;modelo-3d;Esqueleto girável em 3D, ossos e articulações clicáveis, modelo base já existente serve.
+anatomia;anatomia__16.png;locomotor/movimento;2;figura-ia;Músculo e sarcômero em linhas: gerar músculo e fibra realistas, deslizamento em motion.
+genetica;genetica__01.png;(raiz);3;motion;Cromossomos homólogos e alelos: refazer como motion graphics mais refinado.
+genetica;genetica__02.png;conceitos/fenotipo;3;motion;Ervilhas e escolha de genótipo: gerar ervilhas realistas, interface fica.
+genetica;genetica__03.png;lei1/punnett;4;manter;Quadro de Punnett interativo funciona bem, só polir sementes realistas depois.
+genetica;genetica__04.png;lei1/sorteio;3;motion;Simulador de sorteio com barras: refazer o gráfico como motion graphics.
+genetica;genetica__05.png;lei2/dihibridismo;4;manter;Quadro di-híbrido legível, manter e polir ícones das sementes.
+genetica;genetica__06.png;lei2/gametas;3;motion;Meiose e alinhamento de cromossomos: refazer como motion graphics.
+genetica;genetica__07.png;variacoes/incompleta;3;motion;Flores em dominância incompleta: gerar flores realistas, quadro de Punnett fica.
+genetica;genetica__08.png;variacoes/codominancia;3;motion;Pelagem codominante: gerar bois realistas, quadro de Punnett fica.
+genetica;genetica__09.png;variacoes/letais;3;motion;Camundongos e proporção 2 para 1: gerar camundongos realistas, quadro fica.
+genetica;genetica__10.png;variacoes/pleiotropia;3;figura-ia;Cristalino, aorta e mão da pleiotropia: gerar três imagens realistas com hotspots.
+genetica;genetica__11.png;variacoes/abo;3;motion;Quadro ABO: trocar bolhas por gotas de sangue realistas em motion.
+genetica;genetica__12.png;variacoes/transfusao;2;figura-ia;Hemácias e aglutinação: gerar sangue realista, transfusão animada por cima.
+genetica;genetica__13.png;variacoes/rh;2;figura-ia;Mãe, placenta e bebê com pontos: gerar placenta e hemácias realistas, motion nas etapas.
+genetica;genetica__14.png;determinacao/sistemas;3;motion;Sorteio de sexo: refazer como motion graphics com gametas e cromossomos.
+genetica;genetica__15.png;determinacao/barr;2;motion;Mosaico de pontos de Barr: refazer como motion, gato tricolor realista por IA.
+genetica;genetica__16.png;sexo/daltonismo;3;motion;Quadro de daltonismo: manter lógica, trocar símbolos por visual refinado em motion.
+genetica;genetica__17.png;sexo/hemofilia;3;motion;Quadro de hemofilia: manter lógica, símbolos refinados em motion graphics.
+genetica;genetica__18.png;sexo/y-calvicie;3;motion;Heredograma de herança do Y: refazer símbolos e linhas em motion graphics.
+genetica;genetica__19.png;heredogramas/leitura;3;motion;Heredograma passo a passo: refazer em motion graphics com tipografia melhor.
+genetica;genetica__20.png;heredogramas/exercicios;3;motion;Cinco famílias de heredogramas: refazer em motion graphics com tipografia melhor.
+genetica;genetica__21.png;probabilidade/e;3;motion;Probabilidade conjunta em retângulo: refazer como motion graphics.
+genetica;genetica__22.png;probabilidade/ou;3;motion;Probabilidade de eventos excludentes: refazer como motion graphics.
+genetica;genetica__23.png;biotec/recombinante;2;motion;Plasmídeo e enzima de restrição: refazer como motion graphics com DNA em volume.
+genetica;genetica__24.png;biotec/pcr;3;motion;PCR e eletroforese: refazer como motion graphics com tubo e gel.
+genetica;genetica__25.png;biotec/clonagem;2;figura-ia;Clonagem por transferência nuclear: gerar ovócito, núcleo e mãe realistas, passos em motion.
+genetica;genetica__26.png;biotec/crispr;2;figura-ia;CRISPR e Cas9: gerar RNA guia e Cas9 realistas, corte do DNA em motion.
+genetica;genetica__27.png;populacoes/hardy-weinberg;4;manter;Quadrados e pontos de Hardy-Weinberg funcionam, polir cores apenas.
+genetica;genetica__28.png;populacoes/fatores;3;motion;Gráfico de deriva e geração: refazer como motion graphics suave.
+genetica;genetica__29.png;extras/ligacao;4;manter;Barras de ligação gênica claras, manter e polir tipografia.
+genetica;genetica__30.png;extras/interacao;3;motion;Quadro de interação gênica: manter lógica, polir cães realistas depois.
+genetica;genetica__31.png;extras/poligenica;4;manter;Histograma de herança quantitativa claro, manter e polir cores.
+evolucao;evolucao__01.png;origem/biogenese;2;figura-ia;Quatro bancadas de frascos: gerar frascos de Redi e Pasteur realistas, animação por cima.
+evolucao;evolucao__02.png;origem/hipoteses;2;figura-ia;Aparelho de Miller: gerar aparelho de vidro realista, faíscas e fluxo em motion.
+evolucao;evolucao__03.png;origem/primeiras-celulas;2;figura-ia;Endossimbiose em elipses: gerar célula e bactéria realistas em corte, engolfamento em motion.
+evolucao;evolucao__04.png;ideias/lamarck;2;figura-ia;Girafas chapadas de Lamarck e Darwin: gerar girafas realistas, seleção animada.
+evolucao;evolucao__05.png;ideias/darwin;3;motion;Árvore da vida e caderno de Darwin: refazer como motion graphics.
+evolucao;evolucao__06.png;evidencias/fosseis;2;figura-ia;Peixe fóssil e camadas: gerar fóssil e estratos realistas, datação em motion.
+evolucao;evolucao__07.png;evidencias/comparacao;2;figura-ia;Ossos do braço em tubos coloridos: gerar esqueletos de braço, asa e nadadeira realistas.
+evolucao;evolucao__08.png;evidencias/resistencia;2;figura-ia;Placa de Petri e bactérias: gerar placa realista, resistência animada por cima.
+evolucao;evolucao__09.png;sintetica/variacao;2;motion;DNA e mutação em letras coloridas: refazer como motion graphics.
+evolucao;evolucao__10.png;selecao/tipos;3;motion;Três curvas de seleção: refazer como motion graphics suave.
+evolucao;evolucao__11.png;selecao/casos;2;figura-ia;Mariposas claras e escuras sobre tronco: gerar mariposas e liquens realistas.
+evolucao;evolucao__12.png;acaso/deriva;3;motion;Saco de bolinhas de deriva: refazer como motion graphics.
+evolucao;evolucao__13.png;especiacao/modos;2;motion;Barreira e pontos de população: refazer especiação como motion, com animais realistas.
+evolucao;evolucao__14.png;especiacao/isolamento;2;motion;Barreiras de isolamento reprodutivo: refazer como diagrama em motion graphics.
+evolucao;evolucao__15.png;padroes/irradiacao;1;figura-ia;Cena de irradiação vazia: gerar tentilhões de Galápagos realistas com bicos clicáveis.
+evolucao;evolucao__16.png;humana/origem;1;figura-ia;Árvore dos hominíneos vazia: gerar crânios de hominíneos realistas, árvore em motion.
+ecologia;ecologia__01.png;niveis/nicho;1;figura-ia;Capivara amarela chapada: gerar Pantanal realista, organismo a bioma, hotspots por nível.
+ecologia;ecologia__02.png;biomas/mapa;3;motion;Curvas de nicho e população: refazer como motion graphics.
+ecologia;ecologia__03.png;teias/cadeia;1;figura-ia;Cadeia de Cerrado em formas chapadas: gerar capim, gafanhoto, sapo, cobra e gavião realistas.
+ecologia;ecologia__04.png;teias/teia;2;motion;Teia do Cerrado com ícones coloridos: refazer como grafo em motion, fotos IA nos nós.
+ecologia;ecologia__05.png;energia/fluxo;3;motion;Fluxo de energia com caixas: refazer como motion graphics refinado.
+ecologia;ecologia__06.png;energia/piramides;3;motion;Pirâmide ecológica em barras: refazer como motion graphics de qualidade.
+ecologia;ecologia__07.png;energia/produtividade;2;figura-ia;Árvore e herbívoro chapados: gerar manguezal e cervo realistas, barras viram motion.
+ecologia;ecologia__08.png;ciclos/carbono;1;figura-ia;Ciclo do carbono com cervo chapado e fábrica: gerar cenário realista com setas em motion.
+ecologia;ecologia__09.png;ciclos/nitrogenio;1;figura-ia;Ciclo do nitrogênio com cena chapada: gerar solo, leguminosa e nódulos realistas.
+ecologia;ecologia__10.png;ciclos/agua;1;figura-ia;Ciclo da água em formas chapadas: gerar paisagem realista com setas animadas.
+ecologia;ecologia__11.png;ciclos/fosforo;1;figura-ia;Ciclo do fósforo com cena chapada: gerar rocha, solo, aves e mar realistas.
+ecologia;ecologia__12.png;relacoes/quadro;3;motion;Quadro de relações com sinais mais e menos: refazer como motion graphics.
+ecologia;ecologia__13.png;relacoes/harmonicas;1;figura-ia;Mutualismo com bichos chapados: gerar feijoeiro com nódulos, líquen e animais realistas.
+ecologia;ecologia__14.png;relacoes/desarmonicas;1;figura-ia;Onça roxa e capivara chapadas: gerar predação, parasitismo e competição realistas.
+ecologia;ecologia__15.png;relacoes/polinizacao;2;figura-ia;Flores e abelhas chapadas: gerar polinização realista com flores, abelha e cutia.
+ecologia;ecologia__16.png;relacoes/controle;2;figura-ia;Cana, broca e vespa: gerar lavoura e insetos realistas, gráfico em motion.
+ecologia;ecologia__17.png;populacoes/crescimento;3;motion;Curva J e logística de crescimento: refazer como motion graphics.
+ecologia;ecologia__18.png;populacoes/predador;3;motion;Oscilação predador e presa: refazer o gráfico como motion graphics.
+ecologia;ecologia__19.png;populacoes/estrategias;2;figura-ia;Sardinha e curvas r e K: gerar peixes e elefante realistas, curvas em motion.
+ecologia;ecologia__20.png;sucessao/primaria;1;figura-ia;Rocha nua e sucessão primária: gerar sequência de paisagens realistas, líquen a floresta.
+ecologia;ecologia__21.png;sucessao/secundaria;1;figura-ia;Área desmatada e sucessão secundária: gerar paisagens realistas por etapa.
+ecologia;ecologia__22.png;biomas/mapa;2;figura-ia;Mapa do Brasil com biomas: gerar mapa e fotos realistas dos biomas, hotspots por região.
+ecologia;ecologia__23.png;biomas/costeiros;1;figura-ia;Manguezal e restinga chapados: gerar manguezal, restinga e recife de coral realistas.
+ecologia;ecologia__24.png;impactos/estufa;1;figura-ia;Indústria, vaca e termômetro chapados: gerar atmosfera e cenário realistas do efeito estufa.
+ecologia;ecologia__25.png;impactos/eutrofizacao;1;figura-ia;Peixes e algas chapados: gerar lago eutrofizado realista, nutrientes animados.
+ecologia;ecologia__26.png;impactos/magnificacao;3;motion;Barras de DDT por nível trófico: refazer como motion graphics.
+ecologia;ecologia__27.png;impactos/ozonio;1;figura-ia;Boneco palito e geladeira na camada de ozônio: gerar atmosfera realista.
+ecologia;ecologia__28.png;impactos/chuva;1;figura-ia;Fábrica, carro e árvores chapadas: gerar chuva ácida realista, lago e floresta.
+ecologia;ecologia__29.png;impactos/desmatamento;3;motion;Grade de pixels do desmatamento: refazer como mapa de fragmentação em motion.
+ecologia;ecologia__30.png;impactos/invasoras;2;figura-ia;Peixes e invasora chapados: gerar lago realista com tilápia, mexilhão e nativos.
+ecologia;ecologia__31.png;impactos/conservacao;3;motion;Grade de paisagem fragmentada: refazer como mapa em motion graphics.

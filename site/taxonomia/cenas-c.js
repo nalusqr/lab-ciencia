@@ -38,12 +38,20 @@
   const ICID = { bact: 'bacteria', ameba: 'ameba', alga: 'alga', algau: 'algaUni', cogu: 'cogumelo', lev: 'levedura', sama: 'samambaia', esponja: 'esponja', onca: 'onca', peixe: 'peixe' };
   function icone(k, x, y, r, a = 1, c) { if (typeof bicho === 'function') bicho(ICID[k] || k, x, y, r * 2.2, { a, c: c || K('txt') }); }
   // bloco colorido com nome (e linha curta embaixo, se couber)
+  const ICR = { pro: 'ameba', fun: 'cogumelo', veg: 'samambaia', ani: 'onca' };
   function bloco(r, c, nome, sub, a = 1, o = {}) {
     if (a <= .02 || r.w < 4 || r.h < 4) return; X.save(); X.globalAlpha *= a;
     rr(r.x, r.y, r.w, r.h, 10, rgba(c, o.fundo == null ? .22 : o.fundo), c, o.lw || 1.6);
-    const cx = r.x + r.w / 2, so = sub && r.h >= 48 && tw(sub, 12) < r.w - 8, sz = NAR ? 13 : 14;
-    if (nome && tw(nome, sz, 700) < r.w - 6) tx(nome, cx, r.y + (o.ny != null ? o.ny : (so ? r.h / 2 - 9 : r.h / 2)), { s: sz, w: 700, i: !!o.it, c: '#fff', bg: false });
-    if (so) tx(sub, cx, r.y + r.h / 2 + 10, { s: 12, c: '#D3DAEA', bg: false });
+    const cx = r.x + r.w / 2, sz = NAR ? 13 : 14;
+    // miniatura 3D do reino: em cima do nome quando o bloco é alto; ao lado do nome quando é baixo e largo (celular)
+    const alto = r.h >= 78, lado = !alto && r.h >= 44 && r.w >= r.h * 2.4, isz = lado ? Math.min(r.h * .84, 60) : 0;
+    const ic = o.ic && window.TAXO3D && (alto ? TAXO3D.ator(o.ic, cx, r.y + r.h * .3, Math.min(r.h * .44, r.w * .42), { semEntrada: true })
+      : lado ? TAXO3D.ator(o.ic, r.x + 8 + isz / 2, r.y + r.h / 2, isz, { semEntrada: true }) : false);
+    const cxt = lado && ic ? r.x + 8 + isz + (r.w - 8 - isz) / 2 : cx, wt = r.w - (lado && ic ? isz + 8 : 0);
+    const so = sub && r.h >= 48 && tw(sub, 12) < wt - 8, emC = alto && ic;
+    const yn = emC ? r.h * .64 : so ? r.h / 2 - 9 : r.h / 2, ys = emC ? r.h * .64 + 18 : r.h / 2 + 10;
+    if (nome && tw(nome, sz, 700) < wt - 6) tx(nome, cxt, r.y + (o.ny != null ? o.ny : yn), { s: sz, w: 700, i: !!o.it, c: '#fff', bg: false });
+    if (so && (!emC || ys + 8 < r.h)) tx(sub, cxt, r.y + ys, { s: 12, c: '#D3DAEA', bg: false });
     X.restore();
   }
 
@@ -283,7 +291,7 @@
       L.fim = fy + fh;
     } else {
       const M = A.h - 4, G = 12, cw = A.w, x0 = A.x0;
-      const rh = Math.max(40, Math.min(56, (M - 3 * 28 - 6 * 3 - 2 * 6 - 2 * G - 8) / 6));
+      const rh = Math.max(44, Math.min(68, (M - 3 * 28 - 6 * 3 - 2 * 6 - 2 * G - 8) / 6));
       const hb = 28 + rh + 6, he = 28 + 4 * rh + 3 * 6 + 6;
       const y0 = A.y0 + Math.max(0, (M - (2 * hb + he + 2 * G)) / 2);
       L.fr = [{ x: x0, y: y0, w: cw, h: hb }, { x: x0, y: y0 + hb + G, w: cw, h: hb }, { x: x0, y: y0 + 2 * (hb + G), w: cw, h: he }];
@@ -429,7 +437,7 @@
       // os quatro reinos eucariontes: deslizam para dentro de Eukarya e somem na árvore
       ['pro', 'fun', 'veg', 'ani'].forEach((k, i) => {
         const r0 = L.k5[i + 1], r1 = L.e4[i], r = lerpR(lerpR(r0, r1, a), L.tip[2], b);
-        bloco(r, K(COR_R[k]), NOMR[k], EXR[k], 1 - b);
+        bloco(r, K(COR_R[k]), NOMR[k], EXR[k], 1 - b, { ic: ICR[k] });
       });
       // Monera: um bloco que se parte em dois (Bacteria azul, Archaea laranja)
       const m = L.k5[0], half = [{ x: m.x, y: m.y, w: m.w / 2 + 1, h: m.h }, { x: m.x + m.w / 2, y: m.y, w: m.w / 2, h: m.h }];
@@ -439,10 +447,15 @@
         if (1 - b <= .02) return; X.save(); X.globalAlpha *= 1 - b;
         rr(r.x, r.y, r.w, r.h, 10 * a, mix('#1B2238', c, .3), a > .05 ? c : null, 1.6);
         if (a > .55) {
-          const dm = DOM[i], sz = NAR ? 13 : 14, so = r.h >= 48 && tw(dm.ex2, 12) < r.w - 8;
+          const dm = DOM[i], sz = NAR ? 13 : 14, alto = r.h >= 78, lado = !alto && r.h >= 44 && r.w >= r.h * 2.4, isz = lado ? Math.min(r.h * .84, 60) : 0;
           X.globalAlpha *= seg(a, .55, .9);
-          if (tw(dm.ex, sz, 700) < r.w - 6) tx(dm.ex, r.x + r.w / 2, r.y + r.h / 2 - (so ? 9 : 0), { s: sz, w: 700, c: '#fff', bg: false });
-          if (so) tx(dm.ex2, r.x + r.w / 2, r.y + r.h / 2 + 10, { s: 12, c: i ? '#FFE0C2' : '#D3DAEA', bg: false });
+          const ic = window.TAXO3D && (alto ? TAXO3D.ator(i ? 'arquea' : 'bacteria', r.x + r.w / 2, r.y + r.h * .3, Math.min(r.h * .44, r.w * .42), { semEntrada: true })
+            : lado ? TAXO3D.ator(i ? 'arquea' : 'bacteria', r.x + 8 + isz / 2, r.y + r.h / 2, isz, { semEntrada: true }) : false);
+          const cxt = lado && ic ? r.x + 8 + isz + (r.w - 8 - isz) / 2 : r.x + r.w / 2, wt = r.w - (lado && ic ? isz + 8 : 0), emC = alto && ic;
+          const so = r.h >= 48 && tw(dm.ex2, 12) < wt - 8;
+          const yn = emC ? r.h * .64 : r.h / 2 - (so ? 9 : 0), ys = emC ? r.h * .64 + 18 : r.h / 2 + 10;
+          if (tw(dm.ex, sz, 700) < wt - 6) tx(dm.ex, cxt, r.y + yn, { s: sz, w: 700, c: '#fff', bg: false });
+          if (so && (!emC || ys + 8 < r.h)) tx(dm.ex2, cxt, r.y + ys, { s: 12, c: i ? '#FFE0C2' : '#D3DAEA', bg: false });
         }
         X.restore();
       });

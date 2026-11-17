@@ -150,7 +150,7 @@
       { t: 'dinoflagelado', k: 4, x: 'faz fotossíntese, então entra com as algas (e tem dois flagelos); na maré vermelha libera toxinas.' }
     ],
     certo: c => '<b>Certo.</b> ' + c.x.charAt(0).toUpperCase() + c.x.slice(1),
-    errado: (c, a) => `<b>Ainda não.</b> ${semTag(c.t)} não vai em "${a.t}". Pense em como ele se move ou se faz fotossíntese.`,
+    errado: (c, a) => `<b>Ainda não.</b> ${semTag(c.t)} não vai em "${a.t}". Pense no jeito de se mover, ou se faz fotossíntese.`,
     fim: () => '<b>Pronto.</b> Pseudópode (ameba), flagelo (tripanossomo), cílio (paramécio), nenhum (<i>Plasmodium</i>): é a lista que o vestibular cobra.',
     dica: 'Toque num cartão e depois no jeito de se mover (ou em "alga").'
   });
@@ -219,7 +219,7 @@
     ['picada', '1. A fêmea de <i>Anopheles</i> infectada pica e injeta o parasita no sangue.'],
     ['fígado', '2. No ser humano, o parasita vai primeiro ao <b>fígado</b>, onde se multiplica.'],
     ['hemácias', '3. Depois invade as <b>hemácias</b>; a cada ciclo elas se rompem juntas e causam <b>febre alta com calafrios em intervalos regulares</b> (cerca de 48 horas no <i>P. vivax</i> e no <i>P. falciparum</i>).'],
-    ['formas sexuadas', '4. Algumas formas viram células sexuadas e ficam no sangue.'],
+    ['formas sexuadas', '4. Alguns parasitas viram <b>formas sexuadas</b>, que ficam nas hemácias à espera de um mosquito.'],
     ['mosquito suga', '5. Outra fêmea de <i>Anopheles</i> pica e suga o sangue com essas formas sexuadas.'],
     ['intestino do mosquito', '6. No intestino do mosquito acontece a <b>reprodução sexuada</b>: por isso o mosquito é o <b>hospedeiro definitivo</b>, e o ser humano, o intermediário.'],
     ['glândulas salivares', '7. Os novos parasitas migram para as glândulas salivares, prontos para a próxima picada.']
@@ -297,7 +297,7 @@
     { t: '<b>Local:</b> garimpo em Rondônia. <b>Sintomas:</b> febre alta com calafrios a cada dois dias. <b>Hábitos:</b> dorme em barraca sem tela e trabalha perto do rio ao entardecer.', r: [0, 0, 0, 0],
       h: ['Febre com calafrios em intervalos regulares, na Amazônia Legal.', 'O agente da malária é do gênero <i>Plasmodium</i>.', 'Quem pica ao entardecer e à noite é a fêmea do <i>Anopheles</i>. O <i>Aedes</i> transmite vírus, não protozoários.', 'Para o vetor: mosquiteiro, tela e tratamento rápido, que também corta a transmissão.'] },
     { t: '<b>Local:</b> comunidade no Pará. <b>Sintomas:</b> febre e, meses depois, coração aumentado. <b>Hábitos:</b> a família tomou açaí de feira, sem higiene no preparo.', r: [1, 1, 1, 1],
-      h: ['Coração aumentado depois de açaí mal higienizado: pense em barbeiro.', 'O agente é um tripanossomo, descrito por Carlos Chagas em 1909.', 'Nem a saliva nem a picada: as fezes do barbeiro, ou alimento contaminado com ele.', 'Casa de alvenaria com reboco e higiene no preparo do açaí.'] },
+      h: ['Coração aumentado depois de açaí mal higienizado: pense em barbeiro.', 'O agente é um tripanossomo, descrito por Carlos Chagas em 1909.', 'Não é a saliva: são as fezes do barbeiro, que entram pela ferida da picada, ou o alimento contaminado com ele ou com suas fezes.', 'Casa de alvenaria com reboco e higiene no preparo do açaí.'] },
     { t: '<b>Local:</b> cidade do interior. <b>Sintomas:</b> criança com febre longa e barriga inchada. <b>Hábitos:</b> o cachorro da casa está doente e o quintal acumula folhas úmidas.', r: [2, 2, 2, 2],
       h: ['Fígado e baço aumentados e o cão doente: o cão é o reservatório urbano.', 'O agente é do gênero <i>Leishmania</i>.', 'O vetor é o mosquito-palha, que se cria em matéria orgânica úmida, não em água parada.', 'Limpar quintais, usar telas e coleira repelente no cão.'] },
     { t: '<b>Local:</b> unidade de saúde. <b>Situação:</b> gestante, exame positivo no pré-natal. <b>Hábitos:</b> come carne malpassada e tem um gato em casa.', r: [4, 4, 4, 4],

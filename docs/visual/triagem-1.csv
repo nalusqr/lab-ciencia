@@ -1,0 +1,143 @@
+modulo;arquivo;rota;nota;destino;acao
+biologia-molecular;biologia-molecular__01.png;comp/celula;3;manter;Waffle limpo, só refinar a entrada com stagger por linha.
+biologia-molecular;biologia-molecular__02.png;comp/elementos;3;manter;Barras boas, animar crescimento escalonado com cores CPK.
+biologia-molecular;biologia-molecular__03.png;agua/molecula;2;motion;Moléculas de água com volume e pontes de hidrogênio se formando.
+biologia-molecular;biologia-molecular__04.png;agua/capilaridade;2;figura-ia;Tubos de vidro realistas, menisco e subida da água em motion.
+biologia-molecular;biologia-molecular__05.png;agua/calor;3;motion;Manter gráfico, trocar blocos de areia e mar por praia IA.
+biologia-molecular;biologia-molecular__06.png;agua/solvente;2;motion;Cristal de NaCl com volume, íons soltando e hidratando em sequência.
+biologia-molecular;biologia-molecular__07.png;agua/teor;2;figura-ia;Corpo humano translúcido realista com nível de água por órgão.
+biologia-molecular;biologia-molecular__08.png;sais/funcoes;2;figura-ia;Osso, leite e folhas realistas por mineral, hotspots nas fontes.
+biologia-molecular;biologia-molecular__09.png;sais/osmose;2;figura-ia;Hemácias bicôncavas realistas, inchar e murchar em motion por cima.
+biologia-molecular;biologia-molecular__10.png;carb/mono-di;1;motion;Refazer anéis com átomos CPK e ligação glicosídica animada.
+biologia-molecular;biologia-molecular__11.png;carb/polissacarideos;2;figura-ia;Grãos de amido ao microscópio, cadeia em hélice em motion.
+biologia-molecular;biologia-molecular__12.png;lip/glicerideos;2;motion;Triglicerídeo com volume, glicerol unindo três ácidos graxos.
+biologia-molecular;biologia-molecular__13.png;lip/classes;2;motion;Bicamada sombreada, reaproveitar a membrana nova da Morfofisiologia.
+biologia-molecular;biologia-molecular__14.png;lip/colesterol;2;figura-ia;Corte de artéria realista com placa, HDL e LDL fluindo.
+biologia-molecular;biologia-molecular__15.png;prot/aminoacidos;3;motion;Estrutura geral com volume CPK, troca do grupo R animada.
+biologia-molecular;biologia-molecular__16.png;prot/peptidica;1;motion;Cena quase vazia: dois aminoácidos se unem e sai água.
+biologia-molecular;biologia-molecular__17.png;prot/niveis;2;motion;Cadeia vira hélice, folha e enovelado, com volume e sombra.
+biologia-molecular;biologia-molecular__18.png;prot/desnaturacao;2;figura-ia;Clara de ovo realista cozinhando, proteína desenovela em motion.
+biologia-molecular;biologia-molecular__19.png;enz/encaixe;2;motion;Enzima com superfície sombreada, encaixe induzido com deformação suave.
+biologia-molecular;biologia-molecular__20.png;enz/ativacao;4;manter;Gráfico bom, só animar a bolinha vencendo a barreira.
+biologia-molecular;biologia-molecular__21.png;enz/temperatura;4;manter;Curvas claras, trocar o ícone de enzima pelo novo.
+biologia-molecular;biologia-molecular__22.png;enz/ph;4;manter;Gráfico bom, manter como está.
+biologia-molecular;biologia-molecular__23.png;enz/inibicao;3;motion;Curva ok, inibidor disputando o sítio ativo com volume.
+biologia-molecular;biologia-molecular__24.png;vit/tipos;2;figura-ia;Copos de água e óleo realistas, vitaminas dissolvendo em motion.
+biologia-molecular;biologia-molecular__25.png;vit/avitaminoses;2;figura-ia;Ilustração médica realista de cada carência no lugar do dente cartum.
+biologia-molecular;biologia-molecular__26.png;na/nucleotideo;2;motion;Nucleotídeo com volume, fita montada por ligação fosfodiéster.
+biologia-molecular;biologia-molecular__27.png;na/pareamento;3;motion;Hélice em perspectiva com bases encaixando, manter barras.
+biologia-molecular;biologia-molecular__28.png;na/dna-rna;1;motion;Refazer: dupla hélice contra fita simples, bases rotuladas.
+morfofisiologia;morfofisiologia__01.png;teoria/hooke;2;figura-ia;Micrografia de cortiça estilo Hooke, lupa revela as células.
+morfofisiologia;morfofisiologia__02.png;teoria/leeuwenhoek;2;figura-ia;Gota d'água com microrganismos realistas, zoom de lente.
+morfofisiologia;morfofisiologia__03.png;teoria/schleiden;2;figura-ia;Folha e girino realistas, zoom até as células.
+morfofisiologia;morfofisiologia__04.png;teoria/virchow;2;figura-ia;Frasco pescoço de cisne realista, poeira presa na curva.
+morfofisiologia;morfofisiologia__05.png;teoria/postulados;3;motion;Postulados em sequência usando as figuras IA de bactéria e folha.
+morfofisiologia;morfofisiologia__06.png;teoria/virus;2;figura-ia;Bacteriófago e bactéria realistas, injeção do DNA em motion.
+morfofisiologia;morfofisiologia__07.png;tipos/lado;3;figura-ia;Bactéria e célula animal realistas lado a lado com hotspots.
+morfofisiologia;morfofisiologia__08.png;tipos/proc;3;figura-ia;Bactéria em corte realista, hotspots em nucleoide, plasmídeo e flagelo.
+morfofisiologia;morfofisiologia__09.png;tipos/euc;3;modelo-3d;Célula animal 3D girável, reaproveitar o modelo do módulo Célula.
+morfofisiologia;morfofisiologia__10.png;tipos/organelas;3;figura-ia;Células animal e vegetal realistas, um hotspot por organela.
+morfofisiologia;morfofisiologia__11.png;tipos/escala;3;motion;Régua logarítmica com zoom contínuo e miniaturas IA em escala.
+morfofisiologia;morfofisiologia__12.png;membranas/mosaico;3;figura-ia;Membrana renderizada com proteínas e glicocálix, hotspots nas peças.
+morfofisiologia;morfofisiologia__13.png;membranas/comp;4;manter;Barras empilhadas claras, animar o preenchimento por linha.
+morfofisiologia;morfofisiologia__14.png;membranas/fluidez;3;motion;Bicamada com volume, caudas agitando conforme a temperatura.
+morfofisiologia;morfofisiologia__15.png;membranas/difusao;3;motion;Partículas com volume, fluxo a favor do gradiente, manter contadores.
+morfofisiologia;morfofisiologia__16.png;membranas/facilitada;3;motion;Canal e GLUT com volume, troca de conformação do transportador.
+morfofisiologia;morfofisiologia__17.png;membranas/osmose;2;figura-ia;Hemácia e célula vegetal realistas, inchar, murchar e plasmólise.
+morfofisiologia;morfofisiologia__18.png;membranas/bomba;3;motion;Bomba Na/K com volume, ciclo três saem, dois entram.
+morfofisiologia;morfofisiologia__19.png;membranas/endo;2;motion;Membrana envolve a partícula e fecha a vesícula, com volume.
+morfofisiologia;morfofisiologia__20.png;membranas/espec;2;figura-ia;Epitélio intestinal realista com microvilos, hotspots nas junções.
+morfofisiologia;morfofisiologia__21.png;origem/invag;2;motion;Invaginação da membrana formando o envoltório nuclear, com volume.
+morfofisiologia;morfofisiologia__22.png;origem/mito;2;motion;Bactéria engolida vira mitocôndria, usar figuras IA das duas.
+morfofisiologia;morfofisiologia__23.png;origem/cloro;2;motion;Mesma coreografia da mitocôndria, com cianobactéria IA.
+morfofisiologia;morfofisiologia__24.png;origem/evid;3;motion;Bactéria, mitocôndria e cloroplasto IA em fissão binária sincronizada.
+morfofisiologia;morfofisiologia__25.png;nucleo/geral;3;figura-ia;Núcleo em corte realista, hotspots em poro, nucléolo e cromatina.
+morfofisiologia;morfofisiologia__26.png;nucleo/poro;3;motion;Complexo de poro com volume, carga atravessando em motion.
+morfofisiologia;morfofisiologia__27.png;nucleo/cromatina;2;motion;Zoom contínuo do DNA ao cromossomo, nível a nível.
+morfofisiologia;morfofisiologia__28.png;nucleo/eu;3;figura-ia;Núcleo realista com hetero e eucromatina, RNA-polimerase em motion.
+morfofisiologia;morfofisiologia__29.png;nucleo/nucleolo;3;motion;Árvore de Natal do rDNA com volume, manter a estrutura atual.
+morfofisiologia;morfofisiologia__30.png;nucleo/cromossomos;4;modelo-3d;Cromossomo metafásico 3D girável, tipos por centrômero ao lado.
+divisao-celular;divisao-celular__01.png;ciclo/interfase;3;motion;Anel do ciclo ok, célula central vira figura IA.
+divisao-celular;divisao-celular__02.png;ciclo/checagem;3;motion;Pontos de checagem com retorno claro de aprovado ou barrado.
+divisao-celular;divisao-celular__03.png;ciclo/cancer;2;figura-ia;Epitélio realista, célula mutante proliferando em motion.
+divisao-celular;divisao-celular__04.png;mitose/fases;3;motion;Cromossomos com volume e fuso, cadência fixa por fase.
+divisao-celular;divisao-celular__05.png;mitose/citocinese;2;motion;Estrangulamento animal e placa celular vegetal com volume.
+divisao-celular;divisao-celular__06.png;meiose/fases;3;motion;Mesma linguagem da mitose, pares homólogos bem distintos.
+divisao-celular;divisao-celular__07.png;meiose/crossing;2;motion;Homólogos com volume trocando segmentos, quiasma destacado.
+divisao-celular;divisao-celular__08.png;meiose/segregacao;3;motion;Dois arranjos lado a lado com segregação independente animada.
+divisao-celular;divisao-celular__09.png;comparar/grafico;4;manter;Gráfico de DNA claro, só desenhar o traço por fase.
+divisao-celular;divisao-celular__10.png;comparar/lado;3;motion;Mitose e meiose sincronizadas lado a lado.
+divisao-celular;divisao-celular__11.png;erros/naodisjuncao;3;motion;Não disjunção com volume, gameta errado marcado em alerta.
+divisao-celular;divisao-celular__12.png;erros/aneuploidias;2;figura-ia;Cariótipo realista de trissomia 21, hotspot no par extra.
+divisao-celular;divisao-celular__13.png;erros/euploidias;3;motion;Conjuntos 2n, 3n e 4n crescendo, manter o painel.
+divisao-celular;divisao-celular__14.png;gametogenese/espermatogenese;2;motion;Abrir com a árvore montada, células IA em cada etapa.
+divisao-celular;divisao-celular__15.png;gametogenese/ovogenese;2;motion;Idem, ovócito e corpúsculos polares em escala real.
+bioenergetica;bioenergetica__01.png;atp/ciclo;2;motion;ATP com volume, fosfato sai e volta em ciclo pausável.
+bioenergetica;bioenergetica__02.png;atp/acoplamento;3;motion;Rampas ok, carga do ATP fluindo entre as reações.
+bioenergetica;bioenergetica__03.png;resp/geral;3;modelo-3d;Mitocôndria 3D em corte, etapas da respiração como hotspots.
+bioenergetica;bioenergetica__04.png;resp/glicolise;2;motion;Glicose parte em dois piruvatos, ATP e NADH saindo em sequência.
+bioenergetica;bioenergetica__05.png;resp/krebs;2;motion;Roda de Krebs legível com CO2 saindo a cada volta.
+bioenergetica;bioenergetica__06.png;resp/cadeia;3;motion;Complexos com volume, elétrons, prótons e ATP sintase girando.
+bioenergetica;bioenergetica__07.png;resp/saldo;3;manter;Contabilidade clara, animar a contagem do saldo.
+bioenergetica;bioenergetica__08.png;ferm/latica;2;figura-ia;Iogurte e músculo realistas, via lática em motion por cima.
+bioenergetica;bioenergetica__09.png;ferm/alcoolica;2;figura-ia;Pão e leveduras realistas, bolhas de CO2 em motion.
+bioenergetica;bioenergetica__10.png;foto/geral;3;figura-ia;Cloroplasto realista em corte, hotspots em granum, estroma e envelope.
+bioenergetica;bioenergetica__11.png;foto/pigmentos;4;manter;Espectro bom, só trocar a folha pela figura IA.
+bioenergetica;bioenergetica__12.png;foto/clara;3;motion;Tilacoide com volume, elétrons e prótons em fluxo contínuo.
+bioenergetica;bioenergetica__13.png;foto/calvin;2;motion;Ciclo de Calvin legível com carbonos entrando por volta.
+bioenergetica;bioenergetica__14.png;fatores/luz;4;manter;Gráfico interativo bom, manter.
+bioenergetica;bioenergetica__15.png;fatores/co2;4;manter;Gráfico interativo bom, manter.
+bioenergetica;bioenergetica__16.png;fatores/temp;4;manter;Gráfico interativo bom, manter.
+bioenergetica;bioenergetica__17.png;fatores/c4cam;3;figura-ia;Cortes de folha C3, C4 e CAM realistas, estômatos animados.
+bioenergetica;bioenergetica__18.png;relacao/ciclo;3;motion;Cloroplasto e mitocôndria IA trocando moléculas em fluxo.
+bioenergetica;bioenergetica__19.png;relacao/carbono;2;figura-ia;Paisagem realista do ciclo do carbono, setas de fluxo em motion.
+bioenergetica;bioenergetica__20.png;relacao/quimio;2;figura-ia;Fonte hidrotermal realista, bactéria e reações em motion.
+bioenergetica;bioenergetica__21.png;relacao/comparar;4;manter;Quadro comparativo claro, manter.
+embriologia;embriologia__01.png;gametas/resumo;3;motion;Árvores de gametogênese com células IA, meioses sincronizadas.
+embriologia;embriologia__02.png;ovos/tipos;3;figura-ia;Quatro ovos em corte realista com vitelo texturizado, hotspots.
+embriologia;embriologia__03.png;ovos/vitelo;3;figura-ia;Ovo de ave, de anfíbio e útero realistas, manter barras.
+embriologia;embriologia__04.png;desenvolvimento/segmentacao;3;figura-ia;Zigoto realista ao microscópio, clivagens em motion por cima.
+embriologia;embriologia__05.png;desenvolvimento/morula;3;figura-ia;Mórula de microscopia realista, corte revelado por máscara.
+embriologia;embriologia__06.png;desenvolvimento/blastula;2;figura-ia;Blástula realista, blastocele revelada por máscara.
+embriologia;embriologia__07.png;desenvolvimento/gastrula;3;motion;Invaginação animada com folhetos de volume e cores fixas.
+embriologia;embriologia__08.png;desenvolvimento/blastoporo;2;motion;Gástrulas com volume, blastóporo vira boca ou ânus.
+embriologia;embriologia__09.png;desenvolvimento/folhetos;3;figura-ia;Corpo translúcido realista, órgãos acendem por folheto.
+embriologia;embriologia__10.png;desenvolvimento/neurula;2;motion;Placa neural dobrando em tubo, em corte com volume.
+embriologia;embriologia__11.png;desenvolvimento/organogenese;3;figura-ia;Embrião humano realista de 4 a 8 semanas, manter linha do tempo.
+embriologia;embriologia__12.png;anexos/funcoes;4;figura-ia;Ovo de galinha em corte realista, hotspots nos quatro anexos.
+embriologia;embriologia__13.png;anexos/amniotico;3;figura-ia;Ovos de peixe a mamífero realistas, manter linha do tempo.
+embriologia;embriologia__14.png;humano/fecundacao;3;figura-ia;Aparelho reprodutor e ovócito realistas, espermatozoides em motion.
+embriologia;embriologia__15.png;humano/nidacao;3;figura-ia;Tuba e útero realistas, descida do embrião, manter gráfico de hCG.
+embriologia;embriologia__16.png;humano/placenta;4;figura-ia;Útero com feto realista, hotspots em placenta, cordão e âmnio.
+embriologia;embriologia__17.png;humano/gemeos;3;motion;Zigotos com volume e separação animada, manter o esquema.
+embriologia;embriologia__18.png;humano/semanas;4;figura-ia;Embrião realista por semana, manter linha do tempo e tamanho.
+histologia;histologia__01.png;tecidos/visao;3;figura-ia;Corte histológico realista em HE, lupa com máscara de revelação.
+histologia;histologia__02.png;epitelial/revestimento;3;figura-ia;Lâminas realistas de epitélio, hotspots em membrana basal e capilar.
+histologia;histologia__03.png;epitelial/glandular;2;figura-ia;Glândulas exócrina e endócrina realistas, secreção em motion.
+histologia;histologia__04.png;conjuntivo/propriamente;3;figura-ia;Conjuntivo frouxo realista, hotspots em células e fibras.
+histologia;histologia__05.png;conjuntivo/adiposo;3;figura-ia;Adipócitos realistas, trocar o bebê boneco por foto IA.
+histologia;histologia__06.png;conjuntivo/cartilagem;3;figura-ia;Cartilagem hialina realista, trocar a mola por traqueia IA.
+histologia;histologia__07.png;conjuntivo/osso;4;figura-ia;Osso longo e ósteon realistas, remodelação em motion.
+histologia;histologia__08.png;conjuntivo/ossificacao;2;motion;Ossificação em etapas usando figuras IA de osso.
+histologia;histologia__09.png;sangue/elementos;3;figura-ia;Esfregaço realista, hotspots em hemácia, leucócitos e plaquetas.
+histologia;histologia__10.png;sangue/coagulacao;3;motion;Vaso com volume, cascata e rede de fibrina animadas.
+histologia;histologia__11.png;muscular/tipos;1;figura-ia;Trocar ícones cartum por cortes realistas dos três músculos.
+histologia;histologia__12.png;muscular/sarcomero;4;motion;Sarcômero bom, dar volume aos filamentos no encurtamento.
+histologia;histologia__13.png;muscular/contracao;3;motion;Ponte cruzada com volume, fibra muscular como figura IA.
+histologia;histologia__14.png;muscular/energia;4;manter;Gráfico e barras claros, manter.
+histologia;histologia__15.png;nervoso/neuronio;3;modelo-3d;Neurônio 3D girável com mielina, hotspots nas partes.
+histologia;histologia__16.png;nervoso/glia;3;figura-ia;Glia realista em volta do capilar, hotspot por célula.
+histologia;histologia__17.png;nervoso/impulso;3;motion;Onda no axônio sincronizada ao gráfico de voltagem.
+histologia;histologia__18.png;nervoso/sinapse;3;figura-ia;Sinapse em corte realista, vesículas liberando em motion.
+taxonomia;taxonomia__01.png;historia/aristoteles;2;figura-ia;Animais realistas no lugar dos ícones, incluindo polvo e caramujo.
+taxonomia;taxonomia__02.png;historia/lineu;2;figura-ia;Capa do Systema Naturae e planta herborizada realistas.
+taxonomia;taxonomia__03.png;categorias/hierarquia;2;figura-ia;Animais realistas nas caixas aninhadas, zoom até Felis catus.
+taxonomia;taxonomia__04.png;especie/conceito;1;figura-ia;Égua, jumento e mula realistas no lugar dos desenhos chapados.
+taxonomia;taxonomia__05.png;nomes/binomial;2;figura-ia;Mandioca realista sobre o mapa, nomes surgindo por região.
+taxonomia;taxonomia__06.png;nomes/regras;3;manter;Tipografia ok, só suavizar a lupa e a troca de regra.
+taxonomia;taxonomia__07.png;sistemas/reinos;2;motion;Linha do tempo ramificando com miniaturas IA por reino.
+taxonomia;taxonomia__08.png;sistemas/dominios;2;motion;Cinco reinos reorganizando-se em três domínios.
+taxonomia;taxonomia__09.png;cladistica/cladograma;3;motion;Cladograma bom, trocar ícones por miniaturas IA.
+taxonomia;taxonomia__10.png;cladistica/grupos;3;motion;Grupos revelados por máscara, miniaturas IA nas pontas.
+taxonomia;taxonomia__11.png;cladistica/homologia;2;figura-ia;Ossos dos membros realistas, hotspot por osso homólogo.
+taxonomia;taxonomia__12.png;chave/dicotomica;3;figura-ia;Animais realistas na chave no lugar do ícone de abelha.

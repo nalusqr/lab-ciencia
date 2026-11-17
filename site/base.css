@@ -59,11 +59,18 @@ button{font:inherit}
 .tabs .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;min-width:240px;display:flex;flex-direction:column;gap:2px;padding:4px;border:1px solid var(--line-strong);border-radius:12px;background:var(--panel);box-shadow:var(--float-shadow)}
 .tabs .menu a{flex:none;justify-content:flex-start}
 .tabs .menu a.on{box-shadow:inset 2px 0 0 var(--amber)}
-@media(min-width:1100px){
+@media(min-width:1200px){
   .tabs{overflow:visible}
   .tabs>a.ap{display:none}
   .tabs details.apoio{display:block}
   .tabs a.cp .nm-l{display:none}.tabs a.cp .nm-s{display:inline}
+}
+/* A barra fica dentro de .wrap (até 1100 px) e não cabe com os nomes longos: no modo com menu Apoio todas as abas
+   usam o nome curto, e se ainda faltar espaço ela quebra em duas linhas em vez de alargar a página */
+@media(min-width:1200px){
+  .tabs{flex-wrap:wrap}
+  .tabs .nm-l{display:none}.tabs .nm-s{display:inline}
+  .tabs a,.tabs summary{padding:8px 10px}
 }
 
 /* Cabeçalho do módulo: ícone, título, "Módulo N" + selo */

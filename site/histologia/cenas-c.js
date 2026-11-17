@@ -102,13 +102,135 @@
   }
   function capsulePath(x, y, w, h) { const r = w / 2; X.beginPath(); X.moveTo(x, y); X.lineTo(x, y + h - r); X.arc(x + r, y + h - r, r, PI, 0, true); X.lineTo(x + w, y); X.closePath(); }
 
+  // ---------------------------------------------------------------------------------
+  // Figura realista (histologia-sangue-elementos) com hotspots acessíveis.
+  // Três camadas recortadas da própria figura (fundo, plano médio e primeiro plano) derivam
+  // devagar e em velocidades diferentes; ao abrir um ponto, o resto da figura escurece um pouco.
+  // ---------------------------------------------------------------------------------
+  const CAM = ['far', 'mid', 'near'].map(k => {
+    const im = new Image(), src = (window.LAB_IMG || {})['histologia-sangue-' + k];
+    if (src) im.src = src;
+    return im;
+  });
+  const up1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+  // posições em fração da figura; i é o índice em TIP
+  const HS = [
+    { i: 0, x: .478, y: .518 }, { i: 1, x: .300, y: .335 }, { i: 2, x: .697, y: .576 }, { i: 6, x: .287, y: .565 }
+  ].map(h => ({ ...h, n: TIP[h.i].n, f: up1(TIP[h.i].f) + '.', q: 'Cerca de ' + TIP[h.i].q + '.' }));
+  const REDUZ = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HX = { layer: null, btns: [], tip: null, hover: -1, focus: -1, pin: -1, shown: -2, prev: 0, dim: 0, dx: 0, dy: 0, px: 0, py: 0, tpx: 0, tpy: 0, last: 0, idleT: 0, off: null, tw: 0, th: 0 };
+  const aberto = () => HX.hover >= 0 ? HX.hover : HX.focus >= 0 ? HX.focus : HX.pin;
+  function hsMontar() {
+    if (HX.layer) return;
+    const tela = cv.parentNode, L = document.createElement('div');
+    L.className = 'hs-layer';
+    L.innerHTML = HS.map((h, k) => `<button type="button" class="hs" data-k="${k}" aria-label="${h.n}: ver função e quantidade" aria-expanded="false"><span class="ring"></span><span class="ring2"></span><span class="hs-p"></span></button>`).join('')
+      + '<div class="hs-tip fl" id="hsTip" role="tooltip"><b></b><p></p><small></small></div>';
+    tela.appendChild(L);
+    HX.layer = L; HX.btns = [...L.querySelectorAll('.hs')]; HX.tip = L.querySelector('.hs-tip');
+    const mark = () => { HX.last = performance.now(); };
+    HX.btns.forEach((b, k) => {
+      b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { HX.hover = k; mark(); } });
+      b.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && HX.hover === k) HX.hover = -1; });
+      b.addEventListener('focus', () => { try { if (b.matches(':focus-visible')) { HX.focus = k; mark(); } } catch (err) { HX.focus = k; } });
+      b.addEventListener('blur', () => { if (HX.focus === k) HX.focus = -1; });
+      b.addEventListener('click', () => { HX.pin = HX.pin === k ? -1 : k; mark(); });
+    });
+    L.addEventListener('keydown', e => { if (e.key === 'Escape') { HX.hover = HX.focus = HX.pin = -1; } });
+    cv.addEventListener('pointerdown', () => { HX.pin = -1; });
+    tela.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse' || REDUZ) return;
+      const r = tela.getBoundingClientRect();
+      HX.tpx = (e.clientX - r.left) / r.width - .5; HX.tpy = (e.clientY - r.top) / r.height - .5;
+    });
+    tela.addEventListener('pointerleave', () => { HX.tpx = HX.tpy = 0; });
+    HX.off = document.createElement('canvas');
+  }
+  function hsEntrar() {
+    hsMontar();
+    HX.layer.hidden = false; HX.hover = HX.focus = HX.pin = -1; HX.shown = -2; HX.dim = 0; HX.last = performance.now();
+    HX.btns.forEach(b => { b.classList.remove('in', 'idle'); });
+  }
+  function hsSair() { if (HX.layer) { HX.layer.hidden = true; HX.hover = HX.focus = HX.pin = -1; } }
+
+  // desenha as três camadas, escurece o entorno do ponto aberto, esfuma as bordas e posiciona os botões
+  function hsDesenhar(t, S, fig) {
+    hsMontar();
+    const now = performance.now(), dt = Math.min(.05, Math.max(0, (now - (HX.prev || now)) / 1000)); HX.prev = now;
+    const k = 1 - Math.exp(-dt * 5);
+    HX.px += (HX.tpx - HX.px) * k; HX.py += (HX.tpy - HX.py) * k;
+    const ab = aberto(), pronto = CAM.every(im => im.complete && im.naturalWidth);
+    // entrada: 0 a 900 ms, em --e-out; a figura sobe de opacidade, assenta de 1,03 para 1 e a máscara se abre
+    const e = REDUZ ? 1 : 1 - Math.pow(1 - cl(t / .9, 0, 1), 4);
+    // deriva lenta, em px do palco: fundo, plano médio e primeiro plano
+    const u = fig.s / .6, mv = REDUZ ? 0 : 1;
+    const off = [
+      [(3 * Math.sin(t * .31) + 4 * HX.px) * u, (2 * Math.sin(t * .23 + 1) + 3 * HX.py) * u],
+      [(7 * Math.sin(t * .27 + .8) + 9 * HX.px) * u, (4 * Math.sin(t * .21 + 2.1) + 6 * HX.py) * u],
+      [(12 * Math.sin(t * .22 + 2) + 16 * HX.px) * u, (7 * Math.sin(t * .19 + 3.2) + 10 * HX.py) * u]
+    ].map(o => [o[0] * mv, o[1] * mv]);
+    const rx = fig.cx - fig.w / 2, ry = fig.cy - fig.h / 2;
+    const pos = HS.map(h => [rx + h.x * fig.w + off[1][0], ry + h.y * fig.h + off[1][1]]);
+    if (pronto) {
+      const d = Math.min(2, window.devicePixelRatio || 1), oc = HX.off, w = Math.ceil(fig.w * d), h = Math.ceil(fig.h * d);
+      if (oc.width !== w || oc.height !== h) { oc.width = w; oc.height = h; }
+      const g = oc.getContext('2d');
+      g.setTransform(d, 0, 0, d, 0, 0); g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, fig.w, fig.h);
+      CAM.forEach((im, n) => {
+        const z = 1.035, ww = fig.w * z, hh = fig.h * z;
+        g.drawImage(im, (fig.w - ww) / 2 + off[n][0], (fig.h - hh) / 2 + off[n][1], ww, hh);
+      });
+      // foco suave: o resto escurece, sem desfoque
+      HX.dim += ((ab >= 0 ? 1 : 0) - HX.dim) * (1 - Math.exp(-dt * 9));
+      if (ab >= 0) { HX.dx += (pos[ab][0] - rx - HX.dx) * (HX.dim < .05 ? 1 : k * 1.6); HX.dy += (pos[ab][1] - ry - HX.dy) * (HX.dim < .05 ? 1 : k * 1.6); }
+      if (HX.dim > .003) {
+        const R = Math.max(fig.w, fig.h) * .55, gr = g.createRadialGradient(HX.dx, HX.dy, 0, HX.dx, HX.dy, R);
+        gr.addColorStop(0, 'rgba(8,11,22,0)'); gr.addColorStop(.2, 'rgba(8,11,22,0)'); gr.addColorStop(.55, `rgba(8,11,22,${.36 * HX.dim})`); gr.addColorStop(1, `rgba(8,11,22,${.42 * HX.dim})`);
+        g.globalCompositeOperation = 'source-atop'; g.fillStyle = gr; g.fillRect(0, 0, fig.w, fig.h);
+      }
+      // bordas esfumadas: máscara radial elíptica que se abre na entrada
+      g.globalCompositeOperation = 'destination-in';
+      g.save(); g.translate(fig.w / 2, fig.h / 2); g.scale(1, fig.h / fig.w);
+      const R0 = fig.w / 2 * lerp(.7, 1, e), mg = g.createRadialGradient(0, 0, 0, 0, 0, R0);
+      mg.addColorStop(0, 'rgba(0,0,0,1)'); mg.addColorStop(.5, 'rgba(0,0,0,1)'); mg.addColorStop(.76, 'rgba(0,0,0,.5)'); mg.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = mg; g.fillRect(-fig.w, -fig.w, fig.w * 2, fig.w * 2); g.restore();
+      g.globalCompositeOperation = 'source-over';
+      X.save(); X.globalAlpha = e; X.translate(fig.cx, fig.cy); X.scale(lerp(1.03, 1, e), lerp(1.03, 1, e)); X.drawImage(oc, -fig.w / 2, -fig.h / 2, fig.w, fig.h); X.restore();
+    }
+    // botões: posição a partir das camadas, entrada em sequência de 60 ms a partir de 600 ms
+    const idle = !REDUZ && now - HX.last > 8000 && ab < 0;
+    HX.btns.forEach((b, n) => {
+      b.style.transform = `translate3d(${(pos[n][0] - 22).toFixed(1)}px,${(pos[n][1] - 22).toFixed(1)}px,0)`;
+      const vis = pronto && (REDUZ || t >= .6 + .06 * n);
+      if (b.classList.contains('in') !== vis) b.classList.toggle('in', vis);
+      const on = n === ab; if (b.classList.contains('on') !== on) { b.classList.toggle('on', on); b.setAttribute('aria-expanded', on); }
+      if (idle && !b.classList.contains('idle')) b.classList.add('idle');
+      if (!idle && b.classList.contains('idle') && now - HX.idleT > 1400) b.classList.remove('idle');
+    });
+    if (idle) { if (now - HX.idleT > 9000) HX.idleT = now; HX.last = now - 1000; }
+    // rótulo: título, uma frase e a quantidade
+    const T = HX.tip;
+    if (ab !== HX.shown) {
+      if (ab >= 0) { const h = HS[ab]; T.children[0].textContent = h.n; T.children[1].textContent = h.f; T.children[2].textContent = h.q; HX.tw = T.offsetWidth; HX.th = T.offsetHeight; }
+      HX.btns.forEach((b, n) => { if (n === ab) b.setAttribute('aria-describedby', 'hsTip'); else b.removeAttribute('aria-describedby'); });
+      T.classList.toggle('on', ab >= 0); HX.shown = ab;
+    }
+    if (ab >= 0) {
+      const p = pos[ab], tw0 = HX.tw || T.offsetWidth, th0 = HX.th || T.offsetHeight; let x, y;
+      if (NAR) { x = cl(p[0] - tw0 / 2, 8, W - tw0 - 8); y = p[1] + 26; if (y + th0 > H - 58) y = p[1] - 26 - th0; }
+      else { x = p[0] < W * .5 ? p[0] + 28 : p[0] - 28 - tw0; y = cl(p[1] - th0 / 2, 8, H - 64 - th0); }
+      T.style.left = x.toFixed(1) + 'px'; T.style.top = Math.max(8, y).toFixed(1) + 'px';
+    }
+    return ab;
+  }
+
   const ctlS1 = { l: 'Centrifugar', min: 0, max: 100, step: 1, v: 0, f: v => v <= 0 ? 'sangue misturado' : v >= 100 ? 'camadas separadas' : nbr(v) + '%', rate: () => 1 };
   def('sangue', 'elementos', {
-    t: 'Plasma e células do sangue', s: 'um conjuntivo de matriz líquida', c: K('sangue'), loc: 'Tubo centrifugado e esfregaço corado', still: 1, stillV: 100,
+    t: 'Plasma e células do sangue', s: 'um conjuntivo de matriz líquida', c: K('sangue'), loc: 'Tubo centrifugado e células ao microscópio', still: 1, stillV: 100,
     ctl: ctlS1,
-    alt: 'À esquerda, um tubo de sangue que, com a faixa Centrifugar, se separa em plasma em cima, uma faixa fina branca de leucócitos e plaquetas e hemácias embaixo. À direita, um esfregaço no estilo HE com hemácias, os cinco tipos de leucócito e plaquetas; tocar numa célula mostra nome, função e quantidade',
+    alt: 'À esquerda, um tubo de sangue que, com a faixa Centrifugar, se separa em plasma em cima, uma faixa fina branca de leucócitos e plaquetas e hemácias embaixo. À direita, uma ilustração realista de hemácias, um neutrófilo, um linfócito e plaquetas em movimento lento; tocar num dos quatro pontos (hemácia, neutrófilo, linfócito e plaqueta) mostra nome, função e quantidade',
     extra: [
-      { t: 'Próxima célula', on: S => { S.user = true; S.sel = ((S.sel == null ? -1 : S.sel) + 1) % TIP.length; }, pressed: () => false },
+      { t: 'Próxima célula', on: S => { HX.pin = (HX.pin + 1) % HS.length; HX.hover = HX.focus = -1; HX.last = performance.now(); }, pressed: () => false },
       { t: 'Altitude', on: S => { S.alt = !S.alt; }, pressed: S => !!S.alt }
     ],
     d: `<p>O <b>sangue</b> é um tecido conjuntivo especial, cuja matriz é líquida: o <b>plasma</b>. Um adulto tem de 4,5 a 5,5 litros de sangue. Se uma amostra for centrifugada, separa-se em cerca de <b>55% de plasma</b> (amarelado, cerca de 90% de água, com proteínas como albumina, anticorpos e fibrinogênio, além de sais, glicose, hormônios e gás carbônico) e cerca de <b>45% de elementos figurados</b>. A fração das hemácias é o <b>hematócrito</b>. As <b>hemácias</b> (glóbulos vermelhos) são discos achatados, sem núcleo nos mamíferos, cheios de <b>hemoglobina</b>, a proteína com ferro que transporta o O₂; vivem cerca de <b>120 dias</b> e são destruídas no baço e no fígado. Os <b>leucócitos</b> (glóbulos brancos) defendem o corpo. As <b>plaquetas</b> são fragmentos dos <b>megacariócitos</b> da medula óssea e atuam na coagulação (ver <a href="#sangue/coagulacao">Coagulação</a>).</p>
@@ -127,35 +249,23 @@
 <p>Mova a faixa para centrifugar o tubo, toque numa célula do esfregaço para ver o que ela faz e ligue a altitude para ver o hematócrito subir. Os valores são faixas de referência aproximadas, não servem para diagnóstico.</p>`,
     enem: 'As associações que caem: <b>hemácia</b> e hemoglobina com o <b>transporte de O₂</b> (anemia = pouco O₂ chegando aos tecidos, com cansaço); <b>leucócitos</b> com a <b>defesa</b> (o número sobe nas infecções); <b>plaquetas</b> com a <b>coagulação</b> (o número cai na dengue, e muito nos casos graves). Em <b>grandes altitudes</b>, o corpo produz mais hemácias, estimulado pela <b>eritropoetina</b>; por isso os atletas treinam em altitude, e a eritropoetina sintética é doping.',
     links: [['Coagulação', '#sangue/coagulacao'], ['Macrófagos no conjuntivo', '#conjuntivo/propriamente']],
-    drag(x, y, S) {
-      if (!toque(S)) return null;
-      const h = (S.hit || []).find(c => Math.hypot(x - c.x, y - c.y) <= c.r + 4);
-      if (h) { S.user = true; S.sel = h.i; }
-      return null;
-    },
     draw(t, S) {
       const A = area(), f = autoUma(S, t, ctlS1, 5) / 100;
       // altitude: semanas passam depressa (cerca de 1 semana por segundo) e o hematócrito sobe de ~45% para ~50%
       S.wk = cl((S.wk || 0) + (S.alt ? 1 : -2) * S.dt, 0, 6);
       const hct = Math.round(45 + 5 * ss(S.wk / 6));   // arredonda primeiro: plasma + hemácias somam 100%
-      // célula em destaque: gira sozinha até o aluno tocar numa
-      if (!S.user) S.sel = Math.floor(t / 3) % TIP.length;
-      const sel = Number.isInteger(S.sel) ? cl(S.sel, 0, TIP.length - 1) : 0;
-      // ---- layout ----
-      let tb, fx, fy, R, ib;   // tubo, campo do microscópio, caixa de informação
+      // ---- layout: o tubo fica numa coluna e a figura ocupa o resto do palco, sem moldura ----
+      let tb, fig;
       if (NAR) {
         const th = Math.min(150, A.h * .34);
         tb = { x: A.x0 + 14, y: A.y0 + 14, w: 30, h: th - 8 };
-        const ibH = 96, rest = A.h - th - 18 - ibH;
-        R = Math.max(50, Math.min(A.w / 2 - 6, rest / 2 - 4)); fx = A.cx; fy = A.y0 + th + 16 + R;
-        ib = { x: A.x0, y: fy + R + 8, w: A.w, h: ibH };
+        const top = A.y0 + th + 4, aH = H - top - 2, s = Math.min(W * 1.2 / 1200, aH / 896);
+        fig = { s, w: 1200 * s, h: 896 * s, cx: W / 2, cy: top + aH / 2 };
       } else {
-        const colW = Math.min(300, A.w * .3);
-        const th = Math.min(A.h - 60, 330);
+        const colW = Math.min(300, A.w * .3), th = Math.min(A.h - 60, 330);
         tb = { x: A.x0 + 30, y: A.y0 + (A.h - th) / 2 - 10, w: 46, h: th };
-        const ibH = 82; R = Math.max(80, Math.min((A.w - colW - 30) / 2, (A.h - ibH - 18) / 2));
-        fx = A.x0 + colW + 20 + (A.w - colW - 20) / 2; fy = A.y0 + R + 2;
-        ib = { x: fx - Math.max(R, 230), y: fy + R + 12, w: Math.max(R, 230) * 2, h: ibH };
+        const x0 = A.x0 + colW - 24, aW = W - x0, s = Math.min(aW / 1200, H / 896) * 1.1;
+        fig = { s, w: 1200 * s, h: 896 * s, cx: x0 + aW / 2, cy: H / 2 - 4 };
       }
       // ---- tubo ----
       const T = tubo(tb.x, tb.y, tb.w, tb.h, f, hct), lx = tb.x + tb.w + 12, s = ss(f);
@@ -168,50 +278,26 @@
         yW = Math.max(yW, yP + gapL); yR = Math.max(yR, yW + gapL);
         if (yR > T.bot) { yR = T.bot; yW = Math.min(yW, yR - gapL); yP = Math.min(yP, yW - gapL); }
         const lk = (y0, y, a, b, alpha) => { X.save(); X.globalAlpha = alpha; line(tb.x + tb.w + 2, y0, lx - 3, y, 'rgba(232,237,247,.5)', 1); tx(a, lx, y - 8, { s: 13, w: 700, a: 'left', c: C.txt }); tx(b, lx, y + 9, { s: 12, a: 'left', c: C.dim, bg: false }); X.restore(); };
-        lk(T.yPl, yP, 'plasma', `≈ ${nbr(100 - hct)}%`, al);
+        lk(T.yPl, yP, 'plasma', `cerca de ${nbr(100 - hct)}%`, al);
         if (s > .7) lk(T.yBuffy, yW, 'leucócitos e plaquetas', 'menos de 1%', seg(s, .7, .95));
-        lk(T.yRed, yR, 'hemácias', `≈ ${nbr(hct)}% (hematócrito)`, al);
+        lk(T.yRed, yR, 'hemácias', `cerca de ${nbr(hct)}% (hematócrito)`, al);
       }
       // ---- altitude (contador) ----
       if (S.alt || S.wk > 0) {
         const yA = NAR ? tb.y + 12 : tb.y + tb.h + 34, xA = NAR ? A.x1 : tb.x - 6;
-        tx(`hematócrito ≈ ${nbr(hct)}%`, xA, yA, { s: 13, w: 700, a: NAR ? 'right' : 'left', c: K('hemacia'), f: FD });
+        tx(`hematócrito de cerca de ${nbr(hct)}%`, xA, yA, { s: 13, w: 700, a: NAR ? 'right' : 'left', c: K('hemacia'), f: FD });
         tx(S.alt ? `semana ${Math.max(1, Math.ceil(S.wk))} na altitude` : 'de volta ao nível do mar', xA, yA + 17, { s: 12, a: NAR ? 'right' : 'left', c: C.dim, bg: false });
       }
-      // ---- esfregaço ----
-      S.hit = [];
-      X.save(); X.beginPath(); X.arc(fx, fy, R, 0, TAU); X.clip();
-      X.fillStyle = '#2A1C2C'; X.fillRect(fx - R, fy - R, 2 * R, 2 * R);
-      X.fillStyle = rgba(K('he_rosa'), .12); X.fillRect(fx - R, fy - R, 2 * R, 2 * R);
-      const rH = R * .085, extra = Math.round(HEM.length * (hct / 45 - 1) * 2.2);
-      const nH = cl(48 + extra, 0, HEM.length);
-      for (let i = 0; i < nH; i++) {
-        const h = HEM[i], dx = Math.sin(t * .4 + h[2]) * R * .006, x = fx + h[0] * R + dx, y = fy + h[1] * R;
-        hemacia(x, y, rH, i >= 48 ? cl((nH - i) / 3, 0, 1) : 1); S.hit.push({ i: 0, x, y, r: rH });
-      }
-      for (const p of PLQ) { const x = fx + p[0] * R, y = fy + p[1] * R; plaqueta(x, y, R * .025, p[0] * 9); S.hit.push({ i: 6, x, y, r: R * .05 }); }
-      for (const L of LEU) { const x = fx + L[1] * R, y = fy + L[2] * R; leucocito(L[0], x, y, L[3] * R, t); S.hit.push({ i: L[0], x, y, r: L[3] * R }); }
-      X.restore();
-      circ(fx, fy, R, null, 'rgba(232,237,247,.85)', 2.5);
-      // destaque da célula escolhida
-      let ax = null, ay = null;
-      if (sel === 0) { const h = HEM[11]; ax = fx + h[0] * R; ay = fy + h[1] * R; circ(ax, ay, rH + 5, null, '#FFB347', 2); }
-      else if (sel === 6) { const p = PLQ[1]; ax = fx + p[0] * R; ay = fy + p[1] * R; circ(ax, ay - R * .03, R * .1, null, '#FFB347', 2); }
-      else { const L = LEU.find(q => q[0] === sel); ax = fx + L[1] * R; ay = fy + L[2] * R; circ(ax, ay, L[3] * R + 5, null, '#FFB347', 2); }
-      if (ax != null) lab(ax, ay, ax + (ax > fx ? 1 : -1) * R * .45, ay - R * .32, TIP[sel].l);
-      // caixa de informação
-      const ty = TIP[sel];
-      const nl = (str, sz, w, f) => { let n = 1, cur = ''; for (const p of str.split(' ')) { const tt = cur ? cur + ' ' + p : p; if (cur && tw(tt, sz, w, f) > ib.w - 24) { n++; cur = p; } else cur = tt; } return n; };
-      ib.h = Math.max(ib.h, 32 + (nl(ty.f, 13, 400, FT) + nl(ty.q, 12, 400, FT)) * 16);
-      rr(ib.x, ib.y, ib.w, ib.h, 10, PAINEL, C.line, 1);
-      tx(ty.n, ib.x + 12, ib.y + 15, { f: FH, s: 15, w: 600, a: 'left', c: C.txt, bg: false });
-      const used = wrapTx(ty.f, ib.x + 12, ib.y + 35, ib.w - 24, { s: 13, a: 'left', c: C.txt, lh: 16 });
-      wrapTx(ty.q, ib.x + 12, ib.y + 35 + used, ib.w - 24, { s: 12, a: 'left', c: C.dim, lh: 16 });
-      if (!NAR) tx('toque numa célula', ib.x + ib.w - 12, ib.y + 15, { s: 12, a: 'right', c: C.dim, bg: false });
+      // ---- figura com hotspots ----
+      const aberto = hsDesenhar(t, S, fig);
+      const ty = aberto >= 0 ? TIP[HS[aberto].i] : null;
       cap(f < 1 ? 'Mova a faixa <b>Centrifugar</b>: as hemácias, mais densas, descem; o plasma fica em cima.'
         : S.alt ? 'Na altitude falta O₂: o rim libera mais <b>eritropoetina</b> e a medula faz mais hemácias. O hematócrito sobe em poucas semanas.'
-        : `Esfregaço no estilo HE: <b>${ty.n.toLowerCase()}</b>. Toque em outra célula ou use "Próxima célula".`);
-    }
+        : ty ? `<b>${ty.n}</b>. Toque em outro ponto ou use "Próxima célula".`
+        : 'Toque, passe o mouse ou use a tecla Tab nos pontos da figura para ver o que cada célula faz.');
+    },
+    init(S) { hsEntrar(S); },
+    sai() { hsSair(); }
   });
 
   // =====================================================================================
@@ -429,7 +515,7 @@
         hits.push(['núcleo na periferia', bx + 16 + c * bw * .06 + 14 * k + 22 * k * 2, midY - D * (1 + .12 * c) / 2 + 3.2 * k, -1]);
         if (!NAR) hits.push(['estrias', bx + bw * .55, midY + D * .25, 1]);
       }
-      if (tw0 >= 0 && tw0 < .8) tx('contraiu!', bx + bw / 2, by + 12, { s: 12, w: 700, c: '#FFB347' });
+      if (tw0 >= 0 && tw0 < .8) tx('contraiu', bx + bw / 2, by + 12, { s: 12, w: 700, c: '#FFB347' });
     } else if (T.k === 'card') {
       const per = 1, ph = S.clk / per;   // cerca de 60 batidas por minuto, dentro do ritmo de repouso
       const L = 100 * k, D = 15 * k, gapY = 9 * k, stepY = D + gapY;
@@ -491,7 +577,7 @@
     d: `<p>O tecido muscular é feito de células alongadas, as <b>fibras musculares</b>, especializadas em <b>contração</b>. Elas têm muitas proteínas contráteis (actina e miosina) e muitas mitocôndrias. Os nomes mudam: a membrana é o <b>sarcolema</b>, o citoplasma é o <b>sarcoplasma</b> e o retículo endoplasmático liso é o <b>retículo sarcoplasmático</b>. Os três tipos vêm da <b>mesoderme</b> (ver <a href="#tecidos/visao">Os quatro tecidos</a>).</p>
 <p>O <b>estriado esquelético</b> forma os músculos presos aos ossos. Suas fibras são enormes: cada uma vem da fusão de muitas células embrionárias, então tem <b>muitos núcleos</b>, que ficam <b>na periferia</b>, logo abaixo da membrana. Ao microscópio, mostram <b>estrias transversais</b>, faixas claras e escuras. A contração é <b>voluntária</b>, rápida e forte, e cansa. O <b>estriado cardíaco</b> forma o miocárdio. Também tem estrias, mas as células são menores, <b>ramificadas</b>, com <b>1 ou 2 núcleos centrais</b>, e se ligam pelos <b>discos intercalares</b>, que têm junções comunicantes por onde o sinal elétrico passa direto de uma célula para outra. Assim o coração se contrai como um bloco. A contração é <b>involuntária</b>, rítmica e não cansa: o próprio coração gera o ritmo, no nó sinoatrial, cerca de 60 a 100 vezes por minuto em repouso.</p>
 <p>O <b>liso</b> fica na parede dos órgãos ocos e dos vasos: estômago, intestino, bexiga, útero, artérias, além da íris e dos músculos que arrepiam os pelos. As células são <b>fusiformes</b>, com <b>1 núcleo central</b>, e <b>não têm estrias</b>, porque a actina e a miosina não estão alinhadas em fileiras. A contração é <b>involuntária</b>, lenta e duradoura, como nos movimentos peristálticos do intestino. A capacidade de se regenerar também é diferente: o liso se regenera bem; o esquelético, de forma limitada, a partir das células-satélite; e o cardíaco praticamente não se regenera, e por isso a área morta num infarto vira uma cicatriz de tecido conjuntivo.</p>
-<table><thead><tr><th></th><th>Estriado esquelético</th><th>Estriado cardíaco</th><th>Liso</th></tr></thead><tbody>
+<div class="tab"><table><thead><tr><th></th><th>Estriado esquelético</th><th>Estriado cardíaco</th><th>Liso</th></tr></thead><tbody>
 <tr><td>Forma da célula</td><td>cilíndrica, muito longa</td><td>cilíndrica, ramificada</td><td>fusiforme</td></tr>
 <tr><td>Tamanho</td><td>10 a 100 µm de diâmetro; até dezenas de cm de comprimento</td><td>cerca de 15 µm × 85 a 100 µm</td><td>5 a 10 µm × 20 a 500 µm</td></tr>
 <tr><td>Núcleos</td><td>muitos, periféricos</td><td>1 ou 2, centrais</td><td>1, central</td></tr>
@@ -500,7 +586,7 @@
 <tr><td>Controle</td><td>voluntário</td><td>involuntário (ritmo próprio)</td><td>involuntário</td></tr>
 <tr><td>Contração</td><td>rápida, forte, cansa</td><td>rítmica, não cansa</td><td>lenta, duradoura</td></tr>
 <tr><td>Regeneração</td><td>limitada (células-satélite)</td><td>quase nenhuma</td><td>boa</td></tr>
-</tbody></table>
+</tbody></table></div>
 <p>Fonte do quadro: Junqueira e Carneiro, cap. 10. Mova a faixa do órgão até a célula e toque em Contrair: só o esquelético obedece ao comando; o cardíaco e o liso se contraem sozinhos.</p>`,
     enem: 'O quadro de comparação é o que mais cai: <b>esquelético</b> = voluntário, multinucleado, núcleos periféricos, com estrias; <b>cardíaco</b> = involuntário, estriado, 1 ou 2 núcleos centrais, <b>discos intercalares</b>; <b>liso</b> = involuntário, sem estrias, 1 núcleo central, fusiforme. E a ligação com saúde: o músculo cardíaco <b>não se regenera</b>, e por isso o infarto deixa cicatriz.',
     links: [['O sarcômero', '#muscular/sarcomero'], ['Tendões no conjuntivo', '#conjuntivo/propriamente']],

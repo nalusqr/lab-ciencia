@@ -320,3 +320,19 @@ Arquivo: `site/celula/index.html`. Mudanças em `site/base.css` e nas abas comun
 11. **Botão voltar**: "← Célula inteira" vira ícone de seta para a esquerda (chevron) + "Voltar à célula inteira", sempre no mesmo lugar (canto superior esquerdo do palco).
 12. **Materiais 3D**: membranas translúcidas com brilho de borda, organelas foscas com relevo, as não selecionadas dessaturadas quando há seleção, e as três luzes da seção 5.
 13. **Painel**: adicionar o espaço "No ENEM" (texto vem da revisão do professor) e a frase-resumo em negrito antes da explicação.
+
+## 9. Padrão de animação aprovado (Nalu, 15/11/2026)
+
+A Nalu aprovou o piloto (coração, moluscos, sangue e cadeia respiratória) e pediu este estilo em TODAS as animações do site. Nada de desenho chapado, de elipse com contorno ou de cara de cartum.
+
+- **Figuras realistas por IA** para órgãos, organismos, células e cenas: ilustração médica 3D, luz de estúdio suave, fundo azul-noite `#0B0F1C`, sem texto na imagem. As regras estão em `docs/visual/padrao-figuras-ia.md`.
+  - Geração: conta Higgsfield da Nalu, conectada no Claude, com o modelo GPT Image 2.6 em qualidade média (0,5 crédito por imagem no plano Plus; o piloto usou Nano Banana 2). Antes de gerar, sempre mostrar o custo e pedir o ok.
+  - Entrega: `site/img/ia/NOME.webp` e `NOME.js`, este com data URI em `window.LAB_IMG`. O `.js` é obrigatório, porque o site abre por file://.
+- **Motion graphics** para processos (cadeias, ciclos, fluxos): volume, luz, partículas, coreografia por etapas. Tokens e regras em `docs/visual/padrao-motion.md`.
+- **Pontos clicáveis (hotspots)** sobre a figura: pulso suave e rótulo com título e uma frase, ao passar o mouse, tocar ou focar pelo teclado; Esc fecha.
+- **Interação**: o aluno pode dar zoom, mudar o ângulo e ver as estruturas em detalhe.
+  - Moléculas e estruturas viram 3D em código, com girar, zoom, botões de ângulo e toque para ver o detalhe (`site/biologia-molecular/mol3d.js`, uso em `docs/visual/mol3d-uso.md`).
+  - Figuras de IA têm zoom e lupa de detalhe, e 2 vistas quando o ângulo importa.
+- **Sempre**: prefers-reduced-motion, foco visível, nada pisca mais de 3 vezes por segundo, 60 fps (só transform e opacity).
+- **Ordem**: tópico por tópico da ementa, começando pelo 1 (Biologia molecular). Só avança para o próximo com a autorização da Nalu.
+- Referências dela, só para olhar e nunca copiar: o coração 3D com pontos clicáveis e os vídeos da cliptalk.pro (robot head visualizer e "distilbook: from PDF to explainer").

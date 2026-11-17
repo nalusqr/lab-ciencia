@@ -1,0 +1,32 @@
+modulo;arquivo;rota;nota;destino;acao
+ecologia;ecologia__01.png;niveis/escada;3;motion;A escada de zoom do organismo à biosfera já ensina a hierarquia; manter em 2D, só conferir a troca de nível em 600 a 800 ms.
+ecologia;ecologia__02.png;niveis/nicho;3;motion;Modelo de competição com sobreposição de nichos é gráfico: 2D é a forma certa.
+ecologia;ecologia__03.png;teias/cadeia;2;3d;Feito: campo do Cerrado com capim, gafanhoto, sapo, cobra e gavião; a energia anda em bolinhas de luz que encolhem a cada passo (cerca de 10% passa), o calor da respiração sobe de cada ser e os restos descem para fungos e bactérias. Faixa Destaque e toque no ser escolhem o nível; câmera segue o ser no celular.
+ecologia;ecologia__04.png;teias/teia;3;motion;Jogo de tirar e devolver espécies com a rede reagindo; o grafo plano é mais legível do que em 3D. Fica em 2D.
+ecologia;ecologia__05.png;energia/fluxo;2;3d;Feito: quatro tanques de vidro, um por nível trófico, com a energia guardada (10 000, 1 000, 100 e 10 kJ); a faixa de eficiência (5% a 20%) enche ou esvazia os tanques, o calor sai pelo alto e os restos vão para os decompositores.
+ecologia;ecologia__06.png;energia/piramides;2;3d;Feito: degraus quadrados empilhados para energia, biomassa e números, com um ser de cada nível no degrau; as invertidas (plâncton, árvore com lagartas) se montam de cabeça para baixo ao trocar o tipo. Valores e unidade nos degraus.
+ecologia;ecologia__07.png;energia/produtividade;3;motion;Comparação de PPB, respiração e PPL entre ecossistemas é gráfico de barras: fica em 2D.
+ecologia;ecologia__08.png;ciclos/carbono;2;3d;Feito: maquete em corte com árvore, capim, herbívoro, fábrica, decompositores, camada de combustíveis fósseis e oceano com alga e peixe; sete processos em trilhas de cor, tocáveis, com moléculas de CO₂ no ar.
+ecologia;ecologia__09.png;ciclos/nitrogenio;2;3d;Feito: corte do solo com a leguminosa e os nódulos, o boi e os restos, as bactérias junto de NH₃, NO₂⁻ e NO₃⁻ e o raio; fixação, amonificação, nitrificação (duas etapas), assimilação e desnitrificação em trilhas tocáveis.
+ecologia;ecologia__10.png;ciclos/agua;2;3d;Feito: mar, encosta com montanha nevada, rio, árvores, nuvens com chuva e lençol freático no corte; evaporação, transpiração, condensação, precipitação, infiltração e escoamento em trilhas tocáveis.
+ecologia;ecologia__11.png;ciclos/fosforo;3;motion;Ciclo lento entre rocha, solo, seres e fundo do mar; o 2D com a escala de tempo resolve. Candidato a 3D numa segunda leva, reaproveitando a maquete dos ciclos.
+ecologia;ecologia__12.png;relacoes/quadro;3;motion;Quadro de sinais (+, − e 0) é tabela interativa: 2D.
+ecologia;ecologia__13.png;relacoes/harmonicas;2;figura-ia;Líquen real (fungo e alga) num tronco, nódulos de leguminosa e colônia de formigas ensinam mais em foto do que em esquema; o quadro dos sinais e a animação continuam em 2D.
+ecologia;ecologia__14.png;relacoes/desarmonicas;3;motion;Parasitismo, predação e competição já se leem bem em esquema com os sinais; imagem realista de parasita não acrescenta para a prova.
+ecologia;ecologia__15.png;relacoes/polinizacao;3;motion;O caminho do pólen e da semente é processo: fica em motion 2D com etapas tocáveis.
+ecologia;ecologia__16.png;relacoes/controle;3;motion;Simulador de gerações com gráfico: 2D.
+ecologia;ecologia__17.png;populacoes/crescimento;3;motion;Curvas J e S são gráfico: 2D.
+ecologia;ecologia__18.png;populacoes/predador;2;3d;Feito: várzea em 3D com capivaras e onças-pintadas em número que segue o modelo de Lotka-Volterra do 2D (cerca de 3 indivíduos por animal); o gráfico das duas curvas fica no rodapé do palco.
+ecologia;ecologia__19.png;populacoes/estrategias;3;motion;Curvas de sobrevivência e comparação r e K: 2D.
+ecologia;ecologia__20.png;sucessao/primaria;2;figura-ia;Rocha nua com liquens e musgos, depois capim, arbustos e mata: fotos realistas de cada etapa ensinam a reconhecer as espécies pioneiras; a régua do tempo e a animação ficam em 2D por cima.
+ecologia;ecologia__21.png;sucessao/secundaria;2;figura-ia;Área desmatada da Mata Atlântica em regeneração (capoeira, capoeirão, mata secundária) em imagem realista; a faixa do tempo continua em 2D.
+ecologia;ecologia__22.png;biomas/mapa;2;figura-ia;Uma paisagem realista por bioma (Amazônia, Cerrado, Caatinga, Mata Atlântica, Pantanal, Pampa) no painel do bioma escolhido; o mapa esquemático tocável fica em 2D.
+ecologia;ecologia__23.png;biomas/costeiros;2;figura-ia;Manguezal com raízes-escora, restinga e recife de coral reais ensinam adaptações que o corte esquemático não mostra; o corte do litoral fica como mapa de toque.
+ecologia;ecologia__24.png;impactos/estufa;2;3d;Feito: maquete com floresta, fábrica, gado e carro e uma camada de gases no alto; a faixa de CO₂ enche a camada de moléculas e faz mais raios de calor voltarem; termômetro por cima do 3D.
+ecologia;ecologia__25.png;impactos/eutrofizacao;2;figura-ia;Lago verde com floração de algas e peixes mortos é a imagem que cai na prova; o encadeamento (nutrientes, algas, decomposição, falta de oxigênio) continua em motion 2D.
+ecologia;ecologia__26.png;impactos/magnificacao;3;motion;Concentração de DDT subindo pela cadeia em ppm: esquema com números, 2D.
+ecologia;ecologia__27.png;impactos/ozonio;3;motion;Reação do cloro com o ozônio e o filtro de UV: esquema 2D com a equação.
+ecologia;ecologia__28.png;impactos/chuva;3;motion;Gases, nuvem e chuva ácida com as equações: 2D resolve.
+ecologia;ecologia__29.png;impactos/desmatamento;2;figura-ia;Vista aérea real de borda de floresta e pasto (efeito de borda, fragmentos) ensina a ler imagens de satélite que caem na prova; o simulador de fragmentação fica em 2D.
+ecologia;ecologia__30.png;impactos/invasoras;2;figura-ia;Mexilhão-dourado incrustado em tubulação e em rocha de rio, em foto, mostra o dano que o esquema não mostra; a curva de crescimento sem inimigos fica em 2D.
+ecologia;ecologia__31.png;impactos/conservacao;3;motion;Mapa de UCs e corredores é esquema de vista de cima: 2D.

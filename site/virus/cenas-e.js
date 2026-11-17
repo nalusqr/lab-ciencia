@@ -391,23 +391,23 @@
 <p>Algumas medidas valem para quase tudo: <b>vacinação em dia</b>, <b>água limpa e esgoto tratado</b> e <b>informação</b>. Muitas viroses são também problemas <b>sociais</b>: a dengue cresce onde falta coleta de lixo e água encanada regular (o que obriga a guardar água em recipientes), e a hepatite A, onde falta esgoto. Por isso a prevenção depende tanto da atitude de cada um quanto de <b>políticas públicas</b>.</p>
 <p><b>Quadro-resumo do módulo</b> (vacina no SUS: idades e doses no calendário vigente):</p>
 <div class="tab"><table><thead><tr><th>Virose</th><th>DNA ou RNA</th><th>Via</th><th>Vacina no SUS</th><th>Tela</th></tr></thead><tbody>
-<tr><td>gripe</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">D3</a></td></tr>
-<tr><td>covid-19</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">D3</a></td></tr>
-<tr><td>sarampo</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">D3</a></td></tr>
-<tr><td>catapora</td><td>DNA</td><td>respiratória</td><td>sim</td><td><a href="#replicacao/animal">R1</a></td></tr>
-<tr><td>dengue</td><td>RNA</td><td>vetorial</td><td>sim, para grupos definidos</td><td><a href="#doencas/arboviroses">D1</a></td></tr>
-<tr><td>zika</td><td>RNA</td><td>vetorial; também sexual e da mãe para o feto</td><td>não</td><td><a href="#doencas/arboviroses">D1</a></td></tr>
-<tr><td>chikungunya</td><td>RNA</td><td>vetorial</td><td>não (fora do calendário)</td><td><a href="#doencas/arboviroses">D1</a></td></tr>
-<tr><td>febre amarela</td><td>RNA</td><td>vetorial</td><td>sim</td><td><a href="#doencas/arboviroses">D1</a></td></tr>
-<tr><td>HIV e aids</td><td>RNA (retrovírus)</td><td>sangue, sexual e da mãe para o filho</td><td>não (há tratamento, PrEP e PEP)</td><td><a href="#doencas/hiv">D2</a></td></tr>
-<tr><td>hepatite A</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#doencas/hepatites-hpv">D4</a></td></tr>
-<tr><td>hepatite B</td><td>DNA</td><td>sangue, sexual e da mãe para o filho</td><td>sim</td><td><a href="#doencas/hepatites-hpv">D4</a></td></tr>
-<tr><td>hepatite C</td><td>RNA</td><td>sangue</td><td>não (tem cura)</td><td><a href="#doencas/hepatites-hpv">D4</a></td></tr>
-<tr><td>HPV</td><td>DNA</td><td>sexual (pele e mucosa)</td><td>sim</td><td><a href="#doencas/hepatites-hpv">D4</a></td></tr>
-<tr><td>herpes simples</td><td>DNA</td><td>contato com as lesões; sexual (genital)</td><td>não</td><td><a href="#replicacao/animal">R1</a></td></tr>
-<tr><td>poliomielite</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#prevencao/vacinas">P1</a></td></tr>
-<tr><td>rotavírus</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#prevencao/transmissao">P2</a></td></tr>
-<tr><td>raiva</td><td>RNA</td><td>mordida de animal</td><td>sim (e soro, se indicado)</td><td><a href="#prevencao/vacinas">P1</a></td></tr>
+<tr><td>gripe</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">Viroses respiratórias</a></td></tr>
+<tr><td>covid-19</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">Viroses respiratórias</a></td></tr>
+<tr><td>sarampo</td><td>RNA</td><td>respiratória</td><td>sim</td><td><a href="#doencas/respiratorias">Viroses respiratórias</a></td></tr>
+<tr><td>catapora</td><td>DNA</td><td>respiratória</td><td>sim</td><td><a href="#replicacao/animal">Células animais</a></td></tr>
+<tr><td>dengue</td><td>RNA</td><td>vetorial</td><td>sim, para grupos definidos</td><td><a href="#doencas/arboviroses">Arboviroses</a></td></tr>
+<tr><td>zika</td><td>RNA</td><td>vetorial; também sexual e da mãe para o feto</td><td>não</td><td><a href="#doencas/arboviroses">Arboviroses</a></td></tr>
+<tr><td>chikungunya</td><td>RNA</td><td>vetorial</td><td>não (fora do calendário)</td><td><a href="#doencas/arboviroses">Arboviroses</a></td></tr>
+<tr><td>febre amarela</td><td>RNA</td><td>vetorial</td><td>sim</td><td><a href="#doencas/arboviroses">Arboviroses</a></td></tr>
+<tr><td>HIV e aids</td><td>RNA (retrovírus)</td><td>sangue, sexual e da mãe para o filho</td><td>não (há tratamento, PrEP e PEP)</td><td><a href="#doencas/hiv">HIV e aids</a></td></tr>
+<tr><td>hepatite A</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#doencas/hepatites-hpv">Hepatites e HPV</a></td></tr>
+<tr><td>hepatite B</td><td>DNA</td><td>sangue, sexual e da mãe para o filho</td><td>sim</td><td><a href="#doencas/hepatites-hpv">Hepatites e HPV</a></td></tr>
+<tr><td>hepatite C</td><td>RNA</td><td>sangue</td><td>não (tem cura)</td><td><a href="#doencas/hepatites-hpv">Hepatites e HPV</a></td></tr>
+<tr><td>HPV</td><td>DNA</td><td>sexual (pele e mucosa)</td><td>sim</td><td><a href="#doencas/hepatites-hpv">Hepatites e HPV</a></td></tr>
+<tr><td>herpes simples</td><td>DNA</td><td>contato com as lesões; sexual (genital)</td><td>não</td><td><a href="#replicacao/animal">Células animais</a></td></tr>
+<tr><td>poliomielite</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#prevencao/vacinas">Vacinas</a></td></tr>
+<tr><td>rotavírus</td><td>RNA</td><td>fecal-oral</td><td>sim</td><td><a href="#prevencao/transmissao">Cada via</a></td></tr>
+<tr><td>raiva</td><td>RNA</td><td>mordida de animal</td><td>sim (e soro, se indicado)</td><td><a href="#prevencao/vacinas">Vacinas</a></td></tr>
 </tbody></table></div>
 <p>Toque numa porta para ver as trancas de cada via. Em "Monte o plano", escolha as três medidas mais eficazes contra a virose sorteada.</p>`,
     enem: 'O ENEM gosta de questões que dão uma doença e pedem a <b>medida de prevenção mais adequada</b>: o segredo é identificar primeiro a <b>via de transmissão</b>. Mosquito: <b>criadouros</b>. Ar: <b>vacina e ventilação</b>. Sangue e sexo: <b>preservativo e seringas</b>. Água e alimento: <b>saneamento</b>. Pegadinhas: usar antibiótico "para prevenir" virose; achar que mosquiteiro protege contra o <i>Aedes</i> (ele pica <b>de dia</b>; a tela e o repelente ajudam mais que o mosquiteiro só à noite); ou propor saneamento contra uma doença transmitida pelo ar.',

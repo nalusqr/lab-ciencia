@@ -236,7 +236,7 @@
     const ty = A.y1 - 12, t0 = A.x0 + 8, t1 = A.x1 - 8, fx = v => t0 + v / 200 * (t1 - t0);
     rr(t0, ty - 3, t1 - t0, 6, 3, 'rgba(91,108,153,.35)'); rr(t0, ty - 3, Math.max(6, fx(tm) - t0), 6, 3, rgba(N.na, .85));
     for (let v = 0; v <= 200; v += 50) { const s = v === 0 ? '0' : v === 200 ? '200 ms' : String(v), w = tw(s, 12, 500) / 2; tx(s, cl(fx(v), t0 + w, t1 - w), ty + 14, { s: 12, w: 500, c: N.dim, bg: false }); }
-    const ev = [[T.contr, T.mov + ': ≈ ' + ms(T.contr), N.musc, 22], [T.brain[1], T.br + ': ≈ ' + ms(T.brain[1]), N.na, 42]];
+    const ev = [[T.contr, T.mov + ': cerca de ' + ms(T.contr), N.musc, 22], [T.brain[1], T.br + ': cerca de ' + ms(T.brain[1]), N.na, 42]];
     for (const [v, s, c, dy] of ev) {
       const x = fx(v), on = tm >= v, w = tw(s, 12, 600) + 16;
       line(x, ty - 5, x, ty - dy + 9, rgba(c, on ? .9 : .4), 1.4);
@@ -404,8 +404,8 @@
     const tr = S.paused ? Dr * .55 : (t - S.r0) % cyc, ts = tr * kk;
     // trilhas
     const trackT = (y, nm) => { tx(nm, xa, y - 34, { s: 13, w: 600, a: 'left', c: N.txt }); line(xa, y, xb, y, rgba(N.neur, .9), 5); };
-    trackT(y1, 'sem mielina: ≈ 1 m/s');
-    trackT(y2, (lv ? MN[lv] : 'sem mielina') + ': ≈ ' + nbr(vf) + ' m/s' + (em ? ' (com trechos destruídos)' : ''));
+    trackT(y1, 'sem mielina: cerca de 1 m/s');
+    trackT(y2, (lv ? MN[lv] : 'sem mielina') + ': cerca de ' + nbr(vf) + ' m/s' + (em ? ' (com trechos destruídos)' : ''));
     // de cima: onda contínua e lenta, com o trecho refratário atrás
     const xs = xa + cl(ts / 100, 0, 1) * L;
     if (xs > xa + 1) { const g = X.createLinearGradient(xs - 80, 0, xs, 0); g.addColorStop(0, 'rgba(157,169,196,0)'); g.addColorStop(1, 'rgba(157,169,196,.6)'); rr(Math.max(xa, xs - 80), y1 - 5, Math.min(80, xs - xa), 10, 5, g); }
@@ -422,7 +422,7 @@
     // resultados
     const right = (y, s, c) => tx(s, xb, y - 34, { s: 13, w: 600, a: 'right', c: c || N.dim });
     if (!NAR) { right(y2, done ? 'chegou em ' + ms(tot) : 'tempo: ' + ms(Math.min(ts, tot)), done ? N.na : N.dim); right(y1, ts >= 100 ? 'chegou em 100 ms' : done ? 'chegaria em 100 ms' : ''); }
-    const msg = done ? (lv === 0 ? 'Empate: sem mielina, os dois andam a ≈ 1 m/s.' : `Com mielina: ${ms(tot)}. Sem mielina: chegaria em 100 ms.`) : 'tempo: ' + ms(Math.min(ts, tot));
+    const msg = done ? (lv === 0 ? 'Empate: sem mielina, os dois andam a cerca de 1 m/s.' : `Com mielina: ${ms(tot)}. Sem mielina: chegaria em 100 ms.`) : 'tempo: ' + ms(Math.min(ts, tot));
     pill(A.cx, A.y0 + 6 + 10, msg, { s: 13, c: done ? N.txt : N.dim });
     tx('trilha de 10 cm, em câmera lenta', A.cx, A.y1 - 8, { s: 12, w: 400, c: N.dim });
     if (ni) lab(xa + segs[1].x0 * L, y2, xa + segs[1].x0 * L + 10, y2 + 32, 'nodo de Ranvier');
@@ -431,7 +431,7 @@
   }
   def('nervoso', 'glia', {
     t: 'Glia e mielina', s: 'as células que cuidam dos neurônios', c: N.glia, loc: 'Encéfalo, medula espinal e nervos', still: 2, stillV: 3,
-    ctl: { l: 'Mielina', min: 0, max: 4, step: 1, v: 3, f: v => '≈ ' + nbr(MV[Math.round(v)]) + ' m/s', rate: () => 1 },
+    ctl: { l: 'Mielina', min: 0, max: 4, step: 1, v: 3, f: v => 'cerca de ' + nbr(MV[Math.round(v)]) + ' m/s', rate: () => 1 },
     extra: [
       { t: 'Schwann', on: S => { S.view = S.view === 1 ? 0 : 1; }, pressed: S => S.view === 1 },
       { t: 'Corrida', on: S => { S.view = S.view === 2 ? 0 : 2; }, pressed: S => S.view === 2 },
@@ -441,7 +441,7 @@
     d: `<p>As <b>células da glia</b> (neuróglia) não conduzem impulsos, mas sem elas os neurônios não funcionam. No <b>sistema nervoso central</b> há quatro tipos: os <b>astrócitos</b>, em forma de estrela, que sustentam os neurônios, levam nutrientes do sangue até eles, recolhem neurotransmissores e ajudam a formar a <b>barreira hematoencefálica</b>, que filtra o que passa do sangue para o encéfalo; os <b>oligodendrócitos</b>, que formam a <b>bainha de mielina</b> no sistema nervoso central, cada um envolvendo trechos de vários axônios; a <b>micróglia</b>, células de defesa que fagocitam micro-organismos e restos de células, parentes dos macrófagos (ver <a href="#conjuntivo/propriamente">conjuntivo propriamente dito</a>); e as <b>células ependimárias</b>, que revestem as cavidades do encéfalo e da medula e participam da produção do líquido cerebrospinal (líquor). No <b>sistema nervoso periférico</b>, as <b>células de Schwann</b> formam a mielina, cada uma envolvendo um trecho de um único axônio. Por muito tempo se disse que havia 10 células da glia para cada neurônio; contagens recentes mostram uma proporção perto de <b>1 para 1</b> no encéfalo humano (Azevedo et al., 2009).</p>
 <p>A <b>bainha de mielina</b> é feita de camadas da membrana dessas células, enroladas em volta do axônio, ricas em lipídios: funciona como um isolante elétrico. Entre um trecho de mielina e outro ficam espaços curtos, os <b>nodos de Ranvier</b>. O impulso "salta" de um nodo ao outro (<b>condução saltatória</b>), e por isso as fibras mielinizadas são muito mais rápidas: até cerca de <b>100 a 120&nbsp;m/s</b>, contra menos de 2&nbsp;m/s nas fibras finas sem mielina (Guyton). A mielina dá a cor da <b>substância branca</b> do sistema nervoso; a <b>substância cinzenta</b> é onde ficam os corpos celulares. Na <b>esclerose múltipla</b>, o próprio sistema imunitário destrói a mielina do sistema nervoso central, e a condução fica lenta ou falha.</p>
 <p>Toque numa célula para ver a sua função. Os botões mostram a célula de Schwann formando a mielina e a corrida entre dois axônios; a faixa muda a espessura da mielina e a distância entre os nodos.</p>`,
-    kv: [['Astrócito', 'sustentação, nutrição, barreira hematoencefálica'], ['Oligodendrócito', 'mielina no SNC (vários axônios)'], ['Célula de Schwann', 'mielina no SNP (um só axônio)'], ['Micróglia', 'defesa (fagocitose)'], ['Ependimárias', 'revestem ventrículos; líquor'], ['Velocidade', 'sem mielina: 0,5 a 2&nbsp;m/s; com mielina: até ≈ 120&nbsp;m/s']],
+    kv: [['Astrócito', 'sustentação, nutrição, barreira hematoencefálica'], ['Oligodendrócito', 'mielina no SNC (vários axônios)'], ['Célula de Schwann', 'mielina no SNP (um só axônio)'], ['Micróglia', 'defesa (fagocitose)'], ['Ependimárias', 'revestem ventrículos; líquor'], ['Velocidade', 'sem mielina: 0,5 a 2&nbsp;m/s; com mielina: até cerca de 120&nbsp;m/s']],
     enem: 'Associe: <b>oligodendrócito</b> = mielina no sistema nervoso <b>central</b>; <b>célula de Schwann</b> = mielina no <b>periférico</b>; <b>astrócito</b> = sustentação, nutrição e barreira hematoencefálica; <b>micróglia</b> = defesa. A mielina aumenta a <b>velocidade</b> do impulso (condução <b>saltatória</b>, de nodo em nodo). Doenças que destroem a mielina, como a <b>esclerose múltipla</b>, deixam a condução lenta.',
     links: [['O neurônio', '#nervoso/neuronio'], ['O impulso nervoso', '#nervoso/impulso']],
     init(S) { if (S.view == null) S.view = 0; S.lastTouch = S.touch; hookGlia(); },
@@ -561,7 +561,7 @@
     d: `<p>Em repouso, a membrana do neurônio é <b>polarizada</b>: o lado de dentro é negativo em relação ao de fora, cerca de <b>−70&nbsp;mV</b>. Isso acontece porque os íons estão distribuídos de forma desigual. Fora há muito <b>sódio (Na⁺)</b>, cerca de 10 vezes mais que dentro; dentro há muito <b>potássio (K⁺)</b>, cerca de 35 vezes mais que fora (Guyton). A <b>bomba de sódio e potássio</b> mantém essa diferença, gastando ATP: a cada ciclo, põe <b>3 Na⁺ para fora</b> e <b>2 K⁺ para dentro</b> (ver <a href="../morfofisiologia/index.html#membranas/bomba">bomba de sódio e potássio</a>). Como a membrana em repouso deixa vazar mais K⁺ do que Na⁺, o interior fica negativo.</p>
 <p>Quando um estímulo leva a membrana até o <b>limiar</b>, cerca de <b>−55&nbsp;mV</b>, canais de Na⁺ se abrem, o sódio entra rápido e o interior fica positivo, até cerca de <b>+30&nbsp;mV</b>: é a <b>despolarização</b>. Logo depois, os canais de Na⁺ se fecham e canais de K⁺ se abrem; o potássio sai e a membrana volta a ficar negativa (<b>repolarização</b>). Esse <b>potencial de ação</b> dura cerca de <b>1&nbsp;milissegundo</b> e se propaga pelo axônio como uma onda, porque cada trecho despolarizado despolariza o trecho seguinte. Ele obedece à <b>lei do tudo ou nada</b>: um estímulo abaixo do limiar não dispara nada, e qualquer estímulo acima dele dispara um potencial de ação sempre do mesmo tamanho. Um estímulo mais forte não aumenta o potencial, aumenta a <b>frequência</b> de disparos. Logo depois de um disparo, o trecho fica um instante sem responder (período refratário), e é isso que faz o impulso seguir só para a frente. Anestésicos locais, como a lidocaína do dentista, bloqueiam os canais de Na⁺: o impulso de dor não chega ao cérebro.</p>
 <p>Mova a faixa para mudar a intensidade do estímulo. Abaixo de 30, nada dispara; acima, a altura do potencial de ação não muda, só o número de disparos por segundo. O gráfico passa em câmera lenta.</p>`,
-    kv: [['Repouso', '−70&nbsp;mV (dentro negativo)'], ['Limiar', '≈ −55&nbsp;mV'], ['Pico', '≈ +30&nbsp;mV'], ['Despolarização', 'Na⁺ entra'], ['Repolarização', 'K⁺ sai'], ['Bomba de Na⁺/K⁺', '3 Na⁺ para fora, 2 K⁺ para dentro, 1 ATP'], ['Duração', '≈ 1&nbsp;ms']],
+    kv: [['Repouso', '−70&nbsp;mV (dentro negativo)'], ['Limiar', 'cerca de −55&nbsp;mV'], ['Pico', 'cerca de +30&nbsp;mV'], ['Despolarização', 'Na⁺ entra'], ['Repolarização', 'K⁺ sai'], ['Bomba de Na⁺/K⁺', '3 Na⁺ para fora, 2 K⁺ para dentro, 1 ATP'], ['Duração', 'cerca de 1&nbsp;ms']],
     enem: 'Repouso: <b>dentro negativo</b>, Na⁺ concentrado <b>fora</b> e K⁺ <b>dentro</b>, mantidos pela <b>bomba de Na⁺/K⁺</b> (transporte ativo, gasta ATP). Potencial de ação: <b>Na⁺ entra</b> (despolarização), <b>K⁺ sai</b> (repolarização). A lei do <b>tudo ou nada</b> diz que o tamanho do impulso não depende da força do estímulo; o estímulo forte aumenta a <b>frequência</b>. Venenos e anestésicos que <b>bloqueiam canais de Na⁺</b> (a lidocaína, a toxina do baiacu) impedem o impulso.',
     links: [LK.bomba || ['Bomba de sódio e potássio', '../morfofisiologia/index.html#membranas/bomba'], ['A sinapse', '#nervoso/sinapse']],
     draw(t, S) {
@@ -702,7 +702,7 @@
     }
     // rótulos
     lab(cx - nk, y0 + 20, cx - nk - 50, y0 + 20, 'terminal do axônio');
-    lab(cx + tw2 / 2, yPre + g.gap / 2, cx + tw2 / 2 + 20, yPre + g.gap / 2, 'fenda (≈ 20 nm)');
+    lab(cx + tw2 / 2, yPre + g.gap / 2, cx + tw2 / 2 + 20, yPre + g.gap / 2, 'fenda (cerca de 20 nm)');
     lab(g.rx[4], yPost + 6, g.rx[4] + 20, yPost + 46, 'receptores');
     lab(g.dock[0][0], g.dock[0][1], g.dock[0][0] - 50, g.dock[0][1] - 40, 'vesícula');
     if (sub.enz !== 0) lab(g.enz[0][0], g.enz[0][1], g.enz[0][0] - 40, g.enz[0][1] + 44, sub.nt === 'acetilcolina' ? 'acetilcolinesterase' : 'enzima');
@@ -756,7 +756,7 @@
     d: `<p><b>Sinapse</b> é o ponto de comunicação entre um neurônio e outra célula: outro neurônio, uma fibra muscular (a junção neuromuscular, ver <a href="#muscular/contracao">contração muscular</a>) ou uma glândula. Na <b>sinapse química</b>, a mais comum, as duas células não se tocam: entre elas há a <b>fenda sináptica</b>, de cerca de <b>20&nbsp;nm</b>. Quando o impulso chega ao terminal do axônio, canais de <b>Ca²⁺</b> se abrem, o cálcio entra e faz <b>vesículas</b> cheias de <b>neurotransmissor</b> se fundirem com a membrana e o liberarem na fenda (exocitose). O neurotransmissor se liga a <b>receptores</b> na célula seguinte e abre canais iônicos: pode <b>excitá-la</b> (aproximá-la do limiar) ou <b>inibi-la</b> (afastá-la). Depois, ele é <b>destruído</b> por enzimas, como a acetilcolinesterase, ou <b>recapturado</b> pelo terminal que o liberou. Como só o terminal tem vesículas e só a célula seguinte tem receptores, o sinal segue em <b>um só sentido</b>. Há também <b>sinapses elétricas</b>, em que junções comunicantes deixam os íons passarem direto de uma célula a outra: são mais rápidas e existem em algumas regiões do encéfalo e na retina; as mesmas junções comunicantes ligam as células do músculo cardíaco (ver <a href="#muscular/tipos">tipos de músculo</a>).</p>
 <p>Alguns neurotransmissores para conhecer: <b>acetilcolina</b> (músculos, memória), <b>glutamato</b> (o principal excitatório do encéfalo), <b>GABA</b> (o principal inibitório), <b>dopamina</b> (movimento, motivação e recompensa; a doença de Parkinson vem da perda de neurônios que produzem dopamina), <b>serotonina</b> (humor, sono, apetite) e <b>noradrenalina</b> (alerta). Muitos medicamentos e drogas agem na sinapse. Antidepressivos como a fluoxetina <b>bloqueiam a recaptação de serotonina</b>, que fica mais tempo na fenda; a <b>cocaína</b> bloqueia a recaptação de dopamina; os <b>organofosforados</b> inibem a acetilcolinesterase; os <b>benzodiazepínicos</b> reforçam o efeito do GABA.</p>
 <p>A faixa muda quantos impulsos chegam por segundo: com mais impulsos, mais vesículas se abrem e o neurotransmissor se acumula na fenda. O botão "Substância" troca entre fluoxetina, cocaína, organofosforado e curare, sempre mostrando o mecanismo.</p>`,
-    kv: [['Fenda sináptica', '≈ 20&nbsp;nm'], ['Gatilho da liberação', 'entrada de Ca²⁺ no terminal'], ['Liberação', 'exocitose das vesículas'], ['Remoção', 'enzima ou recaptação'], ['Sentido', 'único (química)'], ['Elétrica', 'junções comunicantes, sem fenda']],
+    kv: [['Fenda sináptica', 'cerca de 20&nbsp;nm'], ['Gatilho da liberação', 'entrada de Ca²⁺ no terminal'], ['Liberação', 'exocitose das vesículas'], ['Remoção', 'enzima ou recaptação'], ['Sentido', 'único (química)'], ['Elétrica', 'junções comunicantes, sem fenda']],
     enem: 'A sequência é: impulso, entrada de <b>Ca²⁺</b>, liberação do <b>neurotransmissor</b> por exocitose, ligação a <b>receptores</b> e remoção por <b>enzima</b> ou <b>recaptação</b>. A sinapse química é <b>unidirecional</b>. As questões costumam pedir o efeito de uma substância: bloquear a <b>recaptação</b> (antidepressivos, cocaína) ou a <b>enzima</b> (organofosforados) <b>prolonga</b> o efeito do neurotransmissor; bloquear o <b>receptor</b> (curare) <b>impede</b> o efeito.',
     links: [['Junção neuromuscular', '#muscular/contracao'], ['O impulso nervoso', '#nervoso/impulso']],
     init(S) { S.nt = null; },
