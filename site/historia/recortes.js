@@ -732,6 +732,102 @@ I['rolo-colunas']={fundo:'amarelo',nome:'Rolo de couro com o texto em colunas es
   [[132,150],[100,128],[68,96]].forEach(c=>{for(let y=62;y<=140;y+=9){const w=8+Math.floor(r()*20);s+=tinta('M'+(c[0]-2)+' '+y+' H'+Math.max(c[1]-30,c[0]-w-2),2.6);}});
   s+=tinta('M118 56 V146 M86 56 V146',1.2);
   return s;}};
+/* ---------- Grécia (tópico 5): ícones desenhados em código ---------- */
+const GREGO='font-family="Georgia,\'Times New Roman\',serif" font-weight="700" fill="'+T+'"';
+I['palacio-creta']={fundo:'coral',nome:'Planta de um palácio cretense, com o grande pátio central e salas ao redor',art(u){
+  let s=pth('M26 38 H174 V162 H26Z','#efe6cc',T,3.4)+'<path d="M26 38 H48 V162 H26Z" fill="url(#cm-h1)" opacity=".4"/>';
+  s+=pth('M74 66 H128 V134 H74Z','#d9a35a',T,3)+'<path d="M74 66 H128 V134 H74Z" fill="url(#cm-hh)" opacity=".7"/>';
+  s+=tinta('M26 74 H74 M26 106 H60 M26 134 H74 M128 74 H174 M128 104 H152 M128 134 H174 M74 38 V66 M102 38 V66 M128 38 V66 M74 134 V162 M102 134 V162 M128 134 V162 M48 74 V134 M152 74 V134',2.2);
+  s+=tinta('M34 84 H44 M34 94 H44 M32 142 H66 M110 144 H122 M138 84 H148 M138 94 H148 M158 114 H168',1.6);
+  [[36,116],[50,116],[36,152],[52,152],[160,150],[168,150]].forEach(q=>{s+=elip(q[0],q[1],5,6.2,'#c98f4f',1.6);});
+  s+=tinta('M88 80 L116 80 M88 120 L116 120 M82 74 V126 M122 74 V126',1.2);
+  s+=pth('M174 100 H190 V118 H174',null,T,3)+tinta('M178 100 V118 M184 100 V118',1.4);
+  return s;}};
+I['acropole']={fundo:'amarelo',nome:'Colina da acrópole com um templo de colunas no alto',art(u){
+  const colina='M6 186 C16 176 28 160 46 150 C54 142 56 128 70 122 H132 C146 128 150 142 158 150 C176 160 186 176 194 186Z';
+  let s='<defs>'+clip(u+'c',colina)+'</defs>'+pth(colina,P)+'<g clip-path="url(#'+u+'c)"><path d="M110 100 H200 V200 H100Z" fill="url(#cm-h1)" opacity=".7"/><path d="M0 170 H200 V200 H0Z" fill="url(#cm-h3)" opacity=".5"/></g>';
+  s+=tinta('M20 176 C40 170 60 174 80 166 M110 168 C134 172 160 168 182 176 M62 138 C80 146 100 140 122 146',1.6)+pth(colina,'none',T,3.2);
+  s+=pth('M64 122 H138 V112 H64Z',P,T,2.8)+pth('M70 112 H132 V104 H70Z',P,T,2.8);
+  for(let i=0;i<7;i++){const x=76+i*8.6;s+=pth('M'+x+' 104 V62 H'+(x+5)+' V104Z',P,T,1.8);}
+  s+=pth('M66 62 H136 V54 H66Z',P,T,2.8)+pth('M62 54 L101 28 L140 54Z',P,T,3)+'<path d="M72 52 L101 34 L130 52Z" fill="url(#cm-h1)" opacity=".5"/>';
+  s+=tinta('M50 150 L58 138 M150 150 L142 138',2);
+  return s;}};
+I['marco-hipoteca']={fundo:'coral',nome:'Marco de pedra baixo, cravado no chão, de uma terra hipotecada, riscado em vermelho, e uma corrente que se parte',art(u){
+  const ped='M40 150 V104 C40 90 48 82 62 80 L138 80 C152 82 160 90 160 104 V150Z';
+  let s='<defs>'+clip(u+'m',ped)+'</defs>'+pth('M14 152 C50 146 150 146 186 152 V176 H14Z','#cfc6ae',T,3)+pth(ped,P)+'<g clip-path="url(#'+u+'m)"><path d="M112 70 H170 V160 H112Z" fill="url(#cm-h1)" opacity=".6"/></g>';
+  s+=pth(ped,'none',T,3.4)+tinta('M52 92 C70 86 90 90 110 86 M60 140 L82 134',1.6)+'<text x="100" y="124" text-anchor="middle" font-size="30" letter-spacing="2" '+GREGO+'>ΟΡΟΣ</text>';
+  s+=tinta('M20 158 L26 148 M32 160 L36 152 M168 158 L174 149 M178 160 L182 152',2.2);
+  s+='<path d="M52 72 L148 150 M148 72 L52 150" fill="none" stroke="#c4452b" stroke-width="10" stroke-linecap="round"/>';
+  const elo=(x,y,a)=>'<g transform="translate('+x+' '+y+') rotate('+a+')"><rect x="-12" y="-6" width="24" height="12" rx="6" fill="none" stroke="'+T+'" stroke-width="3.2"/></g>';
+  s+=elo(30,186,-10)+elo(50,184,8)+elo(150,184,-8)+elo(172,187,10)+tinta('M84 184 L90 176 M92 190 L100 192 M82 192 L76 198',2.2);
+  return s;}};
+I['ostraco']={fundo:'coral',nome:'Óstraco: caco irregular de vaso de cerâmica, com o nome Temístocles riscado em letras gregas',art(u){
+  const caco='M30 66 C54 38 112 26 166 44 L176 70 L160 88 L178 116 L150 128 L154 156 L112 150 L92 176 L66 150 L44 142 L50 112 L28 98Z';
+  let s='<defs>'+clip(u+'o',caco)+'</defs>'+pth(caco,'#c9743b')+'<g clip-path="url(#'+u+'o)"><path d="M120 0 L200 0 V200 H100Z" fill="url(#cm-h1)" opacity=".5"/><path d="M0 128 C50 118 120 138 200 124 V200 H0Z" fill="#9c5223" opacity=".4"/><path d="M26 70 C60 40 120 32 170 50 L172 58 C120 44 64 52 32 80Z" fill="#e6a56a" opacity=".7"/></g>';
+  s+=tinta('M44 118 C56 112 66 116 76 110 M118 142 C128 138 136 140 146 134',1.3)+pth(caco,'none',T,3.2);
+  s+='<g transform="rotate(-5 100 100)" fill="#3a2314" opacity=".92"><text x="100" y="92" text-anchor="middle" font-size="21" letter-spacing="1.2" '+GREGO+'>ΘΕΜΙΣΤΟ-</text><text x="100" y="120" text-anchor="middle" font-size="21" letter-spacing="1.2" '+GREGO+'>ΚΛΗΣ</text></g>';
+  return s;}};
+I['escudo-hoplita']={fundo:'petroleo',nome:'Escudo redondo e côncavo de bronze de um hoplita, visto por dentro, com a alça de couro, e uma lança',art(u){
+  let s=pth('M20 188 L168 14',null,'#6b4a24',7)+pth('M168 14 L158 40 L186 36Z','#cfd3d6',T,2.6);
+  s+='<circle cx="104" cy="108" r="82" fill="#a96f2c" stroke="'+T+'" stroke-width="3.4"/><circle cx="104" cy="108" r="64" fill="#8c5a22" stroke="'+T+'" stroke-width="3"/>';
+  s+='<defs><radialGradient id="'+u+'g" cx=".42" cy=".4" r=".7"><stop offset="0" stop-color="#e0b25c"/><stop offset="1" stop-color="#a06a28"/></radialGradient></defs><circle cx="104" cy="108" r="60" fill="url(#'+u+'g)"/>';
+  s+='<path d="M104 52 C130 56 154 80 160 108" fill="none" stroke="#fff4cf" stroke-width="4" opacity=".7" stroke-linecap="round"/>';
+  s+=pth('M54 100 H154 V118 H54Z','#6b3f1c',T,3)+'<circle cx="64" cy="109" r="3.6" fill="#d9d3c0" stroke="'+T+'" stroke-width="1.6"/><circle cx="144" cy="109" r="3.6" fill="#d9d3c0" stroke="'+T+'" stroke-width="1.6"/>';
+  s+=pth('M98 66 C104 62 112 62 118 66 V100 H98Z','#6b3f1c',T,2.8);
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;s+='<circle cx="'+(104+Math.cos(a)*73).toFixed(1)+'" cy="'+(108+Math.sin(a)*73).toFixed(1)+'" r="1.7" fill="'+T+'"/>';}
+  return s;}};
+I['templo-apolo']={fundo:'amarelo',nome:'Templo de Apolo em Delos, onde ficava o tesouro da Liga, com moedas diante dos degraus',art(u){
+  let s=pth('M24 168 H176 V180 H24Z',P,T,3)+pth('M34 156 H166 V168 H34Z',P,T,3)+pth('M42 146 H158 V156 H42Z',P,T,3);
+  for(let i=0;i<6;i++){const x=50+i*20;s+=pth('M'+x+' 146 V80 H'+(x+13)+' V146Z',P,T,2)+tinta('M'+(x+5)+' 84 V142',1.2);}
+  s+=pth('M44 80 H156 V68 H44Z',P,T,3)+pth('M38 68 L100 30 L162 68Z',P,T,3.2)+'<path d="M58 66 L100 40 L142 66Z" fill="url(#cm-h1)" opacity=".5"/><circle cx="100" cy="56" r="7" fill="#f4c935" stroke="'+T+'" stroke-width="2.2"/>';
+  [[40,190],[62,194],[84,190],[116,192],[140,190],[162,194]].forEach(q=>{s+='<ellipse cx="'+q[0]+'" cy="'+q[1]+'" rx="9" ry="4.4" fill="#e3bf55" stroke="'+T+'" stroke-width="2"/>';});
+  return s;}};
+const fustes=(x0,x1,y0,y1,n)=>{let s=pth('M'+x0+' '+y0+' H'+x1+' V'+y1+' H'+x0+'Z',P,T,3)+'<path d="M'+(x1-(x1-x0)*.34)+' '+y0+' H'+x1+' V'+y1+' H'+(x1-(x1-x0)*.34)+'Z" fill="url(#cm-h1)" opacity=".6"/>';
+  for(let i=1;i<n;i++){const x=x0+(x1-x0)*i/n;s+=tinta('M'+x+' '+y0+' V'+y1,1.5);}return s;};
+I['capitel-dorico']={fundo:'coral',nome:'Capitel dórico: abaco liso sobre um equino em curva e fuste com estrias',art(u){
+  let s=fustes(68,132,128,196,5);
+  s+=tinta('M68 140 H132',1.2);
+  s+=pth('M64 128 H136 L130 112 C126 104 74 104 70 112Z',P,T,3)+'<path d="M112 128 H136 L130 112 C128 108 120 106 114 106Z" fill="url(#cm-h1)" opacity=".6"/>'+tinta('M66 120 H134',1.4);
+  s+=pth('M54 90 H146 V108 C130 102 70 102 54 108Z',P,T,3.2)+'<path d="M126 90 H146 V108 C140 106 132 104 126 103Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=pth('M44 64 H156 V90 H44Z',P,T,3.4)+tinta('M44 77 H156',1.2)+'<path d="M130 64 H156 V90 H130Z" fill="url(#cm-h1)" opacity=".5"/>';
+  return s;}};
+I['capitel-jonico']={fundo:'amarelo',nome:'Capitel jônico: abaco fino sobre duas volutas em espiral e fuste com estrias',art(u){
+  let s=fustes(72,128,132,196,5);
+  s+=pth('M66 132 H134 L130 118 H70Z',P,T,3);
+  s+=pth('M34 80 H166 V94 C150 100 138 106 130 118 H70 C62 106 50 100 34 94Z',P,T,3.2);
+  [[48,100,1],[152,100,-1]].forEach(q=>{s+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="17" fill="'+P+'" stroke="'+T+'" stroke-width="3.2"/>'+tinta(espiral(q[0],q[1],14,2.4,q[2]),2.2)+'<circle cx="'+q[0]+'" cy="'+q[1]+'" r="2.6" fill="'+T+'"/>';});
+  s+=tinta('M72 112 H128',1.4);
+  for(let i=0;i<5;i++){const x=78+i*11;s+=pth('M'+x+' 104 C'+(x-4)+' 112 '+(x+4)+' 114 '+x+' 118','none',T,1.4);}
+  s+=pth('M32 62 H168 V80 H32Z',P,T,3.4)+'<path d="M140 62 H168 V80 H140Z" fill="url(#cm-h1)" opacity=".5"/>'+tinta('M32 71 H168',1.2);
+  return s;}};
+I['capitel-corintio']={fundo:'petroleo',nome:'Capitel coríntio: sino coberto de folhas de acanto, com pequenas volutas nos cantos',art(u){
+  let s=fustes(72,128,150,196,5);
+  s+=pth('M66 150 H134 L132 140 H68Z',P,T,3);
+  const folha=(cx,y0,w,h)=>pth('M'+(cx-w/2)+' '+y0+' C'+(cx-w/2-4)+' '+(y0-h*.4)+' '+(cx-w/3)+' '+(y0-h*.7)+' '+(cx-w/5)+' '+(y0-h*.8)+' C'+(cx-w/12)+' '+(y0-h*1.05)+' '+(cx+w/12)+' '+(y0-h*1.05)+' '+(cx+w/5)+' '+(y0-h*.8)+' C'+(cx+w/3)+' '+(y0-h*.7)+' '+(cx+w/2+4)+' '+(y0-h*.4)+' '+(cx+w/2)+' '+y0+'Z',P,T,2.4)+tinta('M'+cx+' '+y0+' V'+(y0-h*.85)+' M'+(cx-w/4)+' '+y0+' L'+(cx-w/6)+' '+(y0-h*.6)+' M'+(cx+w/4)+' '+y0+' L'+(cx+w/6)+' '+(y0-h*.6),1.4);
+  s+=pth('M66 140 C58 112 54 92 48 70 H152 C146 92 142 112 134 140Z',P,T,3)+'<path d="M118 70 H152 C146 92 142 112 134 140 H124 C128 112 124 92 118 70Z" fill="url(#cm-h1)" opacity=".6"/>';
+  s+=folha(82,140,28,40)+folha(118,140,28,40)+folha(100,140,30,50)+folha(66,118,26,34)+folha(134,118,26,34);
+  [[52,84,1],[148,84,-1]].forEach(q=>{s+=tinta(espiral(q[0],q[1],11,1.8,q[2]),2.2);});
+  s+=pth('M40 50 C70 58 130 58 160 50 V68 C130 62 70 62 40 68Z',P,T,3.2)+'<path d="M140 52 L160 50 V68 C152 66 146 64 140 62Z" fill="url(#cm-h1)" opacity=".5"/>';
+  return s;}};
+I['mascara-tragica']={fundo:'petroleo',nome:'Máscara de teatro trágica, com a boca aberta para baixo',art(u){
+  const rosto='M46 56 C46 30 154 30 154 56 C158 100 146 150 100 170 C54 150 42 100 46 56Z';
+  let s='<defs>'+clip(u+'t',rosto)+'</defs>'+pth('M42 50 C30 70 34 120 44 150 C34 110 36 80 52 56Z',T)+pth('M158 50 C170 70 166 120 156 150 C166 110 164 80 148 56Z',T)+pth(rosto,'#eee3c6')+'<g clip-path="url(#'+u+'t)"><path d="M120 20 C168 70 156 150 108 196 H200 V20Z" fill="url(#cm-h1)" opacity=".7"/></g>';
+  s+=pth('M46 56 C48 36 152 36 154 56 C150 50 140 44 100 44 C60 44 50 50 46 56Z',T)+tinta('M52 50 C60 60 70 62 78 56 M122 56 C130 62 140 60 148 50',2);
+  s+=pth('M60 80 C72 70 86 74 90 84 C84 90 66 92 60 80Z','#1b1a17',T,2)+pth('M140 80 C128 70 114 74 110 84 C116 90 134 92 140 80Z','#1b1a17',T,2);
+  s+=pth('M58 70 C70 62 84 64 92 72',null,T,3.4)+pth('M142 70 C130 62 116 64 108 72',null,T,3.4)+tinta('M100 88 C96 102 94 108 100 112',2);
+  s+=pth('M68 140 C76 118 124 118 132 140 C124 134 112 130 100 130 C88 130 76 134 68 140Z','#1b1a17',T,2.4);
+  s+=tinta('M70 100 C72 112 72 118 70 124 M130 100 C128 112 128 118 130 124',1.6);
+  return s;}};
+I['mascara-comica']={fundo:'amarelo',nome:'Máscara de teatro cômica, com a boca aberta num largo sorriso',art(u){
+  const rosto='M44 62 C44 34 156 34 156 62 C160 106 148 148 100 166 C52 148 40 106 44 62Z';
+  let s='<defs>'+clip(u+'c',rosto)+'</defs>'+pth(rosto,'#f1e6c8')+'<g clip-path="url(#'+u+'c)"><path d="M120 20 C170 70 158 150 108 196 H200 V20Z" fill="url(#cm-h1)" opacity=".7"/></g>';
+  s+=pth('M44 62 C46 40 154 40 156 62 C146 52 128 48 100 48 C72 48 54 52 44 62Z',T)+'<circle cx="46" cy="64" r="12" fill="'+T+'"/><circle cx="40" cy="82" r="10" fill="'+T+'"/><circle cx="154" cy="64" r="12" fill="'+T+'"/><circle cx="160" cy="82" r="10" fill="'+T+'"/><circle cx="70" cy="40" r="10" fill="'+T+'"/><circle cx="100" cy="36" r="11" fill="'+T+'"/><circle cx="130" cy="40" r="10" fill="'+T+'"/>';
+  s+=pth('M58 82 C70 68 86 72 92 82 C84 90 66 92 58 82Z','#1b1a17',T,2)+pth('M142 82 C130 68 114 72 108 82 C116 90 134 92 142 82Z','#1b1a17',T,2);
+  s+=pth('M56 66 C68 54 84 56 92 64',null,T,3.4)+pth('M144 66 C132 54 116 56 108 64',null,T,3.4)+tinta('M100 88 C96 100 94 104 100 108',2);
+  s+=pth('M60 112 C76 150 124 150 140 112 C128 124 114 126 100 126 C86 126 72 124 60 112Z','#1b1a17',T,2.6)+pth('M74 128 C86 136 114 136 126 128 C118 124 82 124 74 128Z','#f6f1e4',T,1.6);
+  s+=tinta('M58 100 C62 108 64 112 68 114 M142 100 C138 108 136 112 132 114',1.6);
+  return s;}};
+
 C.ICONES=Object.keys(I);
 
 /* papel colorido rasgado atrás do recorte */
@@ -914,4 +1010,103 @@ C.tipos.alfabeto=p=>{
   s+=tx(450,550,'quadrinhos tracejados: vogais não escritas',34,400,sans);
   return {cls:'cm-esq cm-alfabeto',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Da letra fenícia alef ao alfa grego e ao A latino, e uma linha fenícia só com consoantes')+'">'+s+'</svg>'};
 };
+
+/* ---------- Grécia (tópico 5): esquemas desenhados em código ---------- */
+const gTx=(x,y,t,sz,w,anc,fill)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+(anc||'middle')+'" style="font:'+(w||700)+' '+sz+'px var(--sans,sans-serif);fill:'+(fill||T)+'">'+esc(t)+'</text>';
+/* pessoa de pictograma: cabeça redonda e corpo; vestido para as mulheres */
+const gPessoa=(x,y,k,sz,fill,cls,estilo)=>{
+  const f=fill||T,h=sz||1;
+  const corpo=k==='m'?'M-17 8 H17 L24 74 H-24Z':'M-15 8 H15 L19 44 H11 V86 H-11 V44 H-19Z';
+  const bracos=k==='m'?'':'M-15 12 L-30 50 M15 12 L30 50';
+  return '<g transform="translate('+x+' '+y+') scale('+h+')"><g class="'+(cls||'')+'" style="'+(estilo||'')+'" fill="'+f+'" stroke="'+f+'"><circle cx="0" cy="-14" r="14" stroke="none"/><path d="'+corpo+'" stroke-width="3" stroke-linejoin="round"/>'+(bracos?'<path d="'+bracos+'" fill="none" stroke-width="9" stroke-linecap="round"/>':'')+'</g></g>';};
+
+/* genos: círculo de pessoas em volta de um campo único; o campo se racha em lotes e alguns ficam de fora */
+C.tipos.genos=p=>{
+  const W=900,H=760,cx=450,cy=340,R=170;
+  let s='<style>.cm-genos .lote{stroke-dasharray:1;stroke-dashoffset:1;stroke:#6d4a1d;stroke-width:6;fill:none;stroke-linecap:round}'+
+    '.cm-genos:not(.fora) .lote{animation:cm-gl 1.4s ease-out 7s forwards}'+
+    '.cm-genos .elite{fill:#e3a82b;fill-opacity:0}.cm-genos:not(.fora) .elite{animation:cm-ge 1.2s ease-out 9s forwards}'+
+    '.cm-genos .sai{opacity:1}.cm-genos:not(.fora) .sai{animation:cm-gs 2.4s ease-in-out 10s forwards}'+
+    '.cm-genos .t-fim{opacity:0}.cm-genos:not(.fora) .t-fim{animation:cm-gt 1s ease-out 12.5s forwards}.cm-genos .t-ini{opacity:1}.cm-genos:not(.fora) .t-ini{animation:cm-gt2 .8s ease-out 6.5s forwards}'+
+    '@keyframes cm-gl{to{stroke-dashoffset:0}}@keyframes cm-ge{to{fill-opacity:.75}}@keyframes cm-gs{to{transform:translate(var(--dx),var(--dy))}}@keyframes cm-gt{to{opacity:1}}@keyframes cm-gt2{to{opacity:0}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-genos .lote{stroke-dashoffset:0!important;animation:none!important}.cm-genos .elite{fill-opacity:.75!important;animation:none!important}.cm-genos .sai{animation:none!important;transform:translate(var(--dx),var(--dy))}.cm-genos .t-fim{opacity:1!important;animation:none!important}.cm-genos .t-ini{opacity:0!important;animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".25"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="#e9dc9f" stroke="'+T+'" stroke-width="4"/><circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="url(#cm-hh)" opacity=".7"/>';
+  // lotes: raios e arcos; a elite fica com os melhores (dois lotes amarelos)
+  const lotes=[[-90,-30],[-30,30],[30,90],[90,150],[150,210],[210,270]];
+  const pt=(a,r)=>[(cx+Math.cos(a*Math.PI/180)*r).toFixed(1),(cy+Math.sin(a*Math.PI/180)*r).toFixed(1)];
+  [[-90,-30],[-30,30]].forEach(l=>{const a=pt(l[0],R-3),b=pt(l[1],R-3);s+='<path class="elite" d="M'+cx+' '+cy+' L'+a[0]+' '+a[1]+' A'+(R-3)+' '+(R-3)+' 0 0 1 '+b[0]+' '+b[1]+'Z"/>';});
+  lotes.forEach(l=>{const a=pt(l[0],R);s+='<path class="lote" pathLength="1" d="M'+cx+' '+cy+' L'+a[0]+' '+a[1]+'"/>';});
+  s+='<circle class="lote" pathLength="1" cx="'+cx+'" cy="'+cy+'" r="'+(R*.52)+'"/>';
+  // pessoas em volta
+  const n=14,fica=[0,1,2,3,4,5,6,7,8,9,10],saem=[11,12,13];
+  for(let i=0;i<n;i++){const a=(i/n*360-80),q=pt(a,R+66),sai=saem.indexOf(i)>=0;
+    const dx=sai?(i===11?150:i===12?170:120):0,dy=sai?(i===11?150:i===12?60:190):0;
+    s+=gPessoa(+q[0],+q[1]-30,i%3===0?'f':'m',.62,sai?'#7d5a2d':T,sai?'sai':'','--dx:'+dx+'px;--dy:'+dy+'px');}
+  s+='<g class="t-ini"><rect x="'+(cx-130)+'" y="'+(cy-34)+'" width="260" height="98" fill="#fffdf6" fill-opacity=".92"/>'+gTx(cx,cy+8,'um só campo',44,700)+gTx(cx,cy+52,'terra de todos',38,600)+'</g>';
+  s+='<g class="t-fim"><rect x="'+(cx-150)+'" y="'+(cy-34)+'" width="300" height="98" fill="#fffdf6" fill-opacity=".92"/>'+gTx(cx,cy+8,'lotes',44,700)+gTx(cx,cy+52,'os melhores, de poucos',32,600)+'</g>';
+  s+=gTx(cx,H-24,'genos: famílias chefiadas pelo pater',40,700);
+  return {cls:'cm-esq cm-genos',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema: pessoas em volta de um campo único; o campo se divide em lotes e alguns ficam de fora')+'">'+s+'</svg>'};
+};
+
+/* escada de Atenas: quatro degraus que se acendem em sequência */
+C.tipos.escada=p=>{
+  const W=1500,H=860,deg=[
+    ['rei (basileu)','monarquia',60,590],['arcontes','os nobres, por um ano',400,470],['leis escritas','Drácon e Sólon',740,350],['Clístenes','democracia, 508 a.C.',1080,230]];
+  let s='<style>.cm-escada .dg{fill:#fffdf6}.cm-escada:not(.fora) .dg{animation:cm-eg .9s ease-out var(--a) forwards}@keyframes cm-eg{from{fill:#fffdf6}to{fill:#f4c935}}'+
+    '.cm-escada .dt{opacity:.35}.cm-escada:not(.fora) .dt{animation:cm-ed .8s ease-out var(--a) forwards}@keyframes cm-ed{to{opacity:1}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-escada .dg{fill:#f4c935!important;animation:none!important}.cm-escada .dt{opacity:1!important;animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  const atr=[2,12,21,30];
+  deg.forEach((d,i)=>{const x=d[2],y=d[3];
+    s+='<path d="M'+x+' '+y+' H'+(x+340)+' V'+(H-40)+' H'+x+'Z" class="dg" style="--a:'+atr[i]+'s" stroke="'+T+'" stroke-width="5"/><path d="M'+(x+300)+' '+y+' H'+(x+340)+' V'+(H-40)+' H'+(x+300)+'Z" fill="url(#cm-h1)" opacity=".35"/>';
+    s+='<g class="dt" style="--a:'+atr[i]+'s">'+gTx(x+160,y+82,d[0],48,700)+gTx(x+160,y+130,d[1],30,500)+'</g>';
+  });
+  return {cls:'cm-esq cm-escada',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Escada em quatro degraus: rei, arcontes, leis escritas e Clístenes')+'">'+s+'</svg>'};
+};
+
+/* organograma da democracia ateniense */
+C.tipos.organograma=p=>{
+  const W=1300,H=860;
+  const cx=(x,y,w,h,t,sub,cor,sz)=>'<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+cor+'" stroke="'+T+'" stroke-width="5"/>'+gTx(x+w/2,y+h/2-4,t,sz||60,700)+gTx(x+w/2,y+h/2+44,sub,38,500)+'</g>';
+  let s='<style>.cm-org .ar{stroke-dasharray:1;stroke-dashoffset:0}.cm-org:not(.fora) .ar{animation:cm-oa 1.2s ease-out var(--a) both}@keyframes cm-oa{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}'+
+    '.cm-org .bx{opacity:1}.cm-org:not(.fora) .bx{animation:cm-ob .8s ease-out var(--a) both}@keyframes cm-ob{from{opacity:0}to{opacity:1}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-org .ar,.cm-org .bx{animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  s+='<g class="bx" style="--a:.4s">'+cx(300,50,700,190,'Eclésia','todos os cidadãos votam','#f6dc6a',70)+'</g>';
+  s+='<g class="bx" style="--a:2.5s">'+cx(40,340,520,190,'Bulé','conselho sorteado e pago','#f0e6c8')+'</g>';
+  s+='<g class="bx" style="--a:5.5s">'+cx(300,640,700,170,'Magistrados','executam o que a Eclésia decide','#f0e6c8')+'</g>';
+  const seta=(d,pt,a)=>'<path class="ar" style="--a:'+a+'s" pathLength="1" d="'+d+'" fill="none" stroke="var(--seta)" stroke-width="7" stroke-linecap="round" stroke-dasharray="1"/><path class="bx" style="--a:'+(a+1)+'s" d="'+pt+'" fill="none" stroke="var(--seta)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+=seta('M300 450 C240 380 280 300 420 240','M382 246 L424 238 L412 280',3.4);
+  s+=seta('M650 240 C660 380 660 500 650 636','M616 598 L650 640 L684 598',4.8);
+  s+=seta('M300 500 C340 560 380 610 420 640','M376 624 L424 646 L408 600',6.6);
+  s+=gTx(40,262,'prepara',38,600,'start','#3a3935')+gTx(40,306,'os projetos',38,600,'start','#3a3935')+gTx(700,430,'decide',40,700,'start')+gTx(60,640,'fiscaliza',38,600,'start','#3a3935');
+  s+=gTx(1020,120,'cerca de 40',36,600,'start','#3a3935')+gTx(1020,164,'reuniões por ano',36,600,'start','#3a3935');
+  return {cls:'cm-esq cm-org',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Organograma da democracia ateniense: a Eclésia decide, a Bulé prepara os projetos e fiscaliza, os magistrados executam')+'">'+s+'</svg>'};
+};
+
+/* gráfico de bonequinhos: 31 pessoas, cada uma cerca de 10 mil; 4 cidadãos */
+C.tipos.bonecos=p=>{
+  const W=1700,H=940;
+  // 31 figuras: 4 cidadãos, 11 mulheres e crianças, 3 metecos, 13 escravos
+  const tipos=[].concat(Array(4).fill('c'),Array(11).fill('f'),Array(3).fill('t'),Array(13).fill('e'));
+  const cor={c:T,f:'#e8573a',t:'#1fa39a',e:'#7a4b2a'},cinza='#9d978a';
+  let s='<style>.cm-bon .bn{opacity:1}.cm-bon:not(.fora) .bn{animation:cm-bn .5s ease-out var(--a) both}@keyframes cm-bn{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}'+
+    '.cm-bon .bf{transition:none}.cm-bon:not(.fora) .bf{animation:cm-bf 1.2s ease-out 8s both}@keyframes cm-bf{from{fill:#9d978a;stroke:#9d978a}to{fill:var(--c);stroke:var(--c)}}'+
+    '@media (prefers-reduced-motion:reduce){.cm-bon .bn,.cm-bon .bf{animation:none!important}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".2"/>';
+  const gx=135,pos=[];
+  // cidadãos: bloco 2 x 2; mulheres e crianças: 6 + 5; metecos: 3; escravos: 7 + 6
+  [[200,170],[350,170],[200,330],[350,330]].forEach(q=>pos.push(q));
+  for(let k=0;k<11;k++)pos.push([560+(k%6)*gx,k<6?130:290]);
+  for(let k=0;k<3;k++)pos.push([560+k*gx,450]);
+  for(let k=0;k<13;k++)pos.push([560+(k%7)*gx,k<7?610:770]);
+  tipos.forEach((k,i)=>{
+    const pessoa=gPessoa(pos[i][0],pos[i][1],k==='f'?'f':'m',1.05,k==='c'?T:cinza,k==='c'?'':'bf',k==='c'?'':'--c:'+cor[k]);
+    s+='<g class="bn" style="--a:'+(.2+i*.16).toFixed(2)+'s">'+pessoa+'</g>';
+  });
+  s+=gTx(W-40,H-30,'cada boneco: cerca de 10 mil pessoas, por volta de 430 a.C.',40,700,'end');
+  return {cls:'cm-esq cm-bon',style:'--clip:'+C.rasgo(p.id,1.2),html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Gráfico de bonequinhos: de 31 pessoas, só 4 eram cidadãos; as demais eram mulheres e crianças, metecos e escravos')+'">'+s+'</svg>'};
+};
+
 })();
