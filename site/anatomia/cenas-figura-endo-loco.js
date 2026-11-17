@@ -3,7 +3,7 @@
       (hipotálamo, TRH, hipófise, TSH, tireoide, T3 e T4 no sangue, células-alvo, freio no hipotálamo e na hipófise),
       e depois paradas nas paratireoides, adrenais, pâncreas e gônadas.
       Vista A: corpo translúcido com as glândulas acesas (a figura que já estava na rota).
-      Vista B: tireoide de perto com as quatro paratireoides (desenhadas como se a glândula fosse transparente) e os vasos do pescoço (Nano Banana 2).
+      Vista B: tireoide de perto com as quatro paratireoides (vista por trás, com o esôfago retirado) e os vasos do pescoço (Nano Banana 2).
       Medidor: nível do hormônio no sangue com a faixa normal, e o hormônio que comanda (TSH, PTH etc.) logo abaixo.
    2) locomotor/movimento: o comando motor da medula até a contração e a alavanca do cotovelo.
       Vista A: braço com escápula, úmero, rádio, ulna, bíceps e tríceps (a figura que já estava na rota).
@@ -429,7 +429,7 @@
       K: 'endocrino/glandulas', modo: 'gland', nome: 'Viagem de um hormônio e a retroalimentação negativa', aria: 'Viagem do hormônio: etapas',
       vistas: [
         ['a', 'endocrino-glandulas-a', 'Corpo', 'Corpo translúcido com as glândulas endócrinas acesas: hipotálamo e hipófise, tireoide, adrenais, pâncreas e ovários', [.27, .05, .46, .8]],
-        ['b', 'endocrino-glandulas-v4b', 'Tireoide de perto', 'Tireoide abraçando a traqueia, com as quatro paratireoides (que ficam na face de trás, mostradas como se a glândula fosse transparente), as artérias tireóideas, as veias e os grandes vasos do pescoço']
+        ['b', 'endocrino-glandulas-v4b', 'Tireoide por trás', 'Tireoide vista por trás, com o esôfago retirado: a traqueia passa na frente e esconde o istmo, e as quatro paratireoides aparecem na face de trás dos lobos, com as artérias tireóideas, as veias e os grandes vasos do pescoço']
       ],
       hs: HS, ET, VAI, faixa: 150, alto: 400, sobre, painel,
       aoAbrir: S => { S.modo = 'gland'; }

@@ -60,7 +60,7 @@
     const P = cfg.pecas;
     const geo = () => { const s = 4.3; return { s, cx: j => (j - .5) * s + .8, cy: i => -(i - .5) * s - 1, gy: 5.35, gx: (-.5 * s + .8) - s * .98 }; };
     return G3.cena({
-      t: cfg.t, pecas: P, rotulos: cfg.rotulos, caixa: [8.4, 8.4, 1], vista: { th: -.2, fi: .24 }, alvo: () => [-.7, .9, 0],
+      t: cfg.t, pecas: P, rotulos: cfg.rotulos, caixa: [8.4, 8.4, 1], vista: { th: -.2, fi: .24 }, alvo: () => [-.7, .1, 0],
       montar(g) { g.pl = G3.placas(g, 4); g.gm = G3.bolas(g, 24); if (cfg.montar) cfg.montar(g); },
       animar(g) {
         const A = g.A, st = g.st, ga = cfg.ga(st), gb = cfg.gb(st), Q = geo(), z0 = .4, ap = ease(0, .5, A);
