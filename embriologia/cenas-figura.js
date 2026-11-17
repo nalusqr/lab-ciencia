@@ -264,39 +264,7 @@
   });
 
   // ================= HUMANO =================
-  LAB_FIGALT.cena(amb, 'humano/fecundacao', {
-    pref: 'embriologia', nome: 'Aparelho reprodutor feminino e fecundação do ovócito', mask: MASK,
-    vistas: [
-      ['a', 'humano-fecundacao-a', 'Aparelho reprodutor', 'Aparelho reprodutor feminino: o ovócito desce pela tuba uterina até o útero'],
-      ['b', 'humano-fecundacao-b', 'Ovócito e espermatozoides', 'Espermatozoides chegam ao ovócito, cercado pela corona radiata e pela zona pelúcida']
-    ],
-    hs: [
-      { id: 'ovo', c: '#F2B6C6', t: 'Ovócito na tuba', d: 'A fecundação ocorre na tuba uterina, em geral na ampola. O ovócito é liberado do ovário na ovulação.', em: { a: [22, 22] }, z: 3 },
-      { id: 'fim', c: '#F28B8B', t: 'Fímbrias', d: 'Franjas da tuba que recolhem o ovócito liberado pelo ovário.', em: { a: [9, 44] }, z: 2.8 },
-      { id: 'ova', c: '#FFD9A0', t: 'Ovário', d: 'Produz os ovócitos e hormônios como o estrogênio e a progesterona.', em: { a: [18, 46] }, z: 2.6 },
-      { id: 'tub', c: '#F2A3A3', t: 'Tuba uterina', d: 'Canal por onde o ovócito segue até o útero. É onde o espermatozoide o encontra.', em: { a: [37, 31] }, z: 2.6 },
-      { id: 'ute', c: '#F28B8B', t: 'Útero', d: 'Onde o embrião se implanta e se desenvolve.', em: { a: [50, 48] }, z: 2.2 },
-      { id: 'cor', c: '#C9AEFF', t: 'Corona radiata', d: 'Camada de células que envolve o ovócito. O espermatozoide precisa atravessá-la.', em: { b: [10, 22] }, z: 2.6 },
-      { id: 'zp', c: '#8FD8FF', t: 'Zona pelúcida', d: 'Envoltório de glicoproteínas. Quando um espermatozoide entra, ela muda e bloqueia a entrada de outros.', em: { b: [77, 62] }, z: 2.6 },
-      { id: 'nu', c: '#B08CFF', t: 'Núcleo do ovócito', d: 'Guarda o conjunto de cromossomos da mãe, que se une ao do espermatozoide.', em: { b: [41, 57] }, z: 2.8 },
-      { id: 'esp', c: '#E8EDF7', t: 'Espermatozoide', d: 'Atravessa a zona pelúcida com as enzimas do acrossomo. Só um espermatozoide entra no ovócito, e o núcleo dele se une ao do ovócito.', em: { b: [62, 36] }, z: 3 }
-    ],
-    sobre(R, X, t) {
-      if (R.vista !== 'b' || R.k < .6) return;
-      // espermatozoides nadando em direção ao ovócito (cabeça e cauda ondulante); somem ao chegar à zona pelúcida
-      const cx = 50, cy = 56, N = 6;
-      X.save(); X.lineCap = 'round';
-      for (let i = 0; i < N; i++) {
-        const ang = i / N * TAU + .5, f = RED ? .3 + i * .1 : ((t * .1 + i * .17) % 1), r = 62 - 26 * f, a = Math.sin(Math.min(1, f * 1.4) * Math.PI) * .9;
-        const hx = cx + Math.cos(ang) * r, hy = cy + Math.sin(ang) * r * .8, [px, py] = R.pt(hx, hy), dx = Math.cos(ang), dy = Math.sin(ang) * .8, L = Math.hypot(dx, dy);
-        const ux = dx / L, uy = dy / L;
-        X.strokeStyle = `rgba(235,240,255,${a})`; X.lineWidth = Math.max(1.4, R.s * .22); X.beginPath();
-        for (let k = 0; k <= 14; k++) { const s = k / 14, w = Math.sin(s * 8 - (RED ? 0 : t * 9) + i) * R.s * .5 * s, bx = px + ux * s * R.s * 9 - uy * w, by = py + uy * s * R.s * 9 + ux * w; k ? X.lineTo(bx, by) : X.moveTo(bx, by); }
-        X.stroke(); X.fillStyle = `rgba(255,255,255,${a})`; X.beginPath(); X.ellipse(px, py, R.s * .9, R.s * .55, Math.atan2(uy, ux), 0, TAU); X.fill();
-      }
-      X.restore();
-    }
-  });
+  // humano/fecundacao: a figura e a viagem estão em cenas-figura-fecundacao.js
 
   const CAM = [[26, 33], [34, 35], [48, 32], [62, 36], [72, 50]];
   LAB_FIGALT.cena(amb, 'humano/nidacao', {
