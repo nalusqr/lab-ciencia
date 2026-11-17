@@ -1,0 +1,294 @@
+modulo;rota;classe;o que precisa;figuras novas;prioridade
+biologia-molecular;comp/celula;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;comp/elementos;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;agua/molecula;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;agua/capilaridade;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;agua/calor;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;agua/solvente;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;agua/teor;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;sais/funcoes;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;sais/osmose;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;carb/mono-di;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;carb/polissacarideos;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;lip/glicerideos;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;lip/classes;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;lip/colesterol;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;prot/aminoacidos;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;prot/peptidica;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;prot/niveis;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;prot/desnaturacao;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;enz/encaixe;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;enz/ativacao;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;enz/temperatura;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;enz/ph;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;enz/inibicao;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;vit/tipos;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;vit/avitaminoses;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;na/nucleotideo;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;na/pareamento;d;"molécula, gráfico ou figura IA fiel; nada a fazer";0;3
+biologia-molecular;na/dna-rna;d;transcrição e tradução já em 3D cinematográfico por passos;0;3
+morfofisiologia;teoria/hooke;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;teoria/leeuwenhoek;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;teoria/schleiden;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;teoria/virchow;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;teoria/postulados;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;teoria/virus;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;tipos/lado;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;tipos/proc;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;tipos/euc;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;tipos/organelas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;tipos/escala;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/mosaico;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/comp;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/fluidez;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/difusao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/facilitada;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/osmose;b;"moléculas de água atravessando a membrana por etapa (hipotônico, isotônico, hipertônico), hemácia incha ou murcha; medidor de concentração; reaproveitar vistas A (hemácias) e B (células vegetais)";0;3
+morfofisiologia;membranas/bomba;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/endo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;membranas/espec;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;origem/invag;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;origem/mito;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;origem/cloro;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;origem/evid;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/geral;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/poro;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/cromatina;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/eu;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/nucleolo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+morfofisiologia;nucleo/cromossomos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+celula;animal;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;vegetal;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;bacteria;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;neuronio;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;esperma;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;levedura;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;sangue;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;fago;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;nucleo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;mitocondria;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;cloroplasto;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;re;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;golgi;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;lisossomo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;ribossomo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;membrana;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;citoesqueleto;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;centriolo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;peroxissomo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+celula;vacuolo;d;"célula 3D detalhada com organelas tocáveis; nada a fazer";0;3
+divisao-celular;cromossomos/estrutura;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;cromossomos/classificacao;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;cromossomos/cariotipo;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;cromossomos/homologos;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;ciclo/interfase;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;ciclo/checagem;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;ciclo/cancer;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;mitose/fases;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;mitose/citocinese;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;meiose/fases;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;meiose/crossing;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;meiose/segregacao;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;comparar/grafico;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;comparar/lado;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;erros/naodisjuncao;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;erros/aneuploidias;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;erros/euploidias;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;gametogenese/espermatogenese;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+divisao-celular;gametogenese/ovogenese;d;"célula e cromossomos em 3D com passos ou figura IA; nada a fazer";0;3
+bioenergetica;atp/ciclo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;atp/acoplamento;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;resp/geral;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;resp/glicolise;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;resp/krebs;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;resp/cadeia;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;resp/saldo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;ferm/latica;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;ferm/alcoolica;b;"viagem da glicose dentro da levedura até etanol e CO2, com bolhas abrindo o pão; medidor de CO2; reaproveitar vistas A (pão) e B (leveduras)";0;3
+bioenergetica;foto/geral;b;"figura do cloroplasto é estática; viagem: luz chega, água sobe da raiz, CO2 entra pelo estômato, tilacoide quebra a água e solta O2, estroma monta glicose, açúcar sai pela folha; medidor de O2 e ATP; vista A nova: planta com folha em corte e estômatos; vista B = cloroplasto atual";1;1
+bioenergetica;foto/pigmentos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;foto/clara;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;foto/calvin;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;fatores/luz;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;fatores/co2;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;fatores/temp;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;fatores/c4cam;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;relacao/ciclo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;relacao/carbono;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;relacao/quimio;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+bioenergetica;relacao/comparar;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;gametas/resumo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;ovos/tipos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;ovos/vitelo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/segmentacao;b;"viagem do zigoto à gástrula usando as figuras já prontas de segmentação, mórula, blástula e gástrula como etapas; medidor de número de células";0;3
+embriologia;desenvolvimento/morula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/blastula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/gastrula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/blastoporo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/folhetos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/neurula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;desenvolvimento/organogenese;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;anexos/funcoes;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;anexos/amniotico;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;humano/fecundacao;b;"viagem do espermatozoide (vagina, útero, tuba), encontro com o ovócito, zigoto descendo e se dividindo até a nidação; medidor de dias e hCG; reaproveitar figuras de humano/fecundacao e humano/nidacao";0;2
+embriologia;humano/nidacao;d;"figura IA com gráfico de hCG; passa a ser a última etapa da viagem de humano/fecundacao";0;3
+embriologia;humano/placenta;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;humano/gemeos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+embriologia;humano/semanas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;tecidos/visao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;epitelial/revestimento;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;epitelial/glandular;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;conjuntivo/propriamente;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;conjuntivo/adiposo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;conjuntivo/cartilagem;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;conjuntivo/osso;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;conjuntivo/ossificacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;sangue/elementos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;sangue/coagulacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;muscular/tipos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;muscular/sarcomero;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;muscular/contracao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;muscular/energia;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;nervoso/neuronio;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;nervoso/glia;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;nervoso/impulso;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+histologia;nervoso/sinapse;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+taxonomia;historia/aristoteles;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;historia/lineu;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;categorias/hierarquia;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;especie/conceito;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;nomes/binomial;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;nomes/regras;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;sistemas/reinos;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;sistemas/dominios;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;cladistica/cladograma;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;cladistica/grupos;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;cladistica/homologia;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+taxonomia;chave/dicotomica;d;"diagrama, cladograma ou figura IA; nada a fazer";0;3
+virus;natureza/vivo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;estrutura/particula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;estrutura/tipos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;fagos/litico;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;fagos/lisogenico;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;replicacao/animal;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;replicacao/retrovirus;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;doencas/arboviroses;b;"viagem do vírus: pessoa doente, mosquito pica, vírus se multiplica no mosquito, pica outra pessoa; e o ciclo do Aedes na água parada; medidor de dias; vistas A (mosquito) e B (criadouros) reaproveitadas; figura nova: ovos, larvas e pupas na água";1;2
+virus;doencas/hiv;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;doencas/respiratorias;c;"pessoas da sala são pictogramas; figura IA de sala de aula vista de cima como fundo da simulação (opcional)";1;3
+virus;doencas/hepatites-hpv;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;prevencao/vacinas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+virus;prevencao/transmissao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+microrganismos;monera/celula;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+microrganismos;monera/reproducao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+microrganismos;monera/doencas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+microrganismos;protoctista/grupos;c;"ameba, tripanossomo, paramécio e plasmódio como blobs 3D; figura IA de microscopia dos quatro, 3D atrás de Ver em 3D";1;3
+microrganismos;protoctista/protozooses;b;"figuras do barbeiro e do Anopheles são estáticas; viagem da doença de Chagas (picada, fezes, ferida, sangue, coração) e da malária (picada, fígado, hemácias, febre em ciclos); medidor de parasitas no sangue; reaproveitar o corpo de monera/doencas; figura nova: hemácias e tripanossomos no sangue de perto";1;1
+microrganismos;fungi/fungos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+microrganismos;fungi/liquens;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;plantae/conquista;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;plantae/briofitas;b;"figuras do musgo estáticas; viagem do ciclo de vida: esporo, protonema, gametófito, anterozoide nada na gota até o arquegônio, esporófito, cápsula solta esporos; medidor n ou 2n; figura nova: gametófitos de perto com gota de água";1;2
+plantas-animais;plantae/pteridofitas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;plantae/gimnospermas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;plantae/angiospermas;b;"flor em corte estática; viagem do pólen: antera, inseto, estigma, tubo polínico até o óvulo, dupla fecundação, semente e fruto; medidor n, 2n e 3n; figura nova: tubo polínico chegando ao óvulo";1;2
+plantas-animais;plantae/orgaos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/novidades;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/poriferos-cnidarios;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/vermes;c;"ciclo da esquistossomose e da tênia em roda de bolinhas; viagem do parasita: pessoa, fezes, água doce, miracídio, caramujo, cercária, pele (e porco, carne malcozida, intestino na tênia); medidor de hospedeiro; duas figuras novas (lagoa com caramujo e pessoa; porco e carne com cisticercos)";2;1
+plantas-animais;animalia/moluscos-anelideos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/artropodes;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/cordados;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+plantas-animais;animalia/vertebrados;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+genetica;conceitos/gene;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;conceitos/fenotipo;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;lei1/punnett;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;lei1/sorteio;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;lei2/dihibridismo;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;lei2/gametas;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/incompleta;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/codominancia;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/letais;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/pleiotropia;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/abo;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/transfusao;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;variacoes/rh;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;determinacao/sistemas;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;determinacao/barr;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;sexo/daltonismo;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;sexo/hemofilia;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;sexo/y-calvicie;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;heredogramas/leitura;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;heredogramas/exercicios;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;probabilidade/e;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;probabilidade/ou;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;biotec/recombinante;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;biotec/pcr;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;biotec/clonagem;b;"viagem da clonagem da Dolly: célula da mama da doadora, óvulo sem núcleo, fusão, embrião, útero da barriga de aluguel, filhote igual à doadora; medidor de quem é o DNA; reaproveitar vistas A (ovelhas) e B (transferência nuclear)";0;2
+genetica;biotec/crispr;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;populacoes/hardy-weinberg;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;populacoes/fatores;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;extras/ligacao;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;extras/interacao;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+genetica;extras/poligenica;d;"esquema, simulação, cromossomo 3D ou figura IA; nada a fazer";0;3
+ecologia;niveis/escada;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;niveis/nicho;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;teias/cadeia;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;teias/teia;c;"espécies como ícones planos; figura IA do Cerrado com as nove espécies e a teia desenhada por cima ao tocar (sem viagem)";1;3
+ecologia;energia/fluxo;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;energia/piramides;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;energia/produtividade;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;ciclos/carbono;c;"3D de árvore de bolas e boi de blocos; viagem do átomo de carbono: ar, folha, árvore, boi, solo e decompositores, combustível fóssil, chaminé, oceano; medidor de CO2 no ar; reaproveitar bioenergetica-relacao-carbono-a (paisagem) e -b (solo)";0;1
+ecologia;ciclos/nitrogenio;c;"3D de formas primitivas; viagem do átomo de nitrogênio: N2 do ar, raio ou bactéria do nódulo, amônia, nitrito, nitrato, planta, boi, decomposição, desnitrificação; partículas N2, NH3, NO2 e NO3 trocam na etapa certa; vista A = paisagem de relacao-carbono-a, vista B = nódulos de relacoes/harmonicas";0;1
+ecologia;ciclos/agua;c;"3D de formas primitivas; viagem da gota: mar, evaporação, nuvem, chuva na montanha, infiltração, lençol freático, transpiração da floresta, rio de volta ao mar; medidor de estado físico; figura nova de paisagem com mar, serra, floresta e rio em corte do solo";1;2
+ecologia;ciclos/fosforo;c;"desenho 2D de árvore, veado e garça; viagem do fosfato: rocha, solo, planta, animal, rio, mar, sedimento, aves e guano; figura nova";1;3
+ecologia;relacoes/quadro;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;relacoes/harmonicas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;relacoes/desarmonicas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;relacoes/polinizacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;relacoes/controle;c;"cana desenhada como palitos; figura IA de canavial com broca-da-cana e vespa Cotesia (sem viagem)";1;3
+ecologia;populacoes/crescimento;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;populacoes/predador;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;populacoes/estrategias;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;sucessao/primaria;b;"etapas no tempo: rocha nua, liquens, musgos, solo, gramíneas, arbustos, floresta; medidor de espessura do solo e de espécies; figura nova da mesma rocha anos depois";1;3
+ecologia;sucessao/secundaria;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;biomas/mapa;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;biomas/costeiros;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;impactos/estufa;b;"figura estática; viagem do raio de sol: entra, aquece o solo, volta como infravermelho, gases seguram parte; moléculas de CO2 e CH4 aumentam por etapa; medidor de temperatura e ppm; reaproveitar a paisagem atual";0;1
+ecologia;impactos/eutrofizacao;b;"viagem: esgoto com fosfato e nitrato chega ao lago, algas se multiplicam, luz some no fundo, algas morrem, bactérias gastam o O2, peixes morrem; medidor de O2 dissolvido; reaproveitar vistas A (lago) e B (esgoto)";0;1
+ecologia;impactos/magnificacao;c;"ícones e barras; viagem do DDT pela cadeia (água, plâncton, peixe pequeno, peixe grande, ave pescadora); medidor de ppm subindo; figura nova de lago com essa cadeia";1;2
+ecologia;impactos/ozonio;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;impactos/chuva;b;"viagem do SO2 e NOx da chaminé até a nuvem, formação dos ácidos, chuva sobre lago e floresta; medidor de pH; reaproveitar a figura atual";0;2
+ecologia;impactos/desmatamento;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;impactos/invasoras;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+ecologia;impactos/conservacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;origem/biogenese;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;origem/hipoteses;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;origem/primeiras-celulas;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;ideias/lamarck;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;ideias/darwin;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;evidencias/fosseis;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;evidencias/comparacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;evidencias/resistencia;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;sintetica/variacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;selecao/tipos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;selecao/casos;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;acaso/deriva;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;especiacao/modos;b;"viagem da especiação alopátrica no cânion: população única, rio aprofunda o cânion, fluxo gênico para, cada lado muda, reencontro sem cruzamento; medidor de diferença genética; reaproveitar a figura do cânion";0;2
+evolucao;especiacao/isolamento;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;padroes/irradiacao;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+evolucao;humana/origem;d;"figura IA fiel, 3D celular/molecular ou gráfico; nada a fazer";0;3
+anatomia;digestorio/enzimas;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;digestorio/absorcao;b;"viagem curta do nutriente: luz do intestino, vilosidade, capilar ou vaso lácteo, veia porta e fígado; medidor de nutriente absorvido; reaproveitar as vistas A e B atuais";0;3
+anatomia;respiratorio/hematose;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;respiratorio/controle;d;"balança de pH e equação; gráfico";0;3
+anatomia;circulatorio/coracao;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;circulatorio/sangue-linfa;d;"figura IA com fluxo animado nos vasos; comparação, não trajeto longo";0;3
+anatomia;excretor/nefron;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;excretor/controle;d;"esquema de túbulo com ADH e aldosterona; funciona como diagrama";0;3
+anatomia;endocrino/glandulas;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;endocrino/glicemia;c;"pâncreas, músculo e fígado desenhados como elipses; viagem da glicose depois da refeição (intestino, sangue, pâncreas solta insulina, glicose entra no músculo e no fígado, jejum e glucagon); medidor de glicemia; vista A = corpo de endocrino/glandulas; vista B nova: pâncreas com ilhota e fígado";1;1
+anatomia;nervoso/organizacao;a;"figura IA com vistas A e B; o arco reflexo já é etapa da viagem de nervoso/autonomo";0;3
+anatomia;nervoso/autonomo;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;locomotor/esqueleto;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;locomotor/movimento;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;reprodutor/ciclo;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3
+anatomia;reprodutor/prevencao;a;já tem viagem por etapas sobre figura IA (vistas A e B, medidor, hotspots, 3D atrás de Ver em 3D);0;3

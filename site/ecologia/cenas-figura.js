@@ -1,4 +1,4 @@
-/* LAB Ecologia: figura de IA por padrão em 8 rotas sem 3D (Aurelius).
+/* LAB Ecologia: figura de IA por padrão em 7 rotas sem 3D (Aurelius). Eutrofização foi para cenas-figura-ciclos.js.
    Figura (figura-ia.js v2, vistas A e B, pontos e zoom) abre primeiro; o botão "Ver esquema" mostra a cena 2D e "Ver figura" volta.
    Usa a ponte LAB_ECO (eco3d-ponte.js) para ler o motor fechado do index.html.
    Carregar depois de figura-ia.js e figura-alterna.js. Sem LAB_ECO nada acontece e fica o 2D. */
@@ -68,24 +68,6 @@
         { id: 'rpe', c: '#8FD8FF', t: 'Peixe-anjo', d: 'O recife abriga milhares de espécies, e há recifes no litoral do Nordeste ao Espírito Santo. Abrolhos, na Bahia, é o maior do Atlântico Sul.', em: { b: [58, 44] }, z: 3 },
         { id: 'rcd', c: '#CFE0FF', t: 'Cardume de peixes', d: 'O recife é cheio de abrigos e comida, e atrai muitos peixes pequenos. Corais que perdem as algas ficam brancos, o branqueamento.', em: { b: [27, 49] }, z: 3 },
         { id: 'rlu', c: '#FFD43B', t: 'Luz do sol', d: 'Corais com algas simbiontes precisam de luz. Por isso vivem em águas rasas, quentes e limpas.', em: { b: [47, 12] }, z: 2.2 }
-      ]
-    }],
-    ['impactos/eutrofizacao', {
-      pref: 'ecologia', nome: 'Eutrofização', mask: MASK,
-      vistas: [
-        ['a', 'impactos-eutrofizacao-a', 'Lago com algas', 'Lago coberto por floração de algas verdes, com peixes mortos na superfície'],
-        ['b', 'impactos-eutrofizacao-b', 'Esgoto no rio', 'Tubulação lançando esgoto sem tratamento em um rio urbano']
-      ],
-      hs: [
-        { id: 'lfl', c: '#A9C54A', t: 'Floração de algas', d: 'O excesso de nitrogênio e fósforo faz algas e cianobactérias se multiplicarem e cobrirem a água.', em: { a: [23, 52] }, z: 2.6 },
-        { id: 'lsu', c: '#CFE0FF', t: 'Camada na superfície', d: 'A camada verde bloqueia a luz. As plantas e algas do fundo morrem, e a produção de oxigênio cai.', em: { a: [62, 53] }, z: 2.6 },
-        { id: 'lpe', c: '#F28B8B', t: 'Peixes mortos', d: 'Bactérias aeróbias decompõem as algas mortas e gastam o oxigênio da água. Os peixes morrem por falta de oxigênio.', em: { a: [36, 74] }, z: 3 },
-        { id: 'lma', c: '#FFA94D', t: 'Margem do lago', d: 'Adubos e esgoto chegam ao lago pela margem e pelo escoamento da chuva. A fonte dos nutrientes quase sempre é humana.', em: { a: [86, 42] }, z: 2.4 },
-        { id: 'etu', c: '#F7C13B', t: 'Saída do esgoto', d: 'Esgoto sem tratamento leva matéria orgânica, fósforo e nitrogênio. É causa de eutrofização artificial e de rios poluídos.', em: { b: [70, 42] }, z: 2.8 },
-        { id: 'ees', c: '#8FD8FF', t: 'Esgoto escuro e espuma', d: 'A matéria orgânica é decomposta e consome oxigênio. A demanda de oxigênio dos microrganismos sobe, e a vida aquática sofre.', em: { b: [39, 74] }, z: 3 },
-        { id: 'eri', c: '#CFE0FF', t: 'Rio turvo', d: 'A água fica turva e com cheiro forte. Tratar o esgoto, o saneamento básico, é a medida que mais reduz o problema.', em: { b: [16, 48] }, z: 2.4 },
-        { id: 'eca', c: '#FFA94D', t: 'Casas na margem', d: 'Cidades sem rede de esgoto tratada despejam resíduos no rio. A saúde e o ambiente dependem do saneamento.', em: { b: [31, 19] }, z: 2.4 },
-        { id: 'eli', c: '#A9C54A', t: 'Lixo e resíduos', d: 'Lixo e plástico se juntam ao esgoto na margem e poluem a água, em cadeia que prejudica os seres do rio.', em: { b: [75, 78] }, z: 2.6 }
       ]
     }],
     ['sucessao/primaria', {

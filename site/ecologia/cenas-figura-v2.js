@@ -1,4 +1,5 @@
-/* LAB Ecologia: figura de IA por padrão em 9 rotas que tinham desenho 2D ou 3D de primitivas fraco (Íris e Dry).
+/* LAB Ecologia: figura de IA por padrão em 8 rotas que tinham desenho 2D ou 3D de primitivas fraco (Íris e Dry).
+   impactos/estufa foi para cenas-figura-ciclos.js.
    Mesmo padrão de cenas-figura.js (figura-ia v2: figura como visão padrão, pontos tocáveis, botão para a cena antiga).
    Diferenças: aqui a cena antiga roda escondida por baixo (cfg.oculto) para manter o estado (faixas, simulação, legenda),
    e uma animação leve é desenhada por cima da figura, ligada à faixa da própria cena quando ela existe.
@@ -134,35 +135,6 @@
     }
   }
 
-  // ---------- 4. impactos/estufa: luz entra, calor tenta sair e a camada devolve uma parte ----------
-  const hazeY = x => 22 + Math.pow(x - 50, 2) * .004;
-  const GCH = [[20, 66], [32, 70], [44, 62], [56, 74], [66, 66], [78, 72], [88, 68], [26, 78], [72, 80], [50, 84]];
-  function sobreEstufa(R, X, t, c) {
-    const S = c.S || {}, ppm = S.v || 420, f = cl(.3 + .5 * (ppm - 280) / 280, 0, 1), tt = tempo(t), [ux, uy] = px(R);
-    X.save();                                                   // camada de gases mais densa com mais CO₂
-    X.beginPath(); for (let x = 0; x <= 100; x += 4) { const p = P(R, x, hazeY(x) + 1); x ? X.lineTo(p[0], p[1]) : X.moveTo(p[0], p[1]); }
-    X.strokeStyle = `rgba(255,170,90,${.07 + .3 * f})`; X.lineWidth = 5.5 * uy; X.lineCap = 'round'; X.stroke(); X.restore();
-    GCH.forEach((g, i) => {                                     // luz do Sol atravessa e aquece o chão
-      const u = (tt * .2 + i / GCH.length) % 1, p = P(R, lerp(21.3, g[0], u), lerp(25.4, g[1], u));
-      brilho(X, p[0], p[1], 11, 'rgba(255,214,90,.95)', Math.sin(u * Math.PI) * .9 + .1);
-    });
-    const n = 14;
-    for (let i = 0; i < n; i++) {                               // calor (infravermelho) sobe; uma fração volta
-      const g = GCH[i % GCH.length], x = g[0] + (i > 9 ? 4 : 0), volta = hash(i, 9) < f, u = (tt * .16 + i / n) % 1;
-      const yh = hazeY(x) + 2; let y, xx = x, a;
-      if (volta) { if (u < .5) { y = lerp(g[1] - 6, yh, u / .5); a = 1; } else { y = lerp(yh, g[1] - 2, (u - .5) / .5); xx = x + (u - .5) * 10; a = 1; } }
-      else { y = lerp(g[1] - 6, 3, u); a = u > .75 ? 1 - (u - .75) / .25 : 1; }
-      const p = P(R, xx + Math.sin(tt * 2 + i) * .6, y);
-      brilho(X, p[0], p[1], 10, volta && u > .5 ? 'rgba(255,90,70,.95)' : 'rgba(255,120,110,.9)', a * .85);
-    }
-    // termômetro
-    const d = ppm <= 280 ? 0 : 3 * Math.log2(ppm / 280), x0 = R.x + R.w - 100, h = Math.min(120, R.h * .3), y1 = R.y + R.h - 26, y0 = y1 - h;
-    X.save(); X.fillStyle = 'rgba(11,15,28,.82)'; X.beginPath(); X.roundRect ? X.roundRect(x0 - 12, y0 - 26, 48, h + 56, 12) : X.rect(x0 - 12, y0 - 26, 48, h + 56); X.fill();
-    X.fillStyle = 'rgba(255,255,255,.14)'; X.fillRect(x0 + 6, y0, 8, h);
-    const k = cl(d / 3.2, .03, 1); X.fillStyle = '#FF6B6B'; X.fillRect(x0 + 6, y1 - h * k, 8, h * k); miolo(X, x0 + 10, y1 + 4, 8, '#FF6B6B');
-    X.fillStyle = '#FF9B9B'; X.font = `600 12px ${E.FD}`; X.textAlign = 'center'; X.fillText('+' + d.toFixed(1).replace('.', ',') + ' °C', x0 + 12, y0 - 10); X.restore();
-  }
-
   // ---------- 5. populacoes/predador: as duas curvas do modelo por cima da várzea ----------
   let rPred = null;
   function graficoPredador(X, S, x0, y0, w, hh) {
@@ -292,16 +264,6 @@
         { id: 'zbu', c: '#6EEB96', t: 'Cloro dos CFCs', d: 'Os CFCs sobem intactos até a estratosfera. Lá, o UV solta átomos de cloro, e cada átomo destrói milhares de moléculas de ozônio. O maior buraco se abre sobre a Antártida.', em: { a: [50, 44.5] }, z: 2.6 },
         { id: 'zsol', c: '#FFD43B', t: 'Radiação do Sol', d: 'Parte dela é ultravioleta (UV). O UV danifica o DNA e causa câncer de pele, catarata e danos ao fitoplâncton.', em: { a: [92, 12] }, z: 2.4 },
         { id: 'ztro', c: '#8FD8FF', t: 'Troposfera e nuvens', d: 'É a camada de baixo, onde vivemos e onde se formam as nuvens. O ozônio perto do solo é poluente e não protege.', em: { a: [45, 70] }, z: 2.2 }
-      ] }],
-    ['impactos/estufa', { pref: 'ecologia', nome: 'Efeito estufa', mask: false, ctl: true, oculto: true, sobre: sobreEstufa, amb: amb3d,
-      vistas: [['a', 'impactos-estufa-a', 'Paisagem', 'Paisagem com floresta, fábrica, gado e estrada sob uma camada de gases de efeito estufa']],
-      hs: [
-        { id: 'esol', c: '#FFD43B', t: 'Luz do Sol', d: 'A luz atravessa os gases sem dificuldade e aquece o chão e a água.', em: { a: [21, 25] }, z: 2.4 },
-        { id: 'egz', c: '#FFA94D', t: 'Gases de efeito estufa', d: 'CO₂, CH₄ e vapor de água deixam passar a luz, mas retêm parte do calor que a Terra devolve. Mais gases, mais calor retido. O termômetro mostra o aquecimento no equilíbrio; hoje a Terra já está cerca de 1,2 °C mais quente.', em: { a: [62, 24] }, z: 2.6 },
-        { id: 'efa', c: '#F28B8B', t: 'Fábrica', d: 'A queima de combustíveis fósseis libera CO₂ que estava guardado há milhões de anos.', em: { a: [50, 58] }, z: 2.8 },
-        { id: 'efl', c: '#A9C54A', t: 'Floresta', d: 'As plantas absorvem CO₂ na fotossíntese e guardam carbono. O desmatamento e as queimadas devolvem esse carbono ao ar.', em: { a: [14, 52] }, z: 2.4 },
-        { id: 'egd', c: '#F7C13B', t: 'Gado', d: 'Os bois liberam metano (CH₄) na digestão. Por molécula, o CH₄ retém muito mais calor que o CO₂.', em: { a: [84, 70] }, z: 2.8 },
-        { id: 'eca', c: '#8FD8FF', t: 'Estrada', d: 'Carros e caminhões movidos a combustível emitem CO₂ em cada trajeto.', em: { a: [50, 80] }, z: 2.6 }
       ] }],
     ['populacoes/predador', { pref: 'ecologia', nome: 'Predador e presa', mask: false, ctl: true, oculto: true, sobre: sobrePredador, fora: foraPredador, amb: amb3d,
       vistas: [['a', 'populacoes-predador-a', 'Várzea', 'Onça-pintada à espreita de capivaras na várzea do Pantanal ao entardecer']],
