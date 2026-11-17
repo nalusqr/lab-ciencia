@@ -102,3 +102,8 @@ urca:'Texto do quadro Nos vestibulares do Ceará (URCA).'
 ```
 
 Com `estudo`, o cartão "No ENEM" do painel some (o quadro o substitui) e o painel ganha o link "Ler o texto de estudo, abaixo da colagem". O sumário lista as seções e os quadros. Sem `estudo`, nada muda.
+
+## Recortes novos (Mesopotâmia e Egito)
+
+Ícones em `recortes.js` (use `{tipo:'icone', nome:'...'}`): `porta-ishtar`, `cerco`, `sargao`, `vento`, `estrela8`, `cunha-passos`, `nilometro`, `cartucho`, `roseta`, `coroas`, `aton`, `mumia`, `narmer`, `hatshepsut`, `cleopatra`. Tipos próprios: `tributo` (esquema de aldeias, templo e palácio, sem campos) e `nilosul` (esquema do Nilo do delta a Meroé; `etapa` diz em que etapa as manchas de Kush e dos persas entram, via `data-et`). Em ícones grandes, prefira etiquetas (`etiqueta`) a `legenda`: a legenda tem tamanho fixo e fica pequena na câmera aberta.
+

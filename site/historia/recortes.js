@@ -438,6 +438,192 @@ I['mao']={fundo:false,nome:'Mão que aponta',art(u){
     pth('M96 80 C100 66 124 64 150 70 L160 90 H122 C120 82 108 78 96 80Z',P,T,3)+tinta('M34 90 H104',1.2);
 }};
 
+/* ---------- Mesopotâmia: recortes novos ---------- */
+const AZ='#2b62b3',AZ2='#4f86d1',OURO='#e2b53c';
+function bicho(x,y,k,d){ // touro ou dragão em relevo amarelo, d = 1 olha para a direita, -1 para a esquerda
+  return '<g transform="translate('+x+' '+y+') scale('+(k*d)+' '+k+')" fill="'+OURO+'" stroke="'+T+'" stroke-width="1.4" stroke-linejoin="round">'+
+    '<path d="M-9 -3 C-9 -6 -4 -7 0 -7 C4 -7 8 -6 9 -3 L9 3 L-9 3Z"/><path d="M9 -5 C12 -8 15 -7 15 -4 L14 -1 L9 1Z"/><path d="M13 -8 L15 -12 M11 -8 L11 -12" fill="none"/>'+
+    '<path d="M-8 3 V9 M-4 3 V9 M4 3 V9 M8 3 V9" fill="none"/><path d="M-9 -2 C-13 -1 -13 3 -11 5" fill="none"/></g>';
+}
+I['porta-ishtar']={fundo:false,nome:'Porta de Ishtar',art(u){
+  let s='';
+  const cren=(x0,x1,y)=>{let d='';for(let x=x0;x<x1;x+=14)d+='M'+x+' '+y+' h8 v-9 h-8Z ';return d;};
+  const torre=(x0,x1,y0)=>{
+    const d='M'+x0+' 186 V'+y0+' H'+x1+' V186 Z',id=u+'t'+x0;
+    let t='<defs>'+clip(id,d)+'</defs>'+pth(d,AZ)+'<g clip-path="url(#'+id+')">';
+    for(let y=y0+10;y<186;y+=11){t+=tinta('M'+x0+' '+y+' H'+x1,.9).replace('stroke-width="0.9"','stroke-width=".9" opacity=".5"');
+      for(let x=x0+((y/11|0)%2?6:0);x<x1;x+=12)t+='<path d="M'+x+' '+(y-11)+' V'+y+'" stroke="'+T+'" stroke-width=".8" opacity=".4"/>';}
+    t+='<path d="M'+(x1-8)+' '+y0+' H'+x1+' V186 H'+(x1-8)+'Z" fill="'+T+'" opacity=".25"/></g>';
+    return t+pth(cren(x0+2,x1-6,y0),AZ2,T,2)+pth(d,'none',T,3);
+  };
+  s+=torre(14,70,34)+torre(130,186,34);
+  const meio='M70 186 V70 H130 V186Z';
+  s+='<defs>'+clip(u+'m',meio)+'</defs>'+pth(meio,AZ2)+'<g clip-path="url(#'+u+'m)">';
+  for(let y=80;y<186;y+=11){s+='<path d="M70 '+y+' H130" stroke="'+T+'" stroke-width=".9" opacity=".45"/>';}
+  s+='</g>'+pth(cren(72,126,70),AZ2,T,2)+pth(meio,'none',T,3);
+  s+=pth('M82 186 V118 C82 90 118 90 118 118 V186Z','#16213a',T,3)+pth('M88 186 V120 C88 100 112 100 112 120 V186Z','url(#cm-h1)')+
+     pth('M70 186 H130','none',T,3);
+  // faixas de relevo: touros e dragões em fileiras
+  [[26,58,1],[48,58,1],[26,92,1],[48,92,1],[26,126,1],[48,126,1],[142,58,-1],[164,58,-1],[142,92,-1],[164,92,-1],[142,126,-1],[164,126,-1]].forEach(a=>{s+=bicho(a[0]+8,a[1]+8,.95,a[2]);});
+  [[100,80,1],[100,108,-1]].forEach(a=>{s+=bicho(a[0]-1,a[1],.8,a[2]);});
+  s+=pth('M8 186 H192','none',T,3);
+  return s;
+}};
+
+I['cerco']={fundo:'petroleo',nome:'Cerco assírio a uma cidade',art(u){
+  const muro='M8 188 V58 H84 V188Z',id=u+'mu';
+  let s='<defs>'+clip(id,muro)+'</defs>'+pth(muro,'#e9e1cf')+'<g clip-path="url(#'+id+')"><rect x="0" y="0" width="200" height="200" fill="url(#cm-hh)"/><path d="M62 0 H100 V200 H62Z" fill="url(#cm-h1)"/>';
+  for(let y=70;y<188;y+=14)for(let x=(y/14%2?10:20);x<84;x+=20)s+='<path d="M'+x+' '+y+' h14 v10 h-14Z" fill="none" stroke="'+T+'" stroke-width=".8" opacity=".5"/>';
+  s+='</g>';
+  let cr='';for(let x=8;x<84;x+=20)cr+='M'+x+' 58 v-12 h12 v12Z ';
+  s+=pth(cr,'#e9e1cf',T,2.4)+pth(muro,'none',T,3)+pth('M40 188 V132 C40 118 56 118 56 132 V188Z',T);
+  // rampa de terra e aríete
+  s+=pth('M84 150 L192 188 H84Z','#d9cfb6',T,3)+pth('M84 150 L192 188','none',T,3)+'<path d="M92 160 L180 186 H92Z" fill="url(#cm-h2)" opacity=".6"/>';
+  const sold=(x,y,k)=>'<g transform="translate('+x+' '+y+') scale('+k+')">'+
+    pth('M-9 -33 L0 -50 L9 -33 Z',P,T,2.4)+'<circle cx="0" cy="-26" r="8" fill="'+P+'" stroke="'+T+'" stroke-width="2.4"/>'+pth('M-9 -33 H9','none',T,2.4)+
+    pth('M-9 -18 C-12 -4 -10 10 -8 22 H8 C10 10 12 -4 9 -18 Z',P,T,2.4)+tinta('M-5 22 V38 M5 22 V38',2.6)+
+    pth('M6 -14 C20 -14 22 6 12 16 C8 18 4 14 4 6 Z','#8a7f68',T,2.4)+tinta('M-14 -30 L-14 30',2.2)+pth('M-14 -36 L-18 -28 H-10Z',T)+'</g>';
+  s+=sold(118,150,.85)+sold(146,160,.85)+sold(172,170,.85);
+  // escudo de cerco em cima da rampa: flechas
+  s+=pth('M6 190 H194','none',T,3);
+  return s;
+}};
+
+I['sargao']={fundo:'amarelo',nome:'Cabeça real em traço, no estilo acádio',art(u){
+  const rostos='M100 36 C70 36 62 62 64 92 C66 112 76 126 100 130 C124 126 134 112 136 92 C138 62 130 36 100 36 Z';
+  let s='<circle cx="100" cy="100" r="92" fill="'+P+'" stroke="'+T+'" stroke-width="3"/><defs>'+clip(u+'c','M100 100 m-92 0 a92 92 0 1 0 184 0 a92 92 0 1 0 -184 0')+'</defs><g clip-path="url(#'+u+'c)">';
+  s+='<path d="M0 0 H200 V200 H0Z" fill="url(#cm-hh)" opacity=".5"/>';
+  // ombros e manto
+  s+=pth('M20 200 C24 160 60 146 100 146 C140 146 176 160 180 200Z',P,T,3)+'<path d="M100 146 C120 146 150 154 164 200 H130 C130 170 118 156 100 146Z" fill="url(#cm-h1)"/>';
+  // barba longa em fileiras de cachos
+  s+=pth('M64 92 C60 120 66 160 100 172 C134 160 140 120 136 92 C128 112 114 122 100 122 C86 122 72 112 64 92Z',P,T,3);
+  for(let r=0;r<5;r++){const y=118+r*10,w=30-r*3;let d='M'+(100-w)+' '+y;for(let x=100-w;x<100+w;x+=10)d+=' q5 8 10 0';s+=tinta(d,1.6);}
+  // rosto, cabelo, faixa
+  s+=pth(rostos,P,T,3)+pth('M64 70 C64 44 82 30 100 30 C118 30 136 44 136 70 C130 56 118 50 100 50 C82 50 70 56 64 70Z','url(#cm-h3)',T,2.6)+
+     pth('M62 62 C62 54 70 46 100 46 C130 46 138 54 138 62 L138 70 C130 64 70 64 62 70Z',P,T,3)+tinta('M64 58 H136',1.4);
+  // coque atrás
+  s+=pth('M136 80 C156 74 162 98 150 108 C142 114 134 108 138 100',P,T,3)+tinta('M142 90 C148 92 150 98 146 102',1.5);
+  // olhos, nariz, bigode, boca
+  s+=pth('M74 84 C80 79 90 79 94 84 C90 89 80 89 74 84Z',P,T,2.2)+'<circle cx="84" cy="84" r="2.8" fill="'+T+'"/>'+pth('M106 84 C110 79 120 79 126 84 C120 89 110 89 106 84Z',P,T,2.2)+'<circle cx="116" cy="84" r="2.8" fill="'+T+'"/>'+
+     tinta('M72 76 C80 72 90 72 96 76 M104 76 C110 72 120 72 128 76',2.4)+tinta('M100 86 C96 98 94 104 100 106',2)+
+     pth('M80 110 C90 104 110 104 120 110 C112 114 88 114 80 110Z','url(#cm-h3)',T,2)+tinta('M90 117 H110',2.2);
+  s+='</g><circle cx="100" cy="100" r="92" fill="none" stroke="'+T+'" stroke-width="3.4"/>';
+  return s;
+}};
+
+I['vento']={fundo:'petroleo',nome:'Vento: sinal de Enlil',art(u){
+  return pth('M20 70 H120 C150 70 150 36 124 36 C112 36 104 44 106 52','none',T,6)+pth('M20 104 H150 C182 104 182 66 156 66','none',T,6)+
+    pth('M20 138 H100 C132 138 132 172 108 172 C98 172 92 166 94 160','none',T,6)+pth('M44 170 H80','none',T,4)+pth('M30 40 H70','none',T,4);
+}};
+I['estrela8']={fundo:'amarelo',nome:'Estrela de oito pontas: sinal de Inanna',art(u){
+  let d='';for(let i=0;i<16;i++){const a=i*Math.PI/8-Math.PI/2,r=i%2?34:80;d+=(i?'L':'M')+(100+Math.cos(a)*r).toFixed(1)+' '+(100+Math.sin(a)*r).toFixed(1)+' ';}
+  let sd='';for(let i=0;i<8;i++){const a=i*Math.PI/4-Math.PI/2;sd+='M100 100 L'+(100+Math.cos(a)*80).toFixed(1)+' '+(100+Math.sin(a)*80).toFixed(1);}
+  return pth(d+'Z',P,T,4)+'<path d="M100 100 L100 20 L123 77Z M100 100 L157 43 L180 100Z M100 100 L180 100 L123 123Z" fill="url(#cm-h1)" opacity=".7"/>'+tinta(sd,1.4)+pth('M100 100 m-14 0 a14 14 0 1 0 28 0 a14 14 0 1 0 -28 0','var(--coral)',T,3);
+}};
+
+/* do desenho à cunha: espiga, traços simplificados, grupo de cunhas */
+I['cunha-passos']={fundo:'coral',nome:'Do desenho da espiga ao sinal em cunha',art(u){
+  const seta=y=>tinta('M100 '+y+' V'+(y+14)+' M92 '+(y+8)+' L100 '+(y+16)+' L108 '+(y+8),3);
+  let s='';
+  // 1: espiga desenhada
+  s+='<g transform="translate(100 40)">'+tinta('M0 30 V-26',3)+['-22,-14','-12,-3','-2,8'].map(()=>'').join('');
+  for(let i=0;i<5;i++){const y=-26+i*11;s+=pth('M0 '+(y+8)+' C-12 '+(y+8)+' -14 '+(y-6)+' -4 '+(y-10)+' C-2 '+(y-2)+' -2 '+(y+4)+' 0 '+(y+8)+'Z',P,T,2.2)+pth('M0 '+(y+8)+' C12 '+(y+8)+' 14 '+(y-6)+' 4 '+(y-10)+' C2 '+(y-2)+' 2 '+(y+4)+' 0 '+(y+8)+'Z',P,T,2.2);}
+  s+=tinta('M0 -26 V-36 M-3 -34 L0 -44 L3 -34',2.4)+'</g>'+seta(76);
+  // 2: linhas simples
+  s+='<g transform="translate(100 118)">'+tinta('M0 18 V-18 M-12 -10 L0 -2 L12 -10 M-12 2 L0 10 L12 2 M-12 -22 L0 -14 L12 -22',3.2)+'</g>'+seta(142);
+  // 3: cunhas
+  const cunha=(x,y,k)=>'<path d="M'+x+' '+y+' h'+(10*k)+' l-'+(5*k)+' '+(9*k)+' z M'+(x+5*k)+' '+(y+7*k)+' v'+(18*k)+'" fill="'+T+'" stroke="'+T+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>';
+  s+=pth('M40 164 H160 V198 H40Z','#ede3cc',T,2.4);
+  s+=cunha(54,170,1)+cunha(68,170,1)+cunha(82,170,1)+'<path d="M100 170 l9 5 l-9 5 z M108 175 h12" fill="'+T+'" stroke="'+T+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+cunha(128,170,1)+cunha(142,170,1);
+  return s;
+}};
+
+/* ---------- Egito: recortes novos ---------- */
+I['nilometro']={fundo:'petroleo',nome:'Nilômetro: escada de pedra com marcas do nível da cheia',art(u){
+  let s=pth('M10 150 C40 140 70 160 100 150 C130 140 160 160 190 150 V192 H10Z','#8ec3e8',T,3)+'<path d="M10 160 C40 150 70 170 100 160 C130 150 160 170 190 160" fill="none" stroke="'+T+'" stroke-width="1.5" opacity=".5"/>';
+  const deg=[[28,40],[52,64],[76,88],[100,112],[124,136]];
+  deg.forEach((d,i)=>{s+=pth('M'+d[0]+' '+d[1]+' H196 V'+(d[1]+24)+' H'+d[0]+'Z','#efe4cf',T,3)+'<path d="M'+(d[0])+' '+(d[1]+12)+' H196" stroke="'+T+'" stroke-width="1" opacity=".4"/>';});
+  s+=pth('M10 16 H28 V160 H10Z','#efe4cf',T,3);
+  [30,54,78,102,126].forEach(y=>{s+=tinta('M10 '+y+' H28',2);});
+  s+=pth('M6 150 H34','none',T,3)+tinta('M44 50 l8 8 l-8 8',2.4)+tinta('M44 12 C60 4 74 20 90 12',2);
+  return s;}};
+I['cartucho']={fundo:'amarelo',nome:'Cartucho com hieróglifos',art(u){
+  let s=pth('M44 30 H156 C180 30 180 170 156 170 H44 C20 170 20 30 44 30Z',P,T,4)+pth('M100 24 V176','none',T,0)+tinta('M170 40 V160',3);
+  // falcão
+  s+=pth('M54 70 C54 56 70 50 80 58 C86 62 84 72 80 74 L84 92 H60 L62 76 C56 76 54 72 54 70Z',P,T,3)+'<circle cx="68" cy="62" r="2.4" fill="'+T+'"/>'+tinta('M60 92 L56 100 M84 92 L88 100',3);
+  // sol
+  s+='<circle cx="118" cy="68" r="14" fill="var(--coral)" stroke="'+T+'" stroke-width="3"/><circle cx="118" cy="68" r="3.4" fill="'+T+'"/>';
+  // água
+  s+=tinta('M44 128 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10',3.2)+tinta('M44 146 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10',3.2);
+  s+=pth('M96 108 H138','none',T,3);
+  return s;}};
+I['roseta']={fundo:'coral',nome:'Pedra de Roseta: três escritas na mesma laje',art(u){
+  const lj='M40 190 L34 70 C34 40 60 18 100 18 C140 18 166 40 166 70 L160 190Z';
+  let s='<defs>'+clip(u+'r',lj)+'</defs>'+pth(lj,'#cfcac0')+'<g clip-path="url(#'+u+'r)"><path d="M120 0 H200 V200 H120Z" fill="url(#cm-h1)" opacity=".5"/>';
+  const faixas=[[26,78,'hieróglifos'],[82,128,'demótico'],[132,184,'grego']];
+  faixas.forEach((f,i)=>{
+    s+=tinta('M30 '+f[0]+' H170',1.8);
+    for(let y=f[0]+10;y<f[1]-4;y+=11){let d='M44 '+y;for(let x=44;x<156;x+=9)d+=' l4.5 '+(i===0?-4:i===1?1:3)+' l4.5 '+(i===0?4:-1)+' ';s+=tinta(d,i===2?1.3:1.8);}
+  });
+  s+='</g>'+tinta('M30 76 H170 M30 130 H170',2.4)+pth(lj,'none',T,3.4)+pth('M110 20 L128 34 L116 46 L124 60','none',T,2);
+  return s;}};
+I['coroas']={fundo:'amarelo',nome:'Coroa branca, coroa vermelha e coroa dupla',art(u){
+  const branca=(x,y,k,f)=>pth('M'+x+' '+(y+70*k)+' C'+(x-12*k)+' '+(y+60*k)+' '+(x-10*k)+' '+(y+20*k)+' '+x+' '+y+' C'+(x+10*k)+' '+(y+20*k)+' '+(x+12*k)+' '+(y+60*k)+' '+x+' '+(y+70*k)+'Z',f||P,T,3)+pth('M'+x+' '+y+' m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0',f||P,T,2.4);
+  const verm=(x,y,k)=>pth('M'+(x-22*k)+' '+(y+70*k)+' L'+(x-16*k)+' '+(y+30*k)+' L'+(x+6*k)+' '+(y+30*k)+' L'+(x+4*k)+' '+y+' L'+(x+10*k)+' '+y+' L'+(x+24*k)+' '+(y+70*k)+'Z','var(--coral)',T,3)+tinta('M'+(x+10*k)+' '+(y+4)+' C'+(x+34*k)+' '+(y-10*k)+' '+(x+36*k)+' '+(y+10*k)+' '+(x+24*k)+' '+(y+16*k),2.6);
+  let s=branca(40,48,1.5)+tinta('M20 156 H60',1)+verm(112,50,1.4)+'<g transform="translate(0 0)">'+pth('M24 190 H176','none',T,3)+'</g>';
+  // dupla: vermelha com branca por dentro
+  s+=verm(158,118,.8).replace('var(--coral)','var(--coral)')+branca(150,100,.6);
+  return s+pth('M12 184 H188','none',T,3);}};
+I['aton']={fundo:false,nome:'Disco solar de Aton, com raios que terminam em mãos',art(u){
+  let s='';
+  for(let i=0;i<14;i++){const a=i*Math.PI/7,c=Math.cos(a),n=Math.sin(a),x1=100+c*34,y1=100+n*34,x2=100+c*70,y2=100+n*70;
+    s+=pth('M'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+x2.toFixed(1)+' '+y2.toFixed(1),'none',T,4.4);
+    const g=a*180/Math.PI;
+    // mão: palma e três dedos, apontando para fora
+    s+='<g transform="translate('+x2.toFixed(1)+' '+y2.toFixed(1)+') rotate('+g.toFixed(1)+')">'+pth('M0 -6 C8 -7 11 -5 11 0 C11 5 8 7 0 6Z',P,T,2.4)+tinta('M9 -3 L19 -6 M10 0 L21 0 M9 3 L19 6',2.2)+'</g>';}
+  return s+'<circle cx="100" cy="100" r="36" fill="var(--amarelo)" stroke="'+T+'" stroke-width="4.5"/><circle cx="100" cy="100" r="22" fill="#ffe27a" stroke="'+T+'" stroke-width="2"/>';}};
+I['sol']={fundo:'amarelo',nome:'Disco solar: Shamash, deus do Sol e da justiça',art(u){
+  let s='';for(let i=0;i<8;i++){const a=i*Math.PI/4;s+=pth('M'+(100+Math.cos(a)*44).toFixed(1)+' '+(100+Math.sin(a)*44).toFixed(1)+' L'+(100+Math.cos(a)*84).toFixed(1)+' '+(100+Math.sin(a)*84).toFixed(1),'none',T,5);}
+  for(let i=0;i<8;i++){const a=i*Math.PI/4+Math.PI/8,d='M100 100';let w='M'+(100+Math.cos(a)*42).toFixed(1)+' '+(100+Math.sin(a)*42).toFixed(1);for(let k=1;k<=4;k++){const r=42+k*9,o=k%2?5:-5;w+=' L'+(100+Math.cos(a)*r-Math.sin(a)*o).toFixed(1)+' '+(100+Math.sin(a)*r+Math.cos(a)*o).toFixed(1);}s+=tinta(w,3);}
+  return s+pth('M100 100 m-34 0 a34 34 0 1 0 68 0 a34 34 0 1 0 -68 0',P,T,4.4)+'<circle cx="100" cy="100" r="16" fill="var(--coral)" stroke="'+T+'" stroke-width="3"/>';}};
+I['mumia']={fundo:'petroleo',nome:'Mumificação em três quadros: órgãos em vasos, corpo no natrão, faixas de linho',art(u){
+  let s='';
+  const q=(x)=>pth('M'+x+' 24 H'+(x+58)+' V176 H'+x+'Z',P,T,3);
+  s+=q(8)+q(71)+q(134);
+  // vasos
+  [[22,60],[22,100],[22,140]].forEach(a=>{});
+  [[36,52],[36,98],[36,144]].forEach((a,i)=>{s+=pth('M'+(a[0]-14)+' '+(a[1]+22)+' C'+(a[0]-16)+' '+(a[1]-6)+' '+(a[0]+16)+' '+(a[1]-6)+' '+(a[0]+14)+' '+(a[1]+22)+'Z',i%2?'#e9ddc2':P,T,2.6)+pth('M'+(a[0]-10)+' '+(a[1]-2)+' H'+(a[0]+10)+' L'+(a[0]+8)+' '+(a[1]-12)+' H'+(a[0]-8)+'Z',P,T,2.4);});
+  // corpo no natrão
+  s+=pth('M78 120 H122 V150 H78Z','url(#cm-h2)',T,2.6)+pth('M80 100 C80 88 120 88 120 100 L118 120 H82Z',P,T,2.6)+'<circle cx="100" cy="84" r="9" fill="'+P+'" stroke="'+T+'" stroke-width="2.6"/>';
+  // faixas
+  s+=pth('M154 60 C150 40 170 40 166 60 L170 150 H150Z',P,T,2.6);
+  for(let y=68;y<150;y+=9)s+=tinta('M152 '+y+' L168 '+(y-6),1.6);
+  s+=tinta('M30 24 V176 M0 0',0)+'';
+  return s;}};
+I['narmer']={fundo:'coral',nome:'Paleta de Narmer, desenhada em traço',art(u){
+  const pal='M62 190 C62 150 40 140 40 110 C40 90 56 84 60 70 C52 56 56 30 74 26 C80 18 120 18 126 26 C144 30 148 56 140 70 C144 84 160 90 160 110 C160 140 138 150 138 190Z';
+  let s='<defs>'+clip(u+'p',pal)+'</defs>'+pth(pal,'#b9b4a6')+'<g clip-path="url(#'+u+'p)"><path d="M104 0 H200 V200 H104Z" fill="url(#cm-h1)" opacity=".5"/>';
+  // rei com coroa branca, golpeando
+  s+=pth('M96 62 C88 46 100 44 98 60 L102 90 H92Z',P,T,2.4)+pth('M86 90 H108 L112 140 H84Z',P,T,2.4)+tinta('M108 98 L126 78 M126 78 l6 -10',2.8)+tinta('M90 140 L86 170 M104 140 L110 170',2.8)+
+     pth('M60 150 H76 L74 176 H62Z',P,T,2.4)+tinta('M64 126 C70 120 78 120 82 126',2);
+  s+='</g>'+tinta('M70 40 H130 M70 56 H130',0)+pth(pal,'none',T,3.4)+pth('M82 30 a18 8 0 0 0 36 0','none',T,2.4)+'<circle cx="100" cy="44" r="10" fill="none" stroke="'+T+'" stroke-width="2.4"/>';
+  return s;}};
+function perfil(u,tipo){
+  let s='<circle cx="100" cy="100" r="92" fill="'+P+'" stroke="'+T+'" stroke-width="3"/><defs>'+clip(u+'c','M100 100 m-92 0 a92 92 0 1 0 184 0 a92 92 0 1 0 -184 0')+'</defs><g clip-path="url(#'+u+'c)"><rect width="200" height="200" fill="url(#cm-hh)" opacity=".5"/>';
+  s+=pth('M20 200 C26 168 60 156 100 156 C140 156 176 168 180 200Z',P,T,3);
+  if(tipo==='hat'){ // nemes e barba postiça
+    s+=pth('M58 70 C58 34 82 24 104 24 C128 24 144 44 142 74 L156 160 H128 L122 112 L74 112 L66 160 H44 L58 74Z','var(--amarelo)',T,3)+tinta('M64 70 H140 M60 90 H142 M58 110 H138',0);
+    for(let y=34;y<156;y+=9)s+='<path d="M'+(52+y*0.06)+' '+y+' H'+(150-y*0.06)+'" stroke="'+T+'" stroke-width="1.2" opacity=".35"/>';
+  }
+  s+=pth('M74 54 C80 44 112 44 118 56 C122 70 120 92 114 104 C108 114 90 116 82 106 C74 96 72 70 74 54Z',P,T,3);
+  if(tipo==='hat')s+=pth('M96 112 H110 L108 142 H98Z','var(--amarelo)',T,2.4)+pth('M70 50 C82 42 112 42 120 54 L120 62 C100 54 80 56 70 62Z','var(--amarelo)',T,2.4);
+  else s+=pth('M66 56 C70 34 112 30 124 52 C130 66 124 92 120 108 L112 90 L108 56 L74 60 L72 100 L66 90Z','url(#cm-h3)',T,3)+pth('M72 52 H122','none',T,2.6)+'<circle cx="97" cy="48" r="5" fill="var(--coral)" stroke="'+T+'" stroke-width="2"/>';
+  s+=pth('M86 78 C90 74 98 74 102 78 C98 82 90 82 86 78Z',P,T,2)+'<circle cx="94" cy="78" r="2" fill="'+T+'"/>'+tinta('M82 70 C88 66 98 66 104 70',2.2)+tinta('M118 80 L124 90 L118 94',2.2)+tinta('M96 98 C102 100 108 98 112 96',2.2);
+  return s+'</g><circle cx="100" cy="100" r="92" fill="none" stroke="'+T+'" stroke-width="3.4"/>';
+}
+I['hatshepsut']={fundo:'amarelo',nome:'Hatshepsut, em traço',art(u){return perfil(u,'hat');}};
+I['cleopatra']={fundo:'petroleo',nome:'Cleópatra VII, em traço',art(u){return perfil(u,'cle');}};
+
 C.ICONES=Object.keys(I);
 
 /* papel colorido rasgado atrás do recorte */
@@ -539,4 +725,61 @@ C.tipos.fita=p=>{
   return {cls:'cm-fita2',html:s+'</svg>'};
 };
 
+
+/* Mesopotâmia: esquema do tributo. Aldeias embaixo, templo e palácio no alto; sacos de cevada sobem, rações descem, bonecos sobem (dias de trabalho) */
+C.tipos.tributo=p=>{
+  const W=900,H=640;let s='<defs><pattern id="cm-quad" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#6d8aa6" stroke-width="1" opacity=".35"/></pattern></defs><rect width="'+W+'" height="'+H+'" fill="#fbf9f1"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-quad)"/>';
+  const traco=(d,w)=>'<path d="'+d+'" fill="none" stroke="'+T+'" stroke-width="'+(w||3)+'" stroke-linecap="round" stroke-linejoin="round"/>';
+  const casa=(x,y)=>traco('M'+x+' '+(y+34)+' V'+(y+10)+' L'+(x+22)+' '+y+' L'+(x+44)+' '+(y+10)+' V'+(y+34)+' Z M'+(x+16)+' '+(y+34)+' V'+(y+20)+' H'+(x+28)+' V'+(y+34),3);
+  // templo e palácio no alto
+  s+='<g transform="translate(250 28)">'+traco('M0 100 H130 M10 100 V74 H120 V100 M24 74 V48 H106 V74 M44 48 V24 H86 V48 M52 24 V12 H78 V24',3.4)+'<path d="M10 100 H120 V74 H10Z" fill="url(#cm-h1)" opacity=".5"/></g>';
+  s+='<g transform="translate(470 56)">'+traco('M0 72 H150 M6 72 V32 H144 V72 M0 32 H150 M24 32 V12 M54 32 V12 M84 32 V12 M114 32 V12 M144 32 V12 M26 72 V50 H44 V72 M60 50 H90 V62 H60Z',3.4)+'</g>';
+  s+='<text x="315" y="162" text-anchor="middle" class="cm-tx">templo</text><text x="545" y="162" text-anchor="middle" class="cm-tx">palácio</text>';
+  // aldeias
+  for(let i=0;i<5;i++){const x=70+i*165;s+=casa(x,480)+casa(x+26,498);}
+  s+='<text x="450" y="600" text-anchor="middle" class="cm-tx">aldeias de camponeses</text>';
+  // sacos de cevada subindo (setas tracejadas) 
+  const sacos=[[120,0],[330,1],[560,2],[780,3]];
+  const arrows=[['M130 470 C150 380 240 250 300 190',0],['M355 470 C355 400 370 280 380 190',1],['M590 470 C590 400 540 300 520 190',2],['M790 470 C780 380 650 260 590 190',3]];
+  arrows.forEach(a=>{s+='<path d="'+a[0]+'" fill="none" stroke="'+T+'" stroke-width="3.4" stroke-dasharray="3 12" stroke-linecap="round"/>';});
+  const saco=(x,y)=>'<g transform="translate('+x+' '+y+')"><path d="M0 -14 C-22 -12 -26 18 -14 26 H14 C26 18 22 -12 0 -14Z" fill="#efe0b0" stroke="'+T+'" stroke-width="3"/><path d="M-6 -14 L0 -22 L6 -14" fill="none" stroke="'+T+'" stroke-width="3"/><path d="M-6 6 C-2 0 2 0 6 6" fill="none" stroke="'+T+'" stroke-width="2"/></g>';
+  s+=saco(215,350)+saco(372,360)+saco(552,350)+saco(700,370);
+  s+='<text x="76" y="330" class="cm-tx" font-weight="700">cevada</text>';
+  // rações: seta fina de volta
+  s+='<path d="M430 210 C470 270 470 380 440 440" fill="none" stroke="'+T+'" stroke-width="2" stroke-dasharray="8 8"/><path d="M432 430 L440 444 L452 432" fill="none" stroke="'+T+'" stroke-width="2"/>';
+  s+='<text x="486" y="300" class="cm-tx">rações</text>';
+  // bonecos: dias de trabalho
+  const bon=(x,y)=>'<g transform="translate('+x+' '+y+')" fill="none" stroke="'+T+'" stroke-width="3" stroke-linecap="round"><circle cx="0" cy="-12" r="7" fill="#fbf9f1"/><path d="M0 -5 V14 M-9 4 H9 M0 14 L-7 28 M0 14 L7 28"/></g>';
+  s+=bon(262,370)+bon(300,330)+bon(640,330)+bon(680,300)+bon(720,270);
+  s+='<text x="880" y="430" text-anchor="end" class="cm-tx" font-weight="700">dias de trabalho</text>';
+  return {cls:'cm-esq cm-tributo',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema: aldeias entregam cevada e dias de trabalho ao templo e ao palácio, que devolvem rações')+'"><style>.cm-tx{font:600 36px "Caveat","Segoe Print",cursive;fill:'+T+'}</style>'+s+'</svg>'};
+};
+
+/* Egito e Kush: esquema do Nilo (do delta a Meroé), com cataratas numeradas e manchas que entram por etapa (data-et) */
+C.tipos.nilosul=p=>{
+  const W=520,H=900,et=p.etapa!=null?p.etapa:8;
+  const rio='M300 70 C300 150 320 260 330 330 S350 420 350 440 S330 540 300 580 S230 600 240 640 S300 720 330 790 L340 860';
+  let s='<style>.cm-nilosul .ev{opacity:0;transition:opacity .9s}.cm-nilosul .ev.on{opacity:1}.cm-nilosul .ev.d1.on{transition-delay:1s}.cm-nilosul .ev.d2.on{transition-delay:3s}'+
+    '.cm-nilosul .nv.on{opacity:0;animation:cm-nv 7s 3s ease-in-out forwards}@keyframes cm-nv{0%{opacity:0}18%{opacity:.85}62%{opacity:.85}100%{opacity:0}}'+
+    '.cm-nilosul .pe.on{transition-delay:8s}.cm-nilosul text{font:700 24px var(--sans,sans-serif);fill:'+T+'}.cm-nilosul text.p{font-size:26px;font-weight:600}'+
+    '@media (prefers-reduced-motion:reduce){.cm-nilosul .ev,.cm-nilosul .ev.on{transition:none!important}.cm-nilosul .nv.on{animation:none;opacity:.85}}</style>';
+  s+='<rect width="'+W+'" height="'+H+'" fill="#f6efdc"/><rect width="'+W+'" height="'+H+'" fill="url(#cm-hh)" opacity=".35"/>';
+  const E='data-et="'+et+'"';
+  // manchas
+  s+='<path class="ev d1" '+E+' d="M250 560 L370 560 L400 640 L380 860 L270 880 L220 700Z" fill="#b0793a" fill-opacity=".8"/><path class="ev d1" '+E+' d="M250 560 L370 560 L400 640 L380 860 L270 880 L220 700Z" fill="url(#cm-h1)"/>';
+  s+='<path class="ev nv" '+E+' d="M250 50 L370 50 L400 330 L400 560 L270 560 L250 330Z" fill="#b0793a" fill-opacity=".85"/><path class="ev nv" '+E+' d="M250 50 L370 50 L400 330 L400 560 L270 560 L250 330Z" fill="url(#cm-h1)"/>';
+  s+='<path class="ev pe" '+E+' d="M20 30 L520 30 L520 470 L20 470Z" fill="#1fa39a" fill-opacity=".6"/>';
+  // rio e delta
+  s+='<path d="M300 70 L246 30 M300 70 L300 24 M300 70 L356 30" fill="none" stroke="#2f77b5" stroke-width="7" stroke-linecap="round"/><path d="'+rio+'" fill="none" stroke="#2f77b5" stroke-width="9" stroke-linecap="round"/>';
+  // cataratas
+  [[350,452],[342,520],[298,592],[246,656],[292,732],[330,826]].forEach((c,i)=>{s+='<path d="M'+(c[0]-18)+' '+c[1]+' h36" stroke="'+T+'" stroke-width="5" stroke-linecap="round"/><circle cx="'+(c[0]+44)+'" cy="'+(c[1]-2)+'" r="17" fill="#fff" stroke="'+T+'" stroke-width="2.6"/><text class="p" x="'+(c[0]+44)+'" y="'+(c[1]+8)+'" text-anchor="middle">'+(i+1)+'</text>';});
+  // cidades
+  const cid=(x,y,t,lado)=>'<circle cx="'+x+'" cy="'+y+'" r="9" fill="'+T+'" stroke="#fff" stroke-width="3"/><text x="'+(lado==='e'?x-18:x+18)+'" y="'+(y+8)+'" text-anchor="'+(lado==='e'?'end':'start')+'">'+t+'</text>';
+  s+=cid(300,120,'Gizé','e')+cid(330,330,'Tebas','d')+cid(350,438,'Assuã','d').replace('x="368"','x="400"')+cid(240,640,'Napata','e')+cid(330,790,'Meroé','d');
+  // pirâmides
+  [[300,150],[218,672],[354,822]].forEach((a,i)=>{s+='<path class="ev d1" '+E+' d="M'+(a[0]-18)+' '+a[1]+' L'+a[0]+' '+(a[1]-26)+' L'+(a[0]+18)+' '+a[1]+'Z" fill="'+P+'" stroke="'+T+'" stroke-width="3"/>';});
+  // rótulos
+  s+='<text x="40" y="200">Egito</text><text x="60" y="720" class="ev d1" '+E+' style="font-size:30px">Kush</text><text x="400" y="600" class="p ev nv" '+E+'>728 a.C.</text><text x="40" y="410" class="p ev pe" '+E+'>persas, 525 a.C.</text>';
+  return {cls:'cm-esq cm-nilosul',html:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(p.rotulo||'Esquema do Nilo, do delta a Meroé, com as cataratas numeradas e o reino de Kush')+'">'+s+'</svg>'};
+};
 })();
